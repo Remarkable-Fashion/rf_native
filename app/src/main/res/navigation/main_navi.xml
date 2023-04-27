@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_navi"
+    app:startDestination="@id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.lf.fashion.ui.HomeFragment"
+        android:label="HomeFragment" />
+    <fragment
+        android:id="@+id/navigation_mypage"
+        android:name="com.lf.fashion.ui.MyPageFragment"
+        android:label="MypageFragment" />
+    <fragment
+        android:id="@+id/navigation_photo"
+        android:name="com.lf.fashion.ui.PhotoFragment"
+        android:label="PhotoFragment" />
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.lf.fashion.ui.SearchFragment"
+        android:label="SearchFragment" />
+    <fragment
+        android:id="@+id/navigation_scrap"
+        android:name="com.lf.fashion.ui.ScrapFragment"
+        android:label="ScrapFragment" />
+</navigation>

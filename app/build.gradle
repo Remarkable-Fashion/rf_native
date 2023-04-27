@@ -1,0 +1,101 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id "kotlin-kapt"
+    id 'com.google.dagger.hilt.android'
+
+    //safe args 관련 https://philosopher-chan.tistory.com/1500
+    id 'androidx.navigation.safeargs.kotlin'
+}
+
+android {
+    compileSdk 32
+
+    defaultConfig {
+        applicationId "com.lf.fashion"
+        minSdk 28
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    viewBinding {
+        enabled = true
+    }
+    dataBinding {
+        enabled = true
+    }
+    kapt {
+        correctErrorTypes = true
+    }
+}
+
+dependencies {
+    def nav_version = "2.5.3"
+    def room_version = "2.4.3"
+    def glideVersion = '4.12.0'
+    def retrofit_version = "2.9.0"
+
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
+    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.android.databinding:viewbinding:8.0.0'
+    //
+    implementation "androidx.recyclerview:recyclerview:1.2.0"
+    implementation 'androidx.core:core-splashscreen:1.0.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
+    implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+
+    //Permission : TedPermission
+    implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
+
+    //Datastore - > preferences
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "androidx.datastore:datastore-core:1.0.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.0"
+    // To use Kotlin annotation processing tool (kapt)
+    kapt "androidx.room:room-compiler:$room_version"
+
+    //DBLayer : Hilt,Room,Gson
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation 'com.google.code.gson:gson:2.10'
+    implementation "androidx.room:room-ktx:$room_version"
+
+    //Retrofit & Network
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation platform("com.squareup.okhttp3:okhttp-bom:4.9.0") //네트워크 통신 결과 log 로 상세히 출력 가능
+    implementation "com.squareup.okhttp3:okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor"
+    implementation "com.github.bumptech.glide:glide:$glideVersion" //Glide (이미지 url 로딩)
+    kapt "com.github.bumptech.glide:compiler:$glideVersion"
+
+}
