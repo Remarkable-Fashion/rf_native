@@ -1,15 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <TextView
-        android:layout_width="wrap_content"
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="mypage"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:background="@color/white">
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            app:layout_scrollFlags="scroll|enterAlways">
+                <TextView
+                    android:id="@+id/app_bar_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="RANDOM FASHION"
+                    android:textSize="19sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/default_text"
+                    android:fontFamily="@font/montserrat_black"
+                    android:layout_marginStart="5dp"/>
+        </androidx.appcompat.widget.Toolbar>
+        <TextView
+            android:id="@+id/app_bar_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="로그인 하기"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="15dp"
+            android:padding="5dp"
+            android:textSize="16sp"
+            android:fontFamily="@font/spoqahansansneo_bold"
+            android:textColor="@color/default_text"
+            />
+    </com.google.android.material.appbar.AppBarLayout>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="나만의 모바일 룩북!"
+                android:textSize="30sp"
+                android:fontFamily="@font/spoqahansansneo_bold"
+                android:textColor="@color/default_text"/>
+            <TextView
+                android:id="@+id/title_sub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="로그인 후 더 많은 기능을 사용해보세요 :)"
+                app:layout_constraintTop_toBottomOf="@id/title_text"
+                app:layout_constraintStart_toStartOf="@id/title_text"
+                android:textSize="14sp"
+                android:fontFamily="@font/spoqahansansneo_medium"
+                android:textColor="@color/dark_grey_text"
+                />
+
+            <ImageView
+                android:id="@+id/kakao_login_background"
+                android:layout_width="350dp"
+                android:layout_height="65dp"
+                android:background="@drawable/grey_radi3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_sub"
+                android:layout_marginTop="40dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_kakao_login"
+                android:layout_marginStart="20dp"
+                app:layout_constraintStart_toStartOf="@id/kakao_login_background"
+                app:layout_constraintTop_toTopOf="@id/kakao_login_background"
+                app:layout_constraintBottom_toBottomOf="@id/kakao_login_background"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="카카오톡으로 로그인"
+                android:fontFamily="@font/spoqahansansneo_medium"
+                android:textSize="16sp"
+                android:textColor="@color/sub_text"
+                app:layout_constraintStart_toStartOf="@id/kakao_login_background"
+                app:layout_constraintEnd_toEndOf="@id/kakao_login_background"
+                app:layout_constraintTop_toTopOf="@id/kakao_login_background"
+                app:layout_constraintBottom_toBottomOf="@id/kakao_login_background"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
