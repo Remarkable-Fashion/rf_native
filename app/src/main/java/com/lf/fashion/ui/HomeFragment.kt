@@ -22,6 +22,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "HomeFragment - onViewCreated: ");
+        Log.d(TAG, "HomeFragment - onViewCreated:    ");
     }
 }
