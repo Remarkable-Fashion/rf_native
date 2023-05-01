@@ -39,10 +39,12 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="@color/background_grey">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:background="@color/white">
             <TextView
                 android:id="@+id/title_text"
                 android:layout_width="wrap_content"
@@ -99,6 +101,104 @@
                 app:layout_constraintEnd_toEndOf="@id/kakao_login_background"
                 app:layout_constraintTop_toTopOf="@id/kakao_login_background"
                 app:layout_constraintBottom_toBottomOf="@id/kakao_login_background"/>
+
+
+            <ImageView
+                android:id="@+id/facebook_login_background"
+                android:layout_width="350dp"
+                android:layout_height="65dp"
+                android:background="@drawable/grey_radi3"
+                app:layout_constraintStart_toStartOf="@id/kakao_login_background"
+                app:layout_constraintEnd_toEndOf="@id/kakao_login_background"
+                app:layout_constraintTop_toBottomOf="@id/kakao_login_background"
+                android:layout_marginTop="9dp"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/facebook_login_logo"
+                android:layout_marginStart="20dp"
+                app:layout_constraintStart_toStartOf="@id/facebook_login_background"
+                app:layout_constraintTop_toTopOf="@id/facebook_login_background"
+                app:layout_constraintBottom_toBottomOf="@id/facebook_login_background"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="페이스북으로 로그인"
+                android:fontFamily="@font/spoqahansansneo_medium"
+                android:textSize="16sp"
+                android:textColor="@color/sub_text"
+                app:layout_constraintStart_toStartOf="@id/facebook_login_background"
+                app:layout_constraintEnd_toEndOf="@id/facebook_login_background"
+                app:layout_constraintTop_toTopOf="@id/facebook_login_background"
+                app:layout_constraintBottom_toBottomOf="@id/facebook_login_background"/>
+
+
+            <ImageView
+                android:id="@+id/naver_login_background"
+                android:layout_width="350dp"
+                android:layout_height="65dp"
+                android:background="@drawable/grey_radi3"
+                app:layout_constraintStart_toStartOf="@id/kakao_login_background"
+                app:layout_constraintEnd_toEndOf="@id/kakao_login_background"
+                app:layout_constraintTop_toBottomOf="@id/facebook_login_background"
+                android:layout_marginTop="9dp"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/naver_login_logo"
+                android:layout_marginStart="20dp"
+                app:layout_constraintStart_toStartOf="@id/naver_login_background"
+                app:layout_constraintTop_toTopOf="@id/naver_login_background"
+                app:layout_constraintBottom_toBottomOf="@id/naver_login_background"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="네이버으로 로그인"
+                android:fontFamily="@font/spoqahansansneo_medium"
+                android:textSize="16sp"
+                android:textColor="@color/sub_text"
+                app:layout_constraintStart_toStartOf="@id/naver_login_background"
+                app:layout_constraintEnd_toEndOf="@id/naver_login_background"
+                app:layout_constraintTop_toTopOf="@id/naver_login_background"
+                app:layout_constraintBottom_toBottomOf="@id/naver_login_background"/>
+
+
+            <ImageView
+                android:id="@+id/google_login_background"
+                android:layout_width="350dp"
+                android:layout_height="65dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/grey_radi3"
+                app:layout_constraintStart_toStartOf="@id/kakao_login_background"
+                app:layout_constraintEnd_toEndOf="@id/kakao_login_background"
+                app:layout_constraintTop_toBottomOf="@id/naver_login_background"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="9dp"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/google_login_logo"
+                android:layout_marginStart="20dp"
+                app:layout_constraintStart_toStartOf="@id/google_login_background"
+                app:layout_constraintTop_toTopOf="@id/google_login_background"
+                app:layout_constraintBottom_toBottomOf="@id/google_login_background"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="구글 아이디로 로그인"
+                android:fontFamily="@font/spoqahansansneo_medium"
+                android:textSize="16sp"
+                android:textColor="@color/sub_text"
+                app:layout_constraintStart_toStartOf="@id/google_login_background"
+                app:layout_constraintEnd_toEndOf="@id/google_login_background"
+                app:layout_constraintTop_toTopOf="@id/google_login_background"
+                app:layout_constraintBottom_toBottomOf="@id/google_login_background"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
