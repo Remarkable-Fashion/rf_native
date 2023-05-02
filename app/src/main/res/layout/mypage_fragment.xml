@@ -20,7 +20,7 @@
                     android:textSize="19sp"
                     android:textStyle="bold"
                     android:textColor="@color/default_text"
-                    android:fontFamily="@font/montserrat_black"
+                    android:fontFamily="@font/montserrat_bold"
                     android:layout_marginStart="5dp"/>
         </androidx.appcompat.widget.Toolbar>
         <TextView
