@@ -2,7 +2,8 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -26,18 +27,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-        <TextView
-            android:id="@+id/app_bar_random"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="랜덤"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="15dp"
-            android:layout_marginBottom="12dp"
-            android:padding="5dp"
-            style="@style/app_bar_label"
-            />
+            android:orientation="horizontal"
+            app:layout_scrollFlags="scroll|enterAlways">
+            <TextView
+                android:id="@+id/app_bar_random"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="랜덤"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginBottom="12dp"
+                android:padding="5dp"
+                style="@style/app_bar_label"
+                />
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -51,10 +53,16 @@
                 style="@style/app_bar_label"
                 android:layout_marginStart="13dp"
                 />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/filter"
+                android:layout_marginEnd="20dp"
                 />
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -66,29 +74,17 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/title_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="21dp"
-                app:layout_constraintStart_toStartOf="parent"
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.9"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="나만의 모바일 룩북!"
-                android:textSize="30sp"
-                android:fontFamily="@font/spoqahansansneo_bold"
-                android:textColor="@color/default_text"/>
-            <TextView
-                android:id="@+id/title_sub"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="로그인 후 더 많은 기능을 사용해보세요 :)"
-                app:layout_constraintTop_toBottomOf="@id/title_text"
-                app:layout_constraintStart_toStartOf="@id/title_text"
-                android:textSize="14sp"
-                android:fontFamily="@font/spoqahansansneo_medium"
-                android:textColor="@color/dark_grey_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:background="@color/black"
                 />
+
 
 
 
