@@ -22,6 +22,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //TODO: 보고싶은 성별을 선택하는 다이얼로그 ~
         Log.d(TAG, "HomeFragment - onViewCreated:    ");
     }
 }
