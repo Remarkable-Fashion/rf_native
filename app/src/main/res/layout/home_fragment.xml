@@ -1,174 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
+    android:orientation="vertical">
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/home_app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white"
+      >
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="80dp"
             app:layout_scrollFlags="scroll|enterAlways">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/ic_sanwich" />
+
             <TextView
                 android:id="@+id/app_bar_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/random_fashion"
-                android:textSize="19sp"
-                android:textStyle="bold"
-                android:textColor="@color/default_text"
+                android:layout_marginStart="5dp"
                 android:fontFamily="@font/montserrat_bold"
-                android:layout_marginStart="5dp"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_sanwich"
-                android:layout_gravity="end"
-                android:layout_marginEnd="20dp"/>
+                android:text="@string/random_fashion"
+                android:textColor="@color/default_text"
+                android:textSize="19sp"
+                android:textStyle="bold" />
         </androidx.appcompat.widget.Toolbar>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_scrollFlags="scroll|enterAlways">
+
             <TextView
                 android:id="@+id/app_bar_random"
+                style="@style/app_bar_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="랜덤"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="15dp"
                 android:layout_marginBottom="12dp"
+                android:layout_marginStart="15dp"
                 android:padding="5dp"
-                style="@style/app_bar_label"
-                />
+                android:text="랜덤"
+                app:layout_constraintStart_toStartOf="parent" />
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_new"
-                />
+                android:src="@drawable/ic_new" />
+
             <TextView
                 android:id="@+id/app_bar_following"
+                style="@style/app_bar_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="팔로잉"
-                style="@style/app_bar_label"
                 android:layout_marginStart="13dp"
-                />
+                android:text="팔로잉" />
+
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                />
+                android:layout_weight="1" />
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="23dp"
                 android:layout_height="23dp"
+                android:layout_marginEnd="15dp"
                 android:background="@drawable/bg_black_radi2"
+                android:fontFamily="@font/montserrat_bold"
                 android:text="1"
                 android:textColor="@color/white"
-                android:fontFamily="@font/montserrat_bold"
-                android:textSize="12sp"
-                android:layout_marginEnd="15dp"
-                />
+                android:textSize="12sp" />
             <ImageView
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:src="@drawable/filter"
-                />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ellipse"
-                android:layout_marginEnd="17dp"
-                />
-        </LinearLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        >
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/main_image_view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="580dp"
-                android:background="@color/background_grey"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                android:src="@drawable/filter" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_tab_menu"
-                app:layout_constraintBottom_toBottomOf="@id/main_image_view_pager"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginBottom="20dp"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+                android:layout_marginEnd="17dp"
+                android:src="@drawable/ellipse" />
+
+        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/main_image_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/background_grey"
+        app:layout_constraintTop_toBottomOf="@id/home_app_bar"
+        app:layout_constraintBottom_toTopOf="@id/home_bottom_menu"
+       />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/ic_tab_menu"
+        app:layout_constraintBottom_toBottomOf="@id/main_image_view_pager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
     <LinearLayout
-        app:layout_constraintTop_toBottomOf="@id/main_image_view_pager"
+        android:id="@+id/home_bottom_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_gravity="bottom"
-        android:paddingTop="13dp"
-        android:paddingBottom="13dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="24dp"
         android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingBottom="13dp"
+        android:paddingEnd="24dp"
+        android:paddingStart="20dp"
+        android:paddingTop="13dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         >
+
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/ic_heart"/>
+            android:src="@drawable/ic_heart" />
         <TextView
+            style="@style/main_bottom_menu_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="130"
-            android:layout_marginStart="5dp"
             android:layout_marginEnd="10dp"
-            style="@style/main_bottom_menu_label"
-            />
+            android:layout_marginStart="5dp"
+            android:text="130" />
+
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/ic_image"/>
+            android:src="@drawable/ic_image" />
         <TextView
+            style="@style/main_bottom_menu_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="30"
             android:layout_marginStart="5dp"
-            style="@style/main_bottom_menu_label"
-            />
+            android:text="30" />
+
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            />
+            android:layout_weight="1" />
+
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/ic_share"/>
+            android:src="@drawable/ic_share" />
+
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/ic_scrap"
+            android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
+            android:src="@drawable/ic_scrap" />
+
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/ic_tab_menu"/>
+            android:src="@drawable/ic_tab_menu" />
+
     </LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
