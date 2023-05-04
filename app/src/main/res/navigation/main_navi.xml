@@ -6,22 +6,22 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.lf.fashion.ui.HomeFragment"
+        android:name="com.lf.fashion.ui.home.HomeFragment"
         android:label="HomeFragment" />
     <fragment
         android:id="@+id/navigation_mypage"
-        android:name="com.lf.fashion.ui.MyPageFragment"
+        android:name="com.lf.fashion.ui.mypage.MyPageFragment"
         android:label="MypageFragment" />
     <fragment
         android:id="@+id/navigation_photo"
-        android:name="com.lf.fashion.ui.PhotoFragment"
+        android:name="com.lf.fashion.ui.addPost.PhotoFragment"
         android:label="PhotoFragment" />
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.lf.fashion.ui.SearchFragment"
+        android:name="com.lf.fashion.ui.search.SearchFragment"
         android:label="SearchFragment" />
     <fragment
         android:id="@+id/navigation_scrap"
-        android:name="com.lf.fashion.ui.ScrapFragment"
+        android:name="com.lf.fashion.ui.scrap.ScrapFragment"
         android:label="ScrapFragment" />
 </navigation>

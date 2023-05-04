@@ -1,4 +1,4 @@
-package com.lf.fashion.ui
+package com.lf.fashion.ui.home
 
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +9,9 @@ import androidx.fragment.app.Fragment
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.databinding.HomeFragmentBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
     private lateinit var binding : HomeFragmentBinding
     private var defaultRandomPhoto = true
