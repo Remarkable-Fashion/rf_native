@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavBar)
-       // bottomNavigationView.itemIconTintList = null
+        bottomNavigationView.itemIconTintList = null
         val navController = supportFragmentManager.findFragmentById(R.id.mainContainer)?.findNavController()
         navController?.let{
             bottomNavigationView.setupWithNavController(it)

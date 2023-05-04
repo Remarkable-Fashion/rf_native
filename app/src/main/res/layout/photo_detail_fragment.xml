@@ -8,7 +8,7 @@
         android:id="@+id/cancel_btn"
         android:layout_width="28dp"
         android:layout_height="28dp"
-        android:src="@drawable/cancel_btn"
+        android:src="@drawable/ic_cancel"
         android:layout_marginStart="15dp"
         android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"

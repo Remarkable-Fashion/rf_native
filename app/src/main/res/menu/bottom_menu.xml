@@ -3,20 +3,25 @@
     <item
         android:id="@+id/navigation_home"
         android:title="홈"
+        android:icon="@drawable/selector_main_home"
         />
     <item
         android:id="@+id/navigation_search"
         android:title="검색"
+        android:icon="@drawable/selector_main_search"
         />
     <item
         android:id="@+id/navigation_photo"
-        android:title="갤러리"/>
+        android:title="갤러리"
+        android:icon="@drawable/selector_main_photo"/>
     <item
         android:id="@+id/navigation_scrap"
         android:title="스크랩"
+        android:icon="@drawable/selector_main_scrap"
         />
     <item
         android:id="@+id/navigation_mypage"
         android:title="마이페이지"
+        android:icon="@drawable/selector_main_mypage"
         />
 </menu>

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
+<!-- 페이스북 / 구글 로고 svg 다시 받아야하지만, api 규정상 해당 로고가 사용 가능한지 모르기 때문에 보류-->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -81,9 +81,9 @@
                 android:layout_marginEnd="20dp"
                 />
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_kakao_login"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:src="@drawable/ic_kakaologo"
                 android:layout_marginStart="20dp"
                 app:layout_constraintStart_toStartOf="@id/kakao_login_background"
                 app:layout_constraintTop_toTopOf="@id/kakao_login_background"
@@ -141,9 +141,9 @@
                 android:layout_marginTop="9dp"
                 />
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/naver_login_logo"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:src="@drawable/ic_naver_logo"
                 android:layout_marginStart="20dp"
                 app:layout_constraintStart_toStartOf="@id/naver_login_background"
                 app:layout_constraintTop_toTopOf="@id/naver_login_background"
@@ -173,9 +173,9 @@
                 android:layout_marginTop="9dp"
                 />
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/google_login_logo"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:src="@drawable/ic_google_logo"
                 android:layout_marginStart="20dp"
                 app:layout_constraintStart_toStartOf="@id/google_login_background"
                 app:layout_constraintTop_toTopOf="@id/google_login_background"
