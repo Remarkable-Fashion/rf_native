@@ -1,68 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/main_image_view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/photo_back_grey"
-        />
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="129dp"
-        android:src="@drawable/bg_gradiant_black"
-        app:layout_constraintBottom_toBottomOf="@id/main_image_view_pager"
-        />
+    <data>
+        <variable
+            name="post"
+            type="com.lf.fashion.data.response.Post" />
+    </data>
 
-    <ImageView
-        android:id="@+id/profile_image"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/main_image_view_pager"
-        android:background="@drawable/bg_profile"
-        android:layout_marginTop="13dp"
-        android:layout_marginStart="20dp"
-        />
-    <TextView
-        android:id="@+id/profile_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="rf_user"
-        app:layout_constraintStart_toEndOf="@id/profile_image"
-        app:layout_constraintTop_toTopOf="@id/profile_image"
-        app:layout_constraintBottom_toBottomOf="@id/profile_image"
-        android:layout_marginStart="10dp"
-        android:fontFamily="@font/montserrat_bold"
-        android:textColor="@color/white"/>
-    <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="53dp"
-        android:layout_height="23dp"
-        android:layout_marginEnd="23dp"
-        android:background="@drawable/bg_grey_radi15"
-        android:text="정보+"
-        android:textColor="@color/white"
-        android:textSize="11sp"
-        android:fontFamily="@font/spoqahansansneo_medium"
-        app:layout_constraintTop_toTopOf="@id/profile_image"
-        app:layout_constraintBottom_toBottomOf="@id/profile_image"
-        app:layout_constraintEnd_toEndOf="@id/main_image_view_pager"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        />
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/indicator"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:elevation="0dp"
-        app:tabBackground="@drawable/selector_indicator"
-        app:tabIndicatorHeight="0dp"
-        app:tabGravity="center"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="@id/main_image_view_pager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/main_image_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/photo_back_grey"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/post_detail_menu"
+            />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="129dp"
+            android:src="@drawable/bg_gradiant_black"
+            app:layout_constraintBottom_toBottomOf="@id/main_image_view_pager" />
+
+        <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/main_image_view_pager"
+            android:background="@drawable/bg_profile"
+            android:layout_marginTop="13dp"
+            android:layout_marginStart="20dp"
+            imageUrl="@{post.profile}"/>
+
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{post.userId}"
+            app:layout_constraintStart_toEndOf="@id/profile_image"
+            app:layout_constraintTop_toTopOf="@id/profile_image"
+            app:layout_constraintBottom_toBottomOf="@id/profile_image"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:textColor="@color/white"
+            tools:text="rf_user"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="53dp"
+            android:layout_height="23dp"
+            android:layout_marginEnd="23dp"
+            android:background="@drawable/bg_grey_radi15"
+            android:text="정보+"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            android:fontFamily="@font/spoqahansansneo_medium"
+            app:layout_constraintTop_toTopOf="@id/profile_image"
+            app:layout_constraintBottom_toBottomOf="@id/profile_image"
+            app:layout_constraintEnd_toEndOf="@id/main_image_view_pager"
+            style="@style/Widget.AppCompat.Button.Borderless" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/indicator"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:elevation="0dp"
+            app:tabBackground="@drawable/selector_indicator"
+            app:tabIndicatorHeight="0dp"
+            app:tabGravity="center"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="@id/main_image_view_pager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        <LinearLayout
+            android:id="@+id/post_detail_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingBottom="13dp"
+            android:paddingEnd="24dp"
+            android:paddingStart="20dp"
+            android:paddingTop="13dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_heart" />
+            <TextView
+                style="@style/main_bottom_menu_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="5dp"
+                android:text="@{post.likes}"
+                tools:text="130"/>
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_image" />
+            <TextView
+                style="@style/main_bottom_menu_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="30" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_share_unselected" />
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_scrap_unselected_grey" />
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_dot_unselected" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

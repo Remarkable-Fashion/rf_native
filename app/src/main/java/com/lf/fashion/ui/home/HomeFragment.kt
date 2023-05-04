@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.databinding.HomeFragmentBinding
@@ -15,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : Fragment() {
     private lateinit var binding : HomeFragmentBinding
     private var defaultRandomPhoto = true
-
+    private val viewModel : HomeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,7 +27,7 @@ class HomeFragment : Fragment() {
         binding = HomeFragmentBinding.inflate(inflater,container,false)
         return binding.root
     }
-
+    //TODO: 보고싶은 성별을 선택하는 다이얼로그 만들어야함
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -44,11 +46,20 @@ class HomeFragment : Fragment() {
         //grid 모드 item 으로 변경
         binding.photoGridModeBtn.setOnClickListener {
             binding.photoGridModeBtn.text =if(binding.photoGridModeBtn.text =="1") "3" else "1"
+        }
 
+        val defaultPostAdapter = DefaultPostAdapter()
+        binding.homeRecyclerView.run {
+            this.layoutManager = LinearLayoutManager(requireContext())
+            this.adapter = defaultPostAdapter
+            viewModel.postList.observe(viewLifecycleOwner){
+                it?.let{
+                    defaultPostAdapter.submitList(it)
+                }
+            }
         }
 
 
-        //TODO: 보고싶은 성별을 선택하는 다이얼로그 ~
 
     }
 

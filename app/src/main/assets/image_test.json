@@ -1,0 +1,49 @@
+{
+  "post_list" : [
+    {
+      "id": 1,
+      "photo": ["https://user-images.githubusercontent.com/20774764/149948250-8968498e-e204-4b35-8d52-8d9aecd1d54a.png",
+        "https://user-images.githubusercontent.com/20774764/149948264-a5595830-0ce1-4052-892e-3e846ffc0b29.png",
+        "https://user-images.githubusercontent.com/20774764/149948250-8968498e-e204-4b35-8d52-8d9aecd1d54a.png"],
+      "profile": "https://user-images.githubusercontent.com/20774764/149948208-1a6c3d0c-f0fa-4903-803f-ac3e71ed299c.png",
+      "userId": "jeongHyeon",
+      "likes": "50"
+    },
+    {
+      "id": 2,
+      "photo": ["https://user-images.githubusercontent.com/20774764/149948250-8968498e-e204-4b35-8d52-8d9aecd1d54a.png",
+        "https://user-images.githubusercontent.com/20774764/149948264-a5595830-0ce1-4052-892e-3e846ffc0b29.png",
+        "https://user-images.githubusercontent.com/20774764/149948250-8968498e-e204-4b35-8d52-8d9aecd1d54a.png"],
+      "profile": "https://user-images.githubusercontent.com/20774764/149948208-1a6c3d0c-f0fa-4903-803f-ac3e71ed299c.png",
+      "userId": "doHan",
+      "likes": "60"
+    },
+    {
+      "id": 3,
+      "photo": ["https://user-images.githubusercontent.com/20774764/149948250-8968498e-e204-4b35-8d52-8d9aecd1d54a.png",
+        "https://user-images.githubusercontent.com/20774764/149948264-a5595830-0ce1-4052-892e-3e846ffc0b29.png",
+        "https://user-images.githubusercontent.com/20774764/149948250-8968498e-e204-4b35-8d52-8d9aecd1d54a.png"],
+      "profile": "https://user-images.githubusercontent.com/20774764/149948208-1a6c3d0c-f0fa-4903-803f-ac3e71ed299c.png",
+      "userId": "daeHaeng",
+      "likes": "70"
+    },
+    {
+      "id": 4,
+      "photo": ["https://user-images.githubusercontent.com/20774764/149948250-8968498e-e204-4b35-8d52-8d9aecd1d54a.png",
+        "https://user-images.githubusercontent.com/20774764/149948264-a5595830-0ce1-4052-892e-3e846ffc0b29.png",
+        "https://user-images.githubusercontent.com/20774764/149948250-8968498e-e204-4b35-8d52-8d9aecd1d54a.png"],
+      "profile": "https://user-images.githubusercontent.com/20774764/149948208-1a6c3d0c-f0fa-4903-803f-ac3e71ed299c.png",
+      "userId": "YeongGyeong",
+      "likes": "80"
+    },
+    {
+      "id": 5,
+      "photo": ["https://user-images.githubusercontent.com/20774764/149948250-8968498e-e204-4b35-8d52-8d9aecd1d54a.png",
+        "https://user-images.githubusercontent.com/20774764/149948264-a5595830-0ce1-4052-892e-3e846ffc0b29.png",
+        "https://user-images.githubusercontent.com/20774764/149948250-8968498e-e204-4b35-8d52-8d9aecd1d54a.png"],
+      "profile": "https://user-images.githubusercontent.com/20774764/149948208-1a6c3d0c-f0fa-4903-803f-ac3e71ed299c.png",
+      "userId": "Hunmin",
+      "likes": "90"
+    }
+  ]
+}

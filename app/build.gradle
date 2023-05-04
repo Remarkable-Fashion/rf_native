@@ -6,6 +6,9 @@ plugins {
 
     //safe args 관련 https://philosopher-chan.tistory.com/1500
     id 'androidx.navigation.safeargs.kotlin'
+
+    //firebase
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -97,5 +100,9 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor"
     implementation "com.github.bumptech.glide:glide:$glideVersion" //Glide (이미지 url 로딩)
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
+
+    //firebase
+    implementation platform('com.google.firebase:firebase-bom:32.0.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 
 }
