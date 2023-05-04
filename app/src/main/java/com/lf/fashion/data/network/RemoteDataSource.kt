@@ -39,6 +39,7 @@ class RemoteDataSource @Inject constructor() {
             .build()
             .create(api)
     }
+
     private fun buildTokenApi(): TokenRefreshApi {
         return Retrofit.Builder()
             .baseUrl(providesHostingWebUrl())
