@@ -39,6 +39,12 @@ class HomeFragment : Fragment() {
         }
 
 
+        //grid 모드 item 으로 변경
+        binding.photoGridModeBtn.setOnClickListener {
+            binding.photoGridModeBtn.text =if(binding.photoGridModeBtn.text =="1") "3" else "1"
+
+        }
+
 
         //TODO: 보고싶은 성별을 선택하는 다이얼로그 ~
 
