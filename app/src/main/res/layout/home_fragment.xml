@@ -38,35 +38,27 @@
                 android:textStyle="bold" />
         </androidx.appcompat.widget.Toolbar>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/photo_filter"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="17dp"
+                android:src="@drawable/filter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/app_bar_random"
-                style="@style/app_bar_label"
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_marginStart="15dp"
-                android:padding="5dp"
-                android:text="랜덤"
-                app:layout_constraintStart_toStartOf="parent" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="8sp"
-                android:text="N"
-                android:textColor="@color/design_default_color_primary"
-                android:fontFamily="@font/montserrat_bold"
-                android:layout_gravity="left"
-                />
-        <!--    <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_new" />-->
+                android:layout_marginEnd="17dp"
+                android:src="@drawable/ic_ellipse_purple"
+                app:layout_constraintStart_toEndOf="@id/photo_filter"
+                app:layout_constraintTop_toTopOf="@id/photo_filter" />
 
             <TextView
                 android:id="@+id/app_bar_following"
@@ -74,12 +66,43 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="13dp"
-                android:text="팔로잉" />
+                android:text="팔로잉"
+                app:layout_constraintStart_toEndOf="@id/ic_new"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:paddingTop="5dp"
+                android:paddingBottom="12dp"
+                android:clickable="true"
+                android:textIsSelectable="true"
+                />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+            <TextView
+                android:id="@+id/app_bar_random"
+                style="@style/app_bar_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="0dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="12dp"
+                android:text="랜덤"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/ic_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="N"
+                android:textColor="@color/design_default_color_primary"
+                android:textSize="8sp"
+                app:layout_constraintStart_toEndOf="@id/app_bar_random"
+                app:layout_constraintTop_toTopOf="@id/app_bar_random" />
+
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="23dp"
                 android:layout_height="23dp"
@@ -88,93 +111,30 @@
                 android:fontFamily="@font/montserrat_bold"
                 android:text="1"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
-            <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/filter" />
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/photo_filter"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
+            <androidx.constraintlayout.helper.widget.Layer
+                android:id="@+id/top_random_menu_layer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="17dp"
-                android:src="@drawable/ic_ellipse_purple" />
-
-        </LinearLayout>
+                app:constraint_referenced_ids="ic_new,app_bar_random"
+                tools:ignore="MissingConstraints" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.appbar.AppBarLayout>
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/main_image_view_pager"
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/photo_back_grey"
         app:layout_constraintTop_toBottomOf="@id/home_app_bar"
         app:layout_constraintBottom_toTopOf="@id/home_bottom_menu"
-       />
+        tools:listitem="@layout/home_grid_item"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="3"
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_filter_none_24"
-        app:layout_constraintEnd_toEndOf="@id/main_image_view_pager"
-        app:layout_constraintTop_toTopOf="@id/main_image_view_pager"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="20dp"/>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="129dp"
-        android:src="@drawable/bg_gradiant_black"
-        app:layout_constraintBottom_toBottomOf="@id/main_image_view_pager"
         />
 
-    <ImageView
-        android:id="@+id/profile_image"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/main_image_view_pager"
-        android:background="@drawable/bg_profile"
-        android:layout_marginBottom="20dp"
-        android:layout_marginStart="20dp"
-        />
-    <TextView
-        android:id="@+id/profile_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="rf_user"
-        app:layout_constraintStart_toEndOf="@id/profile_image"
-        app:layout_constraintTop_toTopOf="@id/profile_image"
-        app:layout_constraintBottom_toBottomOf="@id/profile_image"
-        android:layout_marginStart="10dp"
-        android:fontFamily="@font/montserrat_bold"
-        android:textColor="@color/white"/>
-    <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="53dp"
-        android:layout_height="23dp"
-        android:layout_marginEnd="23dp"
-        android:background="@drawable/bg_grey_radi15"
-        android:text="정보+"
-        android:textColor="@color/white"
-        android:textSize="11sp"
-        android:fontFamily="@font/spoqahansansneo_medium"
-        app:layout_constraintTop_toTopOf="@id/profile_image"
-        app:layout_constraintBottom_toBottomOf="@id/profile_image"
-        app:layout_constraintEnd_toEndOf="@id/main_image_view_pager"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        />
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/indicator"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:elevation="0dp"
-        app:tabBackground="@drawable/selector_indicator"
-        app:tabIndicatorHeight="0dp"
-        app:tabGravity="center"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="@id/main_image_view_pager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
     <LinearLayout
         android:id="@+id/home_bottom_menu"
         android:layout_width="match_parent"
