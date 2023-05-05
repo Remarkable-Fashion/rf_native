@@ -9,7 +9,7 @@ class HomeRepository @Inject constructor(
     private val apiService : PhotoTestApi
 ) : BaseRepository(apiService) {
 
-    fun getTestPostList() : List<Post> {
+    suspend fun getTestPostList() : List<Post> {
         return apiService.getTestImages()
     }
 }

@@ -49,16 +49,18 @@ class HomeFragment : Fragment() {
         }
 
         val defaultPostAdapter = DefaultPostAdapter()
-        binding.homeRecyclerView.run {
-            this.layoutManager = LinearLayoutManager(requireContext())
-            this.adapter = defaultPostAdapter
-            viewModel.postList.observe(viewLifecycleOwner){
-                it?.let{
-                    defaultPostAdapter.submitList(it)
-                }
+        val homeRecyclerView = binding.homeRecyclerView
+        homeRecyclerView.adapter = defaultPostAdapter
+        homeRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        viewModel.postList.observe(viewLifecycleOwner){
+            it?.let{
+                Log.d(TAG, "response ${it}")
+                defaultPostAdapter.submitList(it)
             }
         }
-
+        Log.d(TAG, "onViewCreated: 1!!!")
+        //    this.layoutManager = LinearLayoutManager(requireContext())
+         //   this.adapter = defaultPostAdapter
 
 
     }

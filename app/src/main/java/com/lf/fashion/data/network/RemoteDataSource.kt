@@ -26,15 +26,17 @@ class RemoteDataSource @Inject constructor() {
      * api를 요청할 때마다 refresh token 검사 후
      * access token의 만료시간을 연장 .. ?
      * 중간에 만료 오류 뜨면 오류 수정하기 ..
-     */
+     *
+     * RF -> 우선 token 점검하는 부분 주석해둠둠     */
     fun <Api> buildApi(
         api: Class<Api>,
         context: Context
     ): Api {
-        val authenticator = TokenAuthenticator(context, buildTokenApi())
+        //val authenticator = TokenAuthenticator(context, buildTokenApi())
         return Retrofit.Builder()
             .baseUrl(providesHostingWebUrl())
-            .client(provideOkHttpClient(authenticator))
+//            .client(provideOkHttpClient(authenticator))
+            .client(provideOkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(api)
