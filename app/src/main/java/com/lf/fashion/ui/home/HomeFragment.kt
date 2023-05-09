@@ -100,6 +100,8 @@ class HomeFragment : Fragment(), PhotoClickListener {
         binding.gridRecyclerView.isVisible = !default
     }
 
+    //TODO : 필터 페이지 , bottom sheet (레이아웃만 추가?) , 유저 프로필 페이지로 연결
+
     //default layout 모드에서 photo 클릭시 클릭한 이미지 url 만 safeargs 에 담아 fragment 로 전송
     override fun photoClicked(bool: Boolean, photos: List<Photo>) {
         if (bool) {
