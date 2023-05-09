@@ -40,7 +40,9 @@ class HomeFragment : Fragment(), PhotoClickListener {
         setMainViewPagerUI()
         //grid 모드 변경 adapter 연결 (기본 레이아웃 visibility gone)
         onClickGridLayoutUI()
+
     }
+
     private fun topMenuUiSetting(){
         //default 값으로 "랜덤" 메뉴 선택
         binding.appBarRandom.isSelected = defaultRandomPhoto //true
