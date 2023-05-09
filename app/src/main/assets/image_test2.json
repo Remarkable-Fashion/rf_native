@@ -1,0 +1,114 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "photo": [
+        {
+          "id": "1_1",
+          "imageUrl": "https://hips.hearstapps.com/hmg-prod/images/dwh-hb-cphfw-ss23-142-1660229467.jpg"
+        },
+        {
+          "id": "1_2",
+          "imageUrl": "https://i.pinimg.com/originals/12/ae/77/12ae7778635d2a7d8763157ce80669af.jpg"
+        },
+        {
+          "id": "1_3",
+          "imageUrl": "https://images.pexels.com/photos/914668/pexels-photo-914668.jpeg?cs=srgb&dl=pexels-godisable-jacob-914668.jpg&fm=jpg"
+        },
+        {
+          "id": "1_4",
+          "imageUrl": "https://media.gq.com/photos/61eecccec0759352f859299a/master/w_1600%2Cc_limit/054A6856.jpg"
+        }
+      ],
+      "profile": "https://imgix.bustle.com/uploads/image/2022/9/14/e07c0278-8f4a-4805-a82d-e3691565198d-gettyimages-1423626961.jpg?w=414&h=621&fit=crop&crop=focalpoint&auto=format%2Ccompress&fp-x=0.332&fp-y=0.2027",
+      "userId": "jeongHyeon",
+      "likes": "50"
+    },
+    {
+      "id": 2,
+      "photo": [
+        {
+          "id": "2_1",
+          "imageUrl": "https://cdn.cliqueinc.com/posts/305991/fashion-month-street-style-fall-winter-2023-305991-1678307410405-main.700x0c.jpg"
+        },
+        {
+          "id": "2_2",
+          "imageUrl": "https://dynaimage.cdn.cnn.com/cnn/q_auto,w_412,c_fill,g_auto,h_412,ar_1:1/http%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F230316161109-03-seoul-fashion-week-street-style.jpg"
+        },
+        {
+          "id": "2_3",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvaCAakGYcU6RJ65rehlkdTK4AbpPKQmh9Ew&usqp=CAU"
+        },
+        {
+          "id": "2_4",
+          "imageUrl": "https://hips.hearstapps.com/hmg-prod/images/hbz-street-style-nyfw-spring-2023-day6-10-1663259008.jpg"
+        }],
+      "profile": "https://hips.hearstapps.com/hmg-prod/images/guests-seen-outside-victoria-beckham-during-london-fashion-news-photo-1568604366.jpg",
+      "userId": "doHan",
+      "likes": "60"
+    },
+    {
+      "id": 3,
+      "photo": [
+        {
+          "id": "3_1",
+          "imageUrl": "https://user-images.githubusercontent.com/20774764/149948250-8968498e-e204-4b35-8d52-8d9aecd1d54a.png"
+        },
+        {
+          "id": "3_2",
+          "imageUrl": "https://user-images.githubusercontent.com/20774764/149948264-a5595830-0ce1-4052-892e-3e846ffc0b29.png"
+        },
+        {
+          "id": "3_3",
+          "imageUrl": "https://user-images.githubusercontent.com/20774764/149948250-8968498e-e204-4b35-8d52-8d9aecd1d54a.png"
+        },
+        {
+          "id": "3_4",
+          "imageUrl": "https://hips.hearstapps.com/hmg-prod/images/hbz-street-style-nyfw-spring-2023-day6-10-1663259008.jpg"
+        }]
+      ,
+      "profile": "https://user-images.githubusercontent.com/20774764/149948208-1a6c3d0c-f0fa-4903-803f-ac3e71ed299c.png",
+      "userId": "daeHaeng",
+      "likes": "70"
+    },
+    {
+      "id": 4,
+      "photo":  [
+        {
+          "id": "4_1",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS4jcums_81OC2aMYsrdxpHVSNsJq4Yi5sfg&usqp=CAU"
+        },
+        {
+          "id": "4_2",
+          "imageUrl": "https://user-images.githubusercontent.com/20774764/149948264-a5595830-0ce1-4052-892e-3e846ffc0b29.png"
+        },
+        {
+          "id": "4_3",
+          "imageUrl": "https://user-images.githubusercontent.com/20774764/149948250-8968498e-e204-4b35-8d52-8d9aecd1d54a.png"
+        }] ,
+      "profile": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS4jcums_81OC2aMYsrdxpHVSNsJq4Yi5sfg&usqp=CAU",
+      "userId": "YeongGyeong",
+      "likes": "80"
+    },
+    {
+      "id": 5,
+      "photo": [
+        {
+          "id": "5_1",
+          "imageUrl": "https://hips.hearstapps.com/hmg-prod/images/mfw-ss23-tyler-joe-0048-1664217961.jpg"
+        },
+        {
+          "id": "5_2",
+          "imageUrl": "https://cdn.cliqueinc.com/posts/305240/new-york-fashion-week-street-style-fall-winter-2023-305240-1676591023996-main.700x0c.jpg"
+        },
+        {
+          "id": "5_3",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7Dn0DPDoNqxzRDqRySIsmddLJ-e2CqwvM4g&usqp=CAU"
+        }
+      ],
+      "profile": "https://hips.hearstapps.com/hmg-prod/images/mfw-ss23-tyler-joe-0048-1664217961.jpg",
+      "userId": "Hunmin",
+      "likes": "90"
+    }
+  ]
+}

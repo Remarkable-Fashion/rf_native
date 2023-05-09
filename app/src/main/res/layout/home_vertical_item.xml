@@ -81,6 +81,7 @@
             app:layout_constraintBottom_toBottomOf="@id/horizontal_view_pager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
         <LinearLayout
             android:id="@+id/post_detail_menu"
             android:layout_width="match_parent"

@@ -9,6 +9,9 @@ plugins {
 
     //firebase
     id 'com.google.gms.google-services'
+
+    id 'kotlin-parcelize'
+
 }
 
 android {

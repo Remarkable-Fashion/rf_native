@@ -1,11 +1,13 @@
 package com.lf.fashion.ui.home.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
+import com.lf.fashion.TAG
 import com.lf.fashion.data.response.Post
 import com.lf.fashion.databinding.HomeVerticalItemBinding
 import com.lf.fashion.ui.home.PhotoClickListener
@@ -27,7 +29,6 @@ class DefaultPostAdapter(private val photoClickListener: PhotoClickListener) :
     inner class DefaultPostViewHolder(private val binding: HomeVerticalItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private val nestedAdapter = PhotoHorizontalAdapter(photoClickListener)
-
         init {
             with(binding.horizontalViewPager){
                 adapter = nestedAdapter

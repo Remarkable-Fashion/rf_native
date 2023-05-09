@@ -12,10 +12,14 @@
             android:id="@+id/action_navigation_home_to_photoDetailFragment"
             app:destination="@id/photoDetailFragment" >
             <argument
-                android:name="imageUrl"
-                app:argType="string"
-                android:defaultValue="" />
-        </action>
+                android:name="photos"
+                app:argType="com.lf.fashion.data.response.Photo[]"
+                app:nullable="true"
+                android:defaultValue="@null" />
+        </action><!--
+        <argument
+            android:name="photos"
+            app:argType="com.lf.fashion.data.response.Photo[]" />-->
     </fragment>
     <fragment
         android:id="@+id/navigation_mypage"

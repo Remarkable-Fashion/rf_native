@@ -18,7 +18,8 @@ class GridPostAdapter : ListAdapter<Post, GridPostAdapter.GridPostViewHolder>(De
     }
     inner class GridPostViewHolder(private val binding:HomeGridItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(post : Post){
-            binding.post = post
+            //첫번째 사진을 grid 로 노출
+            binding.photoUrl = post.photo[0].imageUrl
         }
     }
 

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.TAG
+import com.lf.fashion.data.response.Photo
 import com.lf.fashion.databinding.HomeFragmentBinding
 import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.adapter.GridPostAdapter
@@ -100,10 +101,10 @@ class HomeFragment : Fragment(), PhotoClickListener {
     }
 
     //default layout 모드에서 photo 클릭시 클릭한 이미지 url 만 safeargs 에 담아 fragment 로 전송
-    override fun photoClicked(bool: Boolean, imageUrl: String) {
+    override fun photoClicked(bool: Boolean, photos: List<Photo>) {
         if (bool) {
             val action =
-                HomeFragmentDirections.actionNavigationHomeToPhotoDetailFragment(imageUrl)
+                HomeFragmentDirections.actionNavigationHomeToPhotoDetailFragment(photos.toTypedArray())
             findNavController().navigate(action)
         }
     }

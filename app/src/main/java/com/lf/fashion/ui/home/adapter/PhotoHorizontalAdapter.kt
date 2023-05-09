@@ -7,14 +7,22 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.TAG
+import com.lf.fashion.data.response.Photo
 import com.lf.fashion.databinding.HomeNestedHorizontalItemBinding
 import com.lf.fashion.ui.home.PhotoClickListener
 
-class PhotoHorizontalAdapter(private val photoClickListener: PhotoClickListener) :
-    ListAdapter<String, PhotoHorizontalAdapter.PhotoHorizontalViewHolder>(PhotoDiff()) {
+/**
+ * HomeFragment _ DefaultPostAdapter 와 PhotoDetailFragment 에서 사용
+ */
+class PhotoHorizontalAdapter(private val photoClickListener: PhotoClickListener?) :
+    ListAdapter<Photo, PhotoHorizontalAdapter.PhotoHorizontalViewHolder>(PhotoDiff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoHorizontalViewHolder {
-        val binding = HomeNestedHorizontalItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding = HomeNestedHorizontalItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return PhotoHorizontalViewHolder(binding)
     }
 
@@ -24,23 +32,21 @@ class PhotoHorizontalAdapter(private val photoClickListener: PhotoClickListener)
 
     inner class PhotoHorizontalViewHolder(private val binding: HomeNestedHorizontalItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(photoUrl: String){
-            binding.photo = photoUrl
-            binding.photoImageView.setOnClickListener {
-                Log.d(TAG, "PhotoHorizontalViewHolder - bind: onclick Image true ")
-                photoClickListener.photoClicked(true,photoUrl)
-            }
+        fun bind(photo: Photo) {
+            binding.photo = photo.imageUrl
+             binding.photoImageView.setOnClickListener {
+                 photoClickListener?.photoClicked(true, currentList)
+             }
         }
     }
 }
 
-class PhotoDiff : DiffUtil.ItemCallback<String>() {
-    override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
-        return oldItem == newItem
+class PhotoDiff : DiffUtil.ItemCallback<Photo>() {
+    override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean {
+        return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
-        return oldItem == newItem
+    override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean {
+        return oldItem.id == newItem.id
     }
-
 }

@@ -4,8 +4,8 @@
 
     <data>
         <variable
-            name="post"
-            type="com.lf.fashion.data.response.Post" />
+            name="photoUrl"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:background="@color/photo_back_grey"
             android:scaleType="centerCrop"
-            imageUrl="@{post.photo[0]}"/>
+            imageUrl="@{photoUrl}"/>
 
         <ImageView
             android:layout_width="15dp"

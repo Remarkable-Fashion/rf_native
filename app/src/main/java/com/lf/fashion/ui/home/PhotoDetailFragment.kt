@@ -5,10 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import com.lf.fashion.TAG
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.tabs.TabLayoutMediator
+import com.lf.fashion.data.response.Photo
 import com.lf.fashion.databinding.PhotoDetailFragmentBinding
+import com.lf.fashion.ui.home.adapter.PhotoHorizontalAdapter
 
 class PhotoDetailFragment : Fragment() {
     private lateinit var binding : PhotoDetailFragmentBinding
@@ -23,8 +25,21 @@ class PhotoDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "PhotoDetailFragment - onViewCreated: ${arguments?.get("imageUrl").toString()}")
-        val photoUrl = arguments?.get("imageUrl").toString()
-        binding.photoUrl = photoUrl
+        val photoUrl =arguments?.get("photos") as Array<Photo>
+
+        //viewpager adapter 설정
+        with(binding.photoDetailViewPager){
+            adapter = PhotoHorizontalAdapter(null).apply {
+                submitList(photoUrl.asList())
+            }
+            TabLayoutMediator(
+                binding.viewpagerIndicator,
+                this
+            ){_,_ ->}.attach()
+        }
+
+        binding.cancelBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 }

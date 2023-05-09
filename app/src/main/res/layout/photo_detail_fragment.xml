@@ -4,8 +4,8 @@
     <data>
 
         <variable
-            name="photoUrl"
-            type="String" />
+            name="photo"
+            type="com.lf.fashion.data.response.Photo" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -22,7 +22,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/photo_detail_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/photo_back_grey"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_percent="0.7"
+            app:layout_constraintTop_toBottomOf="@id/cancel_btn"
+            />
+       <!-- <ImageView
             android:id="@+id/photo_detail_view_pager"
             imageUrl="@{photoUrl}"
             android:layout_width="match_parent"
@@ -33,13 +42,12 @@
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHeight_percent="0.7"
-            app:layout_constraintTop_toBottomOf="@id/cancel_btn" />
+            app:layout_constraintTop_toBottomOf="@id/cancel_btn" />-->
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/indicator"
+            android:id="@+id/viewpager_indicator"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
             android:background="@android:color/transparent"
             android:elevation="0dp"
             app:layout_constraintBottom_toBottomOf="@id/photo_detail_view_pager"
@@ -47,6 +55,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:tabBackground="@drawable/selector_indicator"
             app:tabGravity="center"
-            app:tabIndicatorHeight="0dp" />
+            app:tabIndicatorHeight="0dp"
+            app:tabPaddingEnd="5dp"
+            app:tabPaddingStart="5dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
