@@ -43,20 +43,42 @@ class HomeFragment : Fragment() {
             topMenuTextUiUpdate(defaultRandomPhoto)
         }
 
-        //grid 모드 item 으로 변경
-        binding.photoGridModeBtn.setOnClickListener {
-            binding.photoGridModeBtn.text =if(binding.photoGridModeBtn.text =="1") "3" else "1"
-        }
-
+        //기본 레이아웃 ui adapter 연결
         setMainViewPagerUI()
-
+        //grid 모드 변경 adapter 연결 (기본 레이아웃 visibility gone)
+        onClickGridLayoutUI()
     }
+
     private fun setMainViewPagerUI(){
         with(binding.homeMainViewpager){
             adapter = DefaultPostAdapter().apply {
                 viewModel.postList.observe(viewLifecycleOwner){
                     Log.d(TAG, "response ${it}")
                     submitList(it)
+                }
+            }
+        }
+    }
+    private fun onClickGridLayoutUI(){
+        binding.photoGridModeBtn.setOnClickListener {
+            when(binding.photoGridModeBtn.text){
+                "1" ->{
+                    binding.photoGridModeBtn.text = "3"
+                    binding.gridRecyclerView.visibility = View.VISIBLE
+                    binding.homeMainViewpager.visibility = View.GONE
+                    with(binding.gridRecyclerView) {
+                        adapter = GridPostAdapter().apply {
+                            viewModel.postList.observe(viewLifecycleOwner) {
+                                Log.d(TAG, "response ${it}")
+                                submitList(it)
+                            }
+                        }
+                    }
+                }
+                "3"->{
+                    binding.photoGridModeBtn.text = "1"
+                    binding.homeMainViewpager.visibility = View.VISIBLE
+                    binding.gridRecyclerView.visibility = View.GONE
                 }
             }
         }
