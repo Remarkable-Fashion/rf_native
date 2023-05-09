@@ -1,4 +1,4 @@
-package com.lf.fashion.ui.home
+package com.lf.fashion.ui.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,8 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lf.fashion.data.response.Post
 import com.lf.fashion.databinding.HomeVerticalItemBinding
+import com.lf.fashion.ui.home.PhotoClickListener
 
-class DefaultPostAdapter :
+class DefaultPostAdapter(private val photoClickListener: PhotoClickListener) :
     ListAdapter<Post, DefaultPostAdapter.DefaultPostViewHolder>(DefaultPostDiff()) {
 
     private lateinit var binding: HomeVerticalItemBinding
@@ -25,11 +26,12 @@ class DefaultPostAdapter :
 
     inner class DefaultPostViewHolder(private val binding: HomeVerticalItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private val nestedAdapter = PhotoHorizontalAdapter()
+        private val nestedAdapter = PhotoHorizontalAdapter(photoClickListener)
+
         init {
-            //binding.horizontalViewPager.adapter = nestedAdapter
             with(binding.horizontalViewPager){
                 adapter = nestedAdapter
+
                 TabLayoutMediator(
                     binding.viewpagerIndicator,
                     this

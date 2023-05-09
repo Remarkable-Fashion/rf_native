@@ -7,7 +7,16 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.lf.fashion.ui.home.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_navigation_home_to_photoDetailFragment"
+            app:destination="@id/photoDetailFragment" >
+            <argument
+                android:name="imageUrl"
+                app:argType="string"
+                android:defaultValue="" />
+        </action>
+    </fragment>
     <fragment
         android:id="@+id/navigation_mypage"
         android:name="com.lf.fashion.ui.mypage.MyPageFragment"
@@ -24,4 +33,13 @@
         android:id="@+id/navigation_scrap"
         android:name="com.lf.fashion.ui.scrap.ScrapFragment"
         android:label="ScrapFragment" />
+    <fragment
+        android:id="@+id/photoDetailFragment"
+        android:name="com.lf.fashion.ui.home.PhotoDetailFragment"
+        android:label="PhotoDetailFragment" >
+        <argument
+            android:name="imageUrl"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
 </navigation>

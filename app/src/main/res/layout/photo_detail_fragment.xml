@@ -1,37 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
-    <ImageView
-        android:id="@+id/cancel_btn"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:src="@drawable/ic_cancel"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="30dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/photo_detail_view_pager"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="photoUrl"
+            type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="521dp"
-        android:layout_marginTop="60dp"
-        android:background="@color/photo_back_grey"
-        app:layout_constraintTop_toBottomOf="@id/cancel_btn"
-        />
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/indicator"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:elevation="0dp"
-        app:tabBackground="@drawable/selector_indicator"
-        app:tabIndicatorHeight="0dp"
-        app:tabGravity="center"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="@id/photo_detail_view_pager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/cancel_btn"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_cancel"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/photo_detail_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="521dp"
+            android:layout_marginTop="60dp"
+            android:background="@color/photo_back_grey"
+            app:layout_constraintTop_toBottomOf="@id/cancel_btn"
+            imageUrl="@{photoUrl}" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/indicator"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:elevation="0dp"
+            app:tabBackground="@drawable/selector_indicator"
+            app:tabIndicatorHeight="0dp"
+            app:tabGravity="center"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="@id/photo_detail_view_pager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

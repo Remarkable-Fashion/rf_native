@@ -1,4 +1,4 @@
-package com.lf.fashion.ui.home
+package com.lf.fashion.ui.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.data.response.Post
 import com.lf.fashion.databinding.HomeGridItemBinding
 
-class GridPostAdapter : ListAdapter<Post,GridPostAdapter.GridPostViewHolder>(DefaultPostDiff()) {
+class GridPostAdapter : ListAdapter<Post, GridPostAdapter.GridPostViewHolder>(DefaultPostDiff()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GridPostViewHolder {
         val binding = HomeGridItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return GridPostViewHolder(binding)
