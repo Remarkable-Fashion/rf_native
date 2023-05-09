@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/main_image_view_pager"
+            android:id="@+id/horizontal_view_pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/photo_back_grey"
@@ -26,14 +26,14 @@
             android:layout_width="match_parent"
             android:layout_height="129dp"
             android:src="@drawable/bg_gradiant_black"
-            app:layout_constraintBottom_toBottomOf="@id/main_image_view_pager" />
+            app:layout_constraintBottom_toBottomOf="@id/horizontal_view_pager" />
 
         <ImageView
             android:id="@+id/profile_image"
             android:layout_width="35dp"
             android:layout_height="35dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/main_image_view_pager"
+            app:layout_constraintTop_toTopOf="@id/horizontal_view_pager"
             android:background="@drawable/bg_profile"
             android:layout_marginTop="13dp"
             android:layout_marginStart="20dp"
@@ -63,11 +63,11 @@
             android:fontFamily="@font/spoqahansansneo_medium"
             app:layout_constraintTop_toTopOf="@id/profile_image"
             app:layout_constraintBottom_toBottomOf="@id/profile_image"
-            app:layout_constraintEnd_toEndOf="@id/main_image_view_pager"
+            app:layout_constraintEnd_toEndOf="@id/horizontal_view_pager"
             style="@style/Widget.AppCompat.Button.Borderless" />
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/indicator"
+            android:id="@+id/viewpager_indicator"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
@@ -75,8 +75,9 @@
             app:tabBackground="@drawable/selector_indicator"
             app:tabIndicatorHeight="0dp"
             app:tabGravity="center"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toBottomOf="@id/main_image_view_pager"
+            app:tabPaddingEnd="5dp"
+            app:tabPaddingStart="5dp"
+            app:layout_constraintBottom_toBottomOf="@id/horizontal_view_pager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
         <LinearLayout

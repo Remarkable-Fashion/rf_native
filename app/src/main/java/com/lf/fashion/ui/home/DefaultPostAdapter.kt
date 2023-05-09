@@ -5,16 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.tabs.TabLayoutMediator
 import com.lf.fashion.data.response.Post
-import com.lf.fashion.databinding.HomeRecyclerItemBinding
+import com.lf.fashion.databinding.HomeVerticalItemBinding
 
 class DefaultPostAdapter :
     ListAdapter<Post, DefaultPostAdapter.DefaultPostViewHolder>(DefaultPostDiff()) {
 
-    private lateinit var binding: HomeRecyclerItemBinding
+    private lateinit var binding: HomeVerticalItemBinding
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DefaultPostViewHolder {
         binding =
-            HomeRecyclerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            HomeVerticalItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return DefaultPostViewHolder(binding)
     }
 
@@ -22,10 +23,22 @@ class DefaultPostAdapter :
         holder.bind(getItem(position))
     }
 
-    inner class DefaultPostViewHolder(private val binding: HomeRecyclerItemBinding) :
+    inner class DefaultPostViewHolder(private val binding: HomeVerticalItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(post : Post){
+        private val nestedAdapter = PhotoHorizontalAdapter()
+        init {
+            //binding.horizontalViewPager.adapter = nestedAdapter
+            with(binding.horizontalViewPager){
+                adapter = nestedAdapter
+                TabLayoutMediator(
+                    binding.viewpagerIndicator,
+                    this
+                ){_,_ ->}.attach()
+            }
+        }
+        fun bind(post: Post) {
             binding.post = post
+            nestedAdapter.submitList(post.photo)
         }
     }
 }

@@ -10,3 +10,6 @@ data class Post(
     val userId : String,
     val likes:String
 )
+/*data class Photo(
+    val imageUrl : String
+)*/
