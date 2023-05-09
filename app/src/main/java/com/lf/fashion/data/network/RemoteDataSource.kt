@@ -1,10 +1,12 @@
 package com.lf.fashion.data.network
 
 import android.content.Context
+import com.google.gson.GsonBuilder
 import com.lf.fashion.data.common.BASE_WEB_URL
 import com.lf.fashion.data.network.api.TokenRefreshApi
 import okhttp3.Authenticator
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
@@ -17,10 +19,14 @@ class RemoteDataSource @Inject constructor() {
         authenticator?.let {
             client.authenticator(it)
         }
+   /*     val logger = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BASIC
 
+        }*/
         return client.build()
 
     }
+
     /**
      * 최초 로그인 이후에는,
      * api를 요청할 때마다 refresh token 검사 후
