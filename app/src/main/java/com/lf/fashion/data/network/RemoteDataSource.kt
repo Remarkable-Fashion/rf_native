@@ -19,10 +19,6 @@ class RemoteDataSource @Inject constructor() {
         authenticator?.let {
             client.authenticator(it)
         }
-   /*     val logger = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BASIC
-
-        }*/
         return client.build()
 
     }

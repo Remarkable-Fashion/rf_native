@@ -63,7 +63,7 @@ class HomeFragment : Fragment(), PhotoClickListener {
     }
 
     private fun setMainViewPagerUI() {
-    /*response 로 post 를 받아서 중첩 viewPager 와 recyclerView 모두에게 adapter 연결/submitList 후 visibility 로 노출을 관리한다*/
+        /*response 로 post 를 받아서 중첩 viewPager 와 recyclerView 모두에게 adapter 연결/submitList 후 visibility 로 노출을 관리한다*/
         photoLayoutVisibilityMode(true) // default ui visibility
         viewModel.postList.observe(viewLifecycleOwner) { response ->
             with(binding.homeMainViewpager) {

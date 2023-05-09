@@ -14,6 +14,7 @@ import okhttp3.Response
 import okhttp3.Route
 import javax.inject.Inject
 
+
 class TokenAuthenticator @Inject constructor(
     context: Context,
     private val tokenApi: TokenRefreshApi
