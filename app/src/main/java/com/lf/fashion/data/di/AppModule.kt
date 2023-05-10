@@ -2,6 +2,7 @@ package com.lf.fashion.data.di
 
 import android.content.Context
 import com.lf.fashion.data.network.RemoteDataSource
+import com.lf.fashion.data.network.api.ChipTestApi
 import com.lf.fashion.data.network.api.PhotoTestApi
 import dagger.Module
 import dagger.Provides
@@ -23,5 +24,12 @@ object AppModule {
         return remoteDataSource.buildApi(PhotoTestApi::class.java,context)
     }
 
-    
+    @Singleton
+    @Provides
+    fun provideTestChipApi(
+        remoteDataSource: RemoteDataSource,
+        @ApplicationContext context: Context
+    ): ChipTestApi {
+        return remoteDataSource.buildApi(ChipTestApi::class.java,context)
+    }
 }

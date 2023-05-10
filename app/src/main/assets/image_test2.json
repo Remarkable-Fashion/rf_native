@@ -42,7 +42,8 @@
         {
           "id": "2_4",
           "imageUrl": "https://hips.hearstapps.com/hmg-prod/images/hbz-street-style-nyfw-spring-2023-day6-10-1663259008.jpg"
-        }],
+        }
+      ],
       "profile": "https://hips.hearstapps.com/hmg-prod/images/guests-seen-outside-victoria-beckham-during-london-fashion-news-photo-1568604366.jpg",
       "userId": "doHan",
       "likes": "60"
@@ -65,15 +66,15 @@
         {
           "id": "3_4",
           "imageUrl": "https://hips.hearstapps.com/hmg-prod/images/hbz-street-style-nyfw-spring-2023-day6-10-1663259008.jpg"
-        }]
-      ,
+        }
+      ],
       "profile": "https://user-images.githubusercontent.com/20774764/149948208-1a6c3d0c-f0fa-4903-803f-ac3e71ed299c.png",
       "userId": "daeHaeng",
       "likes": "70"
     },
     {
       "id": 4,
-      "photo":  [
+      "photo": [
         {
           "id": "4_1",
           "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS4jcums_81OC2aMYsrdxpHVSNsJq4Yi5sfg&usqp=CAU"
@@ -85,7 +86,8 @@
         {
           "id": "4_3",
           "imageUrl": "https://user-images.githubusercontent.com/20774764/149948250-8968498e-e204-4b35-8d52-8d9aecd1d54a.png"
-        }] ,
+        }
+      ],
       "profile": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS4jcums_81OC2aMYsrdxpHVSNsJq4Yi5sfg&usqp=CAU",
       "userId": "YeongGyeong",
       "likes": "80"
@@ -109,6 +111,95 @@
       "profile": "https://hips.hearstapps.com/hmg-prod/images/mfw-ss23-tyler-joe-0048-1664217961.jpg",
       "userId": "Hunmin",
       "likes": "90"
+    }
+  ],
+  "filter_chip": [
+    {
+      "id": "tpo",
+      "chips": [
+        {
+          "text": "바다",
+          "emoji": "U+1F3D6"
+        },
+        {
+          "text": "여행",
+          "emoji": "U+2708"
+        },
+        {
+          "text": "데이트",
+          "emoji": "U+1F495"
+        },
+        {
+          "text": "결혼식",
+          "emoji": "U+1F470"
+        },
+        {
+          "text": "캠퍼스",
+          "emoji": "U+1F3EB"
+        },
+        {
+          "text": "운동",
+          "emoji": "U+1F4AA"
+        },
+        {
+          "text": "출근",
+          "emoji": "U+1F454"
+        },
+        {
+          "text": "데일리",
+          "emoji": "U+1F45C"
+        }
+      ]
+    },
+    {
+      "id": "season",
+      "chips": [
+        {
+          "text": "봄",
+          "emoji": "U+1F338"
+        },
+        {
+          "text": "여름",
+          "emoji": "U+1F30A"
+        },
+        {
+          "text": "가을",
+          "emoji": "U+1F342"
+        },
+        {
+          "text": "겨울",
+          "emoji": "U+2744"
+        }
+      ]
+    },
+    {
+      "id": "style",
+      "chips": [
+        {
+          "text": "캐주얼"
+        },
+        {
+          "text": "모던시크"
+        },
+        {
+          "text": "러블리"
+        },
+        {
+          "text": "빈티지"
+        },
+        {
+          "text": "아메카지"
+        },
+        {
+          "text": "스포티"
+        },
+        {
+          "text": "스트릿"
+        },
+        {
+          "text": "시티보이"
+        }
+      ]
     }
   ]
 }

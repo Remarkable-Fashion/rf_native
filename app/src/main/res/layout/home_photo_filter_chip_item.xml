@@ -1,9 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
+        android:id="@+id/tpo_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ㅆㅆㅆ"/>
-</FrameLayout>
+        android:text="TPO"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="30dp"
+        style="@style/montserrat_bold_label"
+        />
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/tpo_chip_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tpo_label"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+   <!--     <com.google.android.material.chip.Chip
+            android:id="@+id/sampleChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="캐주얼"
+            android:textAppearance="@style/spoqa_14_medium"
+            android:textColor="@drawable/selector_text_color"
+            app:chipStrokeWidth="1dp"
+            app:chipStrokeColor="@drawable/selector_chip_color"
+            app:chipBackgroundColor="@color/white"
+            />-->
+    </com.google.android.material.chip.ChipGroup>
+
+    <TextView
+        android:id="@+id/season_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Season"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tpo_chip_group"
+        android:layout_marginTop="30dp"
+        style="@style/montserrat_bold_label"
+        />
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/season_chip_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/season_label"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/style_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Style"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/season_chip_group"
+        android:layout_marginTop="30dp"
+        style="@style/montserrat_bold_label"
+        />
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/style_chip_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/style_label"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

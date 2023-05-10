@@ -22,3 +22,13 @@ data class Photo(
     val id : String,
     val imageUrl : String
 ):Parcelable
+
+
+data class ChipInfo(
+    val id: String,
+    val chips : List<ChipContents>
+)
+data class ChipContents(
+    val text:String,
+    val emoji : String?
+)
