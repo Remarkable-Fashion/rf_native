@@ -1,43 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="app_bar_label">
         <item name="android:fontFamily">@font/spoqahansansneo_bold</item>
         <item name="android:textColor">@color/default_text</item>
         <item name="android:textSize">16sp</item>
     </style>
+
     <style name="spoqa_14_medium" parent="app_bar_label">
         <item name="android:fontFamily">@font/spoqahansansneo_medium</item>
         <item name="android:textColor">@color/sub_text</item>
     </style>
+
     <style name="subtitle" parent="app_bar_label">
         <item name="android:fontFamily">@font/spoqahansansneo_medium</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/dark_grey_text</item>
     </style>
+
     <style name="main_bottom_menu_label">
         <item name="fontFamily">@font/montserrat_medium</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/dark_grey_text</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
+
     <style name="montserrat_bold_label">
         <item name="fontFamily">@font/montserrat_bold</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/default_text</item>
     </style>
+
     <style name="montserrat_medium_text">
         <item name="fontFamily">@font/montserrat_medium</item>
         <item name="android:textSize">14sp</item>
     </style>
+
     <style name="spoqa_12sp_label">
         <item name="fontFamily">@font/spoqahansansneo_medium</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/dark_grey_text</item>
     </style>
-<!--    <style name="spoqa_blod_14sp">
-        <item name="fontFamily">@font/spoqahansansneo_bold</item>
-        <item name="android:textSize">14sp</item>
-    </style>-->
+    <!--    <style name="spoqa_blod_14sp">
+            <item name="fontFamily">@font/spoqahansansneo_bold</item>
+            <item name="android:textSize">14sp</item>
+        </style>-->
     <style name="CustomChipChoice" parent="@style/Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/white</item>
         <item name="android:textColor">@drawable/selector_chip_text_color</item>
@@ -46,5 +53,16 @@
         <item name="chipEndPadding">5dp</item>
         <item name="android:textAppearance">@style/spoqa_14_medium</item>
         <item name="chipStrokeColor">@drawable/selector_chip_color</item>
+    </style>
+
+    <style name="edittext_style">
+        <item name="fontFamily">@font/spoqahansansneo_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/default_text</item>
+        <item name="android:textCursorDrawable">@color/default_text</item>
+        <item name="android:textSelectHandle">@color/lf_orange</item>
+        <item name="android:textColorHighlight">@color/lf_orange</item>
+        <item name="android:paddingStart">15dp</item>
+        <item name="android:paddingEnd">15dp</item>
     </style>
 </resources>
