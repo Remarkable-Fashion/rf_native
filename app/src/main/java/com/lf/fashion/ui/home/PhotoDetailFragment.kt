@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lf.fashion.data.response.Photo
 import com.lf.fashion.databinding.PhotoDetailFragmentBinding
+import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.home.adapter.PhotoHorizontalAdapter
 
 class PhotoDetailFragment : Fragment() {
@@ -38,8 +39,6 @@ class PhotoDetailFragment : Fragment() {
             ){_,_ ->}.attach()
         }
 
-        binding.cancelBtn.setOnClickListener {
-            findNavController().popBackStack()
-        }
+        cancelBtnBackStack(binding.cancelBtn)
     }
 }

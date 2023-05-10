@@ -16,7 +16,10 @@
                 app:argType="com.lf.fashion.data.response.Photo[]"
                 app:nullable="true"
                 android:defaultValue="@null" />
-        </action><!--
+        </action>
+        <action
+            android:id="@+id/action_navigation_home_to_filterFragment"
+            app:destination="@id/filterFragment" /><!--
         <argument
             android:name="photos"
             app:argType="com.lf.fashion.data.response.Photo[]" />-->
@@ -46,4 +49,8 @@
             app:argType="string"
             android:defaultValue="" />
     </fragment>
+    <fragment
+        android:id="@+id/filterFragment"
+        android:name="com.lf.fashion.ui.home.FilterFragment"
+        android:label="FilterFragment" />
 </navigation>

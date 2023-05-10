@@ -9,10 +9,29 @@
         <item name="android:fontFamily">@font/spoqahansansneo_medium</item>
         <item name="android:textColor">@color/sub_text</item>
     </style>
+    <style name="subtitle" parent="app_bar_label">
+        <item name="android:fontFamily">@font/spoqahansansneo_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/dark_grey_text</item>
+    </style>
     <style name="main_bottom_menu_label">
         <item name="fontFamily">@font/montserrat_medium</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/dark_grey_text</item>
         <item name="android:layout_gravity">center_vertical</item>
+    </style>
+    <style name="montserrat_bold_label">
+        <item name="fontFamily">@font/montserrat_bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/default_text</item>
+    </style>
+    <style name="montserrat_medium_text">
+        <item name="fontFamily">@font/montserrat_medium</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="spoqa_12sp_label">
+        <item name="fontFamily">@font/spoqahansansneo_medium</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/dark_grey_text</item>
     </style>
 </resources>

@@ -43,7 +43,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/photo_filter"
+                android:id="@+id/photo_filter_btn"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_marginEnd="17dp"
@@ -57,8 +57,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="17dp"
                 android:src="@drawable/ic_ellipse_purple"
-                app:layout_constraintStart_toEndOf="@id/photo_filter"
-                app:layout_constraintTop_toTopOf="@id/photo_filter" />
+                app:layout_constraintStart_toEndOf="@id/photo_filter_btn"
+                app:layout_constraintTop_toTopOf="@id/photo_filter_btn" />
 
             <TextView
                 android:id="@+id/app_bar_following"
@@ -117,7 +117,7 @@
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/photo_filter"
+                app:layout_constraintEnd_toStartOf="@id/photo_filter_btn"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.helper.widget.Layer

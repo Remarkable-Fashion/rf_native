@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.response.Photo
 import com.lf.fashion.databinding.HomeFragmentBinding
@@ -42,6 +43,7 @@ class HomeFragment : Fragment(), PhotoClickListener {
         //grid 모드 변경 adapter 연결 (기본 레이아웃 visibility gone)
         onClickGridLayoutUI()
 
+        clickNavigation()
     }
 
     private fun topMenuUiSetting(){
@@ -100,8 +102,13 @@ class HomeFragment : Fragment(), PhotoClickListener {
         binding.gridRecyclerView.isVisible = !default
     }
 
-    //TODO : 필터 페이지 , bottom sheet (레이아웃만 추가?) , 유저 프로필 페이지로 연결
+    private fun clickNavigation(){
+        binding.photoFilterBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_home_to_filterFragment)
+        }
+    }
 
+    //TODO : 필터 페이지 , bottom sheet (레이아웃만 추가?) , 유저 프로필 페이지로 연결
     //default layout 모드에서 photo 클릭시 클릭한 이미지 url 만 safeargs 에 담아 fragment 로 전송
     override fun photoClicked(bool: Boolean, photos: List<Photo>) {
         if (bool) {
@@ -110,4 +117,5 @@ class HomeFragment : Fragment(), PhotoClickListener {
             findNavController().navigate(action)
         }
     }
+
 }
