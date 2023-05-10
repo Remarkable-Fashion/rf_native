@@ -41,6 +41,10 @@ class DefaultPostAdapter(private val photoClickListener: PhotoClickListener) :
         }
         fun bind(post: Post) {
             binding.post = post
+            //임시적으로 이미지만 처리하기에 여기서 적용함
+            binding.likeBtn.setOnClickListener {
+                it.isSelected = !it.isSelected
+            }
             nestedAdapter.submitList(post.photo)
         }
     }
