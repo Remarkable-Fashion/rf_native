@@ -40,10 +40,8 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, Share
         //기본 레이아웃 ui adapter 연결
         setMainViewPagerUI()
 
-        //onclick listener 계층별로 묶어서 한번에 달기
+        //onclick listener 묶어서 한번에 달기
         binding.topMenu.children.forEach { it.setOnClickListener(this) }
-       /* binding.bottomSheet.children.forEach { it.setOnClickListener(this) }
-        binding.bottomLinear.children.forEach { it.setOnClickListener(this) }*/
 
     }
     private fun setMainViewPagerUI() {
@@ -64,7 +62,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, Share
         }
     }
 
-    //TODO : bottom sheet (레이아웃만 추가?) , 유저 프로필 페이지로 연결
+    //TODO :  유저 프로필 페이지로 연결
     //default layout 모드에서 photo 클릭시 클릭한 이미지 url 만 safeargs 에 담아 fragment 로 전송
     override fun photoClicked(bool: Boolean, photos: List<Photo>) {
         if (bool) {
@@ -74,6 +72,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, Share
         }
     }
 
+    //vertical fragment 에서 공유버튼 클릭시 바텀 다이얼로그를 생성한다.
     override fun shareBtnClicked(bool: Boolean) {
         if (bool) {
             val dialog = HomeBottomSheetFragment()
@@ -111,29 +110,6 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, Share
             binding.appBarPhotoFilterBtn -> {
                 findNavController().navigate(R.id.action_navigation_home_to_filterFragment)
             }
-
-            // vertical 뷰의 share 버튼 클릭시 오픈되는 bottom sheet 내부 버튼 onclick
-          /*  binding.bottomSheetLinkCopyBtn -> {
-
-            }
-            binding.bottomSheetShareBtn -> {
-
-            }
-            binding.bottomSheetScrapBtn -> {
-
-            }
-            binding.noInterestBtn -> {
-
-            }
-            binding.cancelFollowBtn -> {
-
-            }
-            binding.blockBtn -> {
-
-            }
-            binding.declareBtn -> {
-
-            }*/
         }
     }
 
