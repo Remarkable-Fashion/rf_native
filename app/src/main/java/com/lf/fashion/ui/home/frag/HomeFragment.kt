@@ -1,4 +1,4 @@
-package com.lf.fashion.ui.home
+package com.lf.fashion.ui.home.frag
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +12,9 @@ import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
 import com.lf.fashion.data.response.Photo
 import com.lf.fashion.databinding.HomeAFragmentBinding
+import com.lf.fashion.ui.home.HomeViewModel
+import com.lf.fashion.ui.home.PhotoClickListener
+import com.lf.fashion.ui.home.ShareBtnClickListener
 import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.adapter.GridPostAdapter
 import dagger.hilt.android.AndroidEntryPoint

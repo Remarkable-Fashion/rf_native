@@ -1,12 +1,10 @@
-package com.lf.fashion.ui.home
+package com.lf.fashion.ui.home.frag
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lf.fashion.data.response.Photo
 import com.lf.fashion.databinding.HomeBPhotoDetailFragmentBinding

@@ -1,7 +1,6 @@
-package com.lf.fashion.ui.home
+package com.lf.fashion.ui.home.frag
 
 import android.os.Bundle
-import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import com.lf.fashion.R
 import com.lf.fashion.data.response.ChipContents
 import com.lf.fashion.databinding.HomeBPhotoFilterFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
+import com.lf.fashion.ui.home.FilterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
