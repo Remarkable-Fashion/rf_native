@@ -11,11 +11,13 @@ import com.lf.fashion.TAG
 import com.lf.fashion.data.response.Post
 import com.lf.fashion.databinding.HomeVerticalItemBinding
 import com.lf.fashion.ui.home.PhotoClickListener
+import com.lf.fashion.ui.home.ShareBtnClickListener
 
-class DefaultPostAdapter(private val photoClickListener: PhotoClickListener) :
+class DefaultPostAdapter(private val photoClickListener: PhotoClickListener,private val shareBtnClickListener :ShareBtnClickListener) :
     ListAdapter<Post, DefaultPostAdapter.DefaultPostViewHolder>(DefaultPostDiff()) {
 
     private lateinit var binding: HomeVerticalItemBinding
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DefaultPostViewHolder {
         binding =
             HomeVerticalItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -41,11 +43,18 @@ class DefaultPostAdapter(private val photoClickListener: PhotoClickListener) :
         }
         fun bind(post: Post) {
             binding.post = post
-            //임시적으로 이미지만 처리하기에 여기서 적용함
+            nestedAdapter.submitList(post.photo)
+
+            //좋아요 아이콘 ic 변경 _ 임시적으로 이미지만 처리하기에 여기서 적용함
             binding.likeBtn.setOnClickListener {
                 it.isSelected = !it.isSelected
             }
-            nestedAdapter.submitList(post.photo)
+
+            binding.shareBtn.setOnClickListener {
+                shareBtnClickListener.shareBtnClicked(true)
+            }
+
+
         }
     }
 }

@@ -111,6 +111,7 @@
                 tools:text="130"/>
 
             <ImageView
+                android:id="@+id/photo_zip_btn"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/ic_image" />
@@ -124,12 +125,15 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
+
             <ImageView
+                android:id="@+id/share_btn"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/ic_share_unselected" />
 
             <ImageView
+                android:id="@+id/scrap_btn"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginEnd="10dp"
@@ -137,6 +141,7 @@
                 android:src="@drawable/ic_scrap_unselected_grey" />
 
             <ImageView
+                android:id="@+id/kebab_btn"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/ic_dot_unselected" />
