@@ -9,18 +9,18 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lf.fashion.data.response.Photo
-import com.lf.fashion.databinding.PhotoDetailFragmentBinding
+import com.lf.fashion.databinding.HomeBPhotoDetailFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.home.adapter.PhotoHorizontalAdapter
 
 class PhotoDetailFragment : Fragment() {
-    private lateinit var binding : PhotoDetailFragmentBinding
+    private lateinit var binding : HomeBPhotoDetailFragmentBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = PhotoDetailFragmentBinding.inflate(inflater,container,false)
+        binding = HomeBPhotoDetailFragmentBinding.inflate(inflater,container,false)
         return binding.root
     }
 

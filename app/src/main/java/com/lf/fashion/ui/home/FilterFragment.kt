@@ -11,20 +11,20 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.lf.fashion.R
 import com.lf.fashion.data.response.ChipContents
-import com.lf.fashion.databinding.HomePhotoFilterFragmentBinding
+import com.lf.fashion.databinding.HomeBPhotoFilterFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class FilterFragment : Fragment() {
-    private lateinit var binding : HomePhotoFilterFragmentBinding
+    private lateinit var binding : HomeBPhotoFilterFragmentBinding
     private val viewModel : FilterViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = HomePhotoFilterFragmentBinding.inflate(inflater,container,false)
+        binding = HomeBPhotoFilterFragmentBinding.inflate(inflater,container,false)
         return binding.root
     }
 

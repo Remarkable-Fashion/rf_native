@@ -9,18 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lf.fashion.TAG
 import com.lf.fashion.data.response.Post
-import com.lf.fashion.databinding.HomeVerticalItemBinding
+import com.lf.fashion.databinding.HomeAVerticalItemBinding
 import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.ShareBtnClickListener
 
 class DefaultPostAdapter(private val photoClickListener: PhotoClickListener,private val shareBtnClickListener :ShareBtnClickListener) :
     ListAdapter<Post, DefaultPostAdapter.DefaultPostViewHolder>(DefaultPostDiff()) {
 
-    private lateinit var binding: HomeVerticalItemBinding
+    private lateinit var binding: HomeAVerticalItemBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DefaultPostViewHolder {
         binding =
-            HomeVerticalItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            HomeAVerticalItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return DefaultPostViewHolder(binding)
     }
 
@@ -28,7 +28,7 @@ class DefaultPostAdapter(private val photoClickListener: PhotoClickListener,priv
         holder.bind(getItem(position))
     }
 
-    inner class DefaultPostViewHolder(private val binding: HomeVerticalItemBinding) :
+    inner class DefaultPostViewHolder(private val binding: HomeAVerticalItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private val nestedAdapter = PhotoHorizontalAdapter(photoClickListener)
         init {

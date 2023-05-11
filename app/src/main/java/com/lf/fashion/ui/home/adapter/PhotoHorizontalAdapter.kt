@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.TAG
 import com.lf.fashion.data.response.Photo
-import com.lf.fashion.databinding.HomeNestedHorizontalItemBinding
+import com.lf.fashion.databinding.HomeANestedHorizontalItemBinding
 import com.lf.fashion.ui.home.PhotoClickListener
 
 /**
@@ -18,7 +18,7 @@ class PhotoHorizontalAdapter(private val photoClickListener: PhotoClickListener?
     ListAdapter<Photo, PhotoHorizontalAdapter.PhotoHorizontalViewHolder>(PhotoDiff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoHorizontalViewHolder {
-        val binding = HomeNestedHorizontalItemBinding.inflate(
+        val binding = HomeANestedHorizontalItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -30,7 +30,7 @@ class PhotoHorizontalAdapter(private val photoClickListener: PhotoClickListener?
         holder.bind(getItem(position))
     }
 
-    inner class PhotoHorizontalViewHolder(private val binding: HomeNestedHorizontalItemBinding) :
+    inner class PhotoHorizontalViewHolder(private val binding: HomeANestedHorizontalItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(photo: Photo) {
             binding.photo = photo.imageUrl

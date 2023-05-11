@@ -20,19 +20,7 @@
         app:layout_constraintTop_toBottomOf="@id/tpo_label"
         android:layout_marginTop="15dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-   <!--     <com.google.android.material.chip.Chip
-            android:id="@+id/sampleChip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="캐주얼"
-            android:textAppearance="@style/spoqa_14_medium"
-            android:textColor="@drawable/selector_text_color"
-            app:chipStrokeWidth="1dp"
-            app:chipStrokeColor="@drawable/selector_chip_color"
-            app:chipBackgroundColor="@color/white"
-            />-->
-    </com.google.android.material.chip.ChipGroup>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
         android:id="@+id/season_label"

@@ -20,7 +20,7 @@
             android:background="@color/photo_back_grey"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/post_detail_menu"
-            tools:listitem="@layout/home_nested_horizontal_item"
+            tools:listitem="@layout/home_a_nested_horizontal_item"
             />
 
         <ImageView

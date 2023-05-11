@@ -11,14 +11,14 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
 import com.lf.fashion.data.response.Photo
-import com.lf.fashion.databinding.HomeFragmentBinding
+import com.lf.fashion.databinding.HomeAFragmentBinding
 import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.adapter.GridPostAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, ShareBtnClickListener {
-    private lateinit var binding: HomeFragmentBinding
+    private lateinit var binding: HomeAFragmentBinding
     private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
@@ -26,7 +26,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, Share
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = HomeFragmentBinding.inflate(inflater, container, false)
+        binding = HomeAFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
