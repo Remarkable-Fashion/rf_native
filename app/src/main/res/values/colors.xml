@@ -23,6 +23,10 @@
     <color name="alpha80_black">#CC222222</color>
 
     <color name="lf_purple">#7350F7</color>
+<<<<<<< HEAD
+=======
+    <color name="lf_light_purple">#E8E6FC</color>
+>>>>>>> b5afa71 (1)
     <color name="light_purple">#E8E6FC</color>
     <color name="lf_orange">#FF4436</color>
     <color name="trans20_orange">#33FF4436</color>
