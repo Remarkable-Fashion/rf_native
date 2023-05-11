@@ -19,7 +19,10 @@
         </action>
         <action
             android:id="@+id/action_navigation_home_to_filterFragment"
-            app:destination="@id/filterFragment" /><!--
+            app:destination="@id/filterFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_photoZipFragment"
+            app:destination="@id/photoZipFragment" /><!--
         <argument
             android:name="photos"
             app:argType="com.lf.fashion.data.response.Photo[]" />-->
@@ -53,4 +56,8 @@
         android:id="@+id/filterFragment"
         android:name="com.lf.fashion.ui.home.frag.FilterFragment"
         android:label="FilterFragment" />
+    <fragment
+        android:id="@+id/photoZipFragment"
+        android:name="com.lf.fashion.ui.home.frag.PhotoZipFragment"
+        android:label="PhotoZipFragment" />
 </navigation>

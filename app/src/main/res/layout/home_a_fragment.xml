@@ -7,10 +7,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/home_app_bar"
         android:layout_width="match_parent"
@@ -136,5 +132,4 @@
         android:visibility="invisible"
         />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

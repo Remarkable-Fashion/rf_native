@@ -14,13 +14,13 @@ import com.lf.fashion.data.response.Photo
 import com.lf.fashion.databinding.HomeAFragmentBinding
 import com.lf.fashion.ui.home.HomeViewModel
 import com.lf.fashion.ui.home.PhotoClickListener
-import com.lf.fashion.ui.home.ShareBtnClickListener
+import com.lf.fashion.ui.home.VerticalViewPagerClickListener
 import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.adapter.GridPostAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, ShareBtnClickListener {
+class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, VerticalViewPagerClickListener {
     private lateinit var binding: HomeAFragmentBinding
     private val viewModel: HomeViewModel by viewModels()
 
@@ -48,7 +48,8 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, Share
 
     }
     private fun setMainViewPagerUI() {
-        /*response 로 post 를 받아서 중첩 viewPager 와 recyclerView 모두에게 adapter 연결/submitList 후 visibility 로 노출을 관리한다*/
+        /*response 로 post 를 받아서 중첩 viewPager 와 recyclerView 모두에게 adapter 연결/submitList 후 visibility 로 노출을 관리한다
+        (전환 속도 감소, 메모리에 무리가 가지않는다면 ok)*/
         photoLayoutVisibilityMode(true) // default ui visibility
         viewModel.postList.observe(viewLifecycleOwner) { response ->
             with(binding.homeMainViewpager) {
@@ -75,13 +76,6 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, Share
         }
     }
 
-    //vertical fragment 에서 공유버튼 클릭시 바텀 다이얼로그를 생성한다.
-    override fun shareBtnClicked(bool: Boolean) {
-        if (bool) {
-            val dialog = HomeBottomSheetFragment()
-            dialog.show(parentFragmentManager,"bottom_sheet")
-        }
-    }
 
     override fun onClick(view: View?) {
         when (view) {
@@ -122,5 +116,15 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, Share
         binding.gridRecyclerView.isVisible = !default
     }
 
+    //vertical fragment 에서 공유버튼 클릭시 바텀 다이얼로그를 생성한다.
+    override fun shareBtnClicked(bool: Boolean) {
+        if (bool) {
+            val dialog = HomeBottomSheetFragment()
+            dialog.show(parentFragmentManager,"bottom_sheet")
+        }
+    }
 
+    override fun photoZipBtnClicked(bool: Boolean) {
+        findNavController().navigate(R.id.action_navigation_home_to_photoZipFragment)
+    }
 }

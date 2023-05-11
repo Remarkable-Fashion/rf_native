@@ -1,19 +1,17 @@
 package com.lf.fashion.ui.home.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
-import com.lf.fashion.TAG
 import com.lf.fashion.data.response.Post
 import com.lf.fashion.databinding.HomeAVerticalItemBinding
 import com.lf.fashion.ui.home.PhotoClickListener
-import com.lf.fashion.ui.home.ShareBtnClickListener
+import com.lf.fashion.ui.home.VerticalViewPagerClickListener
 
-class DefaultPostAdapter(private val photoClickListener: PhotoClickListener,private val shareBtnClickListener :ShareBtnClickListener) :
+class DefaultPostAdapter(private val photoClickListener: PhotoClickListener,private val verticalViewPagerClickListener :VerticalViewPagerClickListener) :
     ListAdapter<Post, DefaultPostAdapter.DefaultPostViewHolder>(DefaultPostDiff()) {
 
     private lateinit var binding: HomeAVerticalItemBinding
@@ -51,7 +49,7 @@ class DefaultPostAdapter(private val photoClickListener: PhotoClickListener,priv
             }
 
             binding.shareBtn.setOnClickListener {
-                shareBtnClickListener.shareBtnClicked(true)
+                verticalViewPagerClickListener.shareBtnClicked(true)
             }
 
 
