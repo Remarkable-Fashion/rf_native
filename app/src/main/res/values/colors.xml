@@ -20,6 +20,7 @@
     <color name="default_text">#222</color>
     <color name="sub_text">#444</color>
     <color name="light_text">#999</color>
+    <color name="alpha80_black">#CC222222</color>
 
     <color name="lf_purple">#7350F7</color>
     <color name="light_purple">#E8E6FC</color>

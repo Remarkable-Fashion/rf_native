@@ -1,7 +1,6 @@
 package com.lf.fashion.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +9,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.lf.fashion.R
-import com.lf.fashion.TAG
 import com.lf.fashion.data.response.Photo
 import com.lf.fashion.databinding.HomeFragmentBinding
 import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.adapter.GridPostAdapter
-import com.lf.fashion.ui.setOnClickListenerByViewList
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -46,8 +42,8 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, Share
 
         //onclick listener 계층별로 묶어서 한번에 달기
         binding.topMenu.children.forEach { it.setOnClickListener(this) }
-        binding.bottomSheet.children.forEach { it.setOnClickListener(this) }
-        binding.bottomLinear.children.forEach { it.setOnClickListener(this) }
+       /* binding.bottomSheet.children.forEach { it.setOnClickListener(this) }
+        binding.bottomLinear.children.forEach { it.setOnClickListener(this) }*/
 
     }
     private fun setMainViewPagerUI() {
@@ -80,32 +76,14 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, Share
 
     override fun shareBtnClicked(bool: Boolean) {
         if (bool) {
-            val bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            //bottomSheetBehavior.isFitToContents = false 접엇을때 절반만 먼저 접힘
-            //bottomSheetBehavior.halfExpandedRatio =
-            //    0.4f  // bottomSheet 의 절반 높이를 40%로 지정 , 이 이상은 지도가 너무 가려집니다.
-            bottomSheetBehavior.addBottomSheetCallback(object :
-                BottomSheetBehavior.BottomSheetCallback() {
-                override fun onStateChanged(bottomSheet: View, newState: Int) {
-
-                }
-
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                    /*  bottomSheetBehavior.halfExpandedRatio
-                      if (slideOffset >= 0) {
-                          //guideline2 " 올려서 더 많은 구급박스 확인하기 " 텍스트 투명도 조절
-                          binding.guideline2.alpha = 1 - slideOffset * 2F
-                      }*/
-                }
-            })
+            val dialog = HomeBottomSheetFragment()
+            dialog.show(parentFragmentManager,"bottom_sheet")
         }
     }
 
     override fun onClick(view: View?) {
-        Log.d(TAG, "${view}");
         when (view) {
-            //상단 바의 랜덤 / 팔로잉 버튼 각각 클릭
+            //상단 바의 랜덤,팔로잉 버튼 각각 클릭 (임시로 select 여부만 변경 처리)
             binding.appBarFollowing -> { //팔로잉 버튼 클릭
                 binding.appBarFollowing.isSelected  = true
                 binding.appBarRandom.isSelected = false
@@ -135,7 +113,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, Share
             }
 
             // vertical 뷰의 share 버튼 클릭시 오픈되는 bottom sheet 내부 버튼 onclick
-            binding.bottomSheetLinkCopyBtn -> {
+          /*  binding.bottomSheetLinkCopyBtn -> {
 
             }
             binding.bottomSheetShareBtn -> {
@@ -155,7 +133,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, Share
             }
             binding.declareBtn -> {
 
-            }
+            }*/
         }
     }
 
