@@ -45,6 +45,16 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/dark_grey_text</item>
     </style>
+    <style name="spoqa_16sp_sub_label">
+        <item name="fontFamily">@font/spoqahansansneo_medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/dark_grey_text</item>
+    </style>
+    <style name="spoqa_14sp_default_color">
+        <item name="fontFamily">@font/spoqahansansneo_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/default_text</item>
+    </style>
     <!--    <style name="spoqa_blod_14sp">
             <item name="fontFamily">@font/spoqahansansneo_bold</item>
             <item name="android:textSize">14sp</item>

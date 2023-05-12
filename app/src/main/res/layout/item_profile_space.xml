@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center"
+    xmlns:tools="http://schemas.android.com/tools">
+    <ImageView
+        android:id="@+id/profile_image"
+        android:layout_width="43dp"
+        android:layout_height="43dp"
+        android:background="@drawable/bg_profile"
+        />
+    <TextView
+        android:id="@+id/profile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="rf_user"
+        android:layout_marginStart="10dp"
+        style="@style/montserrat_bold_label"
+        tools:text="rf_user"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="20dp"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:background="@color/lf_light_purple"
+        android:text="+ 팔로우"
+        android:textColor="@color/lf_purple"
+        android:fontFamily="@font/spoqahansansneo_bold"
+        android:textSize="12dp"
+        />
+    <ImageView
+        android:id="@+id/kebab_btn"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_dot_menu"
+        />
+</LinearLayout>
