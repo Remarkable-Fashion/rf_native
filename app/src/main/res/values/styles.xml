@@ -35,7 +35,11 @@
         <item name="fontFamily">@font/montserrat_medium</item>
         <item name="android:textSize">14sp</item>
     </style>
-
+    <style name="montserrat_medium_12">
+        <item name="fontFamily">@font/montserrat_medium</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/dark_grey_text</item>
+    </style>
     <style name="spoqa_12sp_label">
         <item name="fontFamily">@font/spoqahansansneo_medium</item>
         <item name="android:textSize">12sp</item>
@@ -66,6 +70,7 @@
         <item name="android:paddingEnd">15dp</item>
     </style>
 
+    <!--바텀시트 모서리 radius style-->
     <style name="ModalBottomSheetDialog" parent="Widget.Material3.BottomSheet.Modal">
         <item name="shapeAppearance">@style/ShapeAppearance.App.LargeComponent</item>
     </style>

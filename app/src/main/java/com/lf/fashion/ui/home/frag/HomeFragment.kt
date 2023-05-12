@@ -17,6 +17,7 @@ import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.VerticalViewPagerClickListener
 import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.adapter.GridPostAdapter
+import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -58,8 +59,9 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, Verti
                 }
             }
 
-            with(binding.gridRecyclerView) {
+            with(binding.gridRecyclerView) { //grid layout
                 adapter = GridPostAdapter().apply {
+                    addItemDecoration(GridSpaceItemDecoration(3,6))
                     submitList(response)
                 }
             }

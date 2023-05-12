@@ -54,8 +54,8 @@
                 app:layout_constraintStart_toStartOf="@id/guideline_vertical"
                 app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
                 app:layout_constraintTop_toTopOf="parent"
-                android:background="@drawable/bg_radi3_line"
-                android:layout_marginTop="15dp"/>
+                android:background="@drawable/bg_radi3_top_line"
+                android:layout_marginTop="20dp"/>
             <ImageView
                 android:id="@+id/profile_image"
                 android:layout_width="43dp"
@@ -70,7 +70,7 @@
                 android:id="@+id/profile_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{post.userId}"
+                android:text="rf_user"
                 app:layout_constraintStart_toEndOf="@id/profile_image"
                 app:layout_constraintTop_toTopOf="@id/profile_image"
                 android:layout_marginStart="10dp"
@@ -80,11 +80,12 @@
                 android:id="@+id/profile_user_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{post.userId}"
+                android:text="여 | 162cm | 48kg"
                 app:layout_constraintStart_toStartOf="@id/profile_name"
                 app:layout_constraintTop_toBottomOf="@id/profile_name"
                 style="@style/montserrat_medium_12"
                 tools:text="여 | 162cm | 48kg"/>
+
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="60dp"
                 android:layout_height="30dp"
@@ -99,6 +100,7 @@
                 android:fontFamily="@font/spoqahansansneo_bold"
                 android:textSize="12dp"
                 />
+
             <ImageView
                 android:id="@+id/kebab_btn"
                 android:layout_width="20dp"
@@ -109,6 +111,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/profile_space"
                 android:layout_marginEnd="20dp"
                 />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/grid_rv"
                 android:layout_width="0dp"
@@ -121,5 +124,4 @@
                 app:layout_constraintTop_toBottomOf="@id/profile_space"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

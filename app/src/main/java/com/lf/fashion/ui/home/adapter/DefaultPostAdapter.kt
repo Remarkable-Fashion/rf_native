@@ -52,6 +52,11 @@ class DefaultPostAdapter(private val photoClickListener: PhotoClickListener,priv
                 verticalViewPagerClickListener.shareBtnClicked(true)
             }
 
+            binding.photoZipBtn.setOnClickListener {
+                verticalViewPagerClickListener.photoZipBtnClicked(true)
+            }
+
+            binding.executePendingBindings()
 
         }
     }

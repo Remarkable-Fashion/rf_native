@@ -20,6 +20,9 @@ class GridPostAdapter : ListAdapter<Post, GridPostAdapter.GridPostViewHolder>(De
         fun bind(post : Post){
             //첫번째 사진을 grid 로 노출
             binding.photoUrl = post.photo[0].imageUrl
+
+            binding.executePendingBindings()
+
         }
     }
 

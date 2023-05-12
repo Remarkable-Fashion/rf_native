@@ -37,6 +37,9 @@ class PhotoHorizontalAdapter(private val photoClickListener: PhotoClickListener?
              binding.photoImageView.setOnClickListener {
                  photoClickListener?.photoClicked(true, currentList)
              }
+
+            binding.executePendingBindings()
+
         }
     }
 }

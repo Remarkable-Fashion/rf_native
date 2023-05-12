@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="169dp"
-        android:layout_margin="3dp">
+        >
 
         <ImageView
             android:id="@+id/grid_image"
@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:background="@color/photo_back_grey"
             android:scaleType="centerCrop"
-            imageUrl="@{photoUrl}"/>
+            imageUrl="@{photoUrl}" />
 
         <ImageView
             android:layout_width="15dp"
