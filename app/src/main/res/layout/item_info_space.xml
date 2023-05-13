@@ -108,7 +108,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBaseline_toBaselineOf="@id/weight_label"
         app:layout_constraintEnd_toEndOf="@id/height_value"
-        android:text="48kg"
+        android:text="48kffg"
         style="@style/spoqa_16sp_sub_label"
         android:textColor="@color/default_text"
         />
