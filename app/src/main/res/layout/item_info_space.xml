@@ -77,11 +77,49 @@
         android:layout_marginTop="10dp"
         />
 
-   <!-- <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/style_chip_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_purple_radi20"
-        android:text="스트릿"
-        android:textColor=""
-        />-->
+        android:layout_marginEnd="15dp"
+        app:layout_constraintTop_toTopOf="@id/style_label"
+        app:layout_constraintBottom_toBottomOf="@id/style_label"
+        app:layout_constraintEnd_toEndOf="parent">
+       <!-- <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="스포티"
+            />-->
+    </com.google.android.material.chip.ChipGroup>
+    <TextView
+        android:id="@+id/height_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/height_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="160cm"
+        style="@style/spoqa_16sp_sub_label"
+        android:textColor="@color/default_text"
+        />
+    <TextView
+        android:id="@+id/weight_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBaseline_toBaselineOf="@id/weight_label"
+        app:layout_constraintEnd_toEndOf="@id/height_value"
+        android:text="48kg"
+        style="@style/spoqa_16sp_sub_label"
+        android:textColor="@color/default_text"
+        />
+    <TextView
+        android:id="@+id/place_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBaseline_toBaselineOf="@id/place_label"
+        app:layout_constraintEnd_toEndOf="@id/height_value"
+        android:text="광명 이케아"
+        style="@style/spoqa_16sp_sub_label"
+        android:textColor="@color/default_text"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
