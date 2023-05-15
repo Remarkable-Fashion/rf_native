@@ -23,17 +23,10 @@ fun Fragment.childChip(chipList: List<ChipContents>, chipGroup: ChipGroup, defau
         var content = chipList[j].text
 
         chipList[j].emoji?.let{
-            val emoji = chipList[j].emoji?.substring(2)?.toInt(16)
-            emoji?.let { unicode ->
-                content += " " + String(Character.toChars(unicode))
-            }
+            val emoji = it.substring(2).toInt(16)
+                content += " " + String(Character.toChars(emoji))
         }
 
-       /* val emoji = chipList[j].emoji?.substring(2)?.toInt(16)
-        var content = chipList[j].text
-        emoji?.let { unicode ->
-            content += " " + String(Character.toChars(unicode))
-        }*/
         chip.text = content
         chipGroup.addView(chip)
     }

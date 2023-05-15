@@ -41,7 +41,7 @@ class UserInfoFragment : Fragment() {
 
         viewModel.getUserInfoAndStyle()
         viewModel.userInfo.observe(viewLifecycleOwner){
-            Log.d(TAG, "UserInfoFragment - onViewCreated: $it");
+            //Log.d(TAG, "UserInfoFragment - onViewCreated: $it");
             binding.infoSpace.userInfo = it.modelInfo
             binding.profileSpace.userInfo = it.modelInfo
             binding.clothesRv.apply {
