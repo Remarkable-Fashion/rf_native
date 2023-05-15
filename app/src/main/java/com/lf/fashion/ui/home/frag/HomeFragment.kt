@@ -35,6 +35,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, Verti
     }
 
     //TODO: 보고싶은 성별을 선택하는 다이얼로그 만들어야함
+    //TODO: 1 -> 3 레이아웃 모드 변경 그리드 그리드 spancount 2 짜리도 만들어달라는 요청이 있었음. ( 1->2->3 인지 순서 정해지면 기능 추가하기)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

@@ -55,6 +55,36 @@
         app:layout_constraintTop_toBottomOf="@id/information_label"
         android:layout_marginTop="7dp"/>
 
+    <TextView
+        android:id="@+id/clothes_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clothes"
+        android:layout_marginTop="22dp"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@id/info_space"
+        style="@style/montserrat_bold_label"
+        tools:text="Clothes"/>
+    <TextView
+        android:id="@+id/recommend_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이 의상은 어때? >"
+        app:layout_constraintBaseline_toBaselineOf="@id/clothes_label"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+        style="@style/spoqa_12sp_label_bold"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/clothes_rv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/clothes_label"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginTop="7dp"
+        tools:listitem="@layout/item_clothes_recommend"
+        />
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_vertical2"
         android:layout_width="0dp"
