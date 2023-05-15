@@ -79,15 +79,13 @@
         <item name="android:textAppearance">@style/spoqa_14_medium</item>
         <item name="chipStrokeColor">@drawable/selector_chip_color</item>
     </style>
-<!--    <style name="customChipChoice_purple" parent="@style/Widget.MaterialComponents.Chip.Choice">
+    <style name="customChipChoice_purple" parent="@style/Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/white</item>
         <item name="android:textColor">@color/lf_purple</item>
         <item name="chipStrokeWidth">1dp</item>
-        <item name="chipStartPadding">5dp</item>
-        <item name="chipEndPadding">5dp</item>
         <item name="android:textAppearance">@style/spoqa_12sp_purple</item>
         <item name="chipStrokeColor">@color/lf_purple</item>
-    </style>-->
+    </style>
     <style name="edittext_style">
         <item name="fontFamily">@font/spoqahansansneo_medium</item>
         <item name="android:textSize">14sp</item>
