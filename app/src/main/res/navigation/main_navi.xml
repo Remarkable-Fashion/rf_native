@@ -22,7 +22,10 @@
             app:destination="@id/filterFragment" />
         <action
             android:id="@+id/action_navigation_home_to_photoZipFragment"
-            app:destination="@id/photoZipFragment" /><!--
+            app:destination="@id/photoZipFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_userInfoFragment"
+            app:destination="@id/userInfoFragment" /><!--
         <argument
             android:name="photos"
             app:argType="com.lf.fashion.data.response.Photo[]" />-->
@@ -60,4 +63,16 @@
         android:id="@+id/photoZipFragment"
         android:name="com.lf.fashion.ui.home.frag.PhotoZipFragment"
         android:label="PhotoZipFragment" />
+    <fragment
+        android:id="@+id/userInfoFragment"
+        android:name="com.lf.fashion.ui.home.frag.UserInfoFragment"
+        android:label="UserInfoFragment" >
+        <action
+            android:id="@+id/action_userInfoFragment_to_recommendFragment"
+            app:destination="@id/recommendFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recommendFragment"
+        android:name="com.lf.fashion.ui.home.frag.RecommendFragment"
+        android:label="RecommendFragment" />
 </navigation>

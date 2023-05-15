@@ -130,4 +130,8 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, Verti
     override fun photoZipBtnClicked(bool: Boolean) {
         findNavController().navigate(R.id.action_navigation_home_to_photoZipFragment)
     }
+
+    override fun infoBtnClicked(bool: Boolean) {
+        findNavController().navigate(R.id.action_navigation_home_to_userInfoFragment)
+    }
 }
