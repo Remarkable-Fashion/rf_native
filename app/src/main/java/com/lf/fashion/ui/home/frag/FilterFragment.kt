@@ -12,6 +12,7 @@ import com.lf.fashion.R
 import com.lf.fashion.data.response.ChipContents
 import com.lf.fashion.databinding.HomeBPhotoFilterFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
+import com.lf.fashion.ui.childChip
 import com.lf.fashion.ui.home.FilterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -53,14 +54,14 @@ class FilterFragment : Fragment() {
                 for( i in  it.indices ){
                     when(it[i].id){
                         "tpo"->{
-                            childChip(it[i].chips,tpoChipGroup)
+                            childChip(it[i].chips,tpoChipGroup,true)
 
                         }
                         "season"->{
-                            childChip(it[i].chips,seasonChipGroup)
+                            childChip(it[i].chips,seasonChipGroup,true)
                         }
                         "style" ->{
-                            childChip(it[i].chips,styleChipGroup)
+                            childChip(it[i].chips,styleChipGroup,true)
                         }
                     }
                 }
@@ -68,7 +69,7 @@ class FilterFragment : Fragment() {
         }
     }
 
-    private fun childChip(chipList : List<ChipContents>,chipGroup: ChipGroup){
+/*    private fun childChip(chipList : List<ChipContents>,chipGroup: ChipGroup){
         for (j in chipList.indices) {
             val chip = LayoutInflater.from(context)
                 .inflate(R.layout.chip_item, null) as Chip
@@ -81,5 +82,5 @@ class FilterFragment : Fragment() {
             chip.text = content
             chipGroup.addView(chip)
         }
-    }
+    }*/
 }

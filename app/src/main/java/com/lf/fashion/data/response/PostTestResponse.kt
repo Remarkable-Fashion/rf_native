@@ -42,15 +42,18 @@ data class UserInfo(
 
 )
 data class ModelInfo(
+    val profile: String,
     @SerializedName("user_id")
     val userId : String,
     val height : String,
     val weight : String,
     val place : String,
     @SerializedName("style_chips")
-    val styleChips : List<ChipContents>
+    val styleChips : List<ChipContents>,
+    val introduce : String
 )
 data class ClothesInfo(
+    val category : String,
     val brand: String,
     val detail : String,
     val image : String,

@@ -12,7 +12,9 @@ import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.databinding.HomeBUserInfoFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
+import com.lf.fashion.ui.childChip
 import com.lf.fashion.ui.home.UserInfoViewModel
+import com.lf.fashion.ui.home.adapter.ClothesRvAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,10 +38,19 @@ class UserInfoFragment : Fragment() {
         }
         cancelBtnBackStack(binding.cancelBtn)
 
+
         viewModel.getUserInfoAndStyle()
         viewModel.userInfo.observe(viewLifecycleOwner){
             Log.d(TAG, "UserInfoFragment - onViewCreated: $it");
-
+            binding.infoSpace.userInfo = it.modelInfo
+            binding.profileSpace.userInfo = it.modelInfo
+            binding.clothesRv.apply {
+                adapter = ClothesRvAdapter().apply {
+                    submitList(it.clothesInfo)
+                }
+            }
+            val styleChipGroup = binding.infoSpace.styleChipGroup
+            childChip(it.modelInfo.styleChips,styleChipGroup,false)
         }
 
         //binding.clothesRv.adapter

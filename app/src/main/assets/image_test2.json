@@ -206,10 +206,12 @@
     {
       "user_info":
         {
+          "profile": "https://hips.hearstapps.com/hmg-prod/images/mfw-ss23-tyler-joe-0048-1664217961.jpg",
           "user_id": "jeong",
           "height": "160",
           "weight": "48",
           "place": "광명 이케아",
+          "introduce":"안녕하세요 반갑습니다.",
           "style_chips": [
             {
               "text": "스트릿"
@@ -225,20 +227,19 @@
             },
             {
               "text": "아메카지"
-            },
-            {
-              "text": "러블리"
             }
           ]
         },
       "clothes": [
         {
+          "category": "Outer",
           "image": "https://cdn.011st.com/11dims/resize/600x600/quality/75/11src/product/4981917957/B.jpg?116000000",
           "name": "셋업 멜로샤 트위드 자켓",
           "brand": "보세",
           "detail": "블랙(black) | M 사이즈 | 96,000원"
         },
         {
+          "category": "Top",
           "image": "https://atimg.sonyunara.com/files/attrangs/goods/152444/6412de16589e9.jpg",
           "name": "셋업 멜로샤 트위드 자켓",
           "brand": "NIKE",

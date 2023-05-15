@@ -1,111 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/cancel_btn"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/ic_cancel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+        <variable
+            name="userInfo"
+            type="com.lf.fashion.data.response.UserInfo" />
+    </data>
 
-    <ImageView
-        android:id="@+id/sandwich_btn"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/cancel_btn"
-        android:layout_marginEnd="17dp"
-        android:src="@drawable/ic_sandwich" />
-
-    <include
-        android:id="@+id/profile_space"
-        layout="@layout/item_profile_space"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
-        app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
-        app:layout_constraintTop_toBottomOf="@id/cancel_btn"
-        android:layout_marginTop="12dp"
-        />
-
-    <View
-        android:id="@+id/title_underline"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/line_grey"
-        app:layout_constraintTop_toBottomOf="@id/profile_space" />
-    <TextView
-        android:id="@+id/information_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Information"
-        android:layout_marginTop="28dp"
-        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@id/title_underline"
-        style="@style/montserrat_bold_label"
-        tools:text="Information"/>
+        android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/cancel_btn"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_cancel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:id="@+id/info_space"
-        layout="@layout/item_info_space"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
-        app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
-        app:layout_constraintTop_toBottomOf="@id/information_label"
-        android:layout_marginTop="7dp"/>
+        <ImageView
+            android:id="@+id/sandwich_btn"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/cancel_btn"
+            android:layout_marginEnd="17dp"
+            android:src="@drawable/ic_sandwich" />
 
-    <TextView
-        android:id="@+id/clothes_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Clothes"
-        android:layout_marginTop="22dp"
-        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@id/info_space"
-        style="@style/montserrat_bold_label"
-        tools:text="Clothes"/>
-    <TextView
-        android:id="@+id/recommend_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="이 의상은 어때? >"
-        app:layout_constraintBaseline_toBaselineOf="@id/clothes_label"
-        app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
-        style="@style/spoqa_12sp_label_bold"
-        />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/clothes_rv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/clothes_label"
-        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
-        app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:layout_marginTop="7dp"
-        tools:listitem="@layout/item_clothes_recommend"
-        />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_vertical2"
+        <include
+            android:id="@+id/profile_space"
+            layout="@layout/item_profile_space"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/cancel_btn"
+            app:layout_constraintEnd_toEndOf="@id/sandwich_btn"
+            app:layout_constraintTop_toBottomOf="@id/cancel_btn"
+            android:layout_marginTop="12dp" />
+
+        <View
+            android:id="@+id/title_underline"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/line_grey"
+            app:layout_constraintTop_toBottomOf="@id/profile_space" />
+    <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95" />
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_underline">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_vertical"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="55dp">
+        <TextView
+            android:id="@+id/information_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Information"
+            android:layout_marginTop="28dp"
+            app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/montserrat_bold_label"
+            tools:text="Information" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            android:id="@+id/info_space"
+            layout="@layout/item_info_space"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+            app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+            app:layout_constraintTop_toBottomOf="@id/information_label"
+            android:layout_marginTop="7dp" />
+
+        <TextView
+            android:id="@+id/clothes_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clothes"
+            android:layout_marginTop="22dp"
+            app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+            app:layout_constraintTop_toBottomOf="@id/info_space"
+            style="@style/montserrat_bold_label"
+            tools:text="Clothes" />
+
+        <TextView
+            android:id="@+id/recommend_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이 의상은 어때? >"
+            app:layout_constraintBaseline_toBaselineOf="@id/clothes_label"
+            app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+            style="@style/spoqa_12sp_label_bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/clothes_rv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/clothes_label"
+            app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+            app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginTop="7dp"
+            android:overScrollMode="never"
+            tools:listitem="@layout/item_clothes_recommend"
+            android:nestedScrollingEnabled="false"
+            />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.05" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
