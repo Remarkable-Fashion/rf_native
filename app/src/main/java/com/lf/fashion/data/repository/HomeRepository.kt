@@ -4,6 +4,7 @@ import com.lf.fashion.data.network.api.ChipTestApi
 import com.lf.fashion.data.network.api.PhotoTestApi
 import com.lf.fashion.data.response.ChipInfo
 import com.lf.fashion.data.response.Post
+import com.lf.fashion.data.response.UserInfo
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
@@ -17,5 +18,9 @@ class HomeRepository @Inject constructor(
 
     suspend fun getChipInfo():List<ChipInfo>{
         return chipTestApi.getFilterInfo()
+    }
+
+    suspend fun getUserInfoAndStyle() : UserInfo{
+        return chipTestApi.getUserInfoAndStyle()
     }
 }

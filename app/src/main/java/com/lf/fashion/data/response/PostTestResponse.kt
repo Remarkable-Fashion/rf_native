@@ -1,6 +1,7 @@
 package com.lf.fashion.data.response
 
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -31,4 +32,27 @@ data class ChipInfo(
 data class ChipContents(
     val text:String,
     val emoji : String?
+)
+
+data class UserInfo(
+    @SerializedName("user_info")
+    val modelInfo: ModelInfo,
+    @SerializedName("clothes")
+    val clothesInfo : List<ClothesInfo>
+
+)
+data class ModelInfo(
+    @SerializedName("user_id")
+    val userId : String,
+    val height : String,
+    val weight : String,
+    val place : String,
+    @SerializedName("style_chips")
+    val styleChips : List<ChipContents>
+)
+data class ClothesInfo(
+    val brand: String,
+    val detail : String,
+    val image : String,
+    val name:String
 )
