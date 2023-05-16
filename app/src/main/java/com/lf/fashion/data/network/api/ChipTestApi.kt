@@ -1,6 +1,7 @@
 package com.lf.fashion.data.network.api
 
 import com.lf.fashion.data.response.ChipInfo
+import com.lf.fashion.data.response.LookBook
 import com.lf.fashion.data.response.UserInfo
 import retrofit2.http.GET
 
@@ -10,4 +11,7 @@ interface ChipTestApi : BaseApi {
 
     @GET("user_clothes_info.json")
     suspend fun getUserInfoAndStyle() : UserInfo
+
+    @GET("look_book.json")
+    suspend fun getLookBook():List<LookBook>
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lf.fashion.data.repository.HomeRepository
+import com.lf.fashion.data.response.LookBook
 import com.lf.fashion.data.response.UserInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,9 +16,18 @@ class UserInfoViewModel @Inject constructor(private val repository: HomeReposito
     private val _userInfo = MutableLiveData<UserInfo>()
     var userInfo: LiveData<UserInfo> = _userInfo
 
-     fun getUserInfoAndStyle(){
+    private val _lookBook = MutableLiveData<List<LookBook>>()
+    var lookBook: LiveData<List<LookBook>> = _lookBook
+
+    fun getUserInfoAndStyle() {
         viewModelScope.launch {
             _userInfo.value = repository.getUserInfoAndStyle()
+        }
+    }
+
+    fun getLookBook() {
+        viewModelScope.launch {
+            _lookBook.value = repository.getLookBook()
         }
     }
 }

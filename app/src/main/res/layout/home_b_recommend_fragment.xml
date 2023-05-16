@@ -72,6 +72,7 @@
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
                 app:layout_constraintTop_toTopOf="parent"
+                android:orientation="horizontal"
                 >
                 <Spinner
                     android:id="@+id/spinner"
@@ -85,6 +86,7 @@
                     android:layout_weight="1"/>
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/order_by_best_btn"
                     android:layout_width="60dp"
                     android:layout_height="30dp"
                     android:background="@drawable/selector_btn_greylineblack"
@@ -94,6 +96,7 @@
                     android:text="베스트"
                     />
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/order_by_recent_btn"
                     android:layout_width="60dp"
                     android:layout_height="30dp"
                     android:background="@drawable/selector_btn_greylineblack"

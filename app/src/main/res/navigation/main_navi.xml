@@ -73,6 +73,6 @@
     </fragment>
     <fragment
         android:id="@+id/recommendFragment"
-        android:name="com.lf.fashion.ui.home.frag.RecommendFragment"
+        android:name="com.lf.fashion.ui.home.frag.RecommendLooBookFragment"
         android:label="RecommendFragment" />
 </navigation>

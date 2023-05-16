@@ -114,7 +114,7 @@
             android:layout_marginEnd="15dp"
             app:layout_constraintBaseline_toBaselineOf="@id/height_label"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="@{userInfo.height+`cm`}"
+            android:text='@{userInfo.height!=null?userInfo.height+`cm`:""}'
             tools:text="160cm"
             style="@style/spoqa_16sp_sub_label"
             android:textColor="@color/default_text" />
@@ -125,7 +125,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintBaseline_toBaselineOf="@id/weight_label"
             app:layout_constraintEnd_toEndOf="@id/height_value"
-            android:text="@{userInfo.weight+`kg`}"
+            android:text='@{userInfo.weight!=null?userInfo.weight+`kg`:""}'
             tools:text="48kg"
             style="@style/spoqa_16sp_sub_label"
             android:textColor="@color/default_text" />

@@ -59,3 +59,9 @@ data class ClothesInfo(
     val image : String,
     val name:String
 )
+data class LookBook(
+    @SerializedName("user_id")
+    val userId: String,
+    val likes : String,
+    val clothesInfo: ClothesInfo
+)

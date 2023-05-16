@@ -52,7 +52,5 @@ class UserInfoFragment : Fragment() {
             val styleChipGroup = binding.infoSpace.styleChipGroup
             childChip(it.modelInfo.styleChips,styleChipGroup,false)
         }
-
-        //binding.clothesRv.adapter
     }
 }
