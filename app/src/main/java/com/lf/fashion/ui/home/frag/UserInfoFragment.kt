@@ -40,17 +40,19 @@ class UserInfoFragment : Fragment() {
 
 
         viewModel.getUserInfoAndStyle()
-        viewModel.userInfo.observe(viewLifecycleOwner){
-            //Log.d(TAG, "UserInfoFragment - onViewCreated: $it");
-            binding.infoSpace.userInfo = it.modelInfo
-            binding.profileSpace.userInfo = it.modelInfo
-            binding.clothesRv.apply {
-                adapter = ClothesRvAdapter().apply {
-                    submitList(it.clothesInfo)
+        viewModel.userInfo.observe(viewLifecycleOwner){event->
+            event.getContentIfNotHandled()?.let{
+                Log.d(TAG, "UserInfoFragment - onViewCreated: $it");
+                binding.infoSpace.userInfo = it.modelInfo
+                binding.profileSpace.profile = it.modelInfo.profile
+                binding.clothesRv.apply {
+                    adapter = ClothesRvAdapter().apply {
+                        submitList(it.clothesInfo)
+                    }
                 }
+                val styleChipGroup = binding.infoSpace.styleChipGroup
+                childChip(it.modelInfo.styleChips, styleChipGroup, false)
             }
-            val styleChipGroup = binding.infoSpace.styleChipGroup
-            childChip(it.modelInfo.styleChips,styleChipGroup,false)
         }
     }
 }

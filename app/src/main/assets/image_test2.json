@@ -206,8 +206,10 @@
     {
       "user_info":
         {
-          "profile": "https://hips.hearstapps.com/hmg-prod/images/mfw-ss23-tyler-joe-0048-1664217961.jpg",
-          "user_id": "jeong",
+          "profile": {
+            "profile_image":"https://hips.hearstapps.com/hmg-prod/images/mfw-ss23-tyler-joe-0048-1664217961.jpg",
+            "user_id": "jeong"
+          },
           "height": "160",
           "weight": "48",
           "place": "광명 이케아",
@@ -246,7 +248,10 @@
     },
   "look_book": [
     {
-      "user_id": "jeong",
+      "profile": {
+        "profile_image":"https://hips.hearstapps.com/hmg-prod/images/mfw-ss23-tyler-joe-0048-1664217961.jpg",
+        "user_id": "jeong"
+      },
       "likes": "160",
       "clothes":
         {
@@ -258,7 +263,10 @@
         }
     },
     {
-      "user_id": "YeongGyeong",
+      "profile": {
+        "profile_image":"https://hips.hearstapps.com/hmg-prod/images/mfw-ss23-tyler-joe-0048-1664217961.jpg",
+        "user_id": "YeongGyeong"
+      },
       "likes": "180",
       "clothes":
       {

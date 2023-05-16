@@ -42,9 +42,7 @@ data class UserInfo(
 
 )
 data class ModelInfo(
-    val profile: String,
-    @SerializedName("user_id")
-    val userId : String,
+    val profile: Profile,
     val height : String,
     val weight : String,
     val place : String,
@@ -60,8 +58,13 @@ data class ClothesInfo(
     val name:String
 )
 data class LookBook(
+    val profile: Profile,
+    val likes: String,
+    val clothes: ClothesInfo
+)
+data class Profile(
+    @SerializedName("profile_image")
+    val profileImage: String,
     @SerializedName("user_id")
-    val userId: String,
-    val likes : String,
-    val clothesInfo: ClothesInfo
+    val userId : String
 )

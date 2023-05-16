@@ -97,16 +97,9 @@
             app:layout_constraintTop_toTopOf="@id/style_label"
             app:layout_constraintBottom_toBottomOf="@id/style_label"
             app:layout_constraintEnd_toEndOf="parent"
-            >
-          <!--  <com.google.android.material.chip.Chip
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                style="@style/customChipChoice_purple"
-                android:layout_margin="0dp"
-                android:text="스포티">
-            </com.google.android.material.chip.Chip>-->
-        </com.google.android.material.chip.ChipGroup>
+            />
+
+
         <TextView
             android:id="@+id/height_value"
             android:layout_width="wrap_content"

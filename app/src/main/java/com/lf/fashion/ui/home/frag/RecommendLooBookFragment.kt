@@ -13,6 +13,7 @@ import com.lf.fashion.TAG
 import com.lf.fashion.databinding.HomeBRecommendFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.home.UserInfoViewModel
+import com.lf.fashion.ui.home.adapter.LookBookRvAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,6 +36,17 @@ class RecommendLooBookFragment : Fragment(), View.OnClickListener {
         binding.orderByBestBtn.setOnClickListener(this)
         binding.orderByRecentBtn.setOnClickListener(this)
 
+
+        viewModel.getLookBook()
+        viewModel.lookBook.observe(viewLifecycleOwner){
+            Log.d(TAG, "RecommendLooBookFragment - onViewCreated: $it")
+             binding.styleRecommendRv.apply {
+                 adapter = LookBookRvAdapter().apply {
+                     submitList(it)
+                 }
+
+            }
+        }
     }
 
     override fun onClick(view: View?) {
