@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -29,6 +30,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
     private lateinit var binding: HomeAFragmentBinding
     private val viewModel: HomeViewModel by viewModels()
     private val postList = MutableLiveData<List<Post>>()
+    private val gridAdapter = GridPostAdapter()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -65,12 +67,14 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
             }
             postList.value = response
             with(binding.gridRecyclerView) {
+
                 //staggeredGrid layoutManager 연결
                 layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                adapter = GridPostAdapter().apply {
+                adapter = gridAdapter.apply {
                     addItemDecoration(GridSpaceItemDecoration(2,6))
                     submitList(response)
                 }
+                visibility = View.INVISIBLE
             }
         }
     }
@@ -82,8 +86,11 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
                 removeItemDecorationAt(0)
             }
             addItemDecoration(GridSpaceItemDecoration(spanCount,6))
-        }
 
+                gridAdapter.editSpanCountClicked(true,spanCount)
+
+
+        }
     }
 
     //TODO :  유저 프로필 페이지로 연결
