@@ -25,6 +25,10 @@ class LookBookRvAdapter : ListAdapter<LookBook, LookBookRvAdapter.LookBookViewHo
             binding.look = lookBook
             binding.profileSpace.profile = lookBook.profile
             binding.clothesSpace.cloth = lookBook.clothes
+
+            binding.likeBtn.setOnClickListener {
+                binding.likeBtn.isSelected = !binding.likeBtn.isSelected
+            }
         }
     }
 }

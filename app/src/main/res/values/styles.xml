@@ -56,6 +56,9 @@
     <style name="spoqa_12sp_purple" parent="spoqa_12sp_label_bold">
         <item name="android:textColor">@color/lf_purple</item>
     </style>
+    <style name="spoqa_12sp_lf_grey" parent="spoqa_12sp_label_bold">
+        <item name="android:textColor">@color/lf_grey</item>
+    </style>
     <style name="spoqa_16sp_sub_label">
         <item name="fontFamily">@font/spoqahansansneo_medium</item>
         <item name="android:textSize">16sp</item>
@@ -66,10 +69,10 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/default_text</item>
     </style>
-    <!--    <style name="spoqa_blod_14sp">
-            <item name="fontFamily">@font/spoqahansansneo_bold</item>
-            <item name="android:textSize">14sp</item>
-        </style>-->
+
+
+
+
     <style name="CustomChipChoice" parent="@style/Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/white</item>
         <item name="android:textColor">@drawable/selector_chip_text_color</item>
