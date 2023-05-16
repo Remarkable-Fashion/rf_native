@@ -8,9 +8,12 @@ import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.R
 import com.lf.fashion.data.response.Photo
+import com.lf.fashion.data.response.Post
 import com.lf.fashion.databinding.HomeAFragmentBinding
 import com.lf.fashion.ui.home.HomeViewModel
 import com.lf.fashion.ui.home.PhotoClickListener
@@ -21,10 +24,11 @@ import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, VerticalViewPagerClickListener {
+class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
+    VerticalViewPagerClickListener {
     private lateinit var binding: HomeAFragmentBinding
     private val viewModel: HomeViewModel by viewModels()
-
+    private val postList = MutableLiveData<List<Post>>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,7 +39,6 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, Verti
     }
 
     //TODO: 보고싶은 성별을 선택하는 다이얼로그 만들어야함
-    //TODO: 1 -> 3 레이아웃 모드 변경 그리드 그리드 spancount 2 짜리도 만들어달라는 요청이 있었음. ( 1->2->3 인지 순서 정해지면 기능 추가하기)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -49,6 +52,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, Verti
         binding.topMenu.children.forEach { it.setOnClickListener(this) }
 
     }
+
     private fun setMainViewPagerUI() {
         /*response 로 post 를 받아서 중첩 viewPager 와 recyclerView 모두에게 adapter 연결/submitList 후 visibility 로 노출을 관리한다
         (전환 속도 감소, 메모리에 무리가 가지않는다면 ok)*/
@@ -59,14 +63,27 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, Verti
                     submitList(response)
                 }
             }
-
-            with(binding.gridRecyclerView) { //grid layout
+            postList.value = response
+            with(binding.gridRecyclerView) {
+                //staggeredGrid layoutManager 연결
+                layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
                 adapter = GridPostAdapter().apply {
-                    addItemDecoration(GridSpaceItemDecoration(3,6))
+                    addItemDecoration(GridSpaceItemDecoration(2,6))
                     submitList(response)
                 }
             }
         }
+    }
+
+    private fun editGridSpanCount(spanCount: Int) {
+        with(binding.gridRecyclerView){
+            layoutManager = StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL)
+            while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
+                removeItemDecorationAt(0)
+            }
+            addItemDecoration(GridSpaceItemDecoration(spanCount,6))
+        }
+
     }
 
     //TODO :  유저 프로필 페이지로 연결
@@ -84,20 +101,27 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, Verti
         when (view) {
             //상단 바의 랜덤,팔로잉 버튼 각각 클릭 (임시로 select 여부만 변경 처리)
             binding.appBarFollowing -> { //팔로잉 버튼 클릭
-                binding.appBarFollowing.isSelected  = true
+                binding.appBarFollowing.isSelected = true
                 binding.appBarRandom.isSelected = false
             }
             binding.topRandomMenuLayer -> { //랜덤 버튼 클릭
-                binding.appBarFollowing.isSelected  = false
+                binding.appBarFollowing.isSelected = false
                 binding.appBarRandom.isSelected = true
             }
 
-            //상단 바의 3장씩 보기 버튼 클릭
+            //상단 바의 2,3장씩 보기 버튼 클릭
             binding.appBarPhotoGridModeBtn -> {
                 when (binding.appBarPhotoGridModeBtn.text) {
                     "1" -> {
+                        binding.appBarPhotoGridModeBtn.text = "2"
+                        photoLayoutVisibilityMode(false) // grid visibility
+                        editGridSpanCount(2)
+
+                    }
+                    "2" -> {
                         binding.appBarPhotoGridModeBtn.text = "3"
                         photoLayoutVisibilityMode(false) // grid visibility
+                        editGridSpanCount(3)
                     }
                     "3" -> {
                         binding.appBarPhotoGridModeBtn.text = "1"
@@ -123,7 +147,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener, Verti
     override fun shareBtnClicked(bool: Boolean) {
         if (bool) {
             val dialog = HomeBottomSheetFragment()
-            dialog.show(parentFragmentManager,"bottom_sheet")
+            dialog.show(parentFragmentManager, "bottom_sheet")
         }
     }
 

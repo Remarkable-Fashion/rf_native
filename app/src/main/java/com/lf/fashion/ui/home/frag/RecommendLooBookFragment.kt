@@ -1,6 +1,5 @@
 package com.lf.fashion.ui.home.frag
 
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,11 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.lf.fashion.R
-import com.lf.fashion.TAG
 import com.lf.fashion.databinding.HomeBRecommendFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.home.UserInfoViewModel
@@ -42,7 +39,6 @@ class RecommendLooBookFragment : Fragment(), View.OnClickListener , AdapterView.
 
         viewModel.getLookBook()
         viewModel.lookBook.observe(viewLifecycleOwner) {
-            Log.d(TAG, "RecommendLooBookFragment - onViewCreated: $it")
             binding.styleRecommendRv.apply {
                 adapter = LookBookRvAdapter().apply {
                     submitList(it)
@@ -51,6 +47,10 @@ class RecommendLooBookFragment : Fragment(), View.OnClickListener , AdapterView.
             }
         }
 
+        spinnerSetting()
+    }
+
+    private fun spinnerSetting() {
         val spinner = binding.spinner
         spinner.onItemSelectedListener = this
         ArrayAdapter.createFromResource(
@@ -64,7 +64,6 @@ class RecommendLooBookFragment : Fragment(), View.OnClickListener , AdapterView.
     }
 
     override fun onClick(view: View?) {
-        Log.d(TAG, "RecommendLooBookFragment - onClick: $view");
         when (view) {
             binding.orderByBestBtn -> {
                 // 첫 줄에서 isSelected 값이 변경되었기 때문에 recentBtn 에는 반대 값이 들어감

@@ -22,7 +22,7 @@ class GridPostAdapter : ListAdapter<Post, GridPostAdapter.GridPostViewHolder>(De
             binding.photoUrl = post.photo[0].imageUrl
 
             binding.executePendingBindings()
-
+            //binding.gridImage.seth
         }
     }
 

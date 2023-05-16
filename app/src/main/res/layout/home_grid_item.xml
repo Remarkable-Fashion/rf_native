@@ -9,16 +9,19 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
-        android:layout_height="169dp"
+        android:layout_height="wrap_content"
         >
 
         <ImageView
             android:id="@+id/grid_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="170dp"
             android:background="@color/photo_back_grey"
             android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             imageUrl="@{photoUrl}" />
 
         <ImageView
