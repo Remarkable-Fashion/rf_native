@@ -1,5 +1,6 @@
 package com.lf.fashion.ui
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.lf.fashion.R
 import com.lf.fashion.data.response.ChipContents
+import kotlin.math.roundToInt
 
 fun Fragment.cancelBtnBackStack(view: ImageView) {
     view.setOnClickListener {
@@ -30,4 +32,9 @@ fun Fragment.childChip(chipList: List<ChipContents>, chipGroup: ChipGroup, defau
         chip.text = content
         chipGroup.addView(chip)
     }
+}
+
+fun convertDPtoPX(context: Context, dp: Int): Int {
+    val density: Float = context.resources.displayMetrics.density
+    return (dp.toFloat() * density).roundToInt()
 }

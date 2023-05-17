@@ -1,85 +1,57 @@
 package com.lf.fashion.ui.home.adapter
 
-import android.util.Log
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.lf.fashion.TAG
 import com.lf.fashion.data.response.Post
 import com.lf.fashion.databinding.HomeGridItemBinding
+import com.lf.fashion.ui.convertDPtoPX
 
-class GridPostAdapter : ListAdapter<Post, GridPostAdapter.GridPostViewHolder>(DefaultPostDiff()) {
+class GridPostAdapter : ListAdapter<Post, GridPostAdapter.GridPostViewHolder>(DefaultPostDiff()), SpanCountEditBtnListener {
     private lateinit var binding: HomeGridItemBinding
+    private var spanCount = 2
+    private lateinit var context : Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GridPostViewHolder {
         binding = HomeGridItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        Log.d(TAG, "GridPostAdapter - onCreateViewHolder: ");
+        context = parent.context
         return GridPostViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: GridPostViewHolder, position: Int) {
+        val layoutParams = holder.itemView.layoutParams
+       //spanCount 갯수에 따라 이미지뷰 (정확히는 이미지뷰를 감싸는 ConstraintLayout 높이를 조정
+        when (spanCount) {
+            2 -> {
+                layoutParams.height = convertDPtoPX(context , 230)
+                holder.itemView.layoutParams = layoutParams
+            }
+            3 -> {
+                layoutParams.height = convertDPtoPX(context,170)
+                holder.itemView.layoutParams = layoutParams
+            }
+        }
         holder.bind(getItem(position))
+
     }
 
     inner class GridPostViewHolder(private val binding: HomeGridItemBinding) :
-        RecyclerView.ViewHolder(binding.root), SpanCountEditBtnListener {
-        private var spanCount = 2
+        RecyclerView.ViewHolder(binding.root) {
+
         fun bind(post: Post) {
-            //첫번째 사진을 grid 로 노출
-
+            //post 내부 첫번째 사진을 grid 로 노출
             binding.photoUrl = post.photo[0].imageUrl
-
-            when (spanCount) {
-                2 -> {
-                    Log.d(
-                        TAG,
-                        "GridPostAdapter - editSpanCountClicked: !!!${binding.gridImage.layoutParams}"
-                    );
-                    val layoutParams = binding.gridImage.layoutParams
-                    layoutParams.height = 600
-                    binding.gridImage.layoutParams = layoutParams
-                    Log.d(TAG, "GridPostAdapter - editSpanCountClicked: !!!$layoutParams");
-                }
-                3 -> {
-                    val layoutParams = binding.gridImage.layoutParams
-                    layoutParams.height = 300
-                    binding.gridImage.layoutParams = layoutParams
-
-                }
-            }
             binding.executePendingBindings()
         }
-
-        override fun editSpanCountClicked(boolean: Boolean, newSpan: Int)  {
-            spanCount = newSpan
-            binding.executePendingBindings()
-        }
-
     }
 
-    /*override fun editSpanCountClicked(boolean: Boolean, spanCount: Int) {
-        when(spanCount){
-            2->{
-                Log.d(TAG, "GridPostAdapter - editSpanCountClicked: !!!${binding.gridImage.layoutParams}");
-                val layoutParams = binding.gridImage.layoutParams
-                layoutParams.height = 600
-                binding.gridImage.layoutParams = layoutParams
-                Log.d(TAG, "GridPostAdapter - editSpanCountClicked: !!!$layoutParams");
-            }
-            3->{
-                val layoutParams = binding.gridImage.layoutParams
-                layoutParams.height = 170
-                binding.gridImage.layoutParams = layoutParams
-
-            }
-        }
-    }*/
+    override fun editSpanCountBtnClicked(newSpan: Int) {
+     spanCount = newSpan
+    }
 
 }
-
 interface SpanCountEditBtnListener {
-    fun editSpanCountClicked(boolean: Boolean, spanCount: Int)
+    fun editSpanCountBtnClicked(newSpan: Int)
 }

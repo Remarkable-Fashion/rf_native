@@ -1,11 +1,11 @@
 package com.lf.fashion.ui.home.frag
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -79,6 +79,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun editGridSpanCount(spanCount: Int) {
         with(binding.gridRecyclerView){
             layoutManager = StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL)
@@ -86,9 +87,8 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
                 removeItemDecorationAt(0)
             }
             addItemDecoration(GridSpaceItemDecoration(spanCount,6))
-
-                gridAdapter.editSpanCountClicked(true,spanCount)
-
+            gridAdapter.editSpanCountBtnClicked(spanCount)  // 이미지 높이 조정을 위한 리스너에 span 값 전송
+            gridAdapter.notifyDataSetChanged()
 
         }
     }
@@ -123,7 +123,6 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
                         binding.appBarPhotoGridModeBtn.text = "2"
                         photoLayoutVisibilityMode(false) // grid visibility
                         editGridSpanCount(2)
-
                     }
                     "2" -> {
                         binding.appBarPhotoGridModeBtn.text = "3"
