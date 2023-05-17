@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.lf.fashion.R
 import com.lf.fashion.databinding.PhotoFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,5 +24,6 @@ class PhotoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.testBtn.setOnClickListener { findNavController().navigate(R.id.action_navigation_photo_to_photoStep2Fragment) }
     }
 }

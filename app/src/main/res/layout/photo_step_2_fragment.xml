@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/back_btn"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_back_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/sandwich_btn"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/back_btn"
+        android:layout_marginEnd="17dp"
+        android:src="@drawable/ic_sandwich" />
+    <TextView
+        android:id="@+id/photo_filter_sub_title"
+        style="@style/subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="업로드한 사진의 상세정보를 등록해주세요."
+        app:layout_constraintStart_toStartOf="@id/photo_filter_title"
+        app:layout_constraintTop_toBottomOf="@id/photo_filter_title" />
+
+    <TextView
+        android:id="@+id/photo_filter_title"
+        style="@style/app_bar_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="사진 등록하기"
+        app:layout_constraintStart_toStartOf="@id/back_btn"
+        app:layout_constraintTop_toBottomOf="@id/back_btn" />
+
+    <View
+        android:id="@+id/title_underline"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/line_grey"
+        app:layout_constraintTop_toBottomOf="@id/photo_filter_sub_title" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_underline"
+       >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/gender_label"
+                style="@style/montserrat_bold_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Gender"
+                app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/gender_man_btn"
+                style="@style/montserrat_medium_text"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/selector_btn_greyblack"
+                android:stateListAnimator="@null"
+                android:text="MAN"
+                android:textColor="@drawable/selector_text_color"
+                app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                app:layout_constraintTop_toBottomOf="@id/gender_label"
+                app:layout_constraintWidth_percent="0.44" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/gender_woman_btn"
+                style="@style/montserrat_medium_text"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/selector_btn_greyblack"
+                android:stateListAnimator="@null"
+                android:text="WOMAN"
+                android:textColor="@drawable/selector_text_color"
+                app:layout_constraintBaseline_toBaselineOf="@id/gender_man_btn"
+                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                app:layout_constraintStart_toEndOf="@id/gender_man_btn"
+                app:layout_constraintWidth_percent="0.44" />
+
+            <ImageView
+                android:id="@+id/info_space"
+                android:layout_width="0dp"
+                android:layout_height="163dp"
+                app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                app:layout_constraintTop_toBottomOf="@id/gender_man_btn"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_grey_box"
+                />
+            <CheckBox
+                android:id="@+id/height_check_box"
+                style="@style/spoqa_12sp_label"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/selector_checkbox"
+                android:button="@null"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/height_value"
+                app:layout_constraintEnd_toStartOf="@id/checkbox_label" />
+            <TextView
+                android:id="@+id/checkbox_label"
+                style="@style/spoqa_12sp_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="프로필 정보 입력"
+                app:layout_constraintBaseline_toBaselineOf="@id/height_check_box"
+                app:layout_constraintEnd_toEndOf="@id/height_value" />
+
+            <EditText
+                android:id="@+id/height_value"
+                style="@style/edittext_style"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="12dp"
+                android:background="@drawable/selector_btn_whitegrey"
+                android:inputType="number"
+                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                app:layout_constraintStart_toEndOf="@+id/height_label"
+                app:layout_constraintTop_toTopOf="@id/info_space"
+                />
+
+            <TextView
+                android:id="@+id/height_label"
+                style="@style/main_bottom_menu_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="Height"
+                app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                app:layout_constraintTop_toTopOf="@id/height_value"
+                app:layout_constraintBottom_toBottomOf="@id/height_value"/>
+
+
+            <TextView
+                android:id="@+id/weight_label"
+                style="@style/main_bottom_menu_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Weight"
+                app:layout_constraintStart_toStartOf="@id/height_label"
+                app:layout_constraintTop_toTopOf="@id/weight_value"
+                app:layout_constraintBottom_toBottomOf="@id/weight_value"/>
+            <CheckBox
+                android:id="@+id/weight_check_box"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/selector_checkbox"
+                android:button="@null"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/weight_value"
+                app:layout_constraintEnd_toStartOf="@id/checkbox_label2" />
+            <TextView
+                android:id="@+id/checkbox_label2"
+                style="@style/spoqa_12sp_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="프로필 정보 입력"
+                app:layout_constraintBaseline_toBaselineOf="@id/weight_check_box"
+                app:layout_constraintEnd_toEndOf="@id/weight_value" />
+            <View
+                android:id="@+id/info_space_middle_line"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/rectangle_grey"
+                app:layout_constraintStart_toStartOf="@id/info_space"
+                app:layout_constraintEnd_toEndOf="@id/info_space"
+                app:layout_constraintTop_toBottomOf="@id/checkbox_label"
+                android:layout_marginTop="12dp"
+                />
+            <EditText
+                android:id="@+id/weight_value"
+                style="@style/edittext_style"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginStart="12dp"
+                android:background="@drawable/selector_btn_whitegrey"
+                android:inputType="number"
+                app:layout_constraintStart_toEndOf="@id/weight_label"
+                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                app:layout_constraintTop_toBottomOf="@id/info_space_middle_line" />
+
+            <include
+                android:id="@+id/filter_include"
+                layout="@layout/home_photo_filter_chip_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="27dp"
+                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                app:layout_constraintTop_toBottomOf="@id/weight_value" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/clothes_detail_rv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                app:layout_constraintTop_toBottomOf="@id/filter_include"
+                android:layout_marginTop="27dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                tools:listitem="@layout/item_regist_form"
+                />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.05" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

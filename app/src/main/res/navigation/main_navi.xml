@@ -37,7 +37,11 @@
     <fragment
         android:id="@+id/navigation_photo"
         android:name="com.lf.fashion.ui.addPost.PhotoFragment"
-        android:label="PhotoFragment" />
+        android:label="PhotoFragment" >
+        <action
+            android:id="@+id/action_navigation_photo_to_photoStep2Fragment"
+            app:destination="@id/photoStep2Fragment" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_search"
         android:name="com.lf.fashion.ui.search.SearchFragment"
@@ -75,4 +79,8 @@
         android:id="@+id/recommendFragment"
         android:name="com.lf.fashion.ui.home.frag.RecommendLooBookFragment"
         android:label="RecommendFragment" />
+    <fragment
+        android:id="@+id/photoStep2Fragment"
+        android:name="com.lf.fashion.ui.addPost.PhotoStep2Fragment"
+        android:label="PhotoStep2Fragment" />
 </navigation>

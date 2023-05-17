@@ -68,3 +68,6 @@ data class Profile(
     @SerializedName("user_id")
     val userId : String
 )
+data class ClothesCategory(
+    val category : String
+)
