@@ -1,5 +1,6 @@
 package com.lf.fashion.data.response
 
+import android.net.Uri
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
@@ -70,4 +71,8 @@ data class Profile(
 )
 data class ClothesCategory(
     val category : String
+)
+data class ImageItem(
+    var uri: Uri?,
+    var isChecked: Boolean
 )
