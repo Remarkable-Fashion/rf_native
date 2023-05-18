@@ -43,10 +43,10 @@
             android:layout_marginEnd="20dp"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:background="@color/lf_light_purple"
-            android:text="+ 팔로우"
+            android:text="@string/follow_btn_text"
             android:textColor="@color/lf_purple"
             android:fontFamily="@font/spoqahansansneo_bold"
-            android:textSize="12dp" />
+            android:textSize="12sp" />
 
         <ImageView
             android:id="@+id/kebab_btn"

@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:text="이 의상은 어때?"
+        android:text="@string/recommend_title"
         app:layout_constraintStart_toStartOf="@id/cancel_btn"
         app:layout_constraintTop_toBottomOf="@id/cancel_btn" />
     <TextView
@@ -38,7 +38,7 @@
         style="@style/subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="룩북에 어울리는 아이템과 나의 생각을 공유해보세요!"
+        android:text="@string/recommend_sub_title"
         app:layout_constraintStart_toStartOf="@id/recommend_title"
         app:layout_constraintTop_toBottomOf="@id/recommend_title" />
     <View
@@ -98,7 +98,7 @@
                     android:layout_marginEnd="10dp"
                     android:textColor="@drawable/selector_text_color"
                     style="@style/spoqa_12sp_label"
-                    android:text="베스트"
+                    android:text="@string/beat_label"
                     />
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/order_by_recent_btn"
@@ -108,14 +108,14 @@
                     android:layout_marginEnd="10dp"
                     android:textColor="@drawable/selector_text_color"
                     style="@style/spoqa_12sp_label"
-                    android:text="최신순"/>
+                    android:text="@string/recent_label"/>
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:background="@drawable/selector_btn_greylineblack"
                     android:textColor="@drawable/selector_text_color"
                     style="@style/spoqa_12sp_label"
-                    android:text="+"/>
+                    android:text="@string/plus"/>
             </LinearLayout>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/style_recommend_rv"

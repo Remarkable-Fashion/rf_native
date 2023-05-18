@@ -27,7 +27,7 @@
         style="@style/subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="업로드한 사진의 상세정보를 등록해주세요."
+        android:text="@string/upload_photo_sub_title"
         app:layout_constraintStart_toStartOf="@id/photo_filter_title"
         app:layout_constraintTop_toBottomOf="@id/photo_filter_title" />
 
@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:text="사진 등록하기"
+        android:text="@string/upload_photo_title"
         app:layout_constraintStart_toStartOf="@id/back_btn"
         app:layout_constraintTop_toBottomOf="@id/back_btn" />
 
@@ -69,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="Gender"
+                android:text="@string/gender_label"
                 app:layout_constraintStart_toStartOf="@id/guideline_vertical"
                 app:layout_constraintTop_toTopOf="parent" />
             <androidx.appcompat.widget.AppCompatButton
@@ -80,7 +80,7 @@
                 android:layout_marginTop="15dp"
                 android:background="@drawable/selector_btn_greyblack"
                 android:stateListAnimator="@null"
-                android:text="MAN"
+                android:text="@string/man"
                 android:textColor="@drawable/selector_text_color"
                 app:layout_constraintStart_toStartOf="@id/guideline_vertical"
                 app:layout_constraintTop_toBottomOf="@id/gender_label"
@@ -94,7 +94,7 @@
                 android:layout_marginStart="10dp"
                 android:background="@drawable/selector_btn_greyblack"
                 android:stateListAnimator="@null"
-                android:text="WOMAN"
+                android:text="@string/woman"
                 android:textColor="@drawable/selector_text_color"
                 app:layout_constraintBaseline_toBaselineOf="@id/gender_man_btn"
                 app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
@@ -128,7 +128,7 @@
                 style="@style/spoqa_12sp_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="프로필 정보 입력"
+                android:text="@string/profile_checkbox_label"
                 app:layout_constraintBaseline_toBaselineOf="@id/height_check_box"
                 app:layout_constraintEnd_toEndOf="@id/height_value" />
 
@@ -153,7 +153,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:text="Height"
+                android:text="@string/height_label"
                 app:layout_constraintStart_toStartOf="@id/guideline_vertical"
                 app:layout_constraintTop_toTopOf="@id/height_value"
                 app:layout_constraintBottom_toBottomOf="@id/height_value"/>
@@ -164,7 +164,7 @@
                 style="@style/main_bottom_menu_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Weight"
+                android:text="@string/weight_label"
                 app:layout_constraintStart_toStartOf="@id/height_label"
                 app:layout_constraintTop_toTopOf="@id/weight_value"
                 app:layout_constraintBottom_toBottomOf="@id/weight_value"/>
@@ -184,7 +184,7 @@
                 style="@style/spoqa_12sp_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="프로필 정보 입력"
+                android:text="@string/profile_checkbox_label"
                 app:layout_constraintBaseline_toBaselineOf="@id/weight_check_box"
                 app:layout_constraintEnd_toEndOf="@id/weight_value" />
             <View

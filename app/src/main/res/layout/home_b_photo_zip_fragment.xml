@@ -22,7 +22,7 @@
             android:paddingEnd="0dp"
             android:paddingStart="5dp"
             android:paddingTop="5dp"
-            android:text="사진모아보기" />
+            android:text="@string/photo_zip_title" />
 
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.core.widget.NestedScrollView
@@ -70,7 +70,7 @@
                 android:id="@+id/profile_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="rf_user"
+                android:text=""
                 app:layout_constraintStart_toEndOf="@id/profile_image"
                 app:layout_constraintTop_toTopOf="@id/profile_image"
                 android:layout_marginStart="10dp"
@@ -80,7 +80,7 @@
                 android:id="@+id/profile_user_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="여 | 162cm | 48kg"
+                android:text=""
                 app:layout_constraintStart_toStartOf="@id/profile_name"
                 app:layout_constraintTop_toBottomOf="@id/profile_name"
                 style="@style/montserrat_medium_12"
@@ -95,10 +95,10 @@
                 android:layout_marginEnd="20dp"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:background="@color/lf_light_purple"
-                android:text="+ 팔로우"
+                android:text="@string/follow_btn_text"
                 android:textColor="@color/lf_purple"
                 android:fontFamily="@font/spoqahansansneo_bold"
-                android:textSize="12dp"
+                android:textSize="12sp"
                 />
 
             <ImageView

@@ -9,6 +9,49 @@
     <string name="naver_login_text">네이버으로 로그인</string>
     <string name="google_login_text">구글 아이디로 로그인</string>
 
+
+    <string name="following_label">팔로잉</string>
+    <string name="random_label">랜덤</string>
+    <string name="new_label">N</string>
+    <string name="_1">1</string>
+    <string name="filter_sub_title">취향에 딱 맞는 패션을 보여드릴게요</string>
+    <string name="filter_title">어떤 패션이 궁금하세요?</string>
+    <string name="gender_label">Gender</string>
+    <string name="height_label">Height</string>
+    <string name="profile_checkbox_label">프로필 정보 입력</string>
+    <string name="weight_label">Weight</string>
+    <string name="man">MAN</string>
+    <string name="woman">WOMAN</string>
+    <string name="photo_zip_title">사진 모아보기</string>
+    <string name="follow_btn_text">+ 팔로우</string>
+    <string name="recommend_title">이 의상은 어때?</string>
+    <string name="recommend_sub_title">룩북에 어울리는 아이템과 나의 생각을 공유해보세요!</string>
+    <string name="beat_label">베스트</string>
+    <string name="recent_label">최신순</string>
+    <string name="plus">+</string>
+    <string name="information_label">Information</string>
+    <string name="clothes_label">Clothes</string>
+    <string name="recommend_btn_text"><![CDATA[이 의상은 어때? >]]></string>
+    <string name="link_btn_text">링크 복사하기</string>
+    <string name="share_btn_text">공유하기</string>
+    <string name="bookmark_btn_text">북마크하기</string>
+    <string name="no_interest_btn_text">관심없음</string>
+    <string name="cancel_follow_btn_text">팔로우 취소</string>
+    <string name="block_btn_text">차단하기</string>
+    <string name="declare_btn_text">신고하기</string>
+    <string name="tpo">TPO</string>
+    <string name="season">Season</string>
+    <string name="style">Style</string>
+    <string name="place_label">Place</string>
+    <string name="introduction_label">Introduction</string>
+    <string name="name">Name</string>
+    <string name="price">Price</string>
+    <string name="color">Color</string>
+    <string name="size">Size</string>
+    <string name="url">Url</string>
+    <string name="upload_photo_sub_title">업로드한 사진의 상세정보를 등록해주세요.</string>
+    <string name="upload_photo_title">사진 등록하기</string>
+
     <string-array name="spinner_array">
         <item> All</item>
     </string-array>
