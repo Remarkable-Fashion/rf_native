@@ -13,10 +13,56 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.groupalbum.photo.ImagePickerFragment">
+        <ImageView
+            android:id="@+id/cancel_btn"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_cancel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="15dp"
+            android:text="등록"
+            app:layout_constraintTop_toTopOf="@id/photo_top_label"
+            app:layout_constraintBottom_toBottomOf="@id/photo_top_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:onClick="@{buttonListener}"
+            android:fontFamily="@font/spoqahansansneo_bold"
+            android:textSize="12sp"
+            android:textColor="@color/light_text"
+            android:background="@color/background_grey"
+            style="@style/Widget.AppCompat.Button.Borderless"/>
+        <TextView
+            android:id="@+id/photo_top_label"
+            style="@style/app_bar_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="전체보기"
+            app:layout_constraintStart_toStartOf="@id/cancel_btn"
+            app:layout_constraintTop_toBottomOf="@id/cancel_btn" />
 
-        <ScrollView
+        <View
+            android:id="@+id/title_underline"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/line_grey"
+            app:layout_constraintTop_toBottomOf="@id/photo_top_label" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_underline">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -28,13 +74,15 @@
                     android:layout_height="match_parent"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:spanCount="3"
-                    tools:listitem="@layout/item_image"/>
+                    tools:listitem="@layout/item_image"
+                    android:overScrollMode="never"
+                    android:nestedScrollingEnabled="false"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+   <!--     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"
             app:layout_constraintBottom_toBottomOf="parent">
@@ -46,7 +94,7 @@
                 android:text="Select"
                 android:onClick="@{buttonListener}"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -109,6 +109,6 @@ private class ImageDiffCallback : DiffUtil.ItemCallback<ImageItem>() {
     }
 
     override fun areContentsTheSame(oldItem: ImageItem, newItem: ImageItem): Boolean {
-        return oldItem == newItem
+        return oldItem.uri == newItem.uri
     }
 }
