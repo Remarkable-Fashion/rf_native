@@ -1,6 +1,5 @@
 package com.lf.fashion.ui.addPost
 
-import android.content.ClipData
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -23,7 +22,7 @@ class ClothesRvAdapter : ListAdapter<String,ClothesRvAdapter.ClothesRvViewHolder
         RecyclerView.ViewHolder(binding.root) {
         fun bind(categories: String) {
             binding.category = categories
-
+            // 만약 내부 레이아웃 변경해야할 ㄸㅐ - > position 을 이용해보자 getItem(position+1) ==categories
             //+ 버튼 클릭시 아이템 추가
             binding.addCardBtn.setOnClickListener {
                 val position = this.absoluteAdapterPosition
