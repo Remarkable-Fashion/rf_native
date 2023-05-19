@@ -4,6 +4,7 @@ import android.content.Context
 import com.lf.fashion.data.network.RemoteDataSource
 import com.lf.fashion.data.network.api.ChipTestApi
 import com.lf.fashion.data.network.api.PhotoTestApi
+import com.lf.fashion.ui.addPost.ImagePickerViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,4 +33,12 @@ object AppModule {
     ): ChipTestApi {
         return remoteDataSource.buildApi(ChipTestApi::class.java,context)
     }
+
+  /*  @Singleton
+    @Provides
+    fun provideImagePickerViewModel(
+        @ApplicationContext context: Context
+    ) : ImagePickerViewModel{
+        return ImagePickerViewModel(context)
+    }*/
 }

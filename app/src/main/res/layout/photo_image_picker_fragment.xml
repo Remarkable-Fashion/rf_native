@@ -53,7 +53,21 @@
             android:layout_marginTop="20dp"
             android:background="@color/line_grey"
             app:layout_constraintTop_toBottomOf="@id/photo_top_label" />
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/selected_photo_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/title_underline"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="15dp"
+            android:paddingStart="13dp"
+            android:paddingEnd="13dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_selected_image"
+            android:visibility="gone"
+            />
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -62,7 +76,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title_underline">
+            app:layout_constraintTop_toBottomOf="@id/selected_photo_rv">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
