@@ -42,7 +42,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
             }
         }
 
-    private val takePictureLauncher = registerForActivityResult(TakePictureContract()) { result ->
+    private val takePictureLauncher = registerForActivityResult(TakePictureContract(requireContext())) { result ->
         if (result != null) {
             // 이미지를 캡처한 후의 처리 로직
             Log.d(TAG, "ImagePickerFragment - : $result");
