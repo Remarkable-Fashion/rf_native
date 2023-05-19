@@ -10,7 +10,7 @@ import com.lf.fashion.TAG
 import com.lf.fashion.data.response.ImageItem
 import com.lf.fashion.databinding.ItemSelectedImageBinding
 
-class CheckedImageAdapter(private val checkedImageCancelBtnListener: CheckedImageCancelBtnListener) :
+class CheckedImageAdapter(private val checkedImageCancelBtnListener: CheckedImageRVListener) :
     ListAdapter<ImageItem, CheckedImageAdapter.CheckedImageViewHolder>(ImageDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CheckedImageViewHolder {
         val binding =

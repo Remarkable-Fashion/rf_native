@@ -1,7 +1,5 @@
 package com.lf.fashion.ui.addPost
 
-import android.media.Image
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -10,7 +8,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lf.fashion.R
-import com.lf.fashion.TAG
 import com.lf.fashion.data.response.ImageItem
 import com.lf.fashion.databinding.ItemCameraBinding
 import com.lf.fashion.databinding.ItemImageBinding
@@ -20,7 +17,7 @@ import com.lf.fashion.databinding.ItemImageBinding
  * whose isChecked should be updated when checkbox checked.
  */
 class ImageAdapter(
-    private val parentViewModel: ImagePickerViewModel,private val imageCheckedListener: ImageCheckedListener
+    private val parentViewModel: ImagePickerViewModel,private val galleryRvListener: GalleryRvListener
 ) : ListAdapter<ImageItem, RecyclerView.ViewHolder>(ImageDiffCallback()) {
 
     companion object {
@@ -29,12 +26,13 @@ class ImageAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        //var holder = null
         return when (viewType) {
             VIEW_TYPE_FIRST_ITEM -> {
                 val binding =
                     ItemCameraBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                FirstImageViewHolder(binding)
+                val holder = FirstImageViewHolder(binding)
+                cameraBtnClicked(binding, holder)
+                holder
             }
             else -> {
 
@@ -50,7 +48,21 @@ class ImageAdapter(
                 holder
             }
         }
-        //return holder
+    }
+    private fun subscribeUi(binding: ItemImageBinding, holder: ImageViewHolder) {
+        binding.image.setOnClickListener {
+            parentViewModel.imageItemList.value?.let {
+                val position = holder.absoluteAdapterPosition
+                binding.checkbox.isChecked = !binding.checkbox.isChecked // 체크박스 체크 여부 반전
+                it[position - 1].isChecked = binding.checkbox.isChecked // 체크 여부를 객체에도 담아줌
+                galleryRvListener.imageChecked(it[position-1])
+            }
+        }
+    }
+    private fun cameraBtnClicked(binding: ItemCameraBinding, holder: FirstImageViewHolder) {
+        binding.camera.setOnClickListener {
+            galleryRvListener.cameraBtnClicked()
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -83,27 +95,13 @@ class ImageAdapter(
                 .into(binding.image)
 
             binding.checkbox.isChecked = imageItem.isChecked
-           // Log.d(TAG, "ImageViewHolder - bind: $imageItem");
-        }
-    }
-
-    private fun subscribeUi(binding: ItemImageBinding, holder: ImageViewHolder) {
-        binding.image.setOnClickListener {
-            parentViewModel.imageItemList.value?.let {
-                val position = holder.absoluteAdapterPosition
-                binding.checkbox.isChecked = !binding.checkbox.isChecked // 체크박스 체크 여부 반전
-                it[position - 1].isChecked = binding.checkbox.isChecked // 체크 여부를 객체에도 담아줌
-                imageCheckedListener.imageChecked(it[position-1])
-            }
         }
     }
 
     class FirstImageViewHolder(
         private val binding: ItemCameraBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind() {
-
-        }
+        fun bind() { }
     }
 
     override fun getItemViewType(position: Int): Int {

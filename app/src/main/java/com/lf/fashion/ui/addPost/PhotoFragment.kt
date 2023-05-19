@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -19,20 +20,26 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PhotoFragment : Fragment() {
     private lateinit var binding : PhotoFragmentBinding
+
     //복수의 권한이 필요한 경우 RequestMultiplePermissions() 후 launch(배열) 로 전달
     private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            val allPermissionsGranted = permissions.all { it.value }
+            val galleryPermission = permissions[Manifest.permission.READ_EXTERNAL_STORAGE] ?: false
+            if (allPermissionsGranted || galleryPermission) {
                 //모든 이미지타입
-               // requestImageUriLauncher.launch("image/*") // 여기서 요청할경우 권한 동의 후 바로 파일접근으로 넘어갈 수 있다.
+                // requestImageUriLauncher.launch("image/*") // 여기서 요청할경우 권한 동의 후 바로 파일접근으로 넘어갈 수 있다.
                 Log.d(TAG, "PhotoFragment - : granted");
                 val direction = PhotoFragmentDirections.actionNavigationPhotoToImagePickerFragment()
                 findNavController().navigate(direction)
-            }else{
+            } else {
                 Log.d(TAG, "PhotoFragment - : granted fail");
             }
         }
-
+    val permissions = arrayOf(
+        Manifest.permission.CAMERA,
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    )
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,7 +61,7 @@ class PhotoFragment : Fragment() {
             }
             // 권한을 아직 허용한 적이 없고, 안내문구를 보내야하는 시점도 아닐 경우
             else -> {
-                requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+                requestPermissionLauncher.launch(permissions)
             }
         }
     }
@@ -62,7 +69,7 @@ class PhotoFragment : Fragment() {
         AlertDialog.Builder(requireContext()).apply {
             setMessage("이미지를 가져오기 위해서, 외부 저장소 읽기 권한이 필요합니다.")
             setNegativeButton("취소", null)
-            setPositiveButton("동의") { _, _ -> requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE) }
+            setPositiveButton("동의") { _, _ -> requestPermissionLauncher.launch(permissions) }
         }.show()
     }
 }
