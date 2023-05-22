@@ -31,7 +31,7 @@ private const val INDEX_DATE_ADDED = MediaStore.MediaColumns.DATE_ADDED
 class ImagePickerViewModel(context: Context): ViewModel() {
     val imageItemList = MutableLiveData<MutableList<ImageItem>>(mutableListOf())
     val checkedItemList = MutableLiveData<MutableList<ImageItem>>()
-
+    //dddd
     init {
     fetchImageItemList(context)
     }
