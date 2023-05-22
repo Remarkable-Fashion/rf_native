@@ -39,9 +39,6 @@
         android:name="com.lf.fashion.ui.addPost.PhotoFragment"
         android:label="PhotoFragment" >
         <action
-            android:id="@+id/action_navigation_photo_to_photoStep2Fragment"
-            app:destination="@id/photoStep2Fragment" />
-        <action
             android:id="@+id/action_navigation_photo_to_imagePickerFragment"
             app:destination="@id/imagePickerFragment" />
     </fragment>
@@ -89,5 +86,15 @@
     <fragment
         android:id="@+id/imagePickerFragment"
         android:name="com.lf.fashion.ui.addPost.ImagePickerFragment"
-        android:label="ImagePickerFragment" />
+        android:label="ImagePickerFragment" >
+        <action
+            android:id="@+id/action_imagePickerFragment_to_photoStep2Fragment"
+            app:destination="@id/photoStep2Fragment" >
+            <argument
+                android:name="image_uri"
+                app:argType="string[]"
+                app:nullable="true"
+                android:defaultValue="@null" />
+        </action>
+    </fragment>
 </navigation>

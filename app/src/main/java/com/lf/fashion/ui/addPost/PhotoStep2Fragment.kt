@@ -1,11 +1,13 @@
 package com.lf.fashion.ui.addPost
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.lf.fashion.TAG
 import com.lf.fashion.databinding.PhotoStep2FragmentBinding
 import com.lf.fashion.ui.childChip
 import com.lf.fashion.ui.home.FilterViewModel
@@ -36,6 +38,9 @@ class PhotoStep2Fragment : Fragment() {
         chipSetting()
 
         rvAdapterSetting()
+
+        val imageUris = arguments?.get("image_uri") as Array<*>
+        Log.d(TAG, "PhotoStep2Fragment - onViewCreated: ${imageUris.get(0)}");
     }
     private fun chipSetting(){
         viewModel.chipList.observe(viewLifecycleOwner){

@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.lf.fashion.TAG
 import com.lf.fashion.data.response.ImageItem
 import com.lf.fashion.databinding.PhotoImagePickerFragmentBinding
@@ -39,7 +40,7 @@ import java.util.*
  */
 @AndroidEntryPoint
 class ImagePickerFragment : Fragment(), GalleryRvListener,
-   CheckedImageRVListener {
+    CheckedImageRVListener {
     private lateinit var binding: PhotoImagePickerFragmentBinding
     private val viewModel: ImagePickerViewModel by viewModels {
         ImagePickerViewModelFactory(requireContext())
@@ -58,20 +59,21 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
             }
         }
 
-    private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result != null) {
-            // 이미지를 캡처한 후의 처리 로직
-            val extras = result.data?.extras
-            val bitmap = extras?.get("data") as Bitmap
-            val saveImage = SaveImage(requireContext())
-            //이미지 저장하고 uri 얻기 -> viewModel 의 imageItem 에 추가
-            val imageUri = saveImage.saveImageToGallery(bitmap)
-            viewModel.addImageToImageList(ImageItem(imageUri,false))
+    private val takePictureLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result != null) {
+                // 이미지를 캡처한 후의 처리 로직
+                val extras = result.data?.extras
+                val bitmap = extras?.get("data") as Bitmap
+                val saveImage = SaveImage(requireContext())
+                //이미지 저장하고 uri 얻기 -> viewModel 의 imageItem 에 추가
+                val imageUri = saveImage.saveImageToGallery(bitmap)
+                viewModel.addImageToImageList(ImageItem(imageUri, false))
 
-        } else {
-            // 이미지 캡처가 실패하거나 사용자가 취소한 경우의 처리 로직
+            } else {
+                // 이미지 캡처가 실패하거나 사용자가 취소한 경우의 처리 로직
+            }
         }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -89,13 +91,10 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
         binding.buttonListener = View.OnClickListener {
             // Pass Uri list to fragment outside
             Log.d(TAG, "ImagePickerFragment - onCreateView: ${viewModel.getCheckedImageUriList()}");
+            val action = ImagePickerFragmentDirections.actionImagePickerFragmentToPhotoStep2Fragment(
+                    viewModel.getCheckedImageUriList().toTypedArray())
+            findNavController().navigate(action)
 
-
-        /* activity?.supportFragmentManager?.setFragmentResult(
-                 URI_LIST_CHECKED,
-                 bundleOf("uriList" to viewModel.getCheckedImageUriList())
-             )*/
-            // findNavController().navigateUp()
         }
 
         galleryImageRvSetting()
@@ -103,6 +102,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
         checkedImageRvSetting()
 
     }
+
     private fun galleryImageRvSetting() {
         val galleryImageAdapter = ImageAdapter(viewModel, this@ImagePickerFragment)
         binding.recyclerviewImage.adapter = galleryImageAdapter
@@ -111,6 +111,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
             galleryImageAdapter.notifyDataSetChanged()
         }
     }
+
     private fun checkedImageRvSetting() {
         val checkedImageAdapter = CheckedImageAdapter(this@ImagePickerFragment)
         binding.selectedPhotoRv.adapter = checkedImageAdapter
@@ -141,12 +142,20 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             // Android 10 이상인 경우 WRITE_EXTERNAL_STORAGE 권한이 필요하지 않음
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.CAMERA
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 permissionsToRequest.add(Manifest.permission.CAMERA)
             }
         } else {
             // Android 9 이하인 경우 WRITE_EXTERNAL_STORAGE 권한이 필요함
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 permissionsToRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
         }
@@ -159,7 +168,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
         viewModel.cancelCheck(imageItem) // viewModel 이 들고있는 리스트에서도 isChecked 를 false로 바꿔주기
     }
 
-    private fun applicationSettingIntent(){
+    private fun applicationSettingIntent() {
         AlertDialog.Builder(requireContext()).apply {
             setMessage("이미지를 촬영하기 위해서, 카메라 접근 권한이 필요합니다.\n 설정창으로 이동하시겠습니까?")
             setNegativeButton("취소", null)
