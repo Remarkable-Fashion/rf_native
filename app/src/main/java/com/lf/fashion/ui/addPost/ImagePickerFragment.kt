@@ -85,6 +85,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //submit(등록) 버튼 클릭시 편집 fragment로 이동
         binding.buttonListener = View.OnClickListener {
             // Pass Uri list to fragment outside
             Log.d(TAG, "ImagePickerFragment - onCreateView: ${viewModel.getCheckedImageUriList()}");

@@ -11,16 +11,9 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.RequiresApi
-import com.gun0912.tedpermission.provider.TedPermissionProvider.context
-import com.lf.fashion.TAG
-import dagger.hilt.android.qualifiers.ApplicationContext
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.util.*
-import kotlin.coroutines.coroutineContext
 
 class SaveImage(private val context: Context)  {
 

@@ -1,23 +1,15 @@
 package com.lf.fashion.ui.addPost
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Context
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.gun0912.tedpermission.provider.TedPermissionProvider.context
-import com.lf.fashion.TAG
 import com.lf.fashion.data.response.ImageItem
-import dagger.hilt.android.internal.Contexts.getApplication
-import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.File
-import javax.inject.Inject
 
 private const val INDEX_MEDIA_ID = MediaStore.MediaColumns._ID
 private const val INDEX_MEDIA_URI = MediaStore.MediaColumns.DATA
