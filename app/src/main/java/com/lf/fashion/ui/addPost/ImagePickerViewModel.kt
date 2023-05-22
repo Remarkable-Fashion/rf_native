@@ -25,7 +25,7 @@ private const val INDEX_ALBUM_NAME = MediaStore.Images.Media.BUCKET_DISPLAY_NAME
 private const val INDEX_DATE_ADDED = MediaStore.MediaColumns.DATE_ADDED
 
 /**
- * 최종 선택된 이미지를 참조할 때는 checkedItemList를 참조하는 것이 아니라 getCheckedImageUriList 로 참조할것 !
+ * 최종 선택된 이미지를 참조할 때는 checkedItemList 를 참조하는 것이 아니라 getCheckedImageUriList 로 참조할것 !
  *
  */
 class ImagePickerViewModel(context: Context): ViewModel() {

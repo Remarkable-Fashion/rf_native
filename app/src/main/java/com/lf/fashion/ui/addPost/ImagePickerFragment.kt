@@ -33,7 +33,10 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-
+/**
+ * TODO ? : viewModel init 에서 imageItem List 를 불러옴
+ * 앱을 중단하고 카메라로 사진을 찍고 돌아와도 앱을 종료후 다시 시작하지 않는 이상 새로운 이미지가 뜨지 않는 문제 발생가능
+ */
 @AndroidEntryPoint
 class ImagePickerFragment : Fragment(), GalleryRvListener,
    CheckedImageRVListener {
@@ -146,6 +149,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
         }
         requestPermissionLauncher.launch(permissionsToRequest.toTypedArray())
     }
+
 
     // 선택된 이미지 미리보기 뷰에서 , x 버튼을 눌렀을 때
     override fun checkedCancel(imageItem: ImageItem) {
