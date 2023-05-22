@@ -3,6 +3,7 @@ package com.lf.fashion.ui.addPost
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
@@ -89,6 +90,15 @@ class ImagePickerViewModel(context: Context): ViewModel() {
         checkTemp?.removeIf { checked -> checked.uri == uncheckedItem.uri }
         checkTemp?.let {
             checkedItemList.value = it
+        }
+    }
+
+    // 이미지를 기존 리스트에 추가하는 메서드
+    fun addImageToImageList(newItem: ImageItem) {
+        val currentList = imageItemList.value
+        currentList?.let {
+            it.add(newItem)
+            imageItemList.value = it
         }
     }
 

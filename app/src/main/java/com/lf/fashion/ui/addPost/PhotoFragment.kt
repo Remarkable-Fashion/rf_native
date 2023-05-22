@@ -26,7 +26,9 @@ class PhotoFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             val allPermissionsGranted = permissions.all { it.value }
             val galleryPermission = permissions[Manifest.permission.READ_EXTERNAL_STORAGE] ?: false
-            if (allPermissionsGranted || galleryPermission) {
+            Log.d(TAG, "PhotoFragment - : $allPermissionsGranted");
+            //모두 허용 또는 외부저장소 읽기 권한 있을 시 커스텀 갤러리 뷰로 이동
+            if (allPermissionsGranted || galleryPermission ) {
                 //모든 이미지타입
                 // requestImageUriLauncher.launch("image/*") // 여기서 요청할경우 권한 동의 후 바로 파일접근으로 넘어갈 수 있다.
                 Log.d(TAG, "PhotoFragment - : granted");
@@ -38,7 +40,8 @@ class PhotoFragment : Fragment() {
         }
     val permissions = arrayOf(
         Manifest.permission.CAMERA,
-        Manifest.permission.READ_EXTERNAL_STORAGE
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
     )
     override fun onCreateView(
         inflater: LayoutInflater,
