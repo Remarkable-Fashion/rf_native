@@ -1,13 +1,17 @@
 package com.lf.fashion.ui.addPost
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.databinding.ItemRegistFormBinding
 
-class ClothesRvAdapter : ListAdapter<String,ClothesRvAdapter.ClothesRvViewHolder>(ClothesCategoryDiff()) {
+class ClothesRvAdapter :
+    ListAdapter<String, ClothesRvAdapter.ClothesRvViewHolder>(ClothesCategoryDiff()) {
+
+    var addedItemPosition :Int?  = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothesRvViewHolder {
         val binding =
             ItemRegistFormBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -22,12 +26,26 @@ class ClothesRvAdapter : ListAdapter<String,ClothesRvAdapter.ClothesRvViewHolder
         RecyclerView.ViewHolder(binding.root) {
         fun bind(categories: String) {
             binding.category = categories
-            // 만약 내부 레이아웃 변경해야할 ㄸㅐ - > position 을 이용해보자 getItem(position+1) ==categories
+
             //+ 버튼 클릭시 아이템 추가
             binding.addCardBtn.setOnClickListener {
                 val position = this.absoluteAdapterPosition
-                val newList =currentList.toMutableList()
+                val newList = currentList.toMutableList()
                 newList.add(position + 1, categories)
+                submitList(newList)
+                addedItemPosition = position+1
+            }
+
+            // 만약 내부 레이아웃 변경해야할 ㄸㅐ - > position 을 이용해보자 getItem(position+1) ==categories
+            // 추가된 뷰에만 - 버튼 추가
+            if(addedItemPosition==this.absoluteAdapterPosition){
+                binding.deleteCardBtn.visibility = View.VISIBLE
+            }
+
+            binding.deleteCardBtn.setOnClickListener {
+                val position = this.absoluteAdapterPosition
+                val newList = currentList.toMutableList()
+                newList.removeAt(position)
                 submitList(newList)
             }
         }

@@ -232,9 +232,75 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never"
-                tools:listitem="@layout/item_regist_form"
                 />
+<!--                tools:listitem="@layout/item_regist_form"
+-->
+            <TextView
+                android:id="@+id/introduce_label"
+                style="@style/montserrat_bold_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/introduction_label"
+                app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                app:layout_constraintTop_toBottomOf="@id/clothes_detail_rv"/>
 
+            <EditText
+                android:id="@+id/introduce_value"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:background="@drawable/bg_radi3_line"
+                app:layout_constraintTop_toBottomOf="@id/introduce_label"
+                app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                android:layout_marginTop="7dp"
+                />
+            <CheckBox
+                android:id="@+id/not_post_now"
+                style="@style/spoqa_12sp_label"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/selector_checkbox2"
+                android:button="@null"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/introduce_value"
+                app:layout_constraintStart_toStartOf="@id/introduce_value" />
+            <TextView
+                android:id="@+id/checkbox_label3"
+                style="@style/spoqa_14_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="게시물 미게시"
+                android:textColor="@color/default_text"
+                app:layout_constraintBaseline_toBaselineOf="@id/not_post_now"
+                app:layout_constraintStart_toEndOf="@id/not_post_now"
+                android:layout_marginStart="10dp"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/back_btn_2"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                app:layout_constraintWidth_percent="0.43"
+                app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                app:layout_constraintTop_toBottomOf="@id/not_post_now"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/bg_grey_btn"
+                android:text="이전"
+                style="@style/montserrat_bold_14"
+                />
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                app:layout_constraintWidth_percent="0.43"
+                android:background="@drawable/bg_black_btn"
+                android:text="다음"
+                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                app:layout_constraintTop_toTopOf="@id/back_btn_2"
+                android:layout_marginStart="10dp"
+                style="@style/montserrat_bold_14"
+                android:textColor="@color/white"
+                />
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_vertical2"
                 android:layout_width="0dp"

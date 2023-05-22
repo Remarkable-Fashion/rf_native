@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.lf.fashion.TAG
 import com.lf.fashion.databinding.PhotoStep2FragmentBinding
+import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.childChip
 import com.lf.fashion.ui.home.FilterViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,6 +42,8 @@ class PhotoStep2Fragment : Fragment() {
 
         val imageUris = arguments?.get("image_uri") as Array<*>
         Log.d(TAG, "PhotoStep2Fragment - onViewCreated: ${imageUris.get(0)}");
+
+        cancelBtnBackStack(binding.backBtn)
     }
     private fun chipSetting(){
         viewModel.chipList.observe(viewLifecycleOwner){
