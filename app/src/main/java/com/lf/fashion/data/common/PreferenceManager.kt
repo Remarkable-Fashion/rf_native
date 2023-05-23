@@ -22,6 +22,7 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
         get() = appContext.dataStore.data.map { preferences ->
             preferences[ACCESS_TOKEN]
         }
+
     suspend fun saveAccessTokens(accessToken: String, refreshToken: String) {
         appContext.dataStore.edit { preferences ->
             preferences[ACCESS_TOKEN] = accessToken
@@ -35,16 +36,6 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
             preferences[REFRESH_TOKEN]
         }
 
-    val loginUserId: Flow<String?>
-        get() = appContext.dataStore.data.map { preferences ->
-            preferences[USER_ID]
-        }
-
-    suspend fun saveUserId(userId: String) {
-        appContext.dataStore.edit { preferences ->
-            preferences[USER_ID] = userId
-        }
-    }
 
     suspend fun clear() {
         appContext.dataStore.edit { preferences ->
@@ -54,7 +45,6 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
 
     companion object {
         private val ACCESS_TOKEN = stringPreferencesKey("key_access_token")
-        private val USER_ID = stringPreferencesKey("login_user_id")
         private val REFRESH_TOKEN = stringPreferencesKey("key_refresh_token")
     }
 }

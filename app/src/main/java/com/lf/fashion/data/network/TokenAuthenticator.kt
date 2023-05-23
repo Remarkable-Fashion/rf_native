@@ -14,7 +14,9 @@ import okhttp3.Response
 import okhttp3.Route
 import javax.inject.Inject
 
-
+/*
+* 자체 회원가입이 추가되고 메인으로 사용될 경우 연결될 로직.. (현재는 사용되지않는다)
+* */
 class TokenAuthenticator @Inject constructor(
     context: Context,
     private val tokenApi: TokenRefreshApi

@@ -2,10 +2,12 @@ package com.lf.fashion
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.kakao.sdk.common.util.Utility
 import dagger.hilt.android.AndroidEntryPoint
 
 //TODO : splash 이미지
@@ -22,6 +24,5 @@ class MainActivity : AppCompatActivity() {
         navController?.let{
             bottomNavigationView.setupWithNavController(it)
         }
-
     }
 }
