@@ -1,6 +1,8 @@
 package com.lf.fashion.ui.addPost
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +15,7 @@ import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.childChip
 import com.lf.fashion.ui.home.FilterViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import org.w3c.dom.Text
 
 @AndroidEntryPoint
 class PhotoStep2Fragment : Fragment() {
@@ -29,6 +32,10 @@ class PhotoStep2Fragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //이미지 등록에서 받아온 이미지들 ..
+        val imageUris = arguments?.get("image_uri") as Array<*>
+        Log.d(TAG, "PhotoStep2Fragment - onViewCreated: ${imageUris.get(0)}");
+
         binding.genderManBtn.setOnClickListener {
             it.isSelected = !it.isSelected
         }
@@ -40,8 +47,7 @@ class PhotoStep2Fragment : Fragment() {
 
         rvAdapterSetting()
 
-        val imageUris = arguments?.get("image_uri") as Array<*>
-        Log.d(TAG, "PhotoStep2Fragment - onViewCreated: ${imageUris.get(0)}");
+        introduceLengthCounting()
 
         cancelBtnBackStack(binding.backBtn)
     }
@@ -75,5 +81,20 @@ class PhotoStep2Fragment : Fragment() {
                 submitList(category)
             }
         }
+    }
+    private fun introduceLengthCounting(){
+        binding.introduceValue.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val count = s.toString().count()
+                binding.textCounter.text="$count/50"
+            }
+
+        })
     }
 }

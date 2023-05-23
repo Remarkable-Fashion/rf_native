@@ -62,7 +62,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingBottom="60dp">
             <TextView
                 android:id="@+id/gender_label"
                 style="@style/montserrat_bold_label"
@@ -254,6 +255,24 @@
                 app:layout_constraintStart_toStartOf="@id/guideline_vertical"
                 app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
                 android:layout_marginTop="7dp"
+                android:textColor="@color/default_text"
+                style="@style/spoqa_12sp_label"
+                android:maxLength="50"
+                android:padding="15dp"
+                android:singleLine="false"
+                android:scrollHorizontally="false"
+                 />
+            <TextView
+                android:id="@+id/text_counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0/50"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                app:layout_constraintEnd_toEndOf="@id/introduce_value"
+                app:layout_constraintBottom_toBottomOf="@id/introduce_value"
+                style="@style/montserrat_medium_12"
+
                 />
             <CheckBox
                 android:id="@+id/not_post_now"
