@@ -22,7 +22,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MyPageFragment : Fragment() {
     private lateinit var binding: MypageFragmentBinding
-    private lateinit var  userPreferences :PreferenceManager
+    private lateinit var userPreferences: PreferenceManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,12 +41,12 @@ class MyPageFragment : Fragment() {
             UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
                 if (error != null) {
                     Log.d(TAG, "MyPageFragment - onViewCreated: 카카오톡 간편 로그인 실패 : $error");
-                    if(error.message=="KakaoTalk not installed"){
-                      kakaoLoginWithAccount()
+                    if (error.message == "KakaoTalk not installed") {
+                        kakaoLoginWithAccount()
                     }
                 } else if (token != null) {
                     Log.d(TAG, "MyPageFragment - onViewCreated: 카카오톡 간편 로그인 성공 토큰 : $token")
-                    runBlocking (Dispatchers.IO){
+                    runBlocking(Dispatchers.IO) {
                         launch {
                             userPreferences.saveAccessTokens(token.accessToken, token.refreshToken)
                         }
@@ -55,10 +55,11 @@ class MyPageFragment : Fragment() {
             }
         }
     }
-    private fun kakaoLoginWithAccount(){
-        UserApiClient.instance.loginWithKakaoAccount(requireContext()){token, error ->
+
+    private fun kakaoLoginWithAccount() {
+        UserApiClient.instance.loginWithKakaoAccount(requireContext()) { token, error ->
             token?.let {
-                runBlocking (Dispatchers.IO){
+                runBlocking(Dispatchers.IO) {
                     launch {
                         userPreferences.saveAccessTokens(token.accessToken, token.refreshToken)
                         Log.d(
@@ -72,6 +73,34 @@ class MyPageFragment : Fragment() {
                     }
                 }
             }
+            agree()
         }
     }
+
+    private fun agree() {
+        var scopes = mutableListOf<String>()
+
+        scopes.add("account_email")
+
+        UserApiClient.instance.loginWithNewScopes(
+            requireContext(),
+            scopes
+        ) { token, error ->
+            if (error != null) {
+                Log.e(TAG, "사용자 추가 동의 실패", error)
+            } else {
+                Log.d(TAG, "allowed scopes: ${token!!.scopes}")
+
+                // 사용자 정보 재요청
+                UserApiClient.instance.me { user, error ->
+                    if (error != null) {
+                        Log.e(TAG, "사용자 정보 요청 실패", error)
+                    } else if (user != null) {
+                        Log.i(TAG, "사용자 정보 요청 성공")
+                    }
+                }
+            }
+        }
+    }
+
 }

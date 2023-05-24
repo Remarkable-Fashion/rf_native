@@ -74,5 +74,6 @@ data class ClothesCategory(
 )
 data class ImageItem(
     var uri: Uri?,
-    var isChecked: Boolean
+    var isChecked: Boolean,
+    var checkCount : String
 )

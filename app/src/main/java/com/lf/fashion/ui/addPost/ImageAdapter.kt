@@ -1,5 +1,6 @@
 package com.lf.fashion.ui.addPost
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lf.fashion.R
+import com.lf.fashion.TAG
 import com.lf.fashion.data.response.ImageItem
 import com.lf.fashion.databinding.ItemCameraBinding
 import com.lf.fashion.databinding.ItemImageBinding
@@ -17,7 +19,8 @@ import com.lf.fashion.databinding.ItemImageBinding
  * whose isChecked should be updated when checkbox checked.
  */
 class ImageAdapter(
-    private val parentViewModel: ImagePickerViewModel,private val galleryRvListener: GalleryRvListener
+    private val parentViewModel: ImagePickerViewModel,
+    private val galleryRvListener: GalleryRvListener
 ) : ListAdapter<ImageItem, RecyclerView.ViewHolder>(ImageDiffCallback()) {
 
     companion object {
@@ -25,6 +28,7 @@ class ImageAdapter(
         private const val VIEW_TYPE_DEFAULT_ITEM = 2
     }
 
+    private var checkedCount = 0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             VIEW_TYPE_FIRST_ITEM -> {
@@ -49,16 +53,38 @@ class ImageAdapter(
             }
         }
     }
+
     private fun subscribeUi(binding: ItemImageBinding, holder: ImageViewHolder) {
         binding.image.setOnClickListener {
-            parentViewModel.imageItemList.value?.let {
-                val position = holder.absoluteAdapterPosition
-                binding.checkbox.isChecked = !binding.checkbox.isChecked // 체크박스 체크 여부 반전
-                it[position - 1].isChecked = binding.checkbox.isChecked // 체크 여부를 객체에도 담아줌
-                galleryRvListener.imageChecked(it[position-1])
+            parentViewModel.imageItemList.value?.let { it ->
+                checkBoxConverse(holder, binding, it)
             }
         }
     }
+
+    private fun checkBoxConverse(
+        holder: ImageViewHolder,
+        binding: ItemImageBinding,
+        itemlist: MutableList<ImageItem>
+    ) {
+        val position = holder.absoluteAdapterPosition
+        binding.checkbox.isSelected = !binding.checkbox.isSelected // 체크박스 체크 여부 반전
+        itemlist[position - 1].isChecked = binding.checkbox.isSelected // 체크 여부를 객체에도 담아줌
+
+        // 선택된 이미지들의 위치(position) 구하기
+
+            val checkedIndex = itemlist
+                .mapIndexedNotNull { index, imageItem -> if (imageItem.isChecked) index else null }
+            for (i in checkedIndex.indices) {
+                itemlist[checkedIndex[i]].checkCount =
+                    (checkedIndex.indexOf(checkedIndex[i]) + 1).toString()
+            }
+
+        Log.d(TAG, "new!!! $itemlist");
+        galleryRvListener.imageChecked(itemlist[position - 1],itemlist)
+
+    }
+
     private fun cameraBtnClicked(binding: ItemCameraBinding, holder: FirstImageViewHolder) {
         binding.camera.setOnClickListener {
             galleryRvListener.cameraBtnClicked()
@@ -78,7 +104,7 @@ class ImageAdapter(
     override fun submitList(list: List<ImageItem>?) {
         // 리스트를 제출할 때 첫 번째 아이템을 추가하여 밀어내는 효과를 줍니다.
         val newList = mutableListOf<ImageItem>()
-        newList.add(ImageItem(null, false)) // 첫 번째 아이템 추가
+        newList.add(ImageItem(null, false,"")) // 첫 번째 아이템 추가
         if (list != null) {
             newList.addAll(list) // 나머지 아이템 추가
         }
@@ -94,14 +120,16 @@ class ImageAdapter(
                 .load(imageItem.uri)
                 .into(binding.image)
 
-            binding.checkbox.isChecked = imageItem.isChecked
+            binding.checkbox.isSelected = imageItem.isChecked
+            Log.d(TAG, "bind !! : ${imageItem.checkCount}")
+            binding.checkbox.text = imageItem.checkCount.ifEmpty { "" }
         }
     }
 
     class FirstImageViewHolder(
         private val binding: ItemCameraBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind() { }
+        fun bind() {}
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -113,7 +141,7 @@ class ImageAdapter(
     }
 }
 
- class ImageDiffCallback : DiffUtil.ItemCallback<ImageItem>() {
+class ImageDiffCallback : DiffUtil.ItemCallback<ImageItem>() {
     override fun areItemsTheSame(oldItem: ImageItem, newItem: ImageItem): Boolean {
         return oldItem.uri == newItem.uri
     }

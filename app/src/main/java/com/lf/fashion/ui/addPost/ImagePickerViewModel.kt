@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.text.TextUtils.indexOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -20,16 +21,17 @@ private const val INDEX_DATE_ADDED = MediaStore.MediaColumns.DATE_ADDED
  * 최종 선택된 이미지를 참조할 때는 checkedItemList 를 참조하는 것이 아니라 getCheckedImageUriList 로 참조할것 !
  *
  */
-class ImagePickerViewModel(context: Context): ViewModel() {
+class ImagePickerViewModel(context: Context) : ViewModel() {
     val imageItemList = MutableLiveData<MutableList<ImageItem>>(mutableListOf())
     val checkedItemList = MutableLiveData<MutableList<ImageItem>>()
+
     //dddd
     init {
-    fetchImageItemList(context)
+        fetchImageItemList(context)
     }
 
     @SuppressLint("Range")
-     private fun fetchImageItemList(context: Context) {
+    private fun fetchImageItemList(context: Context) {
         val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(
             INDEX_MEDIA_ID,
@@ -44,10 +46,10 @@ class ImagePickerViewModel(context: Context): ViewModel() {
         val cursor = context.contentResolver.query(uri, projection, selection, null, sortOrder)
 
         cursor?.let {
-            while(cursor.moveToNext()) {
+            while (cursor.moveToNext()) {
                 val mediaPath = cursor.getString(cursor.getColumnIndex(INDEX_MEDIA_URI))
                 imageItemList.value!!.add(
-                    ImageItem(Uri.fromFile(File(mediaPath)), false)
+                    ImageItem(Uri.fromFile(File(mediaPath)), false, "")
                 )
             }
         }
@@ -58,8 +60,8 @@ class ImagePickerViewModel(context: Context): ViewModel() {
     fun getCheckedImageUriList(): MutableList<String> {
         val checkedImageUriList = mutableListOf<String>()
         imageItemList.value?.let {
-            for(imageItem in imageItemList.value!!) {
-                if(imageItem.isChecked) checkedImageUriList.add(imageItem.uri.toString())
+            for (imageItem in imageItemList.value!!) {
+                if (imageItem.isChecked) checkedImageUriList.add(imageItem.uri.toString())
             }
         }
         return checkedImageUriList
@@ -72,6 +74,7 @@ class ImagePickerViewModel(context: Context): ViewModel() {
             for (imageItem in it) {
                 if (imageItem.uri == uncheckedItem.uri) {
                     imageItem.isChecked = false
+                    imageItem.checkCount = ""
                 }
             }
             imageItemList.value = it
@@ -94,18 +97,36 @@ class ImagePickerViewModel(context: Context): ViewModel() {
         }
     }
 
-    fun addCheckedItem(item: ImageItem){
-        if(checkedItemList.value==null){
+    fun addCheckedItem(item: ImageItem, newImageList: MutableList<ImageItem>) {
+        if (checkedItemList.value == null) {
             val temporal = mutableListOf(item)
             checkedItemList.value = temporal
-        }else {
+        } else {
             val temporal = checkedItemList.value
             temporal!!.add(item)
             checkedItemList.value = temporal!!
         }
+        imageItemList.value = newImageList
     }
 
+    fun updateCheckedCountNum() {
+        val checkedIndex = imageItemList.value
+        val temporal = mutableListOf<ImageItem>()
+
+            ?.mapIndexedNotNull { index, imageItem -> if (imageItem.isChecked) index else null }
+        checkedIndex?.let { index ->
+            for (i in index.indices) {
+                imageItemList.value!![index[i]].checkCount =
+                    (index.indexOf(index[i]) + 1).toString()
+            }
+        }
+
+        checkedItem.forEach {
+            allItemList[it].checkCount =
+        }
+    }
 }
+
 class ImagePickerViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ImagePickerViewModel::class.java)) {

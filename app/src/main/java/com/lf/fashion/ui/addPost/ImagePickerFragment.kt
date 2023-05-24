@@ -68,7 +68,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
                 val saveImage = SaveImage(requireContext())
                 //이미지 저장하고 uri 얻기 -> viewModel 의 imageItem 에 추가
                 val imageUri = saveImage.saveImageToGallery(bitmap)
-                viewModel.addImageToImageList(ImageItem(imageUri, false))
+                viewModel.addImageToImageList(ImageItem(imageUri, false,""))
 
             } else {
                 // 이미지 캡처가 실패하거나 사용자가 취소한 경우의 처리 로직
@@ -107,6 +107,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
         val galleryImageAdapter = ImageAdapter(viewModel, this@ImagePickerFragment)
         binding.recyclerviewImage.adapter = galleryImageAdapter
         viewModel.imageItemList.observe(viewLifecycleOwner) { imageItemList ->
+            Log.d(TAG, "ImagePickerFragment - galleryImageRvSetting:  view model response");
             galleryImageAdapter.submitList(imageItemList)
             galleryImageAdapter.notifyDataSetChanged()
         }
@@ -116,7 +117,6 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
         val checkedImageAdapter = CheckedImageAdapter(this@ImagePickerFragment)
         binding.selectedPhotoRv.adapter = checkedImageAdapter
         viewModel.checkedItemList.observe(viewLifecycleOwner) { checked ->
-            Log.d(TAG, "ImagePickerFragment - onViewCreated: $checked");
             if (checked.isEmpty()) {
                 binding.selectedPhotoRv.visibility = View.GONE
             } else {
@@ -129,9 +129,9 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
 
 
     //갤러리 이미지를 선택했을 때
-    override fun imageChecked(imageItem: ImageItem) {
+    override fun imageChecked(imageItem: ImageItem,newList : MutableList<ImageItem>) {
         if (imageItem.isChecked) {
-            viewModel.addCheckedItem(imageItem)
+            viewModel.addCheckedItem(imageItem,newList)
         } else {
             viewModel.cancelCheck(imageItem)
         }
@@ -162,6 +162,10 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
         requestPermissionLauncher.launch(permissionsToRequest.toTypedArray())
     }
 
+    override fun checkedCountOver() {
+        Toast.makeText(requireContext(),"사진은 4장까지 선택 가능합니다.",Toast.LENGTH_SHORT).show()
+    }
+
 
     // 선택된 이미지 미리보기 뷰에서 , x 버튼을 눌렀을 때
     override fun checkedCancel(imageItem: ImageItem) {
@@ -184,8 +188,9 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
 }
 
 interface GalleryRvListener {
-    fun imageChecked(imageItem: ImageItem)
+    fun imageChecked(imageItem: ImageItem,newList : MutableList<ImageItem>)
     fun cameraBtnClicked()
+    fun checkedCountOver()
 }
 
 interface CheckedImageRVListener {
