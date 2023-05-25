@@ -28,14 +28,13 @@ class ImageAdapter(
         private const val VIEW_TYPE_DEFAULT_ITEM = 2
     }
 
-    private var checkedCount = 0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             VIEW_TYPE_FIRST_ITEM -> {
                 val binding =
                     ItemCameraBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 val holder = FirstImageViewHolder(binding)
-                cameraBtnClicked(binding, holder)
+                cameraBtnClicked(binding)
                 holder
             }
             else -> {
@@ -70,22 +69,11 @@ class ImageAdapter(
         val position = holder.absoluteAdapterPosition
         binding.checkbox.isSelected = !binding.checkbox.isSelected // 체크박스 체크 여부 반전
         itemlist[position - 1].isChecked = binding.checkbox.isSelected // 체크 여부를 객체에도 담아줌
-
-        // 선택된 이미지들의 위치(position) 구하기
-
-            val checkedIndex = itemlist
-                .mapIndexedNotNull { index, imageItem -> if (imageItem.isChecked) index else null }
-            for (i in checkedIndex.indices) {
-                itemlist[checkedIndex[i]].checkCount =
-                    (checkedIndex.indexOf(checkedIndex[i]) + 1).toString()
-            }
-
-        Log.d(TAG, "new!!! $itemlist");
-        galleryRvListener.imageChecked(itemlist[position - 1],itemlist)
+        galleryRvListener.imageChecked(itemlist[position - 1])
 
     }
 
-    private fun cameraBtnClicked(binding: ItemCameraBinding, holder: FirstImageViewHolder) {
+    private fun cameraBtnClicked(binding: ItemCameraBinding) {
         binding.camera.setOnClickListener {
             galleryRvListener.cameraBtnClicked()
         }
@@ -121,7 +109,6 @@ class ImageAdapter(
                 .into(binding.image)
 
             binding.checkbox.isSelected = imageItem.isChecked
-            Log.d(TAG, "bind !! : ${imageItem.checkCount}")
             binding.checkbox.text = imageItem.checkCount.ifEmpty { "" }
         }
     }

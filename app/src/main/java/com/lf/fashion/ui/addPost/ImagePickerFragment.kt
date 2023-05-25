@@ -5,25 +5,33 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.load.engine.Resource
+import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.response.ImageItem
 import com.lf.fashion.databinding.PhotoImagePickerFragmentBinding
@@ -119,19 +127,50 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
         viewModel.checkedItemList.observe(viewLifecycleOwner) { checked ->
             if (checked.isEmpty()) {
                 binding.selectedPhotoRv.visibility = View.GONE
+
+                submitBtnUIUpdate(0)
+
             } else {
+                //선택된 이미지 상단 리스트뷰로 보여주기위해 adapter 로 submit
                 binding.selectedPhotoRv.visibility = View.VISIBLE
                 checkedImageAdapter.submitList(checked)
+
+                submitBtnUIUpdate(checked.size)
             }
             checkedImageAdapter.notifyDataSetChanged()
         }
     }
+    private fun submitBtnUIUpdate(checkedListSize : Int){
+        if(checkedListSize > 0) {
+            val dynamicText = "$checkedListSize"
+            val staticText = " 등록"
+            val finalText = dynamicText + staticText
 
+            val spannableString = SpannableString(finalText)
+            val colorSpan =
+                ForegroundColorSpan(resources.getColor(R.color.lf_purple))  // 변경하고자 하는 색상을 설정합니다.
+            val startIndex = finalText.indexOf(dynamicText)  // 추가된 텍스트의 시작 인덱스를 찾습니다.
+            val endIndex = startIndex + dynamicText.length  // 추가된 텍스트의 끝 인덱스를 계산합니다.
+
+            spannableString.setSpan(
+                colorSpan,
+                startIndex,
+                endIndex,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            binding.submitBtn.text = spannableString
+            binding.submitBtn.isSelected = true
+        } else{
+            binding.submitBtn.text = "등록"
+            binding.submitBtn.isSelected = false
+        }
+
+    }
 
     //갤러리 이미지를 선택했을 때
-    override fun imageChecked(imageItem: ImageItem,newList : MutableList<ImageItem>) {
+    override fun imageChecked(imageItem: ImageItem) {
         if (imageItem.isChecked) {
-            viewModel.addCheckedItem(imageItem,newList)
+            viewModel.addCheckedItem(imageItem)
         } else {
             viewModel.cancelCheck(imageItem)
         }
@@ -188,7 +227,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
 }
 
 interface GalleryRvListener {
-    fun imageChecked(imageItem: ImageItem,newList : MutableList<ImageItem>)
+    fun imageChecked(imageItem: ImageItem)
     fun cameraBtnClicked()
     fun checkedCountOver()
 }

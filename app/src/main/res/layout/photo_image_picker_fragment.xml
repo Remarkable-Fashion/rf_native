@@ -35,8 +35,9 @@
             android:fontFamily="@font/spoqahansansneo_bold"
             android:textSize="12sp"
             android:textColor="@color/light_text"
-            android:background="@color/background_grey"
-            style="@style/Widget.AppCompat.Button.Borderless"/>
+            android:background="@drawable/selector_submit_color"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            />
         <TextView
             android:id="@+id/photo_top_label"
             style="@style/app_bar_label"

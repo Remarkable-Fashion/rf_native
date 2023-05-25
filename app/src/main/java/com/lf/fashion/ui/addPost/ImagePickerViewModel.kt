@@ -6,9 +6,11 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.text.TextUtils.indexOf
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.lf.fashion.TAG
 import com.lf.fashion.data.response.ImageItem
 import java.io.File
 
@@ -86,6 +88,7 @@ class ImagePickerViewModel(context: Context) : ViewModel() {
         checkTemp?.let {
             checkedItemList.value = it
         }
+        updateCheckedCountNum()
     }
 
     // 이미지를 기존 리스트에 추가하는 메서드
@@ -97,7 +100,7 @@ class ImagePickerViewModel(context: Context) : ViewModel() {
         }
     }
 
-    fun addCheckedItem(item: ImageItem, newImageList: MutableList<ImageItem>) {
+    fun addCheckedItem(item: ImageItem) {
         if (checkedItemList.value == null) {
             val temporal = mutableListOf(item)
             checkedItemList.value = temporal
@@ -106,23 +109,20 @@ class ImagePickerViewModel(context: Context) : ViewModel() {
             temporal!!.add(item)
             checkedItemList.value = temporal!!
         }
-        imageItemList.value = newImageList
+        updateCheckedCountNum()
     }
 
-    fun updateCheckedCountNum() {
-        val checkedIndex = imageItemList.value
-        val temporal = mutableListOf<ImageItem>()
-
-            ?.mapIndexedNotNull { index, imageItem -> if (imageItem.isChecked) index else null }
-        checkedIndex?.let { index ->
-            for (i in index.indices) {
-                imageItemList.value!![index[i]].checkCount =
-                    (index.indexOf(index[i]) + 1).toString()
+    // 이미지를 선택했을때 몇번째로 선택된 이미지인지 표시하기 위한 카운터 update 메소드
+    private fun updateCheckedCountNum() {
+        val temporal = imageItemList.value
+        val value = checkedItemList.value
+        temporal?.let { tem ->
+            tem.map {
+                val checkCount = value?.indexOf(it)?:-1
+                val str = if(checkCount >= 0){ (checkCount + 1).toString() } else ""
+                it.checkCount = str
             }
-        }
-
-        checkedItem.forEach {
-            allItemList[it].checkCount =
+            imageItemList.value = tem
         }
     }
 }
