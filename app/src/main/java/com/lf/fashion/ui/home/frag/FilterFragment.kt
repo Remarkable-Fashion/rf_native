@@ -16,6 +16,9 @@ import com.lf.fashion.ui.childChip
 import com.lf.fashion.ui.home.FilterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * 홈 메인 상단의 필터 아이콘을 클릭시 노출되는 프래그먼트입니다.
+ */
 @AndroidEntryPoint
 class FilterFragment : Fragment() {
     private lateinit var binding : HomeBPhotoFilterFragmentBinding

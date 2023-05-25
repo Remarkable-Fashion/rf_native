@@ -1,4 +1,4 @@
-package com.lf.fashion.ui.addPost
+package com.lf.fashion.ui.addPost.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lf.fashion.data.response.ImageItem
 import com.lf.fashion.databinding.ItemSelectedImageBinding
+import com.lf.fashion.ui.addPost.CheckedImageRVListener
 
 //커스텀 갤러리 내부의 사진을 선택시 상단에 노출되는 선택 사진 미리보기 recyclerView Adapter 입니다.
 class CheckedImageAdapter(private val checkedImageCancelBtnListener: CheckedImageRVListener) :

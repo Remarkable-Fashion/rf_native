@@ -1,6 +1,5 @@
 package com.lf.fashion.ui.addPost
 
-import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent

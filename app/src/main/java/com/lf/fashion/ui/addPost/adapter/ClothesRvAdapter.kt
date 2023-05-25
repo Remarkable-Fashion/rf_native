@@ -1,4 +1,4 @@
-package com.lf.fashion.ui.addPost
+package com.lf.fashion.ui.addPost.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -36,7 +36,6 @@ class ClothesRvAdapter :
                 addedItemPosition = position+1
             }
 
-            // 만약 내부 레이아웃 변경해야할 ㄸㅐ - > position 을 이용해보자 getItem(position+1) ==categories
             // 추가된 뷰에만 - 버튼 추가
             if(addedItemPosition==this.absoluteAdapterPosition){
                 binding.deleteCardBtn.visibility = View.VISIBLE

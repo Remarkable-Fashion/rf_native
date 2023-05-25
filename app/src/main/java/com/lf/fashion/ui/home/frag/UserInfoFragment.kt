@@ -17,6 +17,9 @@ import com.lf.fashion.ui.home.UserInfoViewModel
 import com.lf.fashion.ui.home.adapter.ClothesRvAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * 메인홈 유저 정보보기 프래그먼트입니다.
+ */
 @AndroidEntryPoint
 class UserInfoFragment : Fragment() {
     private lateinit var binding: HomeBUserInfoFragmentBinding
@@ -42,7 +45,6 @@ class UserInfoFragment : Fragment() {
         viewModel.getUserInfoAndStyle()
         viewModel.userInfo.observe(viewLifecycleOwner){event->
             event.getContentIfNotHandled()?.let{
-                Log.d(TAG, "UserInfoFragment - onViewCreated: $it");
                 binding.infoSpace.userInfo = it.modelInfo
                 binding.profileSpace.profile = it.modelInfo.profile
                 binding.clothesRv.apply {

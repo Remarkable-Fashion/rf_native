@@ -11,6 +11,9 @@ import com.lf.fashion.databinding.HomeBPhotoDetailFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.home.adapter.PhotoHorizontalAdapter
 
+/**
+ * 포스팅 사진 클릭시 원본을 보여주는 프래그먼트입니다.
+ */
 class PhotoDetailFragment : Fragment() {
     private lateinit var binding : HomeBPhotoDetailFragmentBinding
     override fun onCreateView(

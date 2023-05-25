@@ -24,6 +24,9 @@ import com.lf.fashion.ui.home.adapter.GridPostAdapter
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * 메인 포스트 스크롤 페이지 프래그먼트입니다.
+ */
 @AndroidEntryPoint
 class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
     VerticalViewPagerClickListener {

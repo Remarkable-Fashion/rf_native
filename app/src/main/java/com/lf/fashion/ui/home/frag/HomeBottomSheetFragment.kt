@@ -8,6 +8,9 @@ import androidx.core.view.children
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.lf.fashion.databinding.HomeBottomDialogItemBinding
 
+/**
+ * 공유 버튼 클릭시 노출되는 바텀 다이얼로그 시트입니다
+ */
 class HomeBottomSheetFragment : BottomSheetDialogFragment(), View.OnClickListener {
     lateinit var binding: HomeBottomDialogItemBinding
     override fun onCreateView(

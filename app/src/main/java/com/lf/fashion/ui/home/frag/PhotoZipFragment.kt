@@ -13,6 +13,9 @@ import com.lf.fashion.ui.home.HomeViewModel
 import com.lf.fashion.ui.home.adapter.GridPostAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * 메인 홈에서 유저 클릭시 노출되는 특정 유저 사진 모아보기 프래그먼트입니다.
+ */
 @AndroidEntryPoint
 class PhotoZipFragment : Fragment() {
     lateinit var binding: HomeBPhotoZipFragmentBinding

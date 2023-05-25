@@ -1,6 +1,5 @@
-package com.lf.fashion.ui.addPost
+package com.lf.fashion.ui.addPost.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -9,10 +8,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lf.fashion.R
-import com.lf.fashion.TAG
 import com.lf.fashion.data.response.ImageItem
 import com.lf.fashion.databinding.ItemCameraBinding
 import com.lf.fashion.databinding.ItemImageBinding
+import com.lf.fashion.ui.addPost.GalleryRvListener
+import com.lf.fashion.ui.addPost.ImagePickerViewModel
 
 /**
  * @param parentViewModel The ImagePicker's ViewModel which holds each ImageItem
@@ -64,12 +64,12 @@ class ImageAdapter(
     private fun checkBoxConverse(
         holder: ImageViewHolder,
         binding: ItemImageBinding,
-        itemlist: MutableList<ImageItem>
+        itemList: MutableList<ImageItem>
     ) {
         val position = holder.absoluteAdapterPosition
         binding.checkbox.isSelected = !binding.checkbox.isSelected // 체크박스 체크 여부 반전
-        itemlist[position - 1].isChecked = binding.checkbox.isSelected // 체크 여부를 객체에도 담아줌
-        galleryRvListener.imageChecked(itemlist[position - 1])
+        itemList[position - 1].isChecked = binding.checkbox.isSelected // 체크 여부를 객체에도 담아줌
+        galleryRvListener.imageChecked(itemList[position - 1])
 
     }
 

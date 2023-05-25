@@ -5,11 +5,9 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
 import android.text.Spannable
@@ -21,28 +19,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.widget.AppCompatButton
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.load.engine.Resource
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.response.ImageItem
 import com.lf.fashion.databinding.PhotoImagePickerFragmentBinding
+import com.lf.fashion.ui.addPost.adapter.CheckedImageAdapter
+import com.lf.fashion.ui.addPost.adapter.ImageAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
+ * 하단 네비게이션 바텀 바에서 사진 추가 아이콘을 클릭 시 노출되는 커스텀 갤러리 프래그먼트입니다
+ *
  * TODO ? : viewModel init 에서 imageItem List 를 불러옴
  * 앱을 중단하고 카메라로 사진을 찍고 돌아와도 앱을 종료후 다시 시작하지 않는 이상 새로운 이미지가 뜨지 않는 문제 발생가능
  */
@@ -54,11 +45,12 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
         ImagePickerViewModelFactory(requireContext())
     }
 
+    //권한 런처 초기화
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             val allPermissionsGranted = permissions.all { it.value }
             if (allPermissionsGranted) {
-                //카메라로 intent
+                // 권한 부여시 카메라로 intent
                 val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 takePictureLauncher.launch(intent)
             } else {
@@ -148,16 +140,18 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
 
             val spannableString = SpannableString(finalText)
             val colorSpan =
-                ForegroundColorSpan(resources.getColor(R.color.lf_purple))  // 변경하고자 하는 색상을 설정합니다.
-            val startIndex = finalText.indexOf(dynamicText)  // 추가된 텍스트의 시작 인덱스를 찾습니다.
-            val endIndex = startIndex + dynamicText.length  // 추가된 텍스트의 끝 인덱스를 계산합니다.
+                ForegroundColorSpan(resources.getColor(R.color.lf_purple))  // 숫자(checked item size)는 보라색
+            val startIndex = finalText.indexOf(dynamicText)  // 추가되는 동적 텍스트의 시작 인덱스의 시작과 끝을 구함
+            val endIndex = startIndex + dynamicText.length
 
+            //index 범위만큼 색깔 입히기
             spannableString.setSpan(
                 colorSpan,
                 startIndex,
                 endIndex,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             )
+
             binding.submitBtn.text = spannableString
             binding.submitBtn.isSelected = true
         } else{
@@ -201,16 +195,6 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
         requestPermissionLauncher.launch(permissionsToRequest.toTypedArray())
     }
 
-    override fun checkedCountOver() {
-        Toast.makeText(requireContext(),"사진은 4장까지 선택 가능합니다.",Toast.LENGTH_SHORT).show()
-    }
-
-
-    // 선택된 이미지 미리보기 뷰에서 , x 버튼을 눌렀을 때
-    override fun checkedCancel(imageItem: ImageItem) {
-        viewModel.cancelCheck(imageItem) // viewModel 이 들고있는 리스트에서도 isChecked 를 false로 바꿔주기
-    }
-
     private fun applicationSettingIntent() {
         AlertDialog.Builder(requireContext()).apply {
             setMessage("이미지를 촬영하기 위해서, 카메라 접근 권한이 필요합니다.\n 설정창으로 이동하시겠습니까?")
@@ -224,6 +208,17 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
             }
         }.show()
     }
+
+    override fun checkedCountOver() {
+        Toast.makeText(requireContext(),"사진은 4장까지 선택 가능합니다.",Toast.LENGTH_SHORT).show()
+    }
+
+    // 선택된 이미지 미리보기 뷰에서 , x 버튼을 눌렀을 때
+    override fun checkedCancel(imageItem: ImageItem) {
+        viewModel.cancelCheck(imageItem) // viewModel 이 들고있는 리스트에서도 isChecked 를 false로 바꿔주기
+    }
+
+
 }
 
 interface GalleryRvListener {

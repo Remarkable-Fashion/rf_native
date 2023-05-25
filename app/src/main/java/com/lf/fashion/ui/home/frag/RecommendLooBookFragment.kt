@@ -16,6 +16,9 @@ import com.lf.fashion.ui.home.UserInfoViewModel
 import com.lf.fashion.ui.home.adapter.LookBookRvAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * 메인 홈에서 유저 정보보기 -> 이 의상은 어때 버튼 클릭시 노출되는 프래그먼트입니다.
+ */
 @AndroidEntryPoint
 class RecommendLooBookFragment : Fragment(), View.OnClickListener , AdapterView.OnItemSelectedListener {
     private lateinit var binding: HomeBRecommendFragmentBinding
