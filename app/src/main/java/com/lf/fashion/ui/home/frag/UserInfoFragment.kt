@@ -53,7 +53,7 @@ class UserInfoFragment : Fragment() {
                     }
                 }
                 val styleChipGroup = binding.infoSpace.styleChipGroup
-                childChip(it.modelInfo.styleChips, styleChipGroup, false)
+                childChip(it.modelInfo.styleChips, styleChipGroup, "purple")
             }
         }
     }

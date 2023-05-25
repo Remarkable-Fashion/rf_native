@@ -1,5 +1,6 @@
 package com.lf.fashion.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.widget.ImageView
@@ -17,11 +18,20 @@ fun Fragment.cancelBtnBackStack(view: ImageView) {
     }
 }
 
-fun Fragment.childChip(chipList: List<ChipContents>, chipGroup: ChipGroup, defaultStyle: Boolean) {
+@SuppressLint("InflateParams")
+fun Fragment.childChip(chipList: List<ChipContents>, chipGroup: ChipGroup, style: String) {
     for (j in chipList.indices) {
-        val chip =
-            if (defaultStyle) LayoutInflater.from(context).inflate(R.layout.chip_item, null) as Chip
-            else LayoutInflater.from(context).inflate(R.layout.chip_purple_item, null) as Chip
+       /* val chip =
+            if (style == "default") LayoutInflater.from(context)
+                .inflate(R.layout.chip_item, null) as Chip
+            else LayoutInflater.from(context).inflate(R.layout.chip_purple_item, null) as Chip*/
+        val chip = when(style){
+            "default" ->{
+                LayoutInflater.from(context).inflate(R.layout.chip_item, null) as Chip }
+            "purple" ->{
+                LayoutInflater.from(context).inflate(R.layout.chip_purple_item, null) as Chip }
+            else -> { LayoutInflater.from(context).inflate(R.layout.chip_grey_item, null) as Chip}
+        }
         var content = chipList[j].text
 
         chipList[j].emoji?.let{

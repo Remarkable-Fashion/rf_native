@@ -54,17 +54,18 @@ class FilterFragment : Fragment() {
                 val tpoChipGroup = binding.filterInclude.tpoChipGroup
                 val seasonChipGroup = binding.filterInclude.seasonChipGroup
                 val styleChipGroup = binding.filterInclude.styleChipGroup
+                val chipStyle = "default"
                 for( i in  it.indices ){
                     when(it[i].id){
                         "tpo"->{
-                            childChip(it[i].chips,tpoChipGroup,true)
+                            childChip(it[i].chips,tpoChipGroup,chipStyle)
 
                         }
                         "season"->{
-                            childChip(it[i].chips,seasonChipGroup,true)
+                            childChip(it[i].chips,seasonChipGroup,chipStyle)
                         }
                         "style" ->{
-                            childChip(it[i].chips,styleChipGroup,true)
+                            childChip(it[i].chips,styleChipGroup,chipStyle)
                         }
                     }
                 }

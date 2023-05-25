@@ -53,6 +53,9 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/dark_grey_text</item>
     </style>
+    <style name="spoqa_12sp_default" parent="spoqa_12sp_label">
+        <item name="android:textColor">@color/default_text</item>
+    </style>
     <style name="spoqa_12sp_label_bold" parent="spoqa_12sp_label">
         <item name="fontFamily">@font/spoqahansansneo_bold</item>
     </style>
@@ -91,6 +94,14 @@
         <item name="chipStrokeWidth">1dp</item>
         <item name="android:textAppearance">@style/spoqa_12sp_purple</item>
         <item name="chipStrokeColor">@color/lf_purple</item>
+    </style>
+    <style name="CustomChipChoice_grey" parent="@style/Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/background_grey</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipStartPadding">5dp</item>
+        <item name="chipEndPadding">5dp</item>
+        <item name="android:textAppearance">@style/spoqa_12sp_default</item>
+        <item name="chipStrokeColor">@color/background_grey</item>
     </style>
     <style name="edittext_style">
         <item name="fontFamily">@font/spoqahansansneo_medium</item>
