@@ -49,48 +49,63 @@ class SearchFragment : Fragment() {
 
 
         // 바로 datastore 에서 history 꺼내와서 liveData 객체에 담아주기
-        runBlocking { launch {
-            val historyStr = userPreferences.searchHistoryList.first() ?: ""
-            if (historyStr.isNotEmpty()) {
-                val history = Gson().fromJson(historyStr, Array<String>::class.java)
-                    .toMutableList()
-                historyList.value = history
-             }
-        }}
-
-        binding.searchEt.setOnEditorActionListener { textView, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                val searchTerm = textView.text.toString()
-                runBlocking {
-                    launch {
-                        val history = historyList.value?: mutableListOf(searchTerm)
-                        history.add(searchTerm)
-                        historyList.value = history  // liveData 객체 업데이트 , datastore 정보 업데이트
-                        userPreferences.storeSearchHistoryList(historyList.value!!)
-                    }
+        runBlocking {
+            launch {
+                val historyStr = userPreferences.searchHistoryList.first() ?: ""
+                if (historyStr.isNotEmpty()) {
+                    val history = Gson().fromJson(historyStr, Array<String>::class.java)
+                        .toMutableList()
+                    historyList.value = history
                 }
-
-                binding.searchTerm.root.visibility = View.GONE
-                binding.searchResult.root.visibility = View.VISIBLE
-
-                    true
-            } else {
-                false
             }
         }
 
+
         //editText 활성화,키보드 올라오면 최신 검색어 노출 view visible 하게
         binding.searchEt.setOnClickListener {
-            if(binding.searchEt.hasFocus()){
+            if (binding.searchEt.hasFocus()) {
                 binding.searchTerm.root.visibility = View.VISIBLE
                 binding.searchResult.root.visibility = View.GONE
             }
         }
 
 
+        searchAction()
+
         recentSearchTermChipSetting()
 
+        recentSearchHistoryClear()
+
         popularSearchTermRvSetting()
+
+    }
+
+    private fun searchAction() {
+        binding.searchEt.setOnEditorActionListener { textView, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                val searchTerm = textView.text.toString()
+                runBlocking {
+                    launch {
+                        var history = historyList.value
+                        if (history != null) {
+                            history.add(searchTerm)
+                        } else {
+                            history = mutableListOf(searchTerm)
+                        }
+                        historyList.value = history!!  // liveData 객체 업데이트 , datastore 정보 업데이트
+                        userPreferences.storeSearchHistoryList(historyList.value!!)
+                        Log.d(TAG, "SearchFragment - onViewCreated: ${historyList.value}");
+                    }
+                }
+
+                binding.searchTerm.root.visibility = View.GONE
+                binding.searchResult.root.visibility = View.VISIBLE
+
+                true
+            } else {
+                false
+            }
+        }
 
     }
 
@@ -107,6 +122,7 @@ class SearchFragment : Fragment() {
                     }
                     //기존 chipChild 모두 지우고, 새롭게 덮어쓴 ChipContents 리스트를 역순으로(최신 검색어 상단) child 칩 생성
                     binding.searchTerm.recentTermChipGroup.removeAllViews()
+                    Log.d(TAG, "SearchFragment - recentSearchTermChipSetting: $testList");
                     childChip(testList.toList().reversed(), chipGroup, "grey")
 
                 }
@@ -115,7 +131,22 @@ class SearchFragment : Fragment() {
 
     }
 
-    private fun popularSearchTermRvSetting(){
+    private fun recentSearchHistoryClear() {
+        binding.searchTerm.historyDeleteBtn.setOnClickListener {
+            runBlocking {
+                launch {
+                    historyList.value?.let {
+                        val temp = it
+                        temp.clear()
+                        historyList.value = temp
+                    }
+                    userPreferences.clearSearchHistory()
+                }
+            }
+        }
+    }
+
+    private fun popularSearchTermRvSetting() {
         binding.searchTerm.searchRankRv.apply {
             adapter = TermRankAdapter().apply {
                 submitList(keywordTest)

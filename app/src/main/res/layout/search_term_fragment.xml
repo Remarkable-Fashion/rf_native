@@ -15,6 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         />
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/history_delete_btn"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:text="모두 지우기"
@@ -32,13 +33,13 @@
         app:layout_constraintStart_toStartOf="@id/guideline_vertical"
         app:layout_constraintEnd_toEndOf="@id/guideline_vertical2">
 
-        <com.google.android.material.chip.Chip
+ <!--       <com.google.android.material.chip.Chip
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             style="@style/CustomChipChoice_grey"
             android:text="어그">
-        </com.google.android.material.chip.Chip>
+        </com.google.android.material.chip.Chip>-->
     </com.google.android.material.chip.ChipGroup>
 
 

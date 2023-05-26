@@ -54,6 +54,12 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
         }
     }
 
+    suspend fun clearSearchHistory(){
+        appContext.dataStore.edit { preferences->
+            preferences.remove(RECENT_SEARCH_TERM)
+        }
+    }
+
     companion object {
         private val ACCESS_TOKEN = stringPreferencesKey("key_access_token")
         private val REFRESH_TOKEN = stringPreferencesKey("key_refresh_token")
