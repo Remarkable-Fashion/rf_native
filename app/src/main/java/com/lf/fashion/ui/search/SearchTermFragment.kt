@@ -31,5 +31,11 @@ class SearchTermFragment : Fragment() {
         }
 
         childChip(testList.toList(),chipGroup,"grey")
+
+        binding.searchRankRv.apply {
+            adapter = TermRankAdapter().apply {
+                submitList(keywordTest)
+            }
+        }
     }
 }

@@ -53,6 +53,7 @@
     <string name="url">Url</string>
     <string name="upload_photo_sub_title">업로드한 사진의 상세정보를 등록해주세요.</string>
     <string name="upload_photo_title">사진 등록하기</string>
+    <string name="_3">3</string>
 
     <string-array name="spinner_array">
         <item> All</item>
