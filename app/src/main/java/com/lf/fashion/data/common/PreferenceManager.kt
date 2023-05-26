@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -23,6 +24,14 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
             preferences[ACCESS_TOKEN]
         }
 
+    val refreshToken: Flow<String?>
+        get() = appContext.dataStore.data.map { preferences ->
+            preferences[REFRESH_TOKEN]
+        }
+    val searchHistoryList : Flow<String?>
+    get() = appContext.dataStore.data.map { preferences ->
+        preferences[RECENT_SEARCH_TERM]
+    }
     suspend fun saveAccessTokens(accessToken: String, refreshToken: String) {
         appContext.dataStore.edit { preferences ->
             preferences[ACCESS_TOKEN] = accessToken
@@ -31,10 +40,12 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
         }
     }
 
-    val refreshToken: Flow<String?>
-        get() = appContext.dataStore.data.map { preferences ->
-            preferences[REFRESH_TOKEN]
+    suspend fun storeSearchHistoryList(searchHistoryList : MutableList<String>){
+        val serializeList = Gson().toJson(searchHistoryList)
+        appContext.dataStore.edit { pref ->
+            pref[RECENT_SEARCH_TERM] = serializeList
         }
+    }
 
 
     suspend fun clear() {
@@ -46,5 +57,6 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
     companion object {
         private val ACCESS_TOKEN = stringPreferencesKey("key_access_token")
         private val REFRESH_TOKEN = stringPreferencesKey("key_refresh_token")
+        private val RECENT_SEARCH_TERM = stringPreferencesKey("recent_search_term")
     }
 }
