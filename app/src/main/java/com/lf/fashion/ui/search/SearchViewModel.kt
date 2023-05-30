@@ -16,13 +16,13 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(private val homeRepository: HomeRepository) :
     ViewModel() {
     private val _gridMode = MutableLiveData<Int>()
-    var gridMode: LiveData<Int> = _gridMode
+    val gridMode: LiveData<Int> = _gridMode
 
     private val _postList = MutableLiveData<List<Post>>()
     var postList: LiveData<List<Post>> = _postList
 
     init {
-        setGridMode(3)
+       //setGridMode(3)
         getPostList()
     }
 

@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class LookGridFragment : Fragment(){
     private lateinit var binding: SearchLookGridFragmentBinding
-    private val viewModel : SearchViewModel by viewModels()
+    private val viewModel : SearchViewModel by viewModels({requireParentFragment()})
     private val gridAdapter = GridPostAdapter()
     override fun onCreateView(
         inflater: LayoutInflater,
