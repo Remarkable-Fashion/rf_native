@@ -22,7 +22,6 @@ class SearchViewModel @Inject constructor(private val homeRepository: HomeReposi
     var postList: LiveData<List<Post>> = _postList
 
     init {
-       //setGridMode(3)
         getPostList()
     }
 

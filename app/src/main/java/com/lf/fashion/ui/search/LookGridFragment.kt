@@ -6,20 +6,25 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.TAG
 import com.lf.fashion.databinding.SearchLookGridFragmentBinding
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.home.adapter.GridPostAdapter
+import com.lf.fashion.ui.search.adapter.LookVerticalAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LookGridFragment : Fragment(){
     private lateinit var binding: SearchLookGridFragmentBinding
-    private val viewModel : SearchViewModel by viewModels({requireParentFragment()})
+    private val viewModel : SearchViewModel by viewModels({requireParentFragment()}) //중요@
     private val gridAdapter = GridPostAdapter()
+    private val verticalAdapter = LookVerticalAdapter()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,24 +47,38 @@ class LookGridFragment : Fragment(){
                     submitList(response)
                 }
             }
+            with(binding.verticalViewpager){
+                adapter = verticalAdapter.apply {
+                    submitList(response)
+                }
+            }
         }
 
         viewModel.gridMode.observe(viewLifecycleOwner){ gridMode ->
             Log.d(TAG, "GRID !!!! : $gridMode");
             when(gridMode){
                 1->{
-                    editGridSpanCount(1)
+
+                    layoutVisibilityUpdate(false)
+                    //editGridSpanCount(1)
                 }
                 2 ->{
                     editGridSpanCount(2)
+                    layoutVisibilityUpdate(true)
                 }
                 3 ->{
                     editGridSpanCount(3)
+                    layoutVisibilityUpdate(true)
                 }
+
             }
+            gridAdapter.notifyDataSetChanged()
         }
     }
-
+    private fun layoutVisibilityUpdate(default : Boolean){
+        binding.verticalViewpager.isVisible = !default
+        binding.gridRv.isVisible = default
+    }
     @SuppressLint("NotifyDataSetChanged")
     private fun editGridSpanCount(spanCount: Int) {
         with(binding.gridRv) {
@@ -73,13 +92,20 @@ class LookGridFragment : Fragment(){
             gridAdapter.apply {
                 addItemDecoration(GridSpaceItemDecoration(spanCount, 6))
                 editSpanCountBtnClicked(spanCount)
-                notifyDataSetChanged()
             }
 
-         /*   addItemDecoration(GridSpaceItemDecoration(spanCount, 6))
-            gridAdapter.editSpanCountBtnClicked(spanCount)  // 이미지 높이 조정을 위한 리스너에 span 값 전송
-            gridAdapter.notifyDataSetChanged()*/
         }
+    }
+    private fun editLayoutManager(){
+        with(binding.gridRv){
+            layoutManager = LinearLayoutManager(requireContext())
+
+            gridAdapter.apply {
+                editSpanCountBtnClicked(1)
+            }
+
+        }
+
     }
 
 }
