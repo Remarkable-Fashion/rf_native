@@ -2,10 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/search_navi"
-    app:startDestination="@id/searchStep1Fragment">
+  >
 
-    <fragment
-        android:id="@+id/searchStep1Fragment"
-        android:name="com.lf.fashion.ui.search.SearchTermFragment"
-        android:label="SearchStep1Fragment" />
+
 </navigation>

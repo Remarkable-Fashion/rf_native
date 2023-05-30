@@ -1,10 +1,12 @@
 package com.lf.fashion.ui.home.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.lf.fashion.TAG
 import com.lf.fashion.data.response.Post
 import com.lf.fashion.databinding.HomeGridItemBinding
 import com.lf.fashion.ui.convertDPtoPX
@@ -44,6 +46,7 @@ class GridPostAdapter : ListAdapter<Post, GridPostAdapter.GridPostViewHolder>(De
             //post 내부 첫번째 사진을 grid 로 노출
             binding.photoUrl = post.photo[0].imageUrl
             binding.executePendingBindings()
+            Log.d(TAG, "GridPostViewHolder - bind: ${binding.photoUrl.toString()}");
         }
     }
 

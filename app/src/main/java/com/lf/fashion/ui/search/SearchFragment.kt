@@ -7,23 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.response.ChipContents
 import com.lf.fashion.databinding.SearchFragmentBinding
 import com.lf.fashion.ui.childChip
+import com.lf.fashion.ui.search.adapter.SearchResultViewPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlin.math.log
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -78,6 +74,8 @@ class SearchFragment : Fragment() {
 
         popularSearchTermRvSetting()
 
+        searchResultViewSetting()
+
     }
 
     private fun searchAction() {
@@ -101,12 +99,25 @@ class SearchFragment : Fragment() {
                 binding.searchTerm.root.visibility = View.GONE
                 binding.searchResult.root.visibility = View.VISIBLE
 
+
                 true
             } else {
                 false
             }
         }
 
+    }
+
+    private val tabTitleArray = arrayOf("LOOK","ITEM")
+
+    private fun searchResultViewSetting(){
+        val tabViewpager = binding.searchResult.tabViewpager
+        val tabLayout = binding.searchResult.tab
+
+        tabViewpager.adapter = SearchResultViewPagerAdapter(this)
+        TabLayoutMediator(tabLayout,tabViewpager){ tab, position ->
+            tab.text = tabTitleArray[position]
+        }.attach()
     }
 
     private fun recentSearchTermChipSetting() {

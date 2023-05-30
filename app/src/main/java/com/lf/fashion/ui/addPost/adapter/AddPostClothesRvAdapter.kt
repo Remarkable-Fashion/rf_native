@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.databinding.ItemRegistFormBinding
 
-class ClothesRvAdapter :
-    ListAdapter<String, ClothesRvAdapter.ClothesRvViewHolder>(ClothesCategoryDiff()) {
+class AddPostClothesRvAdapter :
+    ListAdapter<String, AddPostClothesRvAdapter.ClothesRvViewHolder>(ClothesCategoryDiff()) {
 
     var addedItemPosition :Int?  = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothesRvViewHolder {
