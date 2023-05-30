@@ -3,6 +3,7 @@ package com.lf.fashion.ui
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -47,4 +48,15 @@ fun Fragment.childChip(chipList: List<ChipContents>, chipGroup: ChipGroup, style
 fun convertDPtoPX(context: Context, dp: Int): Int {
     val density: Float = context.resources.displayMetrics.density
     return (dp.toFloat() * density).roundToInt()
+}
+
+
+//키보드 숨기기
+fun Fragment.hideKeyboard(){
+    val inputManager =
+        requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputManager.hideSoftInputFromWindow(
+        requireActivity().currentFocus?.windowToken,
+        InputMethodManager.HIDE_NOT_ALWAYS
+    )
 }

@@ -12,14 +12,13 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.TAG
 import com.lf.fashion.databinding.SearchLookGridFragmentBinding
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
-import com.lf.fashion.ui.home.HomeViewModel
 import com.lf.fashion.ui.home.adapter.GridPostAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LookGridFragment : Fragment() {
+class LookGridFragment : Fragment(){
     private lateinit var binding: SearchLookGridFragmentBinding
-    private val viewModel: HomeViewModel by viewModels()
+    private val viewModel : SearchViewModel by viewModels()
     private val gridAdapter = GridPostAdapter()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,13 +35,27 @@ class LookGridFragment : Fragment() {
         viewModel.postList.observe(viewLifecycleOwner) { response ->
 
             with(binding.gridRv) {
-                layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
                 Log.d(TAG, "LookGridFragment - onViewCreated: $response");
                 gridAdapter.apply {
-                    addItemDecoration(GridSpaceItemDecoration(2, 6))
+                    addItemDecoration(GridSpaceItemDecoration(3, 6))
                     submitList(response)
                 }
-//adapter =
+            }
+        }
+
+        viewModel.gridMode.observe(viewLifecycleOwner){ gridMode ->
+            Log.d(TAG, "GRID !!!! : $gridMode");
+            when(gridMode){
+                1->{
+                    editGridSpanCount(1)
+                }
+                2 ->{
+                    editGridSpanCount(2)
+                }
+                3 ->{
+                    editGridSpanCount(3)
+                }
             }
         }
     }
@@ -52,18 +65,25 @@ class LookGridFragment : Fragment() {
         with(binding.gridRv) {
             layoutManager = StaggeredGridLayoutManager(
                 spanCount,
-                androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
+                StaggeredGridLayoutManager.VERTICAL
             )
             while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
                 removeItemDecorationAt(0)
             }
-            addItemDecoration(GridSpaceItemDecoration(spanCount, 6))
-            gridAdapter.editSpanCountBtnClicked(spanCount)  // 이미지 높이 조정을 위한 리스너에 span 값 전송
-            gridAdapter.notifyDataSetChanged()
+            gridAdapter.apply {
+                addItemDecoration(GridSpaceItemDecoration(spanCount, 6))
+                editSpanCountBtnClicked(spanCount)
+                notifyDataSetChanged()
+            }
 
+         /*   addItemDecoration(GridSpaceItemDecoration(spanCount, 6))
+            gridAdapter.editSpanCountBtnClicked(spanCount)  // 이미지 높이 조정을 위한 리스너에 span 값 전송
+            gridAdapter.notifyDataSetChanged()*/
         }
     }
+
 }
+
 /*
 *
 * //상단 바의 2,3장씩 보기 버튼 클릭

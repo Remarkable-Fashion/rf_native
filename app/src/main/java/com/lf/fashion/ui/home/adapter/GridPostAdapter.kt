@@ -46,7 +46,6 @@ class GridPostAdapter : ListAdapter<Post, GridPostAdapter.GridPostViewHolder>(De
             //post 내부 첫번째 사진을 grid 로 노출
             binding.photoUrl = post.photo[0].imageUrl
             binding.executePendingBindings()
-            Log.d(TAG, "GridPostViewHolder - bind: ${binding.photoUrl.toString()}");
         }
     }
 

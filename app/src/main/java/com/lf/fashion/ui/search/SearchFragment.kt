@@ -1,5 +1,6 @@
 package com.lf.fashion.ui.search
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import com.lf.fashion.TAG
@@ -15,6 +18,8 @@ import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.response.ChipContents
 import com.lf.fashion.databinding.SearchFragmentBinding
 import com.lf.fashion.ui.childChip
+import com.lf.fashion.ui.hideKeyboard
+import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.search.adapter.SearchResultViewPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
@@ -22,13 +27,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(){
     private lateinit var binding: SearchFragmentBinding
     private lateinit var userPreferences: PreferenceManager
+    private val searchViewModel : SearchViewModel by viewModels()
     val keywordTest = listOf(
         "어그", "반팔", "t셔츠", "슬랙스", "셔츠", "니트반팔", "린넨반지", "원피스", "셔츠 원피스"
     )
     private val historyList = MutableLiveData<MutableList<String>>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,6 +67,7 @@ class SearchFragment : Fragment() {
         //editText 활성화,키보드 올라오면 최신 검색어 노출 view visible 하게
         binding.searchEt.setOnClickListener {
             if (binding.searchEt.hasFocus()) {
+                binding.searchEt.isCursorVisible = true
                 binding.searchTerm.root.visibility = View.VISIBLE
                 binding.searchResult.root.visibility = View.GONE
             }
@@ -76,6 +84,7 @@ class SearchFragment : Fragment() {
 
         searchResultViewSetting()
 
+        searchResultSpanCountBtnOnClick()
     }
 
     private fun searchAction() {
@@ -95,7 +104,8 @@ class SearchFragment : Fragment() {
                         Log.d(TAG, "SearchFragment - onViewCreated: ${historyList.value}");
                     }
                 }
-
+                hideKeyboard()
+                binding.searchEt.isCursorVisible = false
                 binding.searchTerm.root.visibility = View.GONE
                 binding.searchResult.root.visibility = View.VISIBLE
 
@@ -164,4 +174,38 @@ class SearchFragment : Fragment() {
             }
         }
     }
+    private fun searchResultSpanCountBtnOnClick() {
+        binding.searchResult.appBarPhotoGridModeBtn.setOnClickListener {
+            when (binding.searchResult.appBarPhotoGridModeBtn.text) {
+                "1" -> {
+                    binding.searchResult.appBarPhotoGridModeBtn.text = "3"
+                    searchViewModel.setGridMode(3)
+                }
+                "2" -> {
+                    binding.searchResult.appBarPhotoGridModeBtn.text = "1"
+                    searchViewModel.setGridMode(1)
+                }
+                "3" -> {
+                    binding.searchResult.appBarPhotoGridModeBtn.text = "2"
+                    searchViewModel.setGridMode(2)
+                }
+            }
+        }
+    }
+
+   /* override var gridMode: Int
+        get() = binding.searchResult.appBarPhotoGridModeBtn.text.toString().toInt()
+        set(value) {gridMode = value}
+*/
+  /*  override fun gridModeChange(mode : Int) : Int {
+        //gridMode = mode
+    return mode
+    }*/
+
+
 }
+/*
+interface GridModeListener {
+   // var gridMode : Int
+    fun gridModeChange(mode : Int) : Int
+}*/
