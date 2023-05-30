@@ -82,7 +82,6 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun editGridSpanCount(spanCount: Int) {
         with(binding.gridRecyclerView){
             layoutManager = StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL)
@@ -91,8 +90,6 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
             }
             addItemDecoration(GridSpaceItemDecoration(spanCount,6))
             gridAdapter.editSpanCountBtnClicked(spanCount)  // 이미지 높이 조정을 위한 리스너에 span 값 전송
-            gridAdapter.notifyDataSetChanged()
-
         }
     }
 
@@ -106,7 +103,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
         }
     }
 
-
+    @SuppressLint("NotifyDataSetChanged")
     override fun onClick(view: View?) {
         when (view) {
             //상단 바의 랜덤,팔로잉 버튼 각각 클릭 (임시로 select 여부만 변경 처리)
@@ -137,6 +134,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
                         photoLayoutVisibilityMode(true) // default visibility
                     }
                 }
+                gridAdapter.notifyDataSetChanged()
             }
 
             //상단 바의 필터 버튼 클릭

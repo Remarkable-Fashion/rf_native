@@ -27,11 +27,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
-class SearchFragment : Fragment(){
+class SearchFragment : Fragment() {
     private lateinit var binding: SearchFragmentBinding
     private lateinit var userPreferences: PreferenceManager
-    private val searchViewModel : SearchViewModel by viewModels()
-    val keywordTest = listOf(
+    private val searchViewModel: SearchViewModel by viewModels()
+    private val keywordTest = listOf(
         "어그", "반팔", "t셔츠", "슬랙스", "셔츠", "니트반팔", "린넨반지", "원피스", "셔츠 원피스"
     )
     private val historyList = MutableLiveData<MutableList<String>>()
@@ -105,7 +105,7 @@ class SearchFragment : Fragment(){
                     }
                 }
                 hideKeyboard()
-                binding.searchEt.isCursorVisible = false
+                binding.searchEt.isCursorVisible = false // 검색 실행시 edittext 커서 focus 제거
                 binding.searchTerm.root.visibility = View.GONE
                 binding.searchResult.root.visibility = View.VISIBLE
 
@@ -118,14 +118,14 @@ class SearchFragment : Fragment(){
 
     }
 
-    private val tabTitleArray = arrayOf("LOOK","ITEM")
+    private val tabTitleArray = arrayOf("LOOK", "ITEM")
 
-    private fun searchResultViewSetting(){
+    private fun searchResultViewSetting() {
         val tabViewpager = binding.searchResult.tabViewpager
         val tabLayout = binding.searchResult.tab
 
         tabViewpager.adapter = SearchResultViewPagerAdapter(this)
-        TabLayoutMediator(tabLayout,tabViewpager){ tab, position ->
+        TabLayoutMediator(tabLayout, tabViewpager) { tab, position ->
             tab.text = tabTitleArray[position]
         }.attach()
     }
@@ -174,6 +174,7 @@ class SearchFragment : Fragment(){
             }
         }
     }
+
     private fun searchResultSpanCountBtnOnClick() {
         binding.searchResult.appBarPhotoGridModeBtn.setOnClickListener {
             when (binding.searchResult.appBarPhotoGridModeBtn.text) {
@@ -192,20 +193,4 @@ class SearchFragment : Fragment(){
             }
         }
     }
-
-   /* override var gridMode: Int
-        get() = binding.searchResult.appBarPhotoGridModeBtn.text.toString().toInt()
-        set(value) {gridMode = value}
-*/
-  /*  override fun gridModeChange(mode : Int) : Int {
-        //gridMode = mode
-    return mode
-    }*/
-
-
 }
-/*
-interface GridModeListener {
-   // var gridMode : Int
-    fun gridModeChange(mode : Int) : Int
-}*/

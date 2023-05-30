@@ -22,9 +22,11 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class LookGridFragment : Fragment(){
     private lateinit var binding: SearchLookGridFragmentBinding
-    private val viewModel : SearchViewModel by viewModels({requireParentFragment()}) //중요@
+    /**중요@ parentFragment 의 viewModel 데이터 변동 사항을 인지할 수 있도록 requireParentFragment()를 넣어줘야한다**/
+    private val viewModel : SearchViewModel by viewModels({requireParentFragment()})
     private val gridAdapter = GridPostAdapter()
     private val verticalAdapter = LookVerticalAdapter()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,14 +36,16 @@ class LookGridFragment : Fragment(){
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        /** 메인 홈 post 구조와 동일하게, viewPager , staggerGrid RecyclerView 를 동시에 활용하고 visibility 로 노출을 조정
+         * 특히 staggerGridAdapter 는 메인 홈과 동일하기 때문에 같은 어뎁터를 사용함 (GridPostAdapter)**/
         binding.gridRv.adapter = gridAdapter
         viewModel.postList.observe(viewLifecycleOwner) { response ->
 
             with(binding.gridRv) {
                 layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
-                Log.d(TAG, "LookGridFragment - onViewCreated: $response");
                 gridAdapter.apply {
                     addItemDecoration(GridSpaceItemDecoration(3, 6))
                     submitList(response)
@@ -58,9 +62,7 @@ class LookGridFragment : Fragment(){
             Log.d(TAG, "GRID !!!! : $gridMode");
             when(gridMode){
                 1->{
-
                     layoutVisibilityUpdate(false)
-                    //editGridSpanCount(1)
                 }
                 2 ->{
                     editGridSpanCount(2)
@@ -79,7 +81,7 @@ class LookGridFragment : Fragment(){
         binding.verticalViewpager.isVisible = !default
         binding.gridRv.isVisible = default
     }
-    @SuppressLint("NotifyDataSetChanged")
+
     private fun editGridSpanCount(spanCount: Int) {
         with(binding.gridRv) {
             layoutManager = StaggeredGridLayoutManager(
@@ -93,42 +95,6 @@ class LookGridFragment : Fragment(){
                 addItemDecoration(GridSpaceItemDecoration(spanCount, 6))
                 editSpanCountBtnClicked(spanCount)
             }
-
         }
     }
-    private fun editLayoutManager(){
-        with(binding.gridRv){
-            layoutManager = LinearLayoutManager(requireContext())
-
-            gridAdapter.apply {
-                editSpanCountBtnClicked(1)
-            }
-
-        }
-
-    }
-
 }
-
-/*
-*
-* //상단 바의 2,3장씩 보기 버튼 클릭
-            binding.appBarPhotoGridModeBtn -> {
-                when (binding.appBarPhotoGridModeBtn.text) {
-                    "1" -> {
-                        binding.appBarPhotoGridModeBtn.text = "2"
-                        photoLayoutVisibilityMode(false) // grid visibility
-                        editGridSpanCount(2)
-                    }
-                    "2" -> {
-                        binding.appBarPhotoGridModeBtn.text = "3"
-                        photoLayoutVisibilityMode(false) // grid visibility
-                        editGridSpanCount(3)
-                    }
-                    "3" -> {
-                        binding.appBarPhotoGridModeBtn.text = "1"
-                        photoLayoutVisibilityMode(true) // default visibility
-                    }
-                }
-            }
-* */
