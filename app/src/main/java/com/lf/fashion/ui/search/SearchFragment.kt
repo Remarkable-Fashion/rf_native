@@ -133,25 +133,19 @@ class SearchFragment : Fragment() {
         historyList.observe(viewLifecycleOwner) { history ->
             //기존 chipChild 모두 지우고, 새롭게 덮어쓴 ChipContents 리스트를 역순으로(최신 검색어 상단) child 칩 생성
             binding.searchTerm.recentTermChipGroup.removeAllViews()
-            Log.d(TAG, "SearchFragment - recentSearchTermChipSetting: $history");
             val orderByRecent = history.reversed()
-            for (j in orderByRecent.indices) {
+            //10개까지만 노출
+            val chipRange = if(orderByRecent.size > 10) 0..9 else orderByRecent.indices
+            for (j in chipRange) {
                 val chip =
                     LayoutInflater.from(requireContext())
                         .inflate(R.layout.chip_grey_item, null) as Chip
-                chip.text = orderByRecent[j]
+                val content = if(orderByRecent[j].length>10)orderByRecent[j].substring(0,5)+"..." else orderByRecent[j]
+                chip.text = content
                 chip.setOnCloseIconClickListener {
-                    Log.d(
-                        TAG,
-                        "chlicked chip text: ${chip.text}"
-                    );
                     runBlocking {
                         launch {
                             history.removeAt(history.indexOf(chip.text))
-                            Log.d(
-                                TAG,
-                                "is it removed? : $history"
-                            );
                             userPreferences.storeSearchHistoryList(history)
                             historyList.value = history // liveData 객체 업데이트 , datastore 정보 업데이트
                         }
