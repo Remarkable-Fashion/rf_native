@@ -51,6 +51,7 @@ class MyPageFragment : Fragment() {
                             userPreferences.saveAccessTokens(token.accessToken, token.refreshToken)
                         }
                     }
+                    getUserInfo()
                 }
             }
         }
@@ -72,35 +73,18 @@ class MyPageFragment : Fragment() {
                         );
                     }
                 }
-            }
-            agree()
-        }
-    }
-
-    private fun agree() {
-        var scopes = mutableListOf<String>()
-
-        scopes.add("account_email")
-
-        UserApiClient.instance.loginWithNewScopes(
-            requireContext(),
-            scopes
-        ) { token, error ->
-            if (error != null) {
-                Log.e(TAG, "사용자 추가 동의 실패", error)
-            } else {
-                Log.d(TAG, "allowed scopes: ${token!!.scopes}")
-
-                // 사용자 정보 재요청
-                UserApiClient.instance.me { user, error ->
-                    if (error != null) {
-                        Log.e(TAG, "사용자 정보 요청 실패", error)
-                    } else if (user != null) {
-                        Log.i(TAG, "사용자 정보 요청 성공")
-                    }
-                }
+            getUserInfo()
             }
         }
     }
-
+private fun getUserInfo(){
+    UserApiClient.instance.me { user, error ->
+        if(error!=null){
+            Log.d(TAG, "MyPageFragment - getUserInfo: 정보요청 실패");
+        }else if(user!=null){
+            Log.d(TAG, "MyPageFragment - getUserInfo: ${user.kakaoAccount?.email}");
+            Log.d(TAG, "MyPageFragment - getUserInfo: ${user.kakaoAccount?.profile?.nickname}");
+        }
+    }
+}
 }
