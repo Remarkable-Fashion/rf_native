@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.kakao.sdk.user.UserApiClient
+import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.databinding.MypageFragmentBinding
@@ -26,62 +28,36 @@ class MyPageFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        userPreferences = PreferenceManager(requireContext().applicationContext)
+
+        runBlocking {
+            launch {
+                if(userPreferences.accessToken.first().isNullOrEmpty()){
+                    Log.d(TAG, "MyPageFragment - onCreateView: pref token null !! ");
+
+                    findNavController().navigate(R.id.action_navigation_mypage_to_loginFragment)
+                }else {
+                    val first = userPreferences.accessToken.first()
+                    Log.d(TAG, "MyPageFragment - onCreateView: $first");
+                }
+            }
+        }
+
         binding = MypageFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userPreferences = PreferenceManager(requireContext().applicationContext)
 
-        binding.kakaoLoginBackground.setOnClickListener {
-            UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
-                if (error != null) {
-                    Log.d(TAG, "MyPageFragment - onViewCreated: 카카오톡 간편 로그인 실패 : $error");
-                    if (error.message == "KakaoTalk not installed") {
-                        kakaoLoginWithAccount()
-                    }
-                } else if (token != null) {
-                    Log.d(TAG, "MyPageFragment - onViewCreated: 카카오톡 간편 로그인 성공 토큰 : $token")
-                    runBlocking(Dispatchers.IO) {
-                        launch {
-                            userPreferences.saveAccessTokens(token.accessToken, token.refreshToken)
-                        }
-                    }
-                    getUserInfo()
+        binding.logout.setOnClickListener {
+            runBlocking {
+                launch {
+                    userPreferences.clearAccessToken()
                 }
             }
         }
-    }
 
-    private fun kakaoLoginWithAccount() {
-        UserApiClient.instance.loginWithKakaoAccount(requireContext()) { token, error ->
-            token?.let {
-                runBlocking(Dispatchers.IO) {
-                    launch {
-                        userPreferences.saveAccessTokens(token.accessToken, token.refreshToken)
-                        Log.d(
-                            TAG,
-                            "MyPageFragment - kakaoLoginWithAccount: dataStore ${userPreferences.accessToken.first()}"
-                        );
-                        Log.d(
-                            TAG,
-                            "MyPageFragment - kakaoLoginWithAccount: dataStore ${userPreferences.refreshToken.first()}"
-                        );
-                    }
-                }
-            getUserInfo()
-            }
-        }
+
     }
-private fun getUserInfo(){
-    UserApiClient.instance.me { user, error ->
-        if(error!=null){
-            Log.d(TAG, "MyPageFragment - getUserInfo: 정보요청 실패");
-        }else if(user!=null){
-            Log.d(TAG, "MyPageFragment - getUserInfo: ${user.kakaoAccount?.email}");
-            Log.d(TAG, "MyPageFragment - getUserInfo: ${user.kakaoAccount?.profile?.nickname}");
-        }
-    }
-}
 }

@@ -11,6 +11,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.Gson
 import com.kakao.sdk.auth.Constants.ACCESS_TOKEN
 import com.kakao.sdk.auth.Constants.REFRESH_TOKEN
+import com.lf.fashion.TAG
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -35,6 +36,7 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
         preferences[RECENT_SEARCH_TERM]
     }
     suspend fun saveAccessTokens(accessToken: String, refreshToken: String) {
+        Log.d(TAG, "PreferenceManager - saveAccessTokens: $accessToken");
         appContext.dataStore.edit { preferences ->
             preferences[ACCESS_TOKEN] = accessToken
             preferences[REFRESH_TOKEN] = refreshToken
@@ -62,6 +64,12 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
         }
     }
 
+    //테스트용
+    suspend fun clearAccessToken(){
+        appContext.dataStore.edit { preferences->
+            preferences.remove(ACCESS_TOKEN)
+        }
+    }
     companion object {
         private val ACCESS_TOKEN = stringPreferencesKey("key_access_token")
         private val REFRESH_TOKEN = stringPreferencesKey("key_refresh_token")

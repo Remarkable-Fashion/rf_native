@@ -33,7 +33,11 @@
     <fragment
         android:id="@+id/navigation_mypage"
         android:name="com.lf.fashion.ui.mypage.MyPageFragment"
-        android:label="MypageFragment" />
+        android:label="MypageFragment" >
+        <action
+            android:id="@+id/action_navigation_mypage_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_photo"
         android:name="com.lf.fashion.ui.addPost.PhotoFragment"
@@ -96,5 +100,13 @@
                 app:nullable="true"
                 android:defaultValue="@null" />
         </action>
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.lf.fashion.ui.mypage.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_navigation_mypage"
+            app:destination="@id/navigation_mypage" />
     </fragment>
 </navigation>

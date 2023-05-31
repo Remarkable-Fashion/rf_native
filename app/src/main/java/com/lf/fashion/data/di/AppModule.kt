@@ -2,6 +2,7 @@ package com.lf.fashion.data.di
 
 import android.content.Context
 import com.lf.fashion.data.network.RemoteDataSource
+import com.lf.fashion.data.network.api.JWTApi
 import com.lf.fashion.data.network.api.PostPublicApi
 import com.lf.fashion.data.network.api.test.ChipTestApi
 import com.lf.fashion.data.network.api.test.PhotoTestApi
@@ -36,10 +37,20 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideJWTApi(
+        remoteDataSource: RemoteDataSource,
+        @ApplicationContext context: Context
+    ): JWTApi {
+        return remoteDataSource.buildApi(JWTApi::class.java,context)
+    }
+
+    @Singleton
+    @Provides
     fun providePostPublicApi(
         remoteDataSource: RemoteDataSource,
         @ApplicationContext context: Context
     ): PostPublicApi {
         return remoteDataSource.buildApi(PostPublicApi::class.java,context)
     }
+
 }
