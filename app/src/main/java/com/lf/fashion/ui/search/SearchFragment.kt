@@ -1,11 +1,16 @@
 package com.lf.fashion.ui.search
 
+import android.content.Context.INPUT_METHOD_SERVICE
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
@@ -23,14 +28,16 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
+
 @AndroidEntryPoint
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(){
     private lateinit var binding: SearchFragmentBinding
     private lateinit var userPreferences: PreferenceManager
     private val searchViewModel: SearchViewModel by viewModels()
     private val keywordTest = listOf(
         "어그", "반팔", "t셔츠", "슬랙스", "셔츠", "니트반팔", "린넨반지", "원피스", "셔츠 원피스"
     )
+    private val tabTitleArray = arrayOf("LOOK", "ITEM")
     private val historyList = MutableLiveData<MutableList<String>>()
 
 
@@ -61,27 +68,18 @@ class SearchFragment : Fragment() {
         }
 
 
-        //editText 활성화,키보드 올라오면 최신 검색어 노출 view visible 하게
-        binding.searchEt.setOnClickListener {
-            if (binding.searchEt.hasFocus()) {
-                binding.searchEt.isCursorVisible = true // cursor focus true
-                binding.searchTerm.root.visibility = View.VISIBLE
-                binding.searchResult.root.visibility = View.GONE
-            }
-        }
+        //검색 동작
+        searchAction() // 검색 동작시 ui visibility 로 결과 레이아웃 노출 조정
+        keyBoardUIControl() // edittext 외부 클릭시 hide keyboard
 
+        // 검색어 레이아웃 관련
+        recentSearchTermChipSetting() // 최근 검색어 chip 생성, 개별 삭제
+        recentSearchHistoryClear()  // 최근 검색어 모두 지우기
+        popularSearchTermRvSetting() // 인기 검색어 recycler view 세팅
 
-        searchAction()
-
-        recentSearchTermChipSetting()
-
-        recentSearchHistoryClear()
-
-        popularSearchTermRvSetting()
-
-        searchResultViewSetting()
-
-        searchResultSpanCountBtnOnClick()
+        //검색 결과 레이아웃 관련
+        searchResultViewSetting()  //결과 레이아웃 내부 세팅 (tab,viewpager)
+        searchResultSpanCountBtnOnClick() // 결과 레이아웃 사진 모아보기 갯수 버튼 클릭
     }
 
     private fun searchAction() {
@@ -114,8 +112,18 @@ class SearchFragment : Fragment() {
         }
 
     }
-
-    private val tabTitleArray = arrayOf("LOOK", "ITEM")
+    private fun keyBoardUIControl(){
+        //editText 활성화,키보드 올라오면 최신 검색어 노출 view visible 하게
+        binding.searchEt.setOnClickListener {
+            if (binding.searchEt.hasFocus()) {
+                binding.searchEt.isCursorVisible = true // cursor focus true
+                binding.searchTerm.root.visibility = View.VISIBLE
+                binding.searchResult.root.visibility = View.GONE
+            }
+        }
+        binding.root.setOnClickListener{ hideKeyboard() }
+        binding.searchTerm.nest.setOnClickListener{hideKeyboard()}
+    }
 
     private fun searchResultViewSetting() {
         val tabViewpager = binding.searchResult.tabViewpager
@@ -140,7 +148,7 @@ class SearchFragment : Fragment() {
                 val chip =
                     LayoutInflater.from(requireContext())
                         .inflate(R.layout.chip_grey_item, null) as Chip
-                val content = if(orderByRecent[j].length>10)orderByRecent[j].substring(0,5)+"..." else orderByRecent[j]
+                val content = if(orderByRecent[j].length>10)orderByRecent[j].substring(0,11)+"..." else orderByRecent[j]
                 chip.text = content
                 chip.setOnCloseIconClickListener {
                     runBlocking {

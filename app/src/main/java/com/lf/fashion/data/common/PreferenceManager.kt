@@ -61,12 +61,6 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
             preferences.remove(RECENT_SEARCH_TERM)
         }
     }
- /*   suspend fun HistoryRemoveAt(){
-        appContext.dataStore.edit { pref ->
-        pref.rem
-
-        }
-    }*/
 
     companion object {
         private val ACCESS_TOKEN = stringPreferencesKey("key_access_token")
