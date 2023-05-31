@@ -22,22 +22,28 @@ fun Fragment.cancelBtnBackStack(view: ImageView) {
 @SuppressLint("InflateParams")
 fun Fragment.childChip(chipList: List<ChipContents>, chipGroup: ChipGroup, style: String) {
     for (j in chipList.indices) {
-       /* val chip =
-            if (style == "default") LayoutInflater.from(context)
-                .inflate(R.layout.chip_item, null) as Chip
-            else LayoutInflater.from(context).inflate(R.layout.chip_purple_item, null) as Chip*/
-        val chip = when(style){
-            "default" ->{
-                LayoutInflater.from(context).inflate(R.layout.chip_item, null) as Chip }
-            "purple" ->{
-                LayoutInflater.from(context).inflate(R.layout.chip_purple_item, null) as Chip }
-            else -> { LayoutInflater.from(context).inflate(R.layout.chip_grey_item, null) as Chip}
+        /* val chip =
+             if (style == "default") LayoutInflater.from(context)
+                 .inflate(R.layout.chip_item, null) as Chip
+             else LayoutInflater.from(context).inflate(R.layout.chip_purple_item, null) as Chip*/
+        val chip = when (style) {
+            "default" -> {
+                LayoutInflater.from(context).inflate(R.layout.chip_item, null) as Chip
+            }
+            "purple" -> {
+                LayoutInflater.from(context).inflate(R.layout.chip_purple_item, null) as Chip
+            }
+            else -> {
+                LayoutInflater.from(context).inflate(R.layout.chip_grey_item, null) as Chip
+
+            }
+
         }
         var content = chipList[j].text
 
-        chipList[j].emoji?.let{
+        chipList[j].emoji?.let {
             val emoji = it.substring(2).toInt(16)
-                content += " " + String(Character.toChars(emoji))
+            content += " " + String(Character.toChars(emoji))
         }
 
         chip.text = content
@@ -52,7 +58,7 @@ fun convertDPtoPX(context: Context, dp: Int): Int {
 
 
 //키보드 숨기기
-fun Fragment.hideKeyboard(){
+fun Fragment.hideKeyboard() {
     val inputManager =
         requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     inputManager.hideSoftInputFromWindow(

@@ -9,6 +9,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.Gson
+import com.kakao.sdk.auth.Constants.ACCESS_TOKEN
+import com.kakao.sdk.auth.Constants.REFRESH_TOKEN
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -59,6 +61,12 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
             preferences.remove(RECENT_SEARCH_TERM)
         }
     }
+ /*   suspend fun HistoryRemoveAt(){
+        appContext.dataStore.edit { pref ->
+        pref.rem
+
+        }
+    }*/
 
     companion object {
         private val ACCESS_TOKEN = stringPreferencesKey("key_access_token")

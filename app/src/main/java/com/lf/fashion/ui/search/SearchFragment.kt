@@ -1,6 +1,5 @@
 package com.lf.fashion.ui.search
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,16 +9,14 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
+import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
-import com.lf.fashion.data.response.ChipContents
 import com.lf.fashion.databinding.SearchFragmentBinding
-import com.lf.fashion.ui.childChip
 import com.lf.fashion.ui.hideKeyboard
-import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.search.adapter.SearchResultViewPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
@@ -67,7 +64,7 @@ class SearchFragment : Fragment() {
         //editText 활성화,키보드 올라오면 최신 검색어 노출 view visible 하게
         binding.searchEt.setOnClickListener {
             if (binding.searchEt.hasFocus()) {
-                binding.searchEt.isCursorVisible = true
+                binding.searchEt.isCursorVisible = true // cursor focus true
                 binding.searchTerm.root.visibility = View.VISIBLE
                 binding.searchResult.root.visibility = View.GONE
             }
@@ -132,24 +129,37 @@ class SearchFragment : Fragment() {
 
     private fun recentSearchTermChipSetting() {
         val chipGroup = binding.searchTerm.recentTermChipGroup
-        val testList = mutableListOf<ChipContents>()
 
-        runBlocking {
-            launch {
-                historyList.observe(viewLifecycleOwner) {
-                    testList.clear()
-                    for (i in it.indices) {
-                        testList.add(ChipContents(it[i], null))
+        historyList.observe(viewLifecycleOwner) { history ->
+            //기존 chipChild 모두 지우고, 새롭게 덮어쓴 ChipContents 리스트를 역순으로(최신 검색어 상단) child 칩 생성
+            binding.searchTerm.recentTermChipGroup.removeAllViews()
+            Log.d(TAG, "SearchFragment - recentSearchTermChipSetting: $history");
+            val orderByRecent = history.reversed()
+            for (j in orderByRecent.indices) {
+                val chip =
+                    LayoutInflater.from(requireContext())
+                        .inflate(R.layout.chip_grey_item, null) as Chip
+                chip.text = orderByRecent[j]
+                chip.setOnCloseIconClickListener {
+                    Log.d(
+                        TAG,
+                        "chlicked chip text: ${chip.text}"
+                    );
+                    runBlocking {
+                        launch {
+                            history.removeAt(history.indexOf(chip.text))
+                            Log.d(
+                                TAG,
+                                "is it removed? : $history"
+                            );
+                            userPreferences.storeSearchHistoryList(history)
+                            historyList.value = history // liveData 객체 업데이트 , datastore 정보 업데이트
+                        }
                     }
-                    //기존 chipChild 모두 지우고, 새롭게 덮어쓴 ChipContents 리스트를 역순으로(최신 검색어 상단) child 칩 생성
-                    binding.searchTerm.recentTermChipGroup.removeAllViews()
-                    Log.d(TAG, "SearchFragment - recentSearchTermChipSetting: $testList");
-                    childChip(testList.toList().reversed(), chipGroup, "grey")
-
                 }
+                chipGroup.addView(chip)
             }
         }
-
     }
 
     private fun recentSearchHistoryClear() {
@@ -194,3 +204,4 @@ class SearchFragment : Fragment() {
         }
     }
 }
+

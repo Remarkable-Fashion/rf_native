@@ -45,11 +45,13 @@
                 app:layout_constraintStart_toStartOf="@id/guideline_vertical"
                 app:layout_constraintEnd_toEndOf="@id/guideline_vertical2">
 
-         <!--       <com.google.android.material.chip.Chip
+            <!--    <com.google.android.material.chip.Chip
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     style="@style/CustomChipChoice_grey"
+                    app:closeIconEnabled="true"
+                    app:closeIcon="@drawable/ic_x_box"
                     android:text="어그">
                 </com.google.android.material.chip.Chip>-->
             </com.google.android.material.chip.ChipGroup>
