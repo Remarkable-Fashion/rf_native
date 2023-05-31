@@ -1,7 +1,7 @@
 package com.lf.fashion.data.repository
 
-import com.lf.fashion.data.network.api.ChipTestApi
-import com.lf.fashion.data.network.api.PhotoTestApi
+import com.lf.fashion.data.network.api.test.ChipTestApi
+import com.lf.fashion.data.network.api.test.PhotoTestApi
 import com.lf.fashion.data.response.ChipInfo
 import com.lf.fashion.data.response.LookBook
 import com.lf.fashion.data.response.Post

@@ -1,0 +1,102 @@
+[
+  {
+    "_id": "6462f6c192bbb79d3425732c",
+    "mysqlId": 1,
+    "userId": 1,
+    "title": "test-title",
+    "description": "test description",
+    "images": [
+      {
+        "id": 1,
+        "url": "https://wadada.me/rfundefined-d8-1684207297827.png",
+        "postId": 1
+      }
+    ],
+    "clothes": [],
+    "tpo": "Etc",
+    "season": "Etc",
+    "style": "Etc",
+    "isPublic": true,
+    "sex": "Male"
+  },
+  {
+    "_id": "64630abfe27a60ce7ed0f0a0",
+    "mysqlId": 5,
+    "userId": 1,
+    "title": "test22",
+    "description": "asdfasdf",
+    "images": [
+      {
+        "id": 5,
+        "url": "https://wadada.me/rf/1-Ka-1684212415340.jpg",
+        "postId": 5
+      }
+    ],
+    "clothes": [],
+    "tpo": "Etc",
+    "season": "Etc",
+    "style": "Etc",
+    "isPublic": true,
+    "sex": "Male"
+  },
+  {
+    "_id": "6463095fe0faba5a2c951b1d",
+    "mysqlId": 3,
+    "userId": 1,
+    "title": "test22",
+    "description": "asdfasdf",
+    "images": [
+      {
+        "id": 3,
+        "url": "https://wadada.me/rf/undefined-Ka-1684212063520.jpg",
+        "postId": 3
+      }
+    ],
+    "clothes": [],
+    "tpo": "Etc",
+    "season": "Etc",
+    "style": "Etc",
+    "isPublic": true,
+    "sex": "Male"
+  },
+  {
+    "_id": "64630a07b3a190761a5d4717",
+    "mysqlId": 4,
+    "userId": 1,
+    "title": "test22",
+    "description": "asdfasdf",
+    "images": [
+      {
+        "id": 4,
+        "url": "https://wadada.me/rf/undefined-Ka-1684212231790.jpg",
+        "postId": 4
+      }
+    ],
+    "clothes": [],
+    "tpo": "Etc",
+    "season": "Etc",
+    "style": "Etc",
+    "isPublic": true,
+    "sex": "Male"
+  },
+  {
+    "_id": "64630925e0faba5a2c951b1c",
+    "mysqlId": 2,
+    "userId": 1,
+    "title": "test22",
+    "description": "asdfasdf",
+    "images": [
+      {
+        "id": 2,
+        "url": "https://wadada.me/rf/undefined-ry-1684212005674.jpg",
+        "postId": 2
+      }
+    ],
+    "clothes": [],
+    "tpo": "Etc",
+    "season": "Etc",
+    "style": "Etc",
+    "isPublic": true,
+    "sex": "Male"
+  }
+]

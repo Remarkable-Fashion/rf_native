@@ -2,9 +2,9 @@ package com.lf.fashion.data.di
 
 import android.content.Context
 import com.lf.fashion.data.network.RemoteDataSource
-import com.lf.fashion.data.network.api.ChipTestApi
-import com.lf.fashion.data.network.api.PhotoTestApi
-import com.lf.fashion.ui.addPost.ImagePickerViewModel
+import com.lf.fashion.data.network.api.PostPublicApi
+import com.lf.fashion.data.network.api.test.ChipTestApi
+import com.lf.fashion.data.network.api.test.PhotoTestApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,7 +22,7 @@ object AppModule {
         remoteDataSource: RemoteDataSource,
         @ApplicationContext context: Context
     ): PhotoTestApi {
-        return remoteDataSource.buildApi(PhotoTestApi::class.java,context)
+        return remoteDataSource.buildTestApi(PhotoTestApi::class.java,context)
     }
 
     @Singleton
@@ -31,14 +31,15 @@ object AppModule {
         remoteDataSource: RemoteDataSource,
         @ApplicationContext context: Context
     ): ChipTestApi {
-        return remoteDataSource.buildApi(ChipTestApi::class.java,context)
+        return remoteDataSource.buildTestApi(ChipTestApi::class.java,context)
     }
 
-  /*  @Singleton
+    @Singleton
     @Provides
-    fun provideImagePickerViewModel(
+    fun providePostPublicApi(
+        remoteDataSource: RemoteDataSource,
         @ApplicationContext context: Context
-    ) : ImagePickerViewModel{
-        return ImagePickerViewModel(context)
-    }*/
+    ): PostPublicApi {
+        return remoteDataSource.buildApi(PostPublicApi::class.java,context)
+    }
 }

@@ -153,7 +153,7 @@ class SearchFragment : Fragment(){
                 chip.setOnCloseIconClickListener {
                     runBlocking {
                         launch {
-                            history.removeAt(history.indexOf(chip.text))
+                            history.removeAt(history.indexOf(orderByRecent[j]))
                             userPreferences.storeSearchHistoryList(history)
                             historyList.value = history // liveData 객체 업데이트 , datastore 정보 업데이트
                         }

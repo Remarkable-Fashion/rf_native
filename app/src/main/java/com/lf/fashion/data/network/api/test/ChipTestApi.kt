@@ -1,5 +1,6 @@
-package com.lf.fashion.data.network.api
+package com.lf.fashion.data.network.api.test
 
+import com.lf.fashion.data.network.api.BaseApi
 import com.lf.fashion.data.response.ChipInfo
 import com.lf.fashion.data.response.LookBook
 import com.lf.fashion.data.response.UserInfo

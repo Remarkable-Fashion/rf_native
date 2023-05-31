@@ -3,6 +3,7 @@ package com.lf.fashion.data.network
 import android.content.Context
 import com.google.gson.GsonBuilder
 import com.lf.fashion.data.common.BASE_WEB_URL
+import com.lf.fashion.data.common.TEST_WEB_URL
 import com.lf.fashion.data.network.api.TokenRefreshApi
 import okhttp3.Authenticator
 import okhttp3.OkHttpClient
@@ -12,6 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor() {
+    private fun providesTestingWebUrl() = TEST_WEB_URL
     private fun providesHostingWebUrl() = BASE_WEB_URL
 
     private fun provideOkHttpClient(authenticator: Authenticator? = null): OkHttpClient {
@@ -30,6 +32,20 @@ class RemoteDataSource @Inject constructor() {
      * 중간에 만료 오류 뜨면 오류 수정하기 ..
      *
      * RF -> 우선 token 점검하는 부분 주석해둠둠     */
+    fun <Api> buildTestApi(
+        api: Class<Api>,
+        context: Context
+    ): Api {
+        //val authenticator = TokenAuthenticator(context, buildTokenApi())
+        return Retrofit.Builder()
+            .baseUrl(providesTestingWebUrl())
+//            .client(provideOkHttpClient(authenticator))
+            .client(provideOkHttpClient())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(api)
+    }
+
     fun <Api> buildApi(
         api: Class<Api>,
         context: Context

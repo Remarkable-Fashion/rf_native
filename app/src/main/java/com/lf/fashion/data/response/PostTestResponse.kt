@@ -6,9 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
-data class PostTestResponse (
-    val postList : List<Post>
-        )
+
 
 @Parcelize
 data class Post(
@@ -40,8 +38,8 @@ data class UserInfo(
     val modelInfo: ModelInfo,
     @SerializedName("clothes")
     val clothesInfo : List<ClothesInfo>
-
 )
+
 data class ModelInfo(
     val profile: Profile,
     val height : String,
@@ -51,6 +49,7 @@ data class ModelInfo(
     val styleChips : List<ChipContents>,
     val introduce : String
 )
+
 data class ClothesInfo(
     val category : String,
     val brand: String,
