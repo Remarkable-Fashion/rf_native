@@ -35,10 +35,10 @@ class FilterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.genderManBtn.setOnClickListener {
+        binding.filterSpace.genderManBtn.setOnClickListener {
             it.isSelected = !it.isSelected
         }
-        binding.genderWomanBtn.setOnClickListener {
+        binding.filterSpace.genderWomanBtn.setOnClickListener {
             it.isSelected = !it.isSelected
         }
 
@@ -51,9 +51,9 @@ class FilterFragment : Fragment() {
     private fun chipSetting(){
         viewModel.chipList.observe(viewLifecycleOwner){
             it?.let{
-                val tpoChipGroup = binding.filterInclude.tpoChipGroup
-                val seasonChipGroup = binding.filterInclude.seasonChipGroup
-                val styleChipGroup = binding.filterInclude.styleChipGroup
+                val tpoChipGroup = binding.filterSpace.filterInclude.tpoChipGroup
+                val seasonChipGroup = binding.filterSpace.filterInclude.seasonChipGroup
+                val styleChipGroup = binding.filterSpace.filterInclude.styleChipGroup
                 val chipStyle = "default"
                 for( i in  it.indices ){
                     when(it[i].id){

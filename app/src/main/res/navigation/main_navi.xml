@@ -37,6 +37,9 @@
         <action
             android:id="@+id/action_navigation_mypage_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_navigation_mypage_to_profileEditFragment"
+            app:destination="@id/profileEditFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_photo"
@@ -109,4 +112,8 @@
             android:id="@+id/action_loginFragment_to_navigation_mypage"
             app:destination="@id/navigation_mypage" />
     </fragment>
+    <fragment
+        android:id="@+id/profileEditFragment"
+        android:name="com.lf.fashion.ui.mypage.ProfileEditFragment"
+        android:label="ProfileEditFragment" />
 </navigation>

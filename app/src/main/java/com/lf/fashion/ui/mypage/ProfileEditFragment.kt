@@ -12,6 +12,8 @@ import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.databinding.MypageFragmentBinding
+import com.lf.fashion.databinding.MypageProfileFragmentBinding
+import com.lf.fashion.ui.cancelBtnBackStack
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -19,8 +21,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
-class MyPageFragment : Fragment() {
-    private lateinit var binding: MypageFragmentBinding
+class ProfileEditFragment : Fragment() {
+    private lateinit var binding: MypageProfileFragmentBinding
     private lateinit var userPreferences: PreferenceManager
 
     override fun onCreateView(
@@ -43,28 +45,17 @@ class MyPageFragment : Fragment() {
             }
         }
 
-        binding = MypageFragmentBinding.inflate(inflater, container, false)
+        binding = MypageProfileFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        binding.profileEditBtn.setOnClickListener{
-            findNavController().navigate(R.id.action_navigation_mypage_to_profileEditFragment)
-        }
+        cancelBtnBackStack(binding.backBtn)
 
 
 
-        //테스트용 로그아웃 버튼
-        binding.logout.setOnClickListener {
-            runBlocking {
-                launch {
-                    userPreferences.clearAccessToken()
-                }
-            }
-        }
 
 
     }

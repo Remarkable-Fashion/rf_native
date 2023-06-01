@@ -36,10 +36,10 @@ class PhotoStep2Fragment : Fragment() {
         val imageUris = arguments?.get("image_uri") as Array<*>
         Log.d(TAG, "PhotoStep2Fragment - onViewCreated: ${imageUris.get(0)}");
 
-        binding.genderManBtn.setOnClickListener {
+        binding.filterSpace.genderManBtn.setOnClickListener {
             it.isSelected = !it.isSelected
         }
-        binding.genderWomanBtn.setOnClickListener {
+        binding.filterSpace.genderWomanBtn.setOnClickListener {
             it.isSelected = !it.isSelected
         }
 
@@ -54,9 +54,9 @@ class PhotoStep2Fragment : Fragment() {
     private fun chipSetting(){
         viewModel.chipList.observe(viewLifecycleOwner){
             it?.let{
-                val tpoChipGroup = binding.filterInclude.tpoChipGroup
-                val seasonChipGroup = binding.filterInclude.seasonChipGroup
-                val styleChipGroup = binding.filterInclude.styleChipGroup
+                val tpoChipGroup = binding.filterSpace.filterInclude.tpoChipGroup
+                val seasonChipGroup = binding.filterSpace.filterInclude.seasonChipGroup
+                val styleChipGroup = binding.filterSpace.filterInclude.styleChipGroup
                 val chipStyle = "default"
 
                 for( i in  it.indices ){

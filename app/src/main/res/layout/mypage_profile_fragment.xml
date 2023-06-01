@@ -231,11 +231,13 @@
             </LinearLayout>
             <EditText
                 android:id="@+id/introduce_value"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:background="@drawable/selector_btn_whitegrey"
                 style="@style/edittext_style"
                 android:layout_marginTop="12dp"
+                app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
                 app:layout_constraintTop_toBottomOf="@id/linear"
                 />
             <TextView
