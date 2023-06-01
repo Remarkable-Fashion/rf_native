@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import com.lf.fashion.R
 import com.lf.fashion.TAG
@@ -48,11 +49,7 @@ class LoginFragment : Fragment() {
                     Log.d(TAG, "MyPageFragment - onViewCreated: 카카오톡 간편 로그인 성공 토큰 : $token")
                     runBlocking {
                         launch {
-                            val response = viewModel.getJWT(token.accessToken)
-                            if (response.success.toBoolean()) {
-                                findNavController().navigate(R.id.action_loginFragment_to_navigation_mypage)
-                            }
-                            //    userPreferences.saveAccessTokens(token.accessToken, token.refreshToken)
+                            requestJWTToken(token)
                         }
                     }
                     getUserInfo()
@@ -64,24 +61,34 @@ class LoginFragment : Fragment() {
     private fun kakaoLoginWithAccount() {
         UserApiClient.instance.loginWithKakaoAccount(requireContext()) { token, error ->
             token?.let {
-                runBlocking{
+                requestJWTToken(token)
+            /*   runBlocking{
                     launch {
-                        //userPreferences.saveAccessTokens(token.accessToken, token.refreshToken)
                         val response = viewModel.getJWT(token.accessToken)
                         if(response.success.toBoolean()){
                             Log.d(TAG, "LoginFragment - kakaoLoginWithAccount: success!!! ");
-                            delay(2000)
+                            delay(1000)
                             findNavController().navigate(R.id.action_loginFragment_to_navigation_mypage)
                         }
 
                     }
-                }
+                }*/
 //            getUserInfo()
             }
         }
     }
-    private fun getJWT(){
+    private fun requestJWTToken(token : OAuthToken){
+        runBlocking{
+            launch {
+                val response = viewModel.getJWT(token.accessToken)
+                if(response.success.toBoolean()){
+                    Log.d(TAG, "LoginFragment - kakaoLoginWithAccount: success!!! ");
+                    delay(1000)
+                    findNavController().navigate(R.id.action_loginFragment_to_navigation_mypage)
+                }
 
+            }
+        }
     }
 private fun getUserInfo(){
     UserApiClient.instance.me { user, error ->

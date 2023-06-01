@@ -54,17 +54,24 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:scrollbars="none"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_underline"
-       >
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="60dp">
-            <TextView
+            <include
+                android:id="@+id/filter_space"
+                layout="@layout/item_filter_space"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+            <!--<TextView
                 android:id="@+id/gender_label"
                 style="@style/montserrat_bold_label"
                 android:layout_width="wrap_content"
@@ -73,34 +80,16 @@
                 android:text="@string/gender_label"
                 app:layout_constraintStart_toStartOf="@id/guideline_vertical"
                 app:layout_constraintTop_toTopOf="parent" />
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/gender_man_btn"
-                style="@style/montserrat_medium_text"
+            <include
+                android:id="@+id/gender_btn_space"
+                layout="@layout/item_gender_btn_set"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/selector_btn_greyblack"
-                android:stateListAnimator="@null"
-                android:text="@string/man"
-                android:textColor="@drawable/selector_text_color"
+                android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="@id/guideline_vertical"
-                app:layout_constraintTop_toBottomOf="@id/gender_label"
-                app:layout_constraintWidth_percent="0.44" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/gender_woman_btn"
-                style="@style/montserrat_medium_text"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/selector_btn_greyblack"
-                android:stateListAnimator="@null"
-                android:text="@string/woman"
-                android:textColor="@drawable/selector_text_color"
-                app:layout_constraintBaseline_toBaselineOf="@id/gender_man_btn"
                 app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
-                app:layout_constraintStart_toEndOf="@id/gender_man_btn"
-                app:layout_constraintWidth_percent="0.44" />
+                app:layout_constraintTop_toBottomOf="@id/gender_label"
+                android:layout_marginTop="15dp"
+                />
 
             <ImageView
                 android:id="@+id/info_space"
@@ -108,7 +97,7 @@
                 android:layout_height="163dp"
                 app:layout_constraintStart_toStartOf="@id/guideline_vertical"
                 app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
-                app:layout_constraintTop_toBottomOf="@id/gender_man_btn"
+                app:layout_constraintTop_toBottomOf="@id/gender_btn_space"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/bg_grey_box"
                 />
@@ -233,9 +222,21 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never"
+                />-->
+            <!--                tools:listitem="@layout/item_regist_form"
+            -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/clothes_detail_rv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                app:layout_constraintTop_toBottomOf="@id/filter_space"
+                android:layout_marginTop="27dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
                 />
-<!--                tools:listitem="@layout/item_regist_form"
--->
             <TextView
                 android:id="@+id/introduce_label"
                 style="@style/montserrat_bold_label"
@@ -261,7 +262,7 @@
                 android:padding="15dp"
                 android:singleLine="false"
                 android:scrollHorizontally="false"
-                 />
+                />
             <TextView
                 android:id="@+id/text_counter"
                 android:layout_width="wrap_content"

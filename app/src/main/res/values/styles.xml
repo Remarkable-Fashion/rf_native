@@ -126,4 +126,7 @@
     <style name="radi13">
         <item name="cornerSize">13dp</item>
     </style>
+    <style name="radi20">
+        <item name="cornerSize">20dp</item>
+    </style>
 </resources>
