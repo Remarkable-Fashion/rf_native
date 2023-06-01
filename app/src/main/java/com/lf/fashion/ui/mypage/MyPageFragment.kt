@@ -12,6 +12,8 @@ import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.databinding.MypageFragmentBinding
+import com.lf.fashion.databinding.MypageSettingBottomDialogBinding
+import com.lf.fashion.ui.home.frag.HomeBottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -55,6 +57,11 @@ class MyPageFragment : Fragment() {
             findNavController().navigate(R.id.action_navigation_mypage_to_profileEditFragment)
         }
 
+        //바텀 다이얼로그 show
+        binding.settingBtn.setOnClickListener {
+            val dialog = SettingBottomSheetFragment()
+            dialog.show(parentFragmentManager, "setting_bottom_sheet")
+        }
 
 
         //테스트용 로그아웃 버튼
