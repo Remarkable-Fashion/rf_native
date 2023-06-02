@@ -24,7 +24,7 @@ class LookGridFragment : Fragment(){
     private lateinit var binding: SearchLookGridFragmentBinding
     /**중요@ parentFragment 의 viewModel 데이터 변동 사항을 인지할 수 있도록 requireParentFragment()를 넣어줘야한다**/
     private val viewModel : SearchViewModel by viewModels({requireParentFragment()})
-    private val gridAdapter = GridPostAdapter()
+    private val gridAdapter = GridPostAdapter(3)
     private val verticalAdapter = LookVerticalAdapter()
 
     override fun onCreateView(

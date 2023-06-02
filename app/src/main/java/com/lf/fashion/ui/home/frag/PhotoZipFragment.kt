@@ -36,7 +36,7 @@ class PhotoZipFragment : Fragment() {
 
         viewModel.postList.observe(viewLifecycleOwner) { response ->
             with(binding.gridRv) { //grid layout
-                adapter = GridPostAdapter().apply {
+                adapter = GridPostAdapter(3).apply {
                     addItemDecoration(GridSpaceItemDecoration(3, 6))
                     submitList(response)
                 }

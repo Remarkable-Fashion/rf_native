@@ -13,6 +13,8 @@ import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.databinding.MypageFragmentBinding
+import com.lf.fashion.ui.home.GridSpaceItemDecoration
+import com.lf.fashion.ui.home.adapter.GridPostAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -50,6 +52,16 @@ class MyPageFragment : Fragment() {
         binding.settingBtn.setOnClickListener {
             val dialog = SettingBottomSheetFragment(viewModel)
             dialog.show(parentFragmentManager, "setting_bottom_sheet")
+        }
+
+        viewModel.getPostList()
+        viewModel.postList.observe(viewLifecycleOwner) { response ->
+            with(binding.gridRv) { //grid layout
+                adapter = GridPostAdapter(3).apply {
+                    addItemDecoration(GridSpaceItemDecoration(3, 6))
+                    submitList(response)
+                }
+            }
         }
 
     }
