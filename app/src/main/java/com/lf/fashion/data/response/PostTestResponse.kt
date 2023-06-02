@@ -7,7 +7,30 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
 
+/*
+* main post 에서 필요한 정보
+* 프로필 이미지 url , 유저 아이디, 포스트 이미지 url 리스트, 좋아요 , 사진모아보기 옆에 표시될 전체 게시물 갯수,
+* post scrap 여부 , 팔로잉 여부
+*
+* 정보 보기 탭 클릭시 받아야할 정보
+* 유저 프로필 이미지 url, 유저아이디 , 팔로우여부
+* 유저가 추가해둔 스타일 칩 text array , 유저의 키 몸무게 위치 , 소개글
+* 등록한 의상리스트(의상 이미지, 의상 카테고리,의상이름,의상 브랜드,의상 상세 정보 )
+*
+* 정보탭 내부 이의상은 어때? 로 클릭시 받아야할 정보
+* 유저 프로필 이미지 url , 유저 아이디 , 팔로우 여부
+* 등록된 룩의 좋아요 갯수 , 등록된 룩(의상 이미지, 의상 카테고리,의상이름,의상 브랜드,의상 상세 정보 ) ,의상 코멘트
+*
+* 마이페이지
+* 유저 프로필 이미지 url ,유저 키,몸무게,성별, 소개글, 게시물 갯수, 팔로워 명수, 팔로잉 명수 ,
+* post 리스트(공개여부)
 
+* 마이페이지 내부 프로필 수정 클릭시 받아야할 정보
+* 유저 아이디, 유저 닉네임 , 이메일
+*
+* filter 에 chip 도 있어서 url get 파라미터에 chip 도 추가해야할 듯.
+*
+* */
 @Parcelize
 data class Post(
     val id : Int,
@@ -25,7 +48,7 @@ data class Photo(
 
 
 data class ChipInfo(
-    val id: String,
+    val id: String, //  카테고리 , style tpo season 등등
     val chips : List<ChipContents>
 )
 data class ChipContents(
@@ -67,9 +90,6 @@ data class Profile(
     val profileImage: String,
     @SerializedName("user_id")
     val userId : String
-)
-data class ClothesCategory(
-    val category : String
 )
 data class ImageItem(
     var uri: Uri?,
