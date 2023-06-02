@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.MyPageRepository
 import com.lf.fashion.data.response.MsgResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +23,7 @@ class MyPageViewModel @Inject constructor(private val myPageRepository: MyPageRe
     val savedLoginToken : LiveData<String?> = _savedLoginToken
     private val userPreferences = PreferenceManager(context)
 
-    suspend fun getJWT(loginAccessToken : String) : MsgResponse {
+    suspend fun getJWT(loginAccessToken : String) : Resource<MsgResponse> {
         return myPageRepository.getJWT(loginAccessToken)
     }
 

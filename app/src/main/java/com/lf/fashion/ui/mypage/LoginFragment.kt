@@ -1,10 +1,15 @@
 package com.lf.fashion.ui.mypage
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,17 +18,18 @@ import com.kakao.sdk.user.UserApiClient
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.LoginFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
     private lateinit var binding: LoginFragmentBinding
     private lateinit var userPreferences: PreferenceManager
-    private val viewModel : MyPageViewModel by viewModels()
+    private val viewModel: MyPageViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,45 +65,71 @@ class LoginFragment : Fragment() {
     }
 
     private fun kakaoLoginWithAccount() {
-        UserApiClient.instance.loginWithKakaoAccount(requireContext()) { token, error ->
+        UserApiClient.instance.loginWithKakaoAccount(requireContext()) { token, _ ->
             token?.let {
                 requestJWTToken(token)
-            /*   runBlocking{
-                    launch {
-                        val response = viewModel.getJWT(token.accessToken)
-                        if(response.success.toBoolean()){
-                            Log.d(TAG, "LoginFragment - kakaoLoginWithAccount: success!!! ");
-                            delay(1000)
-                            findNavController().navigate(R.id.action_loginFragment_to_navigation_mypage)
-                        }
-
-                    }
-                }*/
-//            getUserInfo()
             }
         }
     }
-    private fun requestJWTToken(token : OAuthToken){
-        runBlocking{
+
+    private fun requestJWTToken(token: OAuthToken) {
+        //showLoading(requireActivity(),true)
+        runBlocking {
             launch {
                 val response = viewModel.getJWT(token.accessToken)
-                if(response.success.toBoolean()){
-                    Log.d(TAG, "LoginFragment - kakaoLoginWithAccount: success!!! ");
-                  //  delay(1000)
-                    findNavController().navigate(R.id.action_loginFragment_to_navigation_mypage)
-                }
+                response.let { resource ->
+                    when (resource) {
+                        is Resource.Success -> {
+                            if (resource.value.success.toBoolean()) {
+                          //      showLoading(requireActivity(),false)
+                                findNavController().navigate(R.id.action_loginFragment_to_navigation_mypage)
+                            }
+                        }
+                        is Resource.Loading -> {
 
+                        }
+                        is Resource.Failure -> {
+
+                        }
+                    }
+
+                }
             }
         }
     }
-private fun getUserInfo(){
-    UserApiClient.instance.me { user, error ->
-        if(error!=null){
-            Log.d(TAG, "MyPageFragment - getUserInfo: 정보요청 실패");
-        }else if(user!=null){
-            Log.d(TAG, "MyPageFragment - getUserInfo: ${user.kakaoAccount?.email}");
-            Log.d(TAG, "MyPageFragment - getUserInfo: ${user.kakaoAccount?.profile?.nickname}");
+   /* fun showLoading(activity: Activity, isShow: Boolean) {
+        if (isShow) {
+            val linear = LinearLayout(activity)
+            linear.tag = "MyProgressBar"
+            linear.gravity = Gravity.CENTER
+            linear.setBackgroundColor(0x33000000)
+            val progressBar = ProgressBar(activity)
+            val layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            progressBar.layoutParams = layoutParams
+            linear.addView(progressBar)
+            linear.setOnClickListener { *//*클릭방지*//* }
+            val rootView = activity.findViewById<FrameLayout>(android.R.id.content)
+            rootView.addView(linear)
+        } else {
+            val rootView = activity.findViewById<FrameLayout>(android.R.id.content)
+            val linear = rootView.findViewWithTag<LinearLayout>("MyProgressBar")
+            if (linear != null) {
+                rootView.removeView(linear)
+            }
+        }
+    }*/
+
+    private fun getUserInfo() {
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                Log.d(TAG, "MyPageFragment - getUserInfo: 정보요청 실패");
+            } else if (user != null) {
+                Log.d(TAG, "MyPageFragment - getUserInfo: ${user.kakaoAccount?.email}");
+                Log.d(TAG, "MyPageFragment - getUserInfo: ${user.kakaoAccount?.profile?.nickname}");
+            }
         }
     }
-}
 }
