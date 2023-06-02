@@ -35,6 +35,10 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
     get() = appContext.dataStore.data.map { preferences ->
         preferences[RECENT_SEARCH_TERM]
     }
+    val firstActivate : Flow<String?>
+        get() = appContext.dataStore.data.map { preferences ->
+            preferences[FIRST_ACTIVATE]
+        }
     suspend fun saveAccessTokens(accessToken: String, refreshToken: String) {
         Log.d(TAG, "PreferenceManager - saveAccessTokens: $accessToken");
         appContext.dataStore.edit { preferences ->
@@ -51,6 +55,17 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
         }
     }
 
+    suspend fun isNotFirstActivate(){
+        appContext.dataStore.edit { pref->
+            pref[FIRST_ACTIVATE] = "false"
+        }
+    }
+
+    suspend fun clearGender(){
+        appContext.dataStore.edit { pref->
+            pref[FIRST_ACTIVATE] = ""
+        }
+    }
 
     suspend fun clear() {
         appContext.dataStore.edit { preferences ->
@@ -74,5 +89,7 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
         private val ACCESS_TOKEN = stringPreferencesKey("key_access_token")
         private val REFRESH_TOKEN = stringPreferencesKey("key_refresh_token")
         private val RECENT_SEARCH_TERM = stringPreferencesKey("recent_search_term")
+        private val FIRST_ACTIVATE = stringPreferencesKey("first_activate")
+
     }
 }

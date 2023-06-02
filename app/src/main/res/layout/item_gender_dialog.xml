@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_radi5_white"
+    android:paddingTop="36dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="18dp">
+    <TextView
+        android:id="@+id/gender_selection_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="보고 싶은 성별을\n선택해주세요."
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/app_bar_label"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        />
+    <TextView
+        android:id="@+id/gender_selection_sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/gender_selection_title"
+        app:layout_constraintStart_toStartOf="@id/gender_selection_title"
+        app:layout_constraintEnd_toEndOf="@id/gender_selection_title"
+        android:layout_marginTop="7dp"
+        android:text="선택한 성별의 패션이 랜덤으로 노출됩니다."
+        style="@style/spoqa_14_medium"
+        android:textColor="#666"
+        android:layout_marginStart="29dp"
+        android:layout_marginEnd="29dp"
+        />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gender_selection_sub_title"
+        android:layout_marginTop="18dp">
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/all_gender_btn"
+            style="@style/montserrat_medium_text"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:background="@drawable/selector_btn_greyblack"
+            android:stateListAnimator="@null"
+            android:text="all"
+            android:textColor="@drawable/selector_text_color"
+            android:layout_weight="1"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/gender_man_btn"
+            style="@style/montserrat_medium_text"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:background="@drawable/selector_btn_greyblack"
+            android:stateListAnimator="@null"
+            android:text="@string/man"
+            android:textColor="@drawable/selector_text_color"
+            android:layout_weight="1"
+            android:layout_marginStart="7dp"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/gender_woman_btn"
+            style="@style/montserrat_medium_text"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="7dp"
+            android:background="@drawable/selector_btn_greyblack"
+            android:stateListAnimator="@null"
+            android:text="@string/woman"
+            android:textColor="@drawable/selector_text_color"
+            android:layout_weight="1" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

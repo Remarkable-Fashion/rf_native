@@ -18,7 +18,6 @@ import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var userPreferences: PreferenceManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -30,17 +29,5 @@ class MainActivity : AppCompatActivity() {
         navController?.let {
             bottomNavigationView.setupWithNavController(it)
         }
-
-        userPreferences = PreferenceManager(applicationContext)
-
-    }
-
-    override fun onDestroy() {
-        runBlocking {
-            launch {
-                userPreferences.clearAccessToken()
-            }
-        }
-        super.onDestroy()
     }
 }

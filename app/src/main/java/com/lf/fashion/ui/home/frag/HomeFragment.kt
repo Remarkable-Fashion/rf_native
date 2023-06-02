@@ -1,6 +1,7 @@
 package com.lf.fashion.ui.home.frag
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.R
+import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.response.Photo
 import com.lf.fashion.data.response.Post
 import com.lf.fashion.databinding.HomeAFragmentBinding
@@ -23,6 +25,9 @@ import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.adapter.GridPostAdapter
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 /**
  * 메인 포스트 스크롤 페이지 프래그먼트입니다.
@@ -34,6 +39,8 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
     private val viewModel: HomeViewModel by viewModels()
     private val postList = MutableLiveData<List<Post>>()
     private val gridAdapter = GridPostAdapter(null)
+    private lateinit var userPref :PreferenceManager
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,7 +53,17 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
     //TODO: 보고싶은 성별을 선택하는 다이얼로그 만들어야함
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        userPref = PreferenceManager(requireContext().applicationContext)
+        runBlocking {
+            launch {
+                //userPref.clearGender()
+                if(userPref.firstActivate.first().isNullOrEmpty()){
+                    val dialog = GenderSelectionDialog()
+                    dialog.show(parentFragmentManager, "gender_selection_dialog")
+                   // userPref.isNotFirstActivate()
+                }
+            }
+        }
         // 상단 메뉴 - 랜덤 모드 선택이 디폴트
         binding.appBarRandom.isSelected = true
 

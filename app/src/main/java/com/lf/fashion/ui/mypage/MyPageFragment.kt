@@ -34,6 +34,7 @@ class MyPageFragment : Fragment() {
              viewModel.getSavedLoginToken()
          }
         }
+        /* Bottom dialog 에서도 사용하기 편하도록 viewModel 로 넣어서 observe 했지만 ,preferenceManager.accessToken.asLiveData().observe 해도 된다. */
         viewModel.savedLoginToken.observe(viewLifecycleOwner){
             if(it.isNullOrEmpty()){
                 findNavController().navigate(R.id.action_navigation_mypage_to_loginFragment)
