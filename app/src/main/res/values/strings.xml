@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">fashion</string>
-    <string name="random_fashion">RANDOM FASHION</string>
+    <string name="random_fashion">Random Closet</string>
     <string name="login_label">로그인 하기</string>
     <string name="login_title">나만의 모바일 룩북!</string>
     <string name="login_sub_title">로그인 후 더 많은 기능을 사용해보세요 :)</string>
