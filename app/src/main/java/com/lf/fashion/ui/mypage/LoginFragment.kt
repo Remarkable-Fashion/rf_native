@@ -71,7 +71,7 @@ class LoginFragment : Fragment() {
             }
         }
     }
-
+/* 응답이 느려짐.. 이유 모름 ,., */
     private fun requestJWTToken(token: OAuthToken) {
         //showLoading(requireActivity(),true)
         runBlocking {

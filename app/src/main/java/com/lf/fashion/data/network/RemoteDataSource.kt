@@ -40,17 +40,14 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
             val request: Request = requestBuilder.build()
             val response: Response = chain.proceed(request)
             val allHeaders: Headers = response.headers
-            Log.d(TAG, "RemoteDataSource - provideOkHttpClient: header 추출 전");
             val accessJWT: String? = allHeaders["x-auth-cookie"]
             val refreshJWT: String? = allHeaders["x-auth-cookie-refresh"]
-            Log.d(TAG, "RemoteDataSource - provideOkHttpClient: header 추출 후 $allHeaders");
 
 
             if (accessJWT != null && refreshJWT != null) {
                 runBlocking{
                     launch(Dispatchers.IO) {
                         userPref.saveAccessTokens(accessJWT,refreshJWT)
-                        Log.d(TAG, "RemoteDataSource - provideOkHttpClient: 헤더 토큰 저장");
                     }
                 }
             }

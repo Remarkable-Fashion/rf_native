@@ -33,7 +33,6 @@ class MyPageFragment : Fragment() {
          }
         }
         viewModel.savedLoginToken.observe(viewLifecycleOwner){
-            Log.d(TAG, "MyPageFragment - onCreateView: $it");
             if(it.isNullOrEmpty()){
                 findNavController().navigate(R.id.action_navigation_mypage_to_loginFragment)
             }
