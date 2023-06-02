@@ -83,7 +83,7 @@ class LoginFragment : Fragment() {
                 val response = viewModel.getJWT(token.accessToken)
                 if(response.success.toBoolean()){
                     Log.d(TAG, "LoginFragment - kakaoLoginWithAccount: success!!! ");
-                    delay(1000)
+                  //  delay(1000)
                     findNavController().navigate(R.id.action_loginFragment_to_navigation_mypage)
                 }
 
