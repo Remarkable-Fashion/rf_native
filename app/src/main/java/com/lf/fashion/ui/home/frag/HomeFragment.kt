@@ -1,7 +1,6 @@
 package com.lf.fashion.ui.home.frag
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -50,17 +49,17 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
         return binding.root
     }
 
-    //TODO: 보고싶은 성별을 선택하는 다이얼로그 만들어야함
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //앱 최초 실행시 gender 선택 다이얼로그 띄우기
         userPref = PreferenceManager(requireContext().applicationContext)
         runBlocking {
             launch {
-                //userPref.clearGender()
                 if(userPref.firstActivate.first().isNullOrEmpty()){
                     val dialog = GenderSelectionDialog()
                     dialog.show(parentFragmentManager, "gender_selection_dialog")
-                   // userPref.isNotFirstActivate()
+                   // userPref.isNotFirstActivate()  //테스트를 위해 계속 띄우려고 지워둠 !
                 }
             }
         }

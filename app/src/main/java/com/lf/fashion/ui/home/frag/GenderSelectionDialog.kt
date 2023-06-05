@@ -50,15 +50,18 @@ class GenderSelectionDialog : DialogFragment() , View.OnClickListener {
     override fun onClick(view: View?) {
         when(view){
             binding.allGenderBtn ->{
-                binding.allGenderBtn.isSelected =!binding.allGenderBtn.isSelected
+               // binding.allGenderBtn.isSelected =!binding.allGenderBtn.isSelected
+                binding.allGenderBtn.isPressed = true
                 this@GenderSelectionDialog.dismiss()
             }
             binding.genderManBtn ->{
-                binding.genderManBtn.isSelected =!binding.allGenderBtn.isSelected
+              //  binding.genderManBtn.isSelected =!binding.allGenderBtn.isSelected
+                binding.genderManBtn.isPressed = true
                 this@GenderSelectionDialog.dismiss()
             }
             binding.genderWomanBtn ->{
-                binding.genderWomanBtn.isSelected =!binding.genderWomanBtn.isSelected
+               // binding.genderWomanBtn.isSelected =!binding.genderWomanBtn.isSelected
+                binding.genderWomanBtn.isPressed = true
                 this@GenderSelectionDialog.dismiss()
             }
         }
