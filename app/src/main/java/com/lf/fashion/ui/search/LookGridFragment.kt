@@ -101,7 +101,7 @@ class LookGridFragment : Fragment(),GridPhotoClickListener{
             }
         }
     }
-    override fun gridPhotoClicked(bool: Boolean) {
+    override fun gridPhotoClicked(postIndex:Int) {
         //grid 포토 클릭시!!
     }
 }

@@ -11,7 +11,11 @@ import com.lf.fashion.databinding.HomeAVerticalItemBinding
 import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.VerticalViewPagerClickListener
 
-class DefaultPostAdapter(private val photoClickListener: PhotoClickListener,private val verticalViewPagerClickListener :VerticalViewPagerClickListener) :
+class DefaultPostAdapter(
+    private val photoClickListener: PhotoClickListener,
+    private val verticalViewPagerClickListener: VerticalViewPagerClickListener,
+  //  private val itemPosition: Int
+) :
     ListAdapter<Post, DefaultPostAdapter.DefaultPostViewHolder>(DefaultPostDiff()) {
 
     private lateinit var binding: HomeAVerticalItemBinding
@@ -29,16 +33,18 @@ class DefaultPostAdapter(private val photoClickListener: PhotoClickListener,priv
     inner class DefaultPostViewHolder(private val binding: HomeAVerticalItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private val nestedAdapter = PhotoHorizontalAdapter(photoClickListener)
+
         init {
-            with(binding.horizontalViewPager){
+            with(binding.horizontalViewPager) {
                 adapter = nestedAdapter
 
                 TabLayoutMediator(
                     binding.viewpagerIndicator,
                     this
-                ){_,_ ->}.attach()
+                ) { _, _ -> }.attach()
             }
         }
+
         fun bind(post: Post) {
             binding.post = post
             nestedAdapter.submitList(post.photo)

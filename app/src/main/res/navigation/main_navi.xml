@@ -56,7 +56,11 @@
     <fragment
         android:id="@+id/navigation_scrap"
         android:name="com.lf.fashion.ui.scrap.ScrapFragment"
-        android:label="ScrapFragment" />
+        android:label="ScrapFragment" >
+        <action
+            android:id="@+id/action_navigation_scrap_to_scrapVerticalFragment"
+            app:destination="@id/scrapVerticalFragment" />
+    </fragment>
     <fragment
         android:id="@+id/photoDetailFragment"
         android:name="com.lf.fashion.ui.home.frag.PhotoDetailFragment"
@@ -116,4 +120,8 @@
         android:id="@+id/profileEditFragment"
         android:name="com.lf.fashion.ui.mypage.ProfileEditFragment"
         android:label="ProfileEditFragment" />
+    <fragment
+        android:id="@+id/scrapVerticalFragment"
+        android:name="com.lf.fashion.ui.scrap.ScrapVerticalFragment"
+        android:label="ScrapVerticalFragment" />
 </navigation>

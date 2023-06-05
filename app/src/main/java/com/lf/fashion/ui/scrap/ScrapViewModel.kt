@@ -18,13 +18,20 @@ class ScrapViewModel @Inject constructor(private val homeRepository: HomeReposit
     private val _postList = MutableLiveData<List<Post>>()
     var postList: LiveData<List<Post>> = _postList
 
+    private val _startIndex = MutableLiveData<Int>()
+    var startIndex : LiveData<Int> = _startIndex
+
     init {
         getPostList()
     }
 
     private fun getPostList() {
+        Log.d(TAG, "ScrapViewModel - getPostList: !!!");
         viewModelScope.launch {
             _postList.value = homeRepository.getTestPostList()
         }
+    }
+    fun editClickedPostIndex(postIndex: Int) {
+        _startIndex.value = postIndex
     }
 }

@@ -113,10 +113,10 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
 
     //TODO :  유저 프로필 페이지로 연결
     //default layout 모드에서 photo 클릭시 클릭한 이미지 url 만 safe args 에 담아 fragment 로 전송
-    override fun photoClicked(bool: Boolean, photos: List<Photo>) {
+    override fun photoClicked(bool: Boolean, photo: List<Photo>) {
         if (bool) {
             val action =
-                HomeFragmentDirections.actionNavigationHomeToPhotoDetailFragment(photos.toTypedArray())
+                HomeFragmentDirections.actionNavigationHomeToPhotoDetailFragment(photo.toTypedArray())
             findNavController().navigate(action)
         }
     }
@@ -184,7 +184,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
         findNavController().navigate(R.id.action_navigation_home_to_userInfoFragment)
     }
 
-    override fun gridPhotoClicked(bool: Boolean) {
+    override fun gridPhotoClicked(postIndex:Int) {
         //grid 각 포토 클릭시 !!
     }
 }

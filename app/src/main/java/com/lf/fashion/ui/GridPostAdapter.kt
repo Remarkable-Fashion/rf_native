@@ -49,7 +49,7 @@ class GridPostAdapter(private var spanCount : Int?,private val gridPhotoClickLis
             //post 내부 첫번째 사진을 grid 로 노출
             binding.photoUrl = post.photo[0].imageUrl
             binding.gridImage.setOnClickListener {
-                gridPhotoClickListener.gridPhotoClicked(true)
+                gridPhotoClickListener.gridPhotoClicked(currentList.indexOf(post))
             }
             binding.executePendingBindings()
         }
@@ -65,5 +65,5 @@ interface SpanCountEditBtnListener {
     fun editSpanCountBtnClicked(newSpan: Int)
 }
 interface GridPhotoClickListener{
-    fun gridPhotoClicked(bool:Boolean)
+    fun gridPhotoClicked(postIndex:Int)
 }

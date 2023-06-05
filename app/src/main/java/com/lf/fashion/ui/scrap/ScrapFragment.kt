@@ -7,6 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
+import androidx.navigation.fragment.findNavController
+import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.databinding.ScrapFragmentBinding
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
@@ -17,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ScrapFragment : Fragment(), GridPhotoClickListener {
     private lateinit var binding: ScrapFragmentBinding
-    private val viewModel: ScrapViewModel by viewModels()
+    private val viewModel: ScrapViewModel by hiltNavGraphViewModels(R.id.navigation_scrap)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,7 +47,10 @@ class ScrapFragment : Fragment(), GridPhotoClickListener {
         }
     }
 
-    override fun gridPhotoClicked(bool: Boolean) {
-        Log.d(TAG, "ScrapFragment - gridPhotoClicked: grid 포토 클릭 ");
+    override fun gridPhotoClicked(postIndex:Int){
+        Log.d(TAG, "ScrapFragment - gridPhotoClicked: grid 포토 클릭 $postIndex")
+        // post list 에서 클릭한 포토의 포지션을 viewModel 에 저장
+        viewModel.editClickedPostIndex(postIndex)
+        findNavController().navigate(R.id.action_navigation_scrap_to_scrapVerticalFragment)
     }
 }
