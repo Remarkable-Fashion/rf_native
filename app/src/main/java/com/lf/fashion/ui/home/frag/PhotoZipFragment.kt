@@ -10,6 +10,7 @@ import com.lf.fashion.databinding.HomeBPhotoZipFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.home.HomeViewModel
+import com.lf.fashion.ui.home.adapter.GridPhotoClickListener
 import com.lf.fashion.ui.home.adapter.GridPostAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * 메인 홈에서 유저 클릭시 노출되는 특정 유저 사진 모아보기 프래그먼트입니다.
  */
 @AndroidEntryPoint
-class PhotoZipFragment : Fragment() {
+class PhotoZipFragment : Fragment(), GridPhotoClickListener {
     lateinit var binding: HomeBPhotoZipFragmentBinding
     private val viewModel: HomeViewModel by viewModels()
 
@@ -33,14 +34,20 @@ class PhotoZipFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        viewModel.postList.observe(viewLifecycleOwner) { response ->
-            with(binding.gridRv) { //grid layout
-                adapter = GridPostAdapter(3).apply {
+        with(binding.gridRv) { //grid layout
+            adapter = GridPostAdapter(3, this@PhotoZipFragment).apply {
+                viewModel.postList.observe(viewLifecycleOwner) { response ->
+                    while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
+                        removeItemDecorationAt(0)
+                    }
                     addItemDecoration(GridSpaceItemDecoration(3, 6))
                     submitList(response)
                 }
             }
         }
+    }
+
+    override fun gridPhotoClicked(bool: Boolean) {
+        //grid 포토 클릭시!!
     }
 }

@@ -23,6 +23,7 @@ import com.lf.fashion.ui.home.VerticalViewPagerClickListener
 import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.adapter.GridPostAdapter
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
+import com.lf.fashion.ui.home.adapter.GridPhotoClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -33,11 +34,12 @@ import kotlinx.coroutines.runBlocking
  */
 @AndroidEntryPoint
 class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
-    VerticalViewPagerClickListener {
+    VerticalViewPagerClickListener,
+    GridPhotoClickListener {
     private lateinit var binding: HomeAFragmentBinding
     private val viewModel: HomeViewModel by viewModels()
     private val postList = MutableLiveData<List<Post>>()
-    private val gridAdapter = GridPostAdapter(null)
+    private val gridAdapter = GridPostAdapter(null,this)
     private lateinit var userPref :PreferenceManager
 
     override fun onCreateView(
@@ -180,5 +182,9 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
 
     override fun infoBtnClicked(bool: Boolean) {
         findNavController().navigate(R.id.action_navigation_home_to_userInfoFragment)
+    }
+
+    override fun gridPhotoClicked(bool: Boolean) {
+        //grid 각 포토 클릭시 !!
     }
 }

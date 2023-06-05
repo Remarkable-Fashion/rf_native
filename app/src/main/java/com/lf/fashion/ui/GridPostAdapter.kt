@@ -11,7 +11,7 @@ import com.lf.fashion.data.response.Post
 import com.lf.fashion.databinding.HomeGridItemBinding
 import com.lf.fashion.ui.convertDPtoPX
 
-class GridPostAdapter(private var spanCount : Int?) : ListAdapter<Post, GridPostAdapter.GridPostViewHolder>(DefaultPostDiff()),
+class GridPostAdapter(private var spanCount : Int?,private val gridPhotoClickListener: GridPhotoClickListener) : ListAdapter<Post, GridPostAdapter.GridPostViewHolder>(DefaultPostDiff()),
     SpanCountEditBtnListener {
     private lateinit var binding: HomeGridItemBinding
     //private var spanCount = 2
@@ -48,6 +48,9 @@ class GridPostAdapter(private var spanCount : Int?) : ListAdapter<Post, GridPost
         fun bind(post: Post) {
             //post 내부 첫번째 사진을 grid 로 노출
             binding.photoUrl = post.photo[0].imageUrl
+            binding.gridImage.setOnClickListener {
+                gridPhotoClickListener.gridPhotoClicked(true)
+            }
             binding.executePendingBindings()
         }
     }
@@ -60,4 +63,7 @@ class GridPostAdapter(private var spanCount : Int?) : ListAdapter<Post, GridPost
 
 interface SpanCountEditBtnListener {
     fun editSpanCountBtnClicked(newSpan: Int)
+}
+interface GridPhotoClickListener{
+    fun gridPhotoClicked(bool:Boolean)
 }

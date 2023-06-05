@@ -15,16 +15,17 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.TAG
 import com.lf.fashion.databinding.SearchLookGridFragmentBinding
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
+import com.lf.fashion.ui.home.adapter.GridPhotoClickListener
 import com.lf.fashion.ui.home.adapter.GridPostAdapter
 import com.lf.fashion.ui.search.adapter.LookVerticalAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LookGridFragment : Fragment(){
+class LookGridFragment : Fragment(),GridPhotoClickListener{
     private lateinit var binding: SearchLookGridFragmentBinding
     /**중요@ parentFragment 의 viewModel 데이터 변동 사항을 인지할 수 있도록 requireParentFragment()를 넣어줘야한다**/
     private val viewModel : SearchViewModel by viewModels({requireParentFragment()})
-    private val gridAdapter = GridPostAdapter(3)
+    private val gridAdapter = GridPostAdapter(3,this)
     private val verticalAdapter = LookVerticalAdapter()
 
     override fun onCreateView(
@@ -47,6 +48,9 @@ class LookGridFragment : Fragment(){
             with(binding.gridRv) {
                 layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
                 gridAdapter.apply {
+                    while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
+                        removeItemDecorationAt(0)
+                    }
                     addItemDecoration(GridSpaceItemDecoration(3, 6))
                     submitList(response)
                 }
@@ -96,5 +100,8 @@ class LookGridFragment : Fragment(){
                 editSpanCountBtnClicked(spanCount)
             }
         }
+    }
+    override fun gridPhotoClicked(bool: Boolean) {
+        //grid 포토 클릭시!!
     }
 }
