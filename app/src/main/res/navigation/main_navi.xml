@@ -3,37 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_navi"
     app:startDestination="@id/navigation_home">
+    <action
+        android:id="@+id/action_global_to_photoDetailFragment"
+        app:destination="@id/photoDetailFragment">
+        <argument
+            android:name="photos"
+            android:defaultValue="@null"
+            app:argType="com.lf.fashion.data.response.Photo[]"
+            app:nullable="true" />
+    </action>
+    <action
+        android:id="@+id/action_global_to_filterFragment"
+        app:destination="@id/filterFragment" />
+    <action
+        android:id="@+id/action_global_to_photoZipFragment"
+        app:destination="@id/photoZipFragment" />
+    <action
+        android:id="@+id/action_global_to_userInfoFragment"
+        app:destination="@id/userInfoFragment" />
 
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.lf.fashion.ui.home.frag.HomeFragment"
-        android:label="HomeFragment" >
-        <action
-            android:id="@+id/action_navigation_home_to_photoDetailFragment"
-            app:destination="@id/photoDetailFragment" >
-            <argument
-                android:name="photos"
-                app:argType="com.lf.fashion.data.response.Photo[]"
-                app:nullable="true"
-                android:defaultValue="@null" />
-        </action>
-        <action
-            android:id="@+id/action_navigation_home_to_filterFragment"
-            app:destination="@id/filterFragment" />
-        <action
-            android:id="@+id/action_navigation_home_to_photoZipFragment"
-            app:destination="@id/photoZipFragment" />
-        <action
-            android:id="@+id/action_navigation_home_to_userInfoFragment"
-            app:destination="@id/userInfoFragment" /><!--
-        <argument
-            android:name="photos"
-            app:argType="com.lf.fashion.data.response.Photo[]" />-->
-    </fragment>
+        android:label="HomeFragment"/>
+
     <fragment
         android:id="@+id/navigation_mypage"
         android:name="com.lf.fashion.ui.mypage.MyPageFragment"
-        android:label="MypageFragment" >
+        android:label="MypageFragment">
         <action
             android:id="@+id/action_navigation_mypage_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -44,7 +41,7 @@
     <fragment
         android:id="@+id/navigation_photo"
         android:name="com.lf.fashion.ui.addPost.PhotoFragment"
-        android:label="PhotoFragment" >
+        android:label="PhotoFragment">
         <action
             android:id="@+id/action_navigation_photo_to_imagePickerFragment"
             app:destination="@id/imagePickerFragment" />
@@ -56,7 +53,7 @@
     <fragment
         android:id="@+id/navigation_scrap"
         android:name="com.lf.fashion.ui.scrap.ScrapFragment"
-        android:label="ScrapFragment" >
+        android:label="ScrapFragment">
         <action
             android:id="@+id/action_navigation_scrap_to_scrapVerticalFragment"
             app:destination="@id/scrapVerticalFragment" />
@@ -64,11 +61,11 @@
     <fragment
         android:id="@+id/photoDetailFragment"
         android:name="com.lf.fashion.ui.home.frag.PhotoDetailFragment"
-        android:label="PhotoDetailFragment" >
-        <argument
+        android:label="PhotoDetailFragment">
+        <!--<argument
             android:name="imageUrl"
-            app:argType="string"
-            android:defaultValue="" />
+            android:defaultValue=""
+            app:argType="string" />-->
     </fragment>
     <fragment
         android:id="@+id/filterFragment"
@@ -81,7 +78,7 @@
     <fragment
         android:id="@+id/userInfoFragment"
         android:name="com.lf.fashion.ui.home.frag.UserInfoFragment"
-        android:label="UserInfoFragment" >
+        android:label="UserInfoFragment">
         <action
             android:id="@+id/action_userInfoFragment_to_recommendFragment"
             app:destination="@id/recommendFragment" />
@@ -97,21 +94,21 @@
     <fragment
         android:id="@+id/imagePickerFragment"
         android:name="com.lf.fashion.ui.addPost.ImagePickerFragment"
-        android:label="ImagePickerFragment" >
+        android:label="ImagePickerFragment">
         <action
             android:id="@+id/action_imagePickerFragment_to_photoStep2Fragment"
-            app:destination="@id/photoStep2Fragment" >
+            app:destination="@id/photoStep2Fragment">
             <argument
                 android:name="image_uri"
+                android:defaultValue="@null"
                 app:argType="string[]"
-                app:nullable="true"
-                android:defaultValue="@null" />
+                app:nullable="true" />
         </action>
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.lf.fashion.ui.mypage.LoginFragment"
-        android:label="LoginFragment" >
+        android:label="LoginFragment">
         <action
             android:id="@+id/action_loginFragment_to_navigation_mypage"
             app:destination="@id/navigation_mypage" />

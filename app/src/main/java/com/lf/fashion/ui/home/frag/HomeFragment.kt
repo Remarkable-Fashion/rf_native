@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.response.Photo
@@ -116,7 +117,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
     override fun photoClicked(bool: Boolean, photo: List<Photo>) {
         if (bool) {
             val action =
-                HomeFragmentDirections.actionNavigationHomeToPhotoDetailFragment(photo.toTypedArray())
+                MainNaviDirections.actionGlobalToPhotoDetailFragment(photo.toTypedArray())
             findNavController().navigate(action)
         }
     }
@@ -157,7 +158,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
 
             //상단 바의 필터 버튼 클릭
             binding.appBarPhotoFilterBtn -> {
-                findNavController().navigate(R.id.action_navigation_home_to_filterFragment)
+                findNavController().navigate(R.id.action_global_to_filterFragment)
             }
         }
     }
@@ -177,11 +178,11 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
     }
 
     override fun photoZipBtnClicked(bool: Boolean) {
-        findNavController().navigate(R.id.action_navigation_home_to_photoZipFragment)
+        findNavController().navigate(R.id.action_global_to_photoZipFragment)
     }
 
     override fun infoBtnClicked(bool: Boolean) {
-        findNavController().navigate(R.id.action_navigation_home_to_userInfoFragment)
+        findNavController().navigate(R.id.action_global_to_userInfoFragment)
     }
 
     override fun gridPhotoClicked(postIndex:Int) {
