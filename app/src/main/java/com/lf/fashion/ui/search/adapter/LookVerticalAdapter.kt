@@ -10,7 +10,7 @@ import com.lf.fashion.databinding.ItemSearchResultItemVerticalBinding
 import com.lf.fashion.databinding.ItemSearchVerticalBinding
 import com.lf.fashion.ui.home.adapter.DefaultPostDiff
 
-class LookVerticalAdapter(private val resultCategory: String) : ListAdapter<Post, LookVerticalAdapter.LookVerticalViewHolder>(DefaultPostDiff()) {
+class LookVerticalAdapter(private val resultCategory: String?) : ListAdapter<Post, LookVerticalAdapter.LookVerticalViewHolder>(DefaultPostDiff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LookVerticalViewHolder {
         val binding = when (resultCategory) {

@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.lf.fashion.TAG
-import com.lf.fashion.ui.search.SearchResultFragment
+import com.lf.fashion.ui.search.SearchResultViewPager
 
 
 private const val NUM_TABS = 2
@@ -15,13 +15,13 @@ class SearchResultViewPagerAdapter(fragment: Fragment) :
     }
 
     override fun createFragment(position: Int): Fragment {
-        Log.d(TAG, "SearchResultViewPagerAdapter - getItemId: ${getItemId(position)}");
+//        Log.d(TAG, "SearchResultViewPagerAdapter - getItemId: ${getItemId(position)}");
 
         return when (position) {
-            0 -> SearchResultFragment("look")
-            1 -> SearchResultFragment("item")
+            0 -> SearchResultViewPager("look")
+            1 -> SearchResultViewPager("item")
             else -> {
-                SearchResultFragment("look")
+                SearchResultViewPager("look")
             }
         }
     }

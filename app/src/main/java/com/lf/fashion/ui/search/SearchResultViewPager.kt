@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.TAG
-import com.lf.fashion.databinding.SearchLookGridFragmentBinding
+import com.lf.fashion.databinding.SearchResultViewpagerBinding
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener
 import com.lf.fashion.ui.GridPostAdapter
@@ -19,8 +19,10 @@ import com.lf.fashion.ui.search.adapter.LookVerticalAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchResultFragment(private val resultCategory: String) : Fragment(), GridPhotoClickListener {
-    private lateinit var binding: SearchLookGridFragmentBinding
+class SearchResultViewPager(resultCategory: String?) : Fragment(), GridPhotoClickListener {
+    private lateinit var binding: SearchResultViewpagerBinding
+    //TODO : 이부분 해결해야합니당
+    constructor() : this("look") // 외부 메뉴 이동후 재진입할 경우 기본 생성자 필요!
 
     /**중요@ parentFragment 의 viewModel 데이터 변동 사항을 인지할 수 있도록 requireParentFragment()를 넣어줘야한다 (GRID 모드 조정 버튼이 PARENT FRAG 에 위치 )**/
     private val viewModel: SearchViewModel by viewModels({ requireParentFragment() })
@@ -32,7 +34,7 @@ class SearchResultFragment(private val resultCategory: String) : Fragment(), Gri
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = SearchLookGridFragmentBinding.inflate(inflater, container, false)
+        binding = SearchResultViewpagerBinding.inflate(inflater, container, false)
         return binding.root
     }
 
