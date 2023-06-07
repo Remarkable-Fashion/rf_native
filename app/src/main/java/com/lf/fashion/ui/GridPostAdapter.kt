@@ -30,11 +30,9 @@ class GridPostAdapter(private var spanCount : Int?,private val gridPhotoClickLis
         when (spanCount?:2) {
             2 -> {
                 layoutParams.height = convertDPtoPX(context, 230)
-             //   holder.itemView.layoutParams = layoutParams
             }
             3 -> {
                 layoutParams.height = convertDPtoPX(context, 170)
-             //   holder.itemView.layoutParams = layoutParams
             }
         }
         holder.itemView.layoutParams = layoutParams
