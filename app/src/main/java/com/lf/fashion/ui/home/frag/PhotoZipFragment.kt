@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.lf.fashion.databinding.HomeBPhotoZipFragmentBinding
-import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.home.HomeViewModel
-import com.lf.fashion.ui.home.adapter.GridPhotoClickListener
-import com.lf.fashion.ui.home.adapter.GridPostAdapter
+import com.lf.fashion.ui.GridPhotoClickListener
+import com.lf.fashion.ui.GridPostAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 /**

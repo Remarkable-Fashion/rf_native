@@ -19,7 +19,7 @@ class ScrapViewModel @Inject constructor(private val homeRepository: HomeReposit
     var postList: LiveData<List<Post>> = _postList
 
     private val _startIndex = MutableLiveData<Int>()
-    var startIndex : LiveData<Int> = _startIndex
+    var startIndex : MutableLiveData<Int> = _startIndex
 
     init {
         getPostList()

@@ -9,19 +9,17 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.TAG
 import com.lf.fashion.databinding.SearchLookGridFragmentBinding
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
-import com.lf.fashion.ui.home.adapter.GridPhotoClickListener
-import com.lf.fashion.ui.home.adapter.GridPostAdapter
+import com.lf.fashion.ui.GridPhotoClickListener
+import com.lf.fashion.ui.GridPostAdapter
 import com.lf.fashion.ui.search.adapter.LookVerticalAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LookGridFragment : Fragment(),GridPhotoClickListener{
+class LookGridFragment : Fragment(), GridPhotoClickListener {
     private lateinit var binding: SearchLookGridFragmentBinding
     /**중요@ parentFragment 의 viewModel 데이터 변동 사항을 인지할 수 있도록 requireParentFragment()를 넣어줘야한다**/
     private val viewModel : SearchViewModel by viewModels({requireParentFragment()})

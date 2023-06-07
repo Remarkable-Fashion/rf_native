@@ -1,17 +1,17 @@
-package com.lf.fashion.ui.home.adapter
+package com.lf.fashion.ui
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.lf.fashion.TAG
 import com.lf.fashion.data.response.Post
 import com.lf.fashion.databinding.HomeGridItemBinding
-import com.lf.fashion.ui.convertDPtoPX
+import com.lf.fashion.ui.home.adapter.DefaultPostDiff
 
-class GridPostAdapter(private var spanCount : Int?,private val gridPhotoClickListener: GridPhotoClickListener) : ListAdapter<Post, GridPostAdapter.GridPostViewHolder>(DefaultPostDiff()),
+class GridPostAdapter(private var spanCount : Int?,private val gridPhotoClickListener: GridPhotoClickListener) : ListAdapter<Post, GridPostAdapter.GridPostViewHolder>(
+    DefaultPostDiff()
+),
     SpanCountEditBtnListener {
     private lateinit var binding: HomeGridItemBinding
     //private var spanCount = 2

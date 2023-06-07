@@ -21,9 +21,9 @@ import com.lf.fashion.ui.home.HomeViewModel
 import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.VerticalViewPagerClickListener
 import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
-import com.lf.fashion.ui.home.adapter.GridPostAdapter
+import com.lf.fashion.ui.GridPostAdapter
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
-import com.lf.fashion.ui.home.adapter.GridPhotoClickListener
+import com.lf.fashion.ui.GridPhotoClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch

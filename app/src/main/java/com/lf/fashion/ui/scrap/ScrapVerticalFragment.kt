@@ -21,6 +21,7 @@ import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.frag.HomeBottomSheetFragment
 import com.lf.fashion.ui.home.frag.HomeFragmentDirections
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.viewpager2.widget.ViewPager2
 import com.lf.fashion.TAG
 import okhttp3.internal.notify
 import okhttp3.internal.wait
@@ -44,25 +45,29 @@ class ScrapVerticalFragment : Fragment(),
         super.onViewCreated(view, savedInstanceState)
         cancelBtnBackStack(binding.backBtn)
 
-        with(binding.verticalViewpager) {
+        binding.verticalViewpager.apply {
             adapter = DefaultPostAdapter(
                 this@ScrapVerticalFragment,
-                this@ScrapVerticalFragment,
-               // viewModel.startIndex.value ?: 0
-            ).apply {
-                viewModel.postList.observe(viewLifecycleOwner) {
-                    submitList(it){
-                        Log.d(TAG, "ScrapVerticalFragment - onViewCreated: ${viewModel.startIndex.value}!!!");
-                        this@with.currentItem = viewModel.startIndex.value!!
-                    }
+                this@ScrapVerticalFragment
+            )
+
+            viewModel.postList.observe(viewLifecycleOwner) { posts ->
+                (adapter as? DefaultPostAdapter)?.submitList(posts)
+            }
+
+            //Scrap Grid 이미지를 클릭했을 때 해당 이미지에 포스트 position 을 맞추는 로직
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    viewModel.startIndex.value = position
+                }
+            })
+
+            viewModel.startIndex.value?.let { startPosition ->
+                post {
+                    currentItem = startPosition
                 }
             }
         }
-   /*     viewModel.startIndex.observe(viewLifecycleOwner) {
-            Log.d(TAG, "ScrapVerticalFragment - onViewCreated: ${viewModel.startIndex.value}!!!");
-            binding.verticalViewpager.currentItem = it
-        }*/
-
     }
 
 
