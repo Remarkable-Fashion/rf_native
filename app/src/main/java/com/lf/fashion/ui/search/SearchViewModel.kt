@@ -18,6 +18,7 @@ class SearchViewModel @Inject constructor(private val homeRepository: HomeReposi
     private val _gridMode = MutableLiveData<Int>()
     val gridMode: LiveData<Int> = _gridMode
 
+    //지금은 POST LIST 하나로 LOOK ITEM 모두 테스트 돌리는 중 ~
     private val _postList = MutableLiveData<List<Post>>()
     var postList: LiveData<List<Post>> = _postList
 

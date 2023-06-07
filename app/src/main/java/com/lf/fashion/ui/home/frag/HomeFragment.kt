@@ -40,7 +40,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
     private lateinit var binding: HomeAFragmentBinding
     private val viewModel: HomeViewModel by viewModels()
     private val postList = MutableLiveData<List<Post>>()
-    private val gridAdapter = GridPostAdapter(null,this)
+    private val gridAdapter = GridPostAdapter(null,this,null)
     private lateinit var userPref :PreferenceManager
 
     override fun onCreateView(

@@ -19,12 +19,13 @@ import com.lf.fashion.ui.search.adapter.LookVerticalAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LookGridFragment : Fragment(), GridPhotoClickListener {
+class SearchResultFragment(private val resultCategory: String) : Fragment(), GridPhotoClickListener {
     private lateinit var binding: SearchLookGridFragmentBinding
-    /**중요@ parentFragment 의 viewModel 데이터 변동 사항을 인지할 수 있도록 requireParentFragment()를 넣어줘야한다**/
-    private val viewModel : SearchViewModel by viewModels({requireParentFragment()})
-    private val gridAdapter = GridPostAdapter(3,this)
-    private val verticalAdapter = LookVerticalAdapter()
+
+    /**중요@ parentFragment 의 viewModel 데이터 변동 사항을 인지할 수 있도록 requireParentFragment()를 넣어줘야한다 (GRID 모드 조정 버튼이 PARENT FRAG 에 위치 )**/
+    private val viewModel: SearchViewModel by viewModels({ requireParentFragment() })
+    private val gridAdapter = GridPostAdapter(3, this,resultCategory)
+    private val verticalAdapter = LookVerticalAdapter(resultCategory)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,24 +54,24 @@ class LookGridFragment : Fragment(), GridPhotoClickListener {
                     submitList(response)
                 }
             }
-            with(binding.verticalViewpager){
+            with(binding.verticalViewpager) {
                 adapter = verticalAdapter.apply {
                     submitList(response)
                 }
             }
         }
 
-        viewModel.gridMode.observe(viewLifecycleOwner){ gridMode ->
+        viewModel.gridMode.observe(viewLifecycleOwner) { gridMode ->
             Log.d(TAG, "GRID !!!! : $gridMode");
-            when(gridMode){
-                1->{
+            when (gridMode) {
+                1 -> {
                     layoutVisibilityUpdate(false)
                 }
-                2 ->{
+                2 -> {
                     editGridSpanCount(2)
                     layoutVisibilityUpdate(true)
                 }
-                3 ->{
+                3 -> {
                     editGridSpanCount(3)
                     layoutVisibilityUpdate(true)
                 }
@@ -79,7 +80,8 @@ class LookGridFragment : Fragment(), GridPhotoClickListener {
             gridAdapter.notifyDataSetChanged()
         }
     }
-    private fun layoutVisibilityUpdate(default : Boolean){
+
+    private fun layoutVisibilityUpdate(default: Boolean) {
         binding.verticalViewpager.isVisible = !default
         binding.gridRv.isVisible = default
     }
@@ -99,7 +101,8 @@ class LookGridFragment : Fragment(), GridPhotoClickListener {
             }
         }
     }
-    override fun gridPhotoClicked(postIndex:Int) {
+
+    override fun gridPhotoClicked(postIndex: Int) {
         //grid 포토 클릭시!!
     }
 }

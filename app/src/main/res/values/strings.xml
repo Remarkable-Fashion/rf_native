@@ -1,4 +1,7 @@
 <resources>
+    <string name="price_format">%1$s원</string>
+
+
     <string name="app_name">fashion</string>
     <string name="random_fashion">Random Closet</string>
     <string name="login_label">로그인 하기</string>

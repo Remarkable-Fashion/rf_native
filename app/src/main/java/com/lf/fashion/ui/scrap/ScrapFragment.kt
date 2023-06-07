@@ -32,7 +32,7 @@ class ScrapFragment : Fragment(), GridPhotoClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding.scrapRv) {
-            adapter = GridPostAdapter(3, this@ScrapFragment).apply {
+            adapter = GridPostAdapter(3, this@ScrapFragment,null).apply {
                 viewModel.postList.observe(viewLifecycleOwner) {
                     while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
                         removeItemDecorationAt(0)

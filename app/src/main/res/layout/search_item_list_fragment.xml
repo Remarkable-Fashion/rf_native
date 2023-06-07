@@ -4,12 +4,22 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vertical_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
+        android:orientation="vertical"
+        />
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/linear_rv"
+        android:id="@+id/grid_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+        app:spanCount="2"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_clothes_list"
+        tools:listitem="@layout/item_search_result_item_list"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

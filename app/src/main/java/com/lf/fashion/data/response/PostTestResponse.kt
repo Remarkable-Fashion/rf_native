@@ -30,6 +30,12 @@ import kotlinx.parcelize.RawValue
 *
 * filter 에 chip 도 있어서 url get 파라미터에 chip 도 추가해야할 듯.
 *
+* 스크랩 바텀 메뉴 - > main post 정보와 동일..
+*
+* 검색 바텀 메뉴 -> 인기 검색어 string list , 리스트 변동 순위 여부 ??
+* 검색 결과 -> Look 결과 : post 리스트 (main post 정보와 동일) Item 결과 : post 리스트(이미지 , 스크랩여부)+ 쇼핑몰명, 제품명, 가격
+* 검색결과에 성별,체형,계절 필터를 먹일 수 있기때문에 해당 정보도 필요합니다
+*
 * */
 @Parcelize
 data class Post(
