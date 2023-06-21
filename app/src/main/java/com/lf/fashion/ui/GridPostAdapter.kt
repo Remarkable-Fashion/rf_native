@@ -13,9 +13,9 @@ import com.lf.fashion.databinding.ItemSearchResultItemListBinding
 import com.lf.fashion.ui.home.adapter.DefaultPostDiff
 
 class GridPostAdapter(
-    private var spanCount: Int?,
+    private var spanCount: Int? = null,
     private val gridPhotoClickListener: GridPhotoClickListener,
-    private val resultCategory: String?
+    private val resultCategory: String? = null
 ) : ListAdapter<Post, GridPostAdapter.GridPostViewHolder>(
     DefaultPostDiff()
 ), SpanCountEditBtnListener {
