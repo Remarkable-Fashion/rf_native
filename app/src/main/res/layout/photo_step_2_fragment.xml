@@ -72,27 +72,15 @@
                 app:layout_constraintTop_toTopOf="parent"
                 />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/clothes_detail_rv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="@id/guideline_vertical"
-                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
-                app:layout_constraintTop_toBottomOf="@id/filter_space"
-                android:layout_marginTop="27dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:nestedScrollingEnabled="false"
-                android:overScrollMode="never"
-                />
             <TextView
                 android:id="@+id/introduce_label"
                 style="@style/montserrat_bold_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:text="@string/introduction_label"
                 app:layout_constraintStart_toStartOf="@id/guideline_vertical"
-                app:layout_constraintTop_toBottomOf="@id/clothes_detail_rv"/>
+                app:layout_constraintTop_toBottomOf="@id/filter_space"/>
 
             <EditText
                 android:id="@+id/introduce_value"
@@ -122,16 +110,59 @@
                 style="@style/montserrat_medium_12"
 
                 />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/clothes_detail_rv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                app:layout_constraintTop_toBottomOf="@id/introduce_value"
+                android:layout_marginTop="30dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                tools:listitem="@layout/item_regist_form"
+                />
+            <View
+                android:id="@+id/cloth_topline"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/background_grey"
+                app:layout_constraintTop_toBottomOf="@id/clothes_detail_rv" />
+
+            <include
+                android:id="@+id/cloth_regist_form"
+                layout="@layout/item_cloth_regist_form"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                app:layout_constraintTop_toBottomOf="@id/cloth_topline"
+                android:layout_marginTop="30dp"
+                />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/regist_cloth_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@drawable/bg_black_btn"
+                android:text="의상 등록"
+                android:layout_marginTop="15dp"
+                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                app:layout_constraintTop_toBottomOf="@id/cloth_regist_form"
+                style="@style/montserrat_bold_14"
+                android:textColor="@color/white"
+                />
             <CheckBox
                 android:id="@+id/not_post_now"
                 style="@style/spoqa_12sp_label"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/selector_checkbox2"
                 android:button="@null"
                 android:gravity="center"
-                app:layout_constraintTop_toBottomOf="@id/introduce_value"
+                app:layout_constraintTop_toBottomOf="@id/regist_cloth_btn"
                 app:layout_constraintStart_toStartOf="@id/introduce_value" />
             <TextView
                 android:id="@+id/checkbox_label3"
@@ -144,30 +175,19 @@
                 app:layout_constraintStart_toEndOf="@id/not_post_now"
                 android:layout_marginStart="10dp"/>
 
-            <androidx.appcompat.widget.AppCompatButton
+          <!--  <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/back_btn_2"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 app:layout_constraintWidth_percent="0.43"
                 app:layout_constraintStart_toStartOf="@id/guideline_vertical"
-                app:layout_constraintTop_toBottomOf="@id/not_post_now"
-                android:layout_marginTop="30dp"
+                app:layout_constraintTop_toBottomOf="@id/checkbox_label3"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/bg_grey_btn"
                 android:text="이전"
                 style="@style/montserrat_bold_14"
-                />
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                app:layout_constraintWidth_percent="0.43"
-                android:background="@drawable/bg_black_btn"
-                android:text="다음"
-                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
-                app:layout_constraintTop_toTopOf="@id/back_btn_2"
-                android:layout_marginStart="10dp"
-                style="@style/montserrat_bold_14"
-                android:textColor="@color/white"
-                />
+                />-->
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_vertical2"
                 android:layout_width="0dp"
@@ -184,4 +204,19 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/save_btn"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_black_btn"
+        android:text="저장"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        style="@style/montserrat_bold_14"
+        android:textColor="@color/white"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

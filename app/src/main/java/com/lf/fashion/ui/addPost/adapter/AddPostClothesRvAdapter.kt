@@ -27,7 +27,7 @@ class AddPostClothesRvAdapter :
         fun bind(categories: String) {
             binding.category = categories
 
-            //+ 버튼 클릭시 아이템 추가
+/*            //+ 버튼 클릭시 아이템 추가
             binding.addCardBtn.setOnClickListener {
                 val position = this.absoluteAdapterPosition
                 val newList = currentList.toMutableList()
@@ -46,7 +46,7 @@ class AddPostClothesRvAdapter :
                 val newList = currentList.toMutableList()
                 newList.removeAt(position)
                 submitList(newList)
-            }
+            }*/
         }
     }
 }
