@@ -149,7 +149,7 @@
             android:id="@+id/name_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintWidth_percent="0.4"
+            app:layout_constraintWidth_percent="0.5"
             android:maxLines="1"
             android:singleLine="true"
             android:ellipsize="end"
@@ -160,13 +160,15 @@
             app:layout_constraintBaseline_toBaselineOf="@id/name_label"
             android:textColor="@color/default_text"
             style="@style/spoqa_12sp_label"
-            android:background="@android:color/transparent" />
+            android:background="@android:color/transparent"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"/>
 
         <EditText
             android:id="@+id/price_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintWidth_percent="0.4"
+            app:layout_constraintWidth_percent="0.5"
             android:maxLines="1"
             android:ellipsize="end"
             android:singleLine="true"
@@ -176,13 +178,15 @@
             app:layout_constraintBaseline_toBaselineOf="@id/price_label"
             android:textColor="@color/default_text"
             style="@style/spoqa_12sp_label"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
             android:background="@android:color/transparent" />
 
         <EditText
             android:id="@+id/color_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintWidth_percent="0.4"
+            app:layout_constraintWidth_percent="0.5"
             android:maxLines="1"
             android:ellipsize="end"
             android:singleLine="true"
@@ -191,13 +195,15 @@
             app:layout_constraintBaseline_toBaselineOf="@id/color_label"
             android:textColor="@color/default_text"
             style="@style/spoqa_12sp_label"
-            android:background="@android:color/transparent" />
+            android:background="@android:color/transparent"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"/>
 
         <EditText
             android:id="@+id/size_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintWidth_percent="0.4"
+            app:layout_constraintWidth_percent="0.5"
             android:maxLines="1"
             android:ellipsize="end"
             android:singleLine="true"
@@ -205,6 +211,8 @@
             app:layout_constraintStart_toStartOf="@id/name_value"
             app:layout_constraintBaseline_toBaselineOf="@id/size_label"
             android:textColor="@color/default_text"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
             style="@style/spoqa_12sp_label"
             android:background="@android:color/transparent" />
 
@@ -223,7 +231,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            app:layout_constraintWidth_percent="0.7"
+            app:layout_constraintWidth_percent="0.85"
             android:maxLines="1"
             android:ellipsize="end"
             android:singleLine="true"
@@ -232,6 +240,9 @@
             app:layout_constraintBaseline_toBaselineOf="@id/url_label"
             android:textColor="@color/default_text"
             style="@style/spoqa_12sp_label"
-            android:background="@android:color/transparent" />
+            android:background="@android:color/transparent"
+            android:text="123"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

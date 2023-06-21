@@ -50,6 +50,7 @@
         app:layout_constraintTop_toBottomOf="@id/photo_filter_sub_title" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -121,7 +122,6 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never"
-                tools:listitem="@layout/item_regist_form"
                 />
             <View
                 android:id="@+id/cloth_topline"
@@ -142,7 +142,7 @@
                 android:layout_marginTop="30dp"
                 />
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/regist_cloth_btn"
+                android:id="@+id/reg_cloth_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:background="@drawable/bg_black_btn"
@@ -162,7 +162,7 @@
                 android:background="@drawable/selector_checkbox2"
                 android:button="@null"
                 android:gravity="center"
-                app:layout_constraintTop_toBottomOf="@id/regist_cloth_btn"
+                app:layout_constraintTop_toBottomOf="@id/reg_cloth_btn"
                 app:layout_constraintStart_toStartOf="@id/introduce_value" />
             <TextView
                 android:id="@+id/checkbox_label3"

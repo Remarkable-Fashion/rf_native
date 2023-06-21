@@ -6,10 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.lf.fashion.data.response.RegClothes
 import com.lf.fashion.databinding.ItemRegistFormBinding
 
 class AddPostClothesRvAdapter :
-    ListAdapter<String, AddPostClothesRvAdapter.ClothesRvViewHolder>(ClothesCategoryDiff()) {
+    ListAdapter<RegClothes, AddPostClothesRvAdapter.ClothesRvViewHolder>(ClothesCategoryDiff()) {
 
     var addedItemPosition :Int?  = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothesRvViewHolder {
@@ -24,8 +25,8 @@ class AddPostClothesRvAdapter :
 
     inner class ClothesRvViewHolder(private val binding: ItemRegistFormBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(categories: String) {
-            binding.category = categories
+        fun bind(regClothes: RegClothes) {
+            binding.clothe = regClothes
 
 /*            //+ 버튼 클릭시 아이템 추가
             binding.addCardBtn.setOnClickListener {
@@ -50,12 +51,13 @@ class AddPostClothesRvAdapter :
         }
     }
 }
-class ClothesCategoryDiff : DiffUtil.ItemCallback<String>(){
-    override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
-       return oldItem == newItem
+class ClothesCategoryDiff : DiffUtil.ItemCallback<RegClothes>(){
+    override fun areItemsTheSame(oldItem: RegClothes, newItem: RegClothes): Boolean {
+        return oldItem.name == newItem.name
     }
 
-    override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
-        return oldItem == newItem    }
+    override fun areContentsTheSame(oldItem: RegClothes, newItem: RegClothes): Boolean {
+        return oldItem.name == newItem.name
+    }
 
 }

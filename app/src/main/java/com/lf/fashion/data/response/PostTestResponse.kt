@@ -86,6 +86,16 @@ data class ClothesInfo(
     val image : String,
     val name:String
 )
+
+data class RegClothes(
+    val image: String?=null,
+    val category: String,
+    val name: String,
+    val price: String,
+    val color: String,
+    val size : String,
+    val url : String,
+)
 data class LookBook(
     val profile: Profile,
     val likes: String,
