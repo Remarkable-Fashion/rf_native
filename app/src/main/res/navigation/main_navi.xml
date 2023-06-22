@@ -86,7 +86,11 @@
     <fragment
         android:id="@+id/recommendFragment"
         android:name="com.lf.fashion.ui.home.frag.RecommendLooBookFragment"
-        android:label="RecommendFragment" />
+        android:label="RecommendFragment" >
+        <action
+            android:id="@+id/action_recommendFragment_to_registClothFragment"
+            app:destination="@id/registClothFragment" />
+    </fragment>
     <fragment
         android:id="@+id/photoStep2Fragment"
         android:name="com.lf.fashion.ui.addPost.PhotoStep2Fragment"
@@ -121,4 +125,8 @@
         android:id="@+id/scrapVerticalFragment"
         android:name="com.lf.fashion.ui.scrap.ScrapVerticalFragment"
         android:label="ScrapVerticalFragment" />
+    <fragment
+        android:id="@+id/registClothFragment"
+        android:name="com.lf.fashion.ui.home.frag.RegistClothFragment"
+        android:label="RegistClothFragment" />
 </navigation>

@@ -149,9 +149,6 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-
-        binding.clothRegistForm.topLinear.forEach { it.isSelected = false }
-
         val categoryButtons = listOf(
             binding.clothRegistForm.outerBtn,
             binding.clothRegistForm.topBtn,

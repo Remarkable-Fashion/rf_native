@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<!--접근 권한 체크용 empty fragment , 안내 문구 추가 가능성 있다 ~ -->
-
-</androidx.constraintlayout.widget.ConstraintLayout>

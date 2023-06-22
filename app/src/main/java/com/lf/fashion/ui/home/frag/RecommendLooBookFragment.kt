@@ -9,6 +9,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
 import com.lf.fashion.databinding.HomeBRecommendFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
@@ -39,7 +40,6 @@ class RecommendLooBookFragment : Fragment(), View.OnClickListener , AdapterView.
         binding.orderByBestBtn.setOnClickListener(this)
         binding.orderByRecentBtn.setOnClickListener(this)
 
-
         viewModel.getLookBook()
         viewModel.lookBook.observe(viewLifecycleOwner) {
             binding.styleRecommendRv.apply {
@@ -51,6 +51,7 @@ class RecommendLooBookFragment : Fragment(), View.OnClickListener , AdapterView.
         }
 
         spinnerSetting()
+        clothesRegButtonOnclick()
     }
 
     private fun spinnerSetting() {
@@ -65,24 +66,18 @@ class RecommendLooBookFragment : Fragment(), View.OnClickListener , AdapterView.
             spinner.adapter = adapter
         }
     }
+    private fun clothesRegButtonOnclick(){
+        binding.registBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_recommendFragment_to_registClothFragment)
 
-    override fun onClick(view: View?) {
-        when (view) {
-            binding.orderByBestBtn -> {
-                // 첫 줄에서 isSelected 값이 변경되었기 때문에 recentBtn 에는 반대 값이 들어감
-                // 두가지 정렬 옵션 중 한개만 선택 가능하도록 if 문 처리 ~
-                binding.orderByBestBtn.isSelected = !binding.orderByBestBtn.isSelected
-                if(binding.orderByBestBtn.isSelected) {
-                    binding.orderByRecentBtn.isSelected = !binding.orderByBestBtn.isSelected
-                }
-            }
-            binding.orderByRecentBtn -> {
-                binding.orderByRecentBtn.isSelected = !binding.orderByRecentBtn.isSelected
-                if(binding.orderByRecentBtn.isSelected) {
-                    binding.orderByBestBtn.isSelected = !binding.orderByRecentBtn.isSelected
-                }
-            }
         }
+    }
+    override fun onClick(view: View?) {
+        val singleClickableList = listOf(binding.orderByRecentBtn,binding.orderByBestBtn)
+        singleClickableList.forEach { button->
+            button.isSelected = button == view
+        }
+
     }
 
     //spinner listener
