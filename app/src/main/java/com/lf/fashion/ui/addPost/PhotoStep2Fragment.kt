@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.*
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -27,8 +28,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class PhotoStep2Fragment : Fragment(), View.OnClickListener {
     private lateinit var binding: PhotoStep2FragmentBinding
     private val viewModel: FilterViewModel by viewModels()
-    private val regClothesList = MutableLiveData<MutableList<RegClothes>>()
-
+    private val regClothesList = mutableListOf<RegClothes>()
+    private val addClothesAdapter = AddPostClothesRvAdapter()
     private var selectedCategory: String? = null
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,10 +47,11 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         val imageUris = arguments?.get("image_uri") as Array<*>
         Log.d(TAG, "PhotoStep2Fragment - onViewCreated: ${imageUris.get(0)}");
 
-
+        with(binding.clothesDetailRv){
+            adapter = addClothesAdapter
+        }
         genderSelectUISetting()
         chipSetting()
-        rvAdapterSetting()
         registerCloth()
         introduceLengthCounting()
         cancelBtnBackStack(binding.backBtn)
@@ -90,23 +92,6 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun rvAdapterSetting() {
-        /*      val category = listOf("Outer", "Top", "Bottom", "Acc")
-              with(binding.clothesDetailRv){
-                  adapter = AddPostClothesRvAdapter().apply {
-                      submitList(category)
-                  }
-              }*/
-        regClothesList.observe(viewLifecycleOwner){
-            if(it.size>0){
-                with(binding.clothesDetailRv){
-                    adapter = AddPostClothesRvAdapter().apply {
-                        submitList(it)
-                    }
-                }
-            }
-        }
-    }
 
     private fun registerCloth() {
         binding.clothRegistForm.topLinear.children.forEach { it.setOnClickListener(this) }
@@ -118,10 +103,8 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
             val urlValue = binding.clothRegistForm.urlValue.text.toString()
 
             if (nameValue.isNotEmpty() && priceValue.isNotEmpty() && colorValue.isNotEmpty() && sizeValue.isNotEmpty() && selectedCategory != null) {
-                if (regClothesList.value == null) {
-                    regClothesList.value = mutableListOf()
-                }
-                regClothesList.value?.add(
+
+                regClothesList.add(
                     RegClothes(
                         null,
                         selectedCategory!!,
@@ -132,6 +115,17 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                         urlValue
                     )
                 )
+                addClothesAdapter.apply {
+                    submitList(regClothesList)
+                    notifyItemInserted(regClothesList.size-1)
+                }
+
+                // 요소들의 텍스트를 빈 값으로 설정
+                binding.clothRegistForm.nameValue.text.clear()
+                binding.clothRegistForm.priceValue.text.clear()
+                binding.clothRegistForm.colorValue.text.clear()
+                binding.clothRegistForm.sizeValue.text.clear()
+                binding.clothRegistForm.urlValue.text.clear()
 
             } else if (selectedCategory == null) {
                 Toast.makeText(requireContext(), "의상 카테고리를 선택해주세요!", Toast.LENGTH_SHORT).show()

@@ -28,26 +28,14 @@ class AddPostClothesRvAdapter :
         fun bind(regClothes: RegClothes) {
             binding.clothe = regClothes
 
-/*            //+ 버튼 클릭시 아이템 추가
-            binding.addCardBtn.setOnClickListener {
-                val position = this.absoluteAdapterPosition
+            binding.deleteBtn.setOnClickListener {
                 val newList = currentList.toMutableList()
-                newList.add(position + 1, categories)
+                newList.remove(regClothes)
                 submitList(newList)
-                addedItemPosition = position+1
             }
 
-            // 추가된 뷰에만 - 버튼 추가
-            if(addedItemPosition==this.absoluteAdapterPosition){
-                binding.deleteCardBtn.visibility = View.VISIBLE
-            }
+            binding.executePendingBindings()
 
-            binding.deleteCardBtn.setOnClickListener {
-                val position = this.absoluteAdapterPosition
-                val newList = currentList.toMutableList()
-                newList.removeAt(position)
-                submitList(newList)
-            }*/
         }
     }
 }
