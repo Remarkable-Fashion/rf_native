@@ -64,7 +64,7 @@
             android:layout_height="match_parent"
             android:paddingBottom="55dp">
            <include
-               android:id="@+id/includeRegistForm"
+               android:id="@+id/clothRegistForm"
                layout="@layout/item_cloth_regist_form"
                android:layout_width="0dp"
                android:layout_height="wrap_content"
@@ -78,9 +78,11 @@
                 android:id="@+id/registDetailLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/includeRegistForm"
-                app:layout_constraintStart_toStartOf="@id/includeRegistForm"
+                app:layout_constraintTop_toBottomOf="@id/clothRegistForm"
+                app:layout_constraintStart_toStartOf="@id/clothRegistForm"
                 style="@style/app_bar_label"
+                android:text="등록 이유"
+                android:layout_marginTop="20dp"
                 />
 
             <EditText
@@ -89,8 +91,8 @@
                 android:layout_height="80dp"
                 android:background="@drawable/bg_radi3_line"
                 app:layout_constraintTop_toBottomOf="@id/registDetailLabel"
-                app:layout_constraintStart_toStartOf="@id/includeRegistForm"
-                app:layout_constraintEnd_toEndOf="@id/includeRegistForm"
+                app:layout_constraintStart_toStartOf="@id/clothRegistForm"
+                app:layout_constraintEnd_toEndOf="@id/clothRegistForm"
                 android:layout_marginTop="7dp"
                 android:textColor="@color/default_text"
                 style="@style/spoqa_12sp_label"
@@ -117,7 +119,7 @@
                 android:background="@drawable/bg_black_btn"
                 android:text="의상 등록"
                 android:layout_marginTop="15dp"
-                app:layout_constraintEnd_toEndOf="@id/includeRegistForm"
+                app:layout_constraintEnd_toEndOf="@id/clothRegistForm"
                 app:layout_constraintTop_toBottomOf="@id/detailValue"
                 style="@style/montserrat_bold_14"
                 android:textColor="@color/white"
@@ -131,7 +133,7 @@
                 app:layout_constraintTop_toBottomOf="@id/reg_cloth_btn" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/style_recommend_rv"
+                android:id="@+id/clothes_detail_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/cloth_topline"
@@ -139,7 +141,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
-                tools:listitem="@layout/item_recommend_style_card"
+                tools:listitem="@layout/item_regist_form"
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never"
                 />
