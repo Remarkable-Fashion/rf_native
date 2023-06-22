@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottom_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="40dp"
+    android:orientation="vertical"
+    android:paddingStart="35dp"
+    android:paddingEnd="35dp"
+    >
+    <View
+        android:id="@+id/bottom_line"
+        android:layout_width="50dp"
+        android:layout_height="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/line_grey2"
+        android:layout_gravity="center"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/profile_edit_btn"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:layout_weight="1"
+        android:text="프로필 수정 &#9786;"
+        android:background="@drawable/selector_btn_whitegrey"
+        android:layout_marginTop="33dp"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/alert_setting_btn"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:layout_weight="1"
+        android:text="알림 설정 &#128276;"
+        android:background="@drawable/selector_btn_whitegrey"
+        android:layout_marginTop="10dp"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/service"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:layout_weight="1"
+        android:text="서비스 약관 &#128226;"
+        android:background="@drawable/selector_btn_whitegrey"
+        android:layout_marginTop="10dp"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/personal_info"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:layout_weight="1"
+        android:text="개인정보 처리방침 &#128240;"
+        android:background="@drawable/selector_btn_whitegrey"
+        android:layout_marginTop="10dp"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/logout_btn"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:layout_weight="1"
+        android:text="로그아웃 &#128274;"
+        android:background="@drawable/selector_btn_whitegrey"
+        android:layout_marginTop="10dp"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/Withdrawal"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:layout_weight="1"
+        android:text="회원탈퇴 &#128682;"
+        android:background="@drawable/selector_btn_whitegrey"
+        android:layout_marginTop="10dp"
+        />
+</LinearLayout>
+

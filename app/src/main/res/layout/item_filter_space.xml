@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <CheckBox
+        android:id="@+id/height_check_box"
+        style="@style/spoqa_12sp_label"
+        android:layout_width="21dp"
+        android:layout_height="21dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/selector_checkbox"
+        android:button="@null"
+        android:gravity="center"
+        app:layout_constraintBaseline_toBaselineOf="@id/height_label"
+        app:layout_constraintEnd_toStartOf="@id/checkbox_label" />
+
+    <CheckBox
+        android:id="@+id/weight_check_box"
+        android:layout_width="21dp"
+        android:layout_height="21dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/selector_checkbox"
+        android:button="@null"
+        android:gravity="center"
+        app:layout_constraintBaseline_toBaselineOf="@id/weight_label"
+        app:layout_constraintEnd_toStartOf="@id/checkbox_label2" />
+
+    <EditText
+        android:id="@+id/height_value"
+        style="@style/edittext_style"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/selector_btn_whitegrey"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@id/height_label" />
+
+    <EditText
+        android:id="@+id/weight_value"
+        style="@style/edittext_style"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/selector_btn_whitegrey"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@id/weight_label" />
+
+    <TextView
+        android:id="@+id/gender_label"
+        style="@style/montserrat_bold_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/gender_label"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/height_label"
+        style="@style/montserrat_bold_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/height_label"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@id/gender_man_btn" />
+
+    <TextView
+        android:id="@+id/checkbox_label"
+        style="@style/spoqa_12sp_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_checkbox_label"
+        app:layout_constraintBaseline_toBaselineOf="@id/height_check_box"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical2" />
+
+    <TextView
+        android:id="@+id/weight_label"
+        style="@style/montserrat_bold_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/weight_label"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@id/height_value" />
+
+    <TextView
+        android:id="@+id/checkbox_label2"
+        style="@style/spoqa_12sp_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_checkbox_label"
+        app:layout_constraintBaseline_toBaselineOf="@id/weight_check_box"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical2" />
+
+    <View
+        android:id="@+id/cloth_topline"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/background_grey"
+        app:layout_constraintTop_toBottomOf="@id/weight_value" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/gender_man_btn"
+        style="@style/montserrat_medium_text"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/selector_btn_greyblack"
+        android:stateListAnimator="@null"
+        android:text="@string/man"
+        android:textColor="@drawable/selector_text_color"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@id/gender_label"
+        app:layout_constraintWidth_percent="0.44" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/gender_woman_btn"
+        style="@style/montserrat_medium_text"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/selector_btn_greyblack"
+        android:stateListAnimator="@null"
+        android:text="@string/woman"
+        android:textColor="@drawable/selector_text_color"
+        app:layout_constraintBaseline_toBaselineOf="@id/gender_man_btn"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+        app:layout_constraintStart_toEndOf="@id/gender_man_btn"
+        app:layout_constraintWidth_percent="0.44" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <include
+        android:id="@+id/filter_include"
+        layout="@layout/home_photo_filter_chip_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@id/cloth_topline" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
