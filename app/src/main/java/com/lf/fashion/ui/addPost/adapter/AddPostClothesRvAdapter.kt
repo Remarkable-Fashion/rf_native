@@ -1,7 +1,6 @@
 package com.lf.fashion.ui.addPost.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -12,7 +11,6 @@ import com.lf.fashion.databinding.ItemRegistFormBinding
 class AddPostClothesRvAdapter :
     ListAdapter<RegClothes, AddPostClothesRvAdapter.ClothesRvViewHolder>(ClothesCategoryDiff()) {
 
-    var addedItemPosition :Int?  = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothesRvViewHolder {
         val binding =
             ItemRegistFormBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -35,7 +33,6 @@ class AddPostClothesRvAdapter :
             }
 
             binding.executePendingBindings()
-
         }
     }
 }

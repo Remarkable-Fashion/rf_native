@@ -6,16 +6,10 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.*
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.lifecycleScope
 import com.lf.fashion.TAG
-import com.lf.fashion.data.response.ClothesInfo
 import com.lf.fashion.data.response.RegClothes
 import com.lf.fashion.databinding.PhotoStep2FragmentBinding
 import com.lf.fashion.ui.addPost.adapter.AddPostClothesRvAdapter
