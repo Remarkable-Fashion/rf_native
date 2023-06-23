@@ -1,23 +1,60 @@
 package com.lf.fashion.ui.home.frag
 
+import android.Manifest
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.lf.fashion.R
+import com.lf.fashion.TAG
 import com.lf.fashion.data.response.RegClothes
 import com.lf.fashion.databinding.HomeBRegistClothFragmentBinding
-import com.lf.fashion.ui.addPost.adapter.AddPostClothesRvAdapter
+import com.lf.fashion.ui.AddPostClothesRvAdapter
+import com.lf.fashion.ui.addPost.ImagePickerFragment
+import com.lf.fashion.ui.addPost.PhotoFragmentDirections
+import com.lf.fashion.ui.showPermissionDialog
 
-class RegistClothFragment : Fragment(),View.OnClickListener {
+//TODO: 업데이트 안내 코드 추가 , 의상등록 이미지 클릭 -> 이미지피커프래그먼트 연결
+class RegistClothFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: HomeBRegistClothFragmentBinding
     private val regClothesList = mutableListOf<RegClothes>()
     private var selectedCategory: String? = null
     private val addClothesAdapter = AddPostClothesRvAdapter()
+
+    //복수의 권한이 필요한 경우 RequestMultiplePermissions() 후 launch(배열) 로 전달
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            val allPermissionsGranted = permissions.all { it.value }
+            val galleryPermission = permissions[Manifest.permission.READ_EXTERNAL_STORAGE] ?: false
+            //모두 허용 또는 외부저장소 읽기 권한 있을 시 커스텀 갤러리 뷰로 이동
+            if (allPermissionsGranted || galleryPermission) {
+                //모든 이미지타입
+                // requestImageUriLauncher.launch("image/*") // 여기서 요청할경우 권한 동의 후 바로 파일접근으로 넘어갈 수 있다.
+                findNavController().navigate(
+                    R.id.action_registClothFragment_to_imagePickerFragment,
+                    bundleOf("from" to "RegistClothFragment")
+                )
+            } else {
+                Log.d(TAG, "PhotoFragment - : granted fail");
+            }
+        }
+    private val permissions = arrayOf(
+        Manifest.permission.CAMERA,
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,12 +67,44 @@ class RegistClothFragment : Fragment(),View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //이미지 등록에서 받아온 이미지들 ..
+        setFragmentResultListener(ImagePickerFragment.REQUEST_KEY){ requestKey, bundle ->
+            Log.d(TAG, "PhotoStep2Fragment - onViewCreated: ${bundle.get("imageURI")}");
+            val imageUris = bundle.get("imageURI") as Array<*>;
+            imageUris[0]?.let {
+                Glide.with(binding.root)
+                    .load(it)
+                    .into(binding.clothRegistForm.productImage)
+            }
+        }
+
 
         binding.clothesDetailRv.adapter = addClothesAdapter
         registerCloth()
         detailValueLengthCounting()
+        imageOnclickPermissionCheck() // 이미지 부분 눌리면 permission 체크 -> 허용시엔 imagePickerFragment 로 이동
+
 
     }
+
+    private fun imageOnclickPermissionCheck() {
+        binding.clothRegistForm.productImage.setOnClickListener {
+            when {
+                ActivityCompat.shouldShowRequestPermissionRationale(
+                    requireActivity(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) -> {
+                    //권한을 deny 한 적이 있고 다시 기능을 이용하려고 시도할 때, 안내 문구를 띄워주기
+                    showPermissionDialog(requestPermissionLauncher, permissions)
+                }
+                // 권한을 아직 허용한 적이 없고, 안내문구를 보내야하는 시점도 아닐 경우
+                else -> {
+                    requestPermissionLauncher.launch(permissions)
+                }
+            }
+        }
+    }
+
     private fun registerCloth() {
         binding.clothRegistForm.topLinear.children.forEach { it.setOnClickListener(this) }
         binding.regClothBtn.setOnClickListener {
@@ -60,7 +129,7 @@ class RegistClothFragment : Fragment(),View.OnClickListener {
                 )
                 addClothesAdapter.apply {
                     submitList(regClothesList)
-                    notifyItemInserted(regClothesList.size-1)
+                    notifyItemInserted(regClothesList.size - 1)
                 }
 
                 // 요소들의 텍스트를 빈 값으로 설정
@@ -79,6 +148,7 @@ class RegistClothFragment : Fragment(),View.OnClickListener {
         }
 
     }
+
     override fun onClick(v: View?) {
         val categoryButtons = listOf(
             binding.clothRegistForm.outerBtn,
@@ -94,6 +164,7 @@ class RegistClothFragment : Fragment(),View.OnClickListener {
             }
         }
     }
+
     private fun detailValueLengthCounting() {
         binding.detailValue.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

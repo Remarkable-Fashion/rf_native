@@ -1,10 +1,13 @@
 package com.lf.fashion.ui
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
@@ -65,4 +68,15 @@ fun Fragment.hideKeyboard() {
         requireActivity().currentFocus?.windowToken,
         InputMethodManager.HIDE_NOT_ALWAYS
     )
+}
+
+fun Fragment.showPermissionDialog(
+    requestPermissionLauncher: ActivityResultLauncher<Array<String>>,
+    permissions: Array<String>
+) {
+    AlertDialog.Builder(requireContext()).apply {
+        setMessage("이미지를 가져오기 위해서, 외부 저장소 읽기 권한이 필요합니다.")
+        setNegativeButton("취소", null)
+        setPositiveButton("동의") { _, _ -> requestPermissionLauncher.launch(permissions) }
+    }.show()
 }

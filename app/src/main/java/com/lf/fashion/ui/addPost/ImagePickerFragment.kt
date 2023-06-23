@@ -20,8 +20,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
 import com.lf.fashion.TAG
@@ -44,7 +47,9 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
     private val viewModel: ImagePickerViewModel by viewModels {
         ImagePickerViewModelFactory(requireContext())
     }
-
+    companion object{
+        val REQUEST_KEY ="REGISTER_CLOTH_IMAGE"
+    }
     //권한 런처 초기화
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -68,7 +73,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
                 val saveImage = SaveImage(requireContext())
                 //이미지 저장하고 uri 얻기 -> viewModel 의 imageItem 에 추가
                 val imageUri = saveImage.saveImageToGallery(bitmap)
-                viewModel.addImageToImageList(ImageItem(imageUri, false,""))
+                viewModel.addImageToImageList(ImageItem(imageUri, false, ""))
 
             } else {
                 // 이미지 캡처가 실패하거나 사용자가 취소한 경우의 처리 로직
@@ -86,15 +91,24 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val isItRegistClothFragment = arguments?.get("from")
+
 
         //submit(등록) 버튼 클릭시 편집 fragment 로 이동
         binding.buttonListener = View.OnClickListener {
             // Pass Uri list to fragment outside
             Log.d(TAG, "ImagePickerFragment - onCreateView: ${viewModel.getCheckedImageUriList()}");
-            val action = ImagePickerFragmentDirections.actionImagePickerFragmentToPhotoStep2Fragment(
-                    viewModel.getCheckedImageUriList().toTypedArray())
-            findNavController().navigate(action)
 
+            if (isItRegistClothFragment == "RegistClothFragment") {
+                setFragmentResult(REQUEST_KEY, bundleOf("imageURI" to viewModel.getCheckedImageUriList().toTypedArray() ))
+                findNavController().navigateUp()
+            } else {
+               val action =  ImagePickerFragmentDirections.actionImagePickerFragmentToPhotoStep2Fragment(
+                    viewModel.getCheckedImageUriList().toTypedArray()
+                )
+                findNavController().navigate(action)
+
+            }
         }
 
         galleryImageRvSetting()
@@ -132,8 +146,9 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
             checkedImageAdapter.notifyDataSetChanged()
         }
     }
-    private fun submitBtnUIUpdate(checkedListSize : Int){
-        if(checkedListSize > 0) {
+
+    private fun submitBtnUIUpdate(checkedListSize: Int) {
+        if (checkedListSize > 0) {
             val dynamicText = "$checkedListSize"
             val staticText = " 등록"
             val finalText = dynamicText + staticText
@@ -154,7 +169,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
 
             binding.submitBtn.text = spannableString
             binding.submitBtn.isSelected = true
-        } else{
+        } else {
             binding.submitBtn.text = "등록"
             binding.submitBtn.isSelected = false
         }
@@ -210,7 +225,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
     }
 
     override fun checkedCountOver() {
-        Toast.makeText(requireContext(),"사진은 4장까지 선택 가능합니다.",Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "사진은 4장까지 선택 가능합니다.", Toast.LENGTH_SHORT).show()
     }
 
     // 선택된 이미지 미리보기 뷰에서 , x 버튼을 눌렀을 때

@@ -12,7 +12,7 @@ import androidx.fragment.app.viewModels
 import com.lf.fashion.TAG
 import com.lf.fashion.data.response.RegClothes
 import com.lf.fashion.databinding.PhotoStep2FragmentBinding
-import com.lf.fashion.ui.addPost.adapter.AddPostClothesRvAdapter
+import com.lf.fashion.ui.AddPostClothesRvAdapter
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.childChip
 import com.lf.fashion.ui.home.FilterViewModel

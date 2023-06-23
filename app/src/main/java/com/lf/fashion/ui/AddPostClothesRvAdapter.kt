@@ -1,4 +1,4 @@
-package com.lf.fashion.ui.addPost.adapter
+package com.lf.fashion.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.data.response.RegClothes
 import com.lf.fashion.databinding.ItemRegistFormBinding
 
+//PhotoStep2Fragment , RegistClothFragment 에서 사용.
 class AddPostClothesRvAdapter :
     ListAdapter<RegClothes, AddPostClothesRvAdapter.ClothesRvViewHolder>(ClothesCategoryDiff()) {
 

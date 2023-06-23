@@ -15,8 +15,10 @@ import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.databinding.PhotoFragmentBinding
+import com.lf.fashion.ui.showPermissionDialog
 import dagger.hilt.android.AndroidEntryPoint
 
+//permissioncheck 의 역할을 하는 fragment ..
 @AndroidEntryPoint
 class PhotoFragment : Fragment() {
     private lateinit var binding : PhotoFragmentBinding
@@ -60,7 +62,7 @@ class PhotoFragment : Fragment() {
                 Manifest.permission.READ_EXTERNAL_STORAGE
             ) -> {
                 //권한을 deny 한 적이 있고 다시 기능을 이용하려고 시도할 때, 안내 문구를 띄워주기
-                showPermissionInfoDialog()
+                showPermissionDialog(requestPermissionLauncher,permissions)
             }
             // 권한을 아직 허용한 적이 없고, 안내문구를 보내야하는 시점도 아닐 경우
             else -> {
@@ -68,11 +70,11 @@ class PhotoFragment : Fragment() {
             }
         }
     }
-    private fun showPermissionInfoDialog() {
+    /*private fun showPermissionInfoDialog() {
         AlertDialog.Builder(requireContext()).apply {
             setMessage("이미지를 가져오기 위해서, 외부 저장소 읽기 권한이 필요합니다.")
             setNegativeButton("취소", null)
             setPositiveButton("동의") { _, _ -> requestPermissionLauncher.launch(permissions) }
         }.show()
-    }
+    }*/
 }

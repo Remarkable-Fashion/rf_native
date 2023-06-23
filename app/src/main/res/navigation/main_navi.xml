@@ -44,7 +44,9 @@
         android:label="PhotoFragment">
         <action
             android:id="@+id/action_navigation_photo_to_imagePickerFragment"
-            app:destination="@id/imagePickerFragment" />
+            app:destination="@id/imagePickerFragment" >
+
+        </action>
     </fragment>
     <fragment
         android:id="@+id/navigation_search"
@@ -108,6 +110,15 @@
                 app:argType="string[]"
                 app:nullable="true" />
         </action>
+        <action
+            android:id="@+id/action_imagePickerFragment_to_registClothFragment"
+            app:destination="@id/registClothFragment" >
+<!--            <argument-->
+<!--                android:name="image_uri"-->
+<!--                android:defaultValue="@null"-->
+<!--                app:argType="string[]"-->
+<!--                app:nullable="true" />-->
+        </action>
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -128,5 +139,9 @@
     <fragment
         android:id="@+id/registClothFragment"
         android:name="com.lf.fashion.ui.home.frag.RegistClothFragment"
-        android:label="RegistClothFragment" />
+        android:label="RegistClothFragment" >
+        <action
+            android:id="@+id/action_registClothFragment_to_imagePickerFragment"
+            app:destination="@id/imagePickerFragment" />
+    </fragment>
 </navigation>
