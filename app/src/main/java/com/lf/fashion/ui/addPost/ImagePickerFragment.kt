@@ -91,21 +91,23 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val isItRegistClothFragment = arguments?.get("from")
+        val backStackFragment = arguments?.get("from")
 
 
         //submit(등록) 버튼 클릭시 편집 fragment 로 이동
         binding.buttonListener = View.OnClickListener {
             // Pass Uri list to fragment outside
             Log.d(TAG, "ImagePickerFragment - onCreateView: ${viewModel.getCheckedImageUriList()}");
-
-            if (isItRegistClothFragment == "RegistClothFragment") {
-                setFragmentResult(REQUEST_KEY, bundleOf("imageURI" to viewModel.getCheckedImageUriList().toTypedArray() ))
+            val imageUriArray = viewModel.getCheckedImageUriList().toTypedArray()
+            if (backStackFragment == "RegistClothFragment") {
+                setFragmentResult(REQUEST_KEY, bundleOf("imageURI" to imageUriArray ))
                 findNavController().navigateUp()
-            } else {
-               val action =  ImagePickerFragmentDirections.actionImagePickerFragmentToPhotoStep2Fragment(
-                    viewModel.getCheckedImageUriList().toTypedArray()
-                )
+            }else if(backStackFragment =="PhotoStep2Fragment"){
+                setFragmentResult(REQUEST_KEY, bundleOf("imageURI" to imageUriArray))
+                findNavController().navigateUp()
+
+            }else {
+               val action =  ImagePickerFragmentDirections.actionImagePickerFragmentToPhotoStep2Fragment(imageUriArray)
                 findNavController().navigate(action)
 
             }

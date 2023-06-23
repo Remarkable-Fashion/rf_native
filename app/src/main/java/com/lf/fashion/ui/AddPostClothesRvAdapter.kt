@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.lf.fashion.data.response.RegClothes
 import com.lf.fashion.databinding.ItemRegistFormBinding
 
@@ -26,6 +27,12 @@ class AddPostClothesRvAdapter :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(regClothes: RegClothes) {
             binding.clothe = regClothes
+
+            regClothes.image?.let {
+                Glide.with(binding.root)
+                    .load(regClothes.image)
+                    .into(binding.productImage)
+            }
 
             binding.deleteBtn.setOnClickListener {
                 val newList = currentList.toMutableList()

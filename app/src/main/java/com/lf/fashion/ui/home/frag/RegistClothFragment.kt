@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
@@ -24,6 +25,7 @@ import com.lf.fashion.databinding.HomeBRegistClothFragmentBinding
 import com.lf.fashion.ui.AddPostClothesRvAdapter
 import com.lf.fashion.ui.addPost.ImagePickerFragment
 import com.lf.fashion.ui.addPost.PhotoFragmentDirections
+import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.showPermissionDialog
 
 //TODO: 업데이트 안내 코드 추가 , 의상등록 이미지 클릭 -> 이미지피커프래그먼트 연결
@@ -32,8 +34,9 @@ class RegistClothFragment : Fragment(), View.OnClickListener {
     private val regClothesList = mutableListOf<RegClothes>()
     private var selectedCategory: String? = null
     private val addClothesAdapter = AddPostClothesRvAdapter()
-
+    private var selectedImageUri :String? = null
     //복수의 권한이 필요한 경우 RequestMultiplePermissions() 후 launch(배열) 로 전달
+
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             val allPermissionsGranted = permissions.all { it.value }
@@ -72,6 +75,7 @@ class RegistClothFragment : Fragment(), View.OnClickListener {
             Log.d(TAG, "PhotoStep2Fragment - onViewCreated: ${bundle.get("imageURI")}");
             val imageUris = bundle.get("imageURI") as Array<*>;
             imageUris[0]?.let {
+                selectedImageUri = imageUris[0].toString()
                 Glide.with(binding.root)
                     .load(it)
                     .into(binding.clothRegistForm.productImage)
@@ -83,8 +87,7 @@ class RegistClothFragment : Fragment(), View.OnClickListener {
         registerCloth()
         detailValueLengthCounting()
         imageOnclickPermissionCheck() // 이미지 부분 눌리면 permission 체크 -> 허용시엔 imagePickerFragment 로 이동
-
-
+        cancelBtnBackStack(binding.cancelBtn)
     }
 
     private fun imageOnclickPermissionCheck() {
@@ -118,7 +121,7 @@ class RegistClothFragment : Fragment(), View.OnClickListener {
 
                 regClothesList.add(
                     RegClothes(
-                        null,
+                        selectedImageUri,
                         selectedCategory!!,
                         nameValue,
                         priceValue,
@@ -133,6 +136,7 @@ class RegistClothFragment : Fragment(), View.OnClickListener {
                 }
 
                 // 요소들의 텍스트를 빈 값으로 설정
+                binding.clothRegistForm.productImage.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_add_item_mini))
                 binding.clothRegistForm.nameValue.text.clear()
                 binding.clothRegistForm.priceValue.text.clear()
                 binding.clothRegistForm.colorValue.text.clear()

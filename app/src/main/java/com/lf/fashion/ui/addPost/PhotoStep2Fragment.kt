@@ -6,9 +6,15 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.response.RegClothes
 import com.lf.fashion.databinding.PhotoStep2FragmentBinding
@@ -25,6 +31,8 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
     private val regClothesList = mutableListOf<RegClothes>()
     private val addClothesAdapter = AddPostClothesRvAdapter()
     private var selectedCategory: String? = null
+    private var selectedImageUri :String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,6 +56,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         chipSetting()
         registerCloth()
         introduceLengthCounting()
+        imagePickerOpen()
         cancelBtnBackStack(binding.backBtn)
     }
 
@@ -100,7 +109,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
 
                 regClothesList.add(
                     RegClothes(
-                        null,
+                        selectedImageUri,
                         selectedCategory!!,
                         nameValue,
                         priceValue,
@@ -115,6 +124,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                 }
 
                 // 요소들의 텍스트를 빈 값으로 설정
+                binding.clothRegistForm.productImage.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_add_item_mini))
                 binding.clothRegistForm.nameValue.text.clear()
                 binding.clothRegistForm.priceValue.text.clear()
                 binding.clothRegistForm.colorValue.text.clear()
@@ -146,6 +156,25 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
             }
 
         })
+    }
+    //TODO 의상 등록을 하고 backstack 으로 돌아오면 edittext는 남아잇지만 버튼 isSelected 가 다 해제된다.
+    private fun imagePickerOpen(){
+        binding.clothRegistForm.productImage.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_photoStep2Fragment_to_imagePickerFragment,
+                bundleOf("from" to "PhotoStep2Fragment")
+            )
+        }
+        setFragmentResultListener(requestKey = ImagePickerFragment.REQUEST_KEY){
+            _, bundle ->
+            val imageUris = bundle.get("imageURI") as Array<*>;
+            imageUris[0]?.let {
+                selectedImageUri = imageUris[0].toString()
+                Glide.with(binding.root)
+                    .load(it)
+                    .into(binding.clothRegistForm.productImage)
+            }
+        }
     }
 
     override fun onClick(v: View?) {

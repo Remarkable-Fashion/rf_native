@@ -96,7 +96,11 @@
     <fragment
         android:id="@+id/photoStep2Fragment"
         android:name="com.lf.fashion.ui.addPost.PhotoStep2Fragment"
-        android:label="PhotoStep2Fragment" />
+        android:label="PhotoStep2Fragment" >
+        <action
+            android:id="@+id/action_photoStep2Fragment_to_imagePickerFragment"
+            app:destination="@id/imagePickerFragment" />
+    </fragment>
     <fragment
         android:id="@+id/imagePickerFragment"
         android:name="com.lf.fashion.ui.addPost.ImagePickerFragment"
