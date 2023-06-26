@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <!--https://stackoverflow.com/questions/3078662/how-to-change-the-border-and-separator-color-of-spinner-widget-->
     <Spinner
         android:id="@+id/sex_spinner"
         android:layout_width="73dp"
@@ -114,7 +116,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:tabMode="fixed" />
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/default_text"
+        app:tabIndicatorColor="@color/default_text"
+        app:tabIndicatorHeight="3dp"
+        app:tabTextAppearance="@style/montserrat_bold_label_grey"
+        />
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/tab_viewpager"
         android:layout_width="match_parent"

@@ -103,7 +103,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
             val priceValue = binding.clothRegistForm.priceValue.text.toString()
             val colorValue = binding.clothRegistForm.colorValue.text.toString()
             val sizeValue = binding.clothRegistForm.sizeValue.text.toString()
-            val urlValue = binding.clothRegistForm.brandValue.text.toString()
+            val brandValue = binding.clothRegistForm.brandValue.text.toString()
 
             if (nameValue.isNotEmpty() && priceValue.isNotEmpty() && colorValue.isNotEmpty() && sizeValue.isNotEmpty() && selectedCategory != null) {
 
@@ -115,7 +115,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                         priceValue,
                         colorValue,
                         sizeValue,
-                        urlValue
+                        brandValue
                     )
                 )
                 addClothesAdapter.apply {

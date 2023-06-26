@@ -79,6 +79,7 @@ data class ModelInfo(
     val introduce : String
 )
 
+// 나중에 RegClothes 로 다 대체할것 ..
 data class ClothesInfo(
     val category : String,
     val brand: String,
@@ -88,13 +89,14 @@ data class ClothesInfo(
 )
 
 data class RegClothes(
-    val image: String?=null,
+    val image: String? = null,
     val category: String,
     val name: String,
     val price: String,
     val color: String,
-    val size : String,
-    val brand : String,
+    val size: String,
+    val brand: String,
+    val detail: String? = null
 )
 data class LookBook(
     val profile: Profile,
