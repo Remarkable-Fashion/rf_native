@@ -24,7 +24,6 @@ import com.lf.fashion.data.response.RegClothes
 import com.lf.fashion.databinding.HomeBRegistClothFragmentBinding
 import com.lf.fashion.ui.AddPostClothesRvAdapter
 import com.lf.fashion.ui.addPost.ImagePickerFragment
-import com.lf.fashion.ui.addPost.PhotoFragmentDirections
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.showPermissionDialog
 
@@ -50,7 +49,7 @@ class RegistClothFragment : Fragment(), View.OnClickListener {
                     bundleOf("from" to "RegistClothFragment")
                 )
             } else {
-                Log.d(TAG, "PhotoFragment - : granted fail");
+                Log.d(TAG, "PhotoFragment - : granted fail")
             }
         }
     private val permissions = arrayOf(
@@ -72,8 +71,8 @@ class RegistClothFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         //이미지 등록에서 받아온 이미지들 ..
         setFragmentResultListener(ImagePickerFragment.REQUEST_KEY){ requestKey, bundle ->
-            Log.d(TAG, "PhotoStep2Fragment - onViewCreated: ${bundle.get("imageURI")}");
-            val imageUris = bundle.get("imageURI") as Array<*>;
+          //  Log.d(TAG, "PhotoStep2Fragment - onViewCreated: ${bundle.get("imageURI")}");
+            val imageUris = bundle.get("imageURI") as Array<*>
             imageUris[0]?.let {
                 selectedImageUri = imageUris[0].toString()
                 Glide.with(binding.root)
@@ -115,7 +114,7 @@ class RegistClothFragment : Fragment(), View.OnClickListener {
             val priceValue = binding.clothRegistForm.priceValue.text.toString()
             val colorValue = binding.clothRegistForm.colorValue.text.toString()
             val sizeValue = binding.clothRegistForm.sizeValue.text.toString()
-            val urlValue = binding.clothRegistForm.urlValue.text.toString()
+            val urlValue = binding.clothRegistForm.brandValue.text.toString()
 
             if (nameValue.isNotEmpty() && priceValue.isNotEmpty() && colorValue.isNotEmpty() && sizeValue.isNotEmpty() && selectedCategory != null) {
 
@@ -141,7 +140,7 @@ class RegistClothFragment : Fragment(), View.OnClickListener {
                 binding.clothRegistForm.priceValue.text.clear()
                 binding.clothRegistForm.colorValue.text.clear()
                 binding.clothRegistForm.sizeValue.text.clear()
-                binding.clothRegistForm.urlValue.text.clear()
+                binding.clothRegistForm.brandValue.text.clear()
 
             } else if (selectedCategory == null) {
                 Toast.makeText(requireContext(), "의상 카테고리를 선택해주세요!", Toast.LENGTH_SHORT).show()

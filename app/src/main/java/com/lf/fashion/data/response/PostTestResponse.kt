@@ -94,7 +94,7 @@ data class RegClothes(
     val price: String,
     val color: String,
     val size : String,
-    val url : String,
+    val brand : String,
 )
 data class LookBook(
     val profile: Profile,

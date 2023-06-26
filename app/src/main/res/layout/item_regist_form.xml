@@ -194,17 +194,17 @@
             android:background="@android:color/transparent" />
 
         <TextView
-            android:id="@+id/url_label"
+            android:id="@+id/brand_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/url"
+            android:text="@string/brand"
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="@id/product_image"
             app:layout_constraintTop_toBottomOf="@id/product_image"
             style="@style/montserrat_medium_12" />
 
         <EditText
-            android:id="@+id/url_value"
+            android:id="@+id/brand_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -213,9 +213,9 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:scrollHorizontally="true"
-            android:text="@{clothe.url}"
-            app:layout_constraintStart_toEndOf="@id/url_label"
-            app:layout_constraintBaseline_toBaselineOf="@id/url_label"
+            android:text="@{clothe.brand}"
+            app:layout_constraintStart_toEndOf="@id/brand_label"
+            app:layout_constraintBaseline_toBaselineOf="@id/brand_label"
             android:textColor="@color/default_text"
             style="@style/spoqa_12sp_label"
             android:background="@android:color/transparent" />

@@ -47,7 +47,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
 
         //이미지 등록에서 받아온 이미지들 ..
         val imageUris = arguments?.get("image_uri") as Array<*>
-        Log.d(TAG, "PhotoStep2Fragment - onViewCreated: ${imageUris.get(0)}");
+        Log.d(TAG, "PhotoStep2Fragment - onViewCreated: ${imageUris.get(0)}")
 
         with(binding.clothesDetailRv){
             adapter = addClothesAdapter
@@ -103,7 +103,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
             val priceValue = binding.clothRegistForm.priceValue.text.toString()
             val colorValue = binding.clothRegistForm.colorValue.text.toString()
             val sizeValue = binding.clothRegistForm.sizeValue.text.toString()
-            val urlValue = binding.clothRegistForm.urlValue.text.toString()
+            val urlValue = binding.clothRegistForm.brandValue.text.toString()
 
             if (nameValue.isNotEmpty() && priceValue.isNotEmpty() && colorValue.isNotEmpty() && sizeValue.isNotEmpty() && selectedCategory != null) {
 
@@ -129,7 +129,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                 binding.clothRegistForm.priceValue.text.clear()
                 binding.clothRegistForm.colorValue.text.clear()
                 binding.clothRegistForm.sizeValue.text.clear()
-                binding.clothRegistForm.urlValue.text.clear()
+                binding.clothRegistForm.brandValue.text.clear()
 
             } else if (selectedCategory == null) {
                 Toast.makeText(requireContext(), "의상 카테고리를 선택해주세요!", Toast.LENGTH_SHORT).show()
@@ -167,7 +167,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         }
         setFragmentResultListener(requestKey = ImagePickerFragment.REQUEST_KEY){
             _, bundle ->
-            val imageUris = bundle.get("imageURI") as Array<*>;
+            val imageUris = bundle.get("imageURI") as Array<*>
             imageUris[0]?.let {
                 selectedImageUri = imageUris[0].toString()
                 Glide.with(binding.root)
