@@ -1,15 +1,10 @@
 package com.lf.fashion.ui.mypage
 
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.LinearLayout
-import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -45,6 +40,7 @@ class LoginFragment : Fragment() {
         userPreferences = PreferenceManager(requireContext().applicationContext)
 
         binding.kakaoLoginBackground.setOnClickListener {
+            binding.progressBar.visibility = View.VISIBLE
             UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
                 if (error != null) {
                     Log.d(TAG, "MyPageFragment - onViewCreated: 카카오톡 간편 로그인 실패 : $error");
@@ -53,12 +49,8 @@ class LoginFragment : Fragment() {
                     }
                 } else if (token != null) {
                     Log.d(TAG, "MyPageFragment - onViewCreated: 카카오톡 간편 로그인 성공 토큰 : $token")
-                    runBlocking {
-                        launch {
-                            requestJWTToken(token)
-                        }
-                    }
-                    getUserInfo()
+
+                    requestJWTToken(token)
                 }
             }
         }
@@ -73,7 +65,6 @@ class LoginFragment : Fragment() {
     }
 /* 응답이 느려짐.. 이유 모름 ,., */
     private fun requestJWTToken(token: OAuthToken) {
-        //showLoading(requireActivity(),true)
         runBlocking {
             launch {
                 val response = viewModel.getJWT(token.accessToken)
@@ -96,6 +87,7 @@ class LoginFragment : Fragment() {
                 }
             }
         }
+    binding.progressBar.visibility = View.GONE
     }
    /* fun showLoading(activity: Activity, isShow: Boolean) {
         if (isShow) {
