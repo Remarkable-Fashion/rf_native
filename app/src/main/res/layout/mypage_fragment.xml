@@ -182,6 +182,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/guideline_vertical"
                 app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                android:overScrollMode="never"
                 />
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_vertical2"

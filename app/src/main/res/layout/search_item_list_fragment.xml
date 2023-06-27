@@ -21,5 +21,6 @@
         app:spanCount="2"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_search_result_item_list"
+        android:overScrollMode="never"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

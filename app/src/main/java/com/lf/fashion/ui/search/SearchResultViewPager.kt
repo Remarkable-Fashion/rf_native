@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.TAG
 import com.lf.fashion.databinding.SearchResultViewpagerBinding
@@ -60,6 +61,7 @@ class SearchResultViewPager(resultCategory: String?) : Fragment(), GridPhotoClic
                 adapter = verticalAdapter.apply {
                     submitList(response)
                 }
+                getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
             }
         }
 

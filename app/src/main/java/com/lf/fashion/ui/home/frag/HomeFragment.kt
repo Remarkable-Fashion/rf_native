@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
@@ -86,6 +87,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
                 adapter = DefaultPostAdapter(this@HomeFragment, this@HomeFragment).apply {
                     submitList(response)
                 }
+                getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
             }
             postList.value = response
             with(binding.gridRecyclerView) {

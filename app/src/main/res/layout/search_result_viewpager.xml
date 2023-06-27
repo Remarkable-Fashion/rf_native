@@ -22,5 +22,6 @@
         app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/home_grid_item"
+        android:overScrollMode="never"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -84,6 +84,7 @@
 
     <style name="CustomChipChoice" parent="@style/Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/white</item>
+        <item name="rippleColor">@color/background_grey</item>
         <item name="android:textColor">@drawable/selector_chip_text_color</item>
         <item name="chipStrokeWidth">1dp</item>
         <item name="chipStartPadding">5dp</item>
@@ -100,11 +101,13 @@
     </style>
     <style name="CustomChipChoice_grey" parent="@style/Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/background_grey</item>
+        <item name="rippleColor">@color/light_text</item>
         <item name="chipStrokeWidth">1dp</item>
         <item name="chipStartPadding">5dp</item>
         <item name="chipEndPadding">5dp</item>
         <item name="android:textAppearance">@style/spoqa_12sp_default</item>
         <item name="chipStrokeColor">@color/background_grey</item>
+        <item name="android:textColor">@color/default_text</item>
     </style>
     <style name="edittext_style">
         <item name="fontFamily">@font/spoqahansansneo_medium</item>
