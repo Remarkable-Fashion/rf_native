@@ -53,7 +53,7 @@ class LoginFragment : Fragment() {
                         kakaoLoginWithAccount()
                     }else{
                         binding.progressBar.visibility = View.GONE
-                        //alert 으로 오류 띄우는데, 나중에 배포시에는 오류코드로 바꾸거나 지워야합니다 ~!
+                        //TODO alert 으로 오류 띄우는데, 나중에 배포시에는 오류코드로 바꾸거나 지워야합니다 ~!
                         AlertDialog.Builder(requireContext()).apply {
                             setMessage("${error.message}")
                         }.show()
