@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.kakao.sdk.auth.model.OAuthToken
-import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.lf.fashion.R
 import com.lf.fashion.TAG
@@ -33,15 +32,12 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = LoginFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var keyHash = Utility.getKeyHash(requireContext())
-        Log.d(TAG, "LoginFragment - key: $keyHash");
         userPreferences = PreferenceManager(requireContext().applicationContext)
 
         binding.kakaoLoginBackground.setOnClickListener {
@@ -101,30 +97,6 @@ class LoginFragment : Fragment() {
             }
         }
     }
-   /* fun showLoading(activity: Activity, isShow: Boolean) {
-        if (isShow) {
-            val linear = LinearLayout(activity)
-            linear.tag = "MyProgressBar"
-            linear.gravity = Gravity.CENTER
-            linear.setBackgroundColor(0x33000000)
-            val progressBar = ProgressBar(activity)
-            val layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            progressBar.layoutParams = layoutParams
-            linear.addView(progressBar)
-            linear.setOnClickListener { *//*클릭방지*//* }
-            val rootView = activity.findViewById<FrameLayout>(android.R.id.content)
-            rootView.addView(linear)
-        } else {
-            val rootView = activity.findViewById<FrameLayout>(android.R.id.content)
-            val linear = rootView.findViewWithTag<LinearLayout>("MyProgressBar")
-            if (linear != null) {
-                rootView.removeView(linear)
-            }
-        }
-    }*/
 
     private fun getUserInfo() {
         UserApiClient.instance.me { user, error ->
