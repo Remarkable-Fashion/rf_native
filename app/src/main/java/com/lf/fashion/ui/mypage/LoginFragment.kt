@@ -5,10 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.lf.fashion.R
 import com.lf.fashion.TAG
@@ -31,12 +33,15 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         binding = LoginFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var keyHash = Utility.getKeyHash(requireContext())
+        Log.d(TAG, "LoginFragment - key: $keyHash");
         userPreferences = PreferenceManager(requireContext().applicationContext)
 
         binding.kakaoLoginBackground.setOnClickListener {
@@ -46,6 +51,12 @@ class LoginFragment : Fragment() {
                     Log.d(TAG, "MyPageFragment - onViewCreated: 카카오톡 간편 로그인 실패 : $error");
                     if (error.message == "KakaoTalk not installed") {
                         kakaoLoginWithAccount()
+                    }else{
+                        binding.progressBar.visibility = View.GONE
+                        //alert 으로 오류 띄우는데, 나중에 배포시에는 오류코드로 바꾸거나 지워야합니다 ~!
+                        AlertDialog.Builder(requireContext()).apply {
+                            setMessage("${error.message}")
+                        }.show()
                     }
                 } else if (token != null) {
                     Log.d(TAG, "MyPageFragment - onViewCreated: 카카오톡 간편 로그인 성공 토큰 : $token")
@@ -73,21 +84,22 @@ class LoginFragment : Fragment() {
                         is Resource.Success -> {
                             if (resource.value.success.toBoolean()) {
                           //      showLoading(requireActivity(),false)
+                                Log.d(TAG, "LoginFragment - requestJWTToken: ");
                                 findNavController().navigate(R.id.action_loginFragment_to_navigation_mypage)
                             }
+                            binding.progressBar.visibility = View.GONE
                         }
                         is Resource.Loading -> {
 
                         }
                         is Resource.Failure -> {
-
+                            binding.progressBar.visibility = View.GONE
                         }
                     }
 
                 }
             }
         }
-    binding.progressBar.visibility = View.GONE
     }
    /* fun showLoading(activity: Activity, isShow: Boolean) {
         if (isShow) {
