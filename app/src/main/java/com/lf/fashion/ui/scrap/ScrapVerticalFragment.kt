@@ -14,9 +14,7 @@ import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.VerticalViewPagerClickListener
 import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.frag.HomeBottomSheetFragment
-import com.lf.fashion.ui.home.frag.HomeFragmentDirections
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
-import androidx.viewpager2.widget.ViewPager2
 import com.lf.fashion.MainNaviDirections
 
 
@@ -45,19 +43,10 @@ class ScrapVerticalFragment : Fragment(),
             )
 
             viewModel.postList.observe(viewLifecycleOwner) { posts ->
-                (adapter as? DefaultPostAdapter)?.submitList(posts)
-            }
-
-            //Scrap Grid 이미지를 클릭했을 때 해당 이미지에 포스트 position 을 맞추는 로직
-            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    viewModel.startIndex.value = position
-                }
-            })
-
-            viewModel.startIndex.value?.let { startPosition ->
-                post {
-                    currentItem = startPosition
+                (adapter as? DefaultPostAdapter)?.apply {
+                    submitList(posts)
+                    //scrapFragment 에서 선택한 item 의 index 를 시작 index 로 지정 , animation false 처리
+                    setCurrentItem(viewModel.startIndex.value?:0,false)
                 }
             }
         }
