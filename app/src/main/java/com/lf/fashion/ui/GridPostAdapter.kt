@@ -2,6 +2,7 @@ package com.lf.fashion.ui
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.databinding.ViewDataBinding
@@ -15,7 +16,8 @@ import com.lf.fashion.ui.home.adapter.DefaultPostDiff
 class GridPostAdapter(
     private var spanCount: Int? = null,
     private val gridPhotoClickListener: GridPhotoClickListener,
-    private val resultCategory: String? = null
+    private val resultCategory: String? = null,
+    private val scrapPage : Boolean?=null
 ) : ListAdapter<Post, GridPostAdapter.GridPostViewHolder>(
     DefaultPostDiff()
 ), SpanCountEditBtnListener {
@@ -59,6 +61,13 @@ class GridPostAdapter(
                         2 -> convertDPtoPX(context, 228)
                         3 -> convertDPtoPX(context, 150)
                         else -> layoutParams.height
+                    }
+
+                    //스크랩 페이지 grid 모아보기에서 스크랩 아이콘을 숨긴다
+                    scrapPage?.let {
+                        if(scrapPage){
+                            binding.scrapIcon.visibility = View.GONE
+                        }
                     }
                 }
                 is ItemSearchResultItemListBinding ->{

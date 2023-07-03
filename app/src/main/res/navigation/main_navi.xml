@@ -130,7 +130,8 @@
         android:label="LoginFragment">
         <action
             android:id="@+id/action_loginFragment_to_navigation_mypage"
-            app:destination="@id/navigation_mypage" />
+            app:destination="@id/navigation_mypage"
+            app:popUpTo="@id/navigation_home"/>
     </fragment>
     <fragment
         android:id="@+id/profileEditFragment"
