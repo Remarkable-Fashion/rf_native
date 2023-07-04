@@ -6,7 +6,7 @@
     <data>
         <variable
             name="post"
-            type="com.lf.fashion.data.response.Post" />
+            type="com.lf.fashion.data.response.RandomPostResponse" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,13 +40,13 @@
             android:layout_marginStart="20dp"
             android:scaleType="centerCrop"
             app:shapeAppearance="@style/radi13"
-            imageUrl="@{post.profile}"/>
+            imageUrl="@{post.user.profile.profileImage}"/>
 
         <TextView
             android:id="@+id/profile_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{post.userId}"
+            android:text="@{post.user.name}"
             app:layout_constraintStart_toEndOf="@id/profile_image"
             app:layout_constraintTop_toTopOf="@id/profile_image"
             app:layout_constraintBottom_toBottomOf="@id/profile_image"
@@ -110,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="5dp"
-                android:text="@{post.likes}"
+                android:text="@{post.count.favorites}"
                 tools:text="130"/>
 
             <ImageView
@@ -118,12 +118,12 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/ic_image" />
-            <TextView
+           <!-- <TextView
                 style="@style/main_bottom_menu_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:text="30" />
+                android:text="30" />-->
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"

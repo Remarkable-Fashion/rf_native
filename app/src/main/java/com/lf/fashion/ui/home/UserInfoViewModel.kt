@@ -7,15 +7,15 @@ import androidx.lifecycle.viewModelScope
 import com.lf.fashion.data.common.Event
 import com.lf.fashion.data.repository.HomeRepository
 import com.lf.fashion.data.response.LookBook
-import com.lf.fashion.data.response.UserInfo
+import com.lf.fashion.data.response.TestUserInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class UserInfoViewModel @Inject constructor(private val repository: HomeRepository) : ViewModel() {
-    private val _userInfo = MutableLiveData<Event<UserInfo>>()
-    var userInfo: LiveData<Event<UserInfo>> = _userInfo
+    private val _userInfo = MutableLiveData<Event<TestUserInfo>>()
+    var userInfo: LiveData<Event<TestUserInfo>> = _userInfo
 
     private val _lookBook = MutableLiveData<List<LookBook>>()
     var lookBook: LiveData<List<LookBook>> = _lookBook

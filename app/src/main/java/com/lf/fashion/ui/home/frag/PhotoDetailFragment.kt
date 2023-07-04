@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
+import com.lf.fashion.data.response.ImageUrl
 import com.lf.fashion.data.response.Photo
 import com.lf.fashion.databinding.HomeBPhotoDetailFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
@@ -27,7 +28,7 @@ class PhotoDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val photoUrl =arguments?.get("photos") as Array<Photo>
+        val photoUrl =arguments?.get("photos") as Array<ImageUrl>
 
         //viewpager adapter 설정
         with(binding.photoDetailViewPager){

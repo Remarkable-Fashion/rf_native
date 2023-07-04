@@ -8,16 +8,16 @@ import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.common.TEST_WEB_URL
 import com.lf.fashion.data.network.api.TokenRefreshApi
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.last
 import okhttp3.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
 
-class RemoteDataSource @Inject constructor(@ApplicationContext private val context : Context) {
+class RemoteDataSource @Inject constructor(@ApplicationContext private val context: Context) {
     private fun providesTestingWebUrl() = TEST_WEB_URL
     private fun providesHostingWebUrl() = BASE_WEB_URL
     private val userPref: PreferenceManager = PreferenceManager(context)
@@ -27,17 +27,24 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
         authenticator?.let {
             client.authenticator(it)
         }
+
+
+        // 헤더 값을 가져오기 위해 Interceptor 를 추가
+        // requestBuilder 는 요청시 header 에 jwt 토큰을 담는 역할
+        // response header 탐색은 loginFragment 에서 getJwt 요청시 accessToken 과 refreshToken 을 받기 위해 사용됨 !
         client.interceptors().add(Interceptor { chain ->
             val original: Request = chain.request()
 
-            // 헤더 값을 가져오기 위해 Interceptor 를 추가
-            // 이 인터셉터는 loginFragment 에서 getJwt 요청시 accessToken 과 refreshToken 을 받기 위해 사용됨 !
+            val requestAuthKey: Deferred<String> = CoroutineScope(Dispatchers.IO).async { userPref.accessToken.last()?:"" }
+            val authKey = runBlocking { requestAuthKey.await() }
             val requestBuilder: Request.Builder = original.newBuilder()
                 .header(
                     "Authorization",
-                    "auth-value"
-                )
+                       authKey
+                    )
             val request: Request = requestBuilder.build()
+            Log.d(TAG, "RemoteDataSource - provideOkHttpClient REQUEST HEADER !! : ${request.headers}");
+
             val response: Response = chain.proceed(request)
             val allHeaders: Headers = response.headers
             val accessJWT: String? = allHeaders["x-auth-cookie"]
@@ -45,9 +52,9 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
 
 
             if (accessJWT != null && refreshJWT != null) {
-                runBlocking{
+                runBlocking {
                     launch(Dispatchers.IO) {
-                        userPref.saveAccessTokens(accessJWT,refreshJWT)
+                        userPref.saveAccessTokens(accessJWT, refreshJWT)
                     }
                 }
             }
@@ -69,7 +76,7 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
         api: Class<Api>,
         context: Context
     ): Api {
-        //val authenticator = TokenAuthenticator(context, buildTokenApi())
+        // val authenticator = TokenAuthenticator(context, buildTokenApi())
         return Retrofit.Builder()
             .baseUrl(providesTestingWebUrl())
 //            .client(provideOkHttpClient(authenticator))
@@ -81,12 +88,11 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
 
     fun <Api> buildApi(
         api: Class<Api>,
-        context: Context
     ): Api {
-        //val authenticator = TokenAuthenticator(context, buildTokenApi())
+        // val authenticator = TokenAuthenticator(context, buildTokenApi())
         return Retrofit.Builder()
             .baseUrl(providesHostingWebUrl())
-//            .client(provideOkHttpClient(authenticator))
+            // .client(provideOkHttpClient(authenticator))
             .client(provideOkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lf.fashion.data.response.Post
+import com.lf.fashion.data.response.RandomPostResponse
 import com.lf.fashion.databinding.HomeAVerticalItemBinding
 import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.VerticalViewPagerClickListener
@@ -16,7 +17,7 @@ class DefaultPostAdapter(
     private val verticalViewPagerClickListener: VerticalViewPagerClickListener,
   //  private val itemPosition: Int
 ) :
-    ListAdapter<Post, DefaultPostAdapter.DefaultPostViewHolder>(DefaultPostDiff()) {
+    ListAdapter<RandomPostResponse, DefaultPostAdapter.DefaultPostViewHolder>(DefaultPostDiff()) {
 
     private lateinit var binding: HomeAVerticalItemBinding
 
@@ -45,9 +46,9 @@ class DefaultPostAdapter(
             }
         }
 
-        fun bind(post: Post) {
+        fun bind(post: RandomPostResponse) {
             binding.post = post
-            nestedAdapter.submitList(post.photo)
+            nestedAdapter.submitList(post.images)
 
             //좋아요 아이콘 ic 변경 _ 임시적으로 이미지만 처리하기에 여기서 적용함
             binding.likeBtn.setOnClickListener {
@@ -72,13 +73,19 @@ class DefaultPostAdapter(
     }
 }
 
-class DefaultPostDiff : DiffUtil.ItemCallback<Post>() {
-    override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
+class DefaultPostDiff : DiffUtil.ItemCallback<RandomPostResponse>() {
+    override fun areItemsTheSame(
+        oldItem: RandomPostResponse,
+        newItem: RandomPostResponse
+    ): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
-        return oldItem.id == newItem.id
+    override fun areContentsTheSame(
+        oldItem: RandomPostResponse,
+        newItem: RandomPostResponse
+    ): Boolean {
+        return oldItem == newItem
     }
 
 }

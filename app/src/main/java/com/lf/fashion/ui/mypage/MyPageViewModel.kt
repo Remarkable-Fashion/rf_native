@@ -12,7 +12,9 @@ import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.HomeRepository
 import com.lf.fashion.data.repository.MyPageRepository
 import com.lf.fashion.data.response.MsgResponse
+import com.lf.fashion.data.response.MyInfo
 import com.lf.fashion.data.response.Post
+import com.lf.fashion.data.response.RandomPostResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
@@ -20,13 +22,16 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MyPageViewModel @Inject constructor(private val myPageRepository: MyPageRepository,private val homeRepository: HomeRepository,@ApplicationContext context: Context): ViewModel(){
+class MyPageViewModel @Inject constructor(private val myPageRepository: MyPageRepository,@ApplicationContext context: Context): ViewModel(){
     private var _savedLoginToken : MutableLiveData<String?> = MutableLiveData()
     val savedLoginToken : LiveData<String?> = _savedLoginToken
     private val userPreferences = PreferenceManager(context)
 
-    private val _postList = MutableLiveData<List<Post>>()
-    var postList: LiveData<List<Post>> = _postList
+    private val _postList = MutableLiveData<List<RandomPostResponse>>()
+    var postList: LiveData<List<RandomPostResponse>> = _postList
+
+    private var _myInfo = MutableLiveData<MyInfo>()
+    val myInfo :LiveData<MyInfo> = _myInfo
 
     suspend fun getJWT(loginAccessToken : String) : Resource<MsgResponse> {
         return myPageRepository.getJWT(loginAccessToken)
@@ -46,10 +51,16 @@ class MyPageViewModel @Inject constructor(private val myPageRepository: MyPageRe
         Log.d(TAG, "MyPageViewModel - clearSavedLoginToken: ${savedLoginToken.value}");
     }
 
+    fun getMyInfo(){
+        viewModelScope.launch {
+            _myInfo.value = myPageRepository.getMyInfo()
+        }
+    }
+
      fun getPostList() {
         Log.d(TAG, "suspend getPostList 호출 ")
         viewModelScope.launch {
-            _postList.value = homeRepository.getTestPostList()
+            _postList.value = myPageRepository.getMyPost()
         }
     }
 }

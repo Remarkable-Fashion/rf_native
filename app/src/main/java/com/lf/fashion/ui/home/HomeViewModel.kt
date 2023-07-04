@@ -1,22 +1,25 @@
 package com.lf.fashion.ui.home
 
+import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.lf.fashion.TAG
+import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.repository.HomeRepository
-import com.lf.fashion.data.response.Post
+import com.lf.fashion.data.response.RandomPostResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val homeRepository: HomeRepository) : ViewModel() {
+class HomeViewModel @Inject constructor(private val homeRepository: HomeRepository,@ApplicationContext context : Context) : ViewModel() {
 
-    private val _postList = MutableLiveData<List<Post>>()
-    var postList: LiveData<List<Post>> = _postList
+    private val _postList = MutableLiveData<List<RandomPostResponse>>()
+    var postList: LiveData<List<RandomPostResponse>> = _postList
+    private val userPreferences = PreferenceManager(context)
+
 
     init {
         getPostList()
@@ -25,7 +28,12 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
     private fun getPostList() {
         Log.d(TAG, "suspend getPostList 호출 ")
         viewModelScope.launch {
-            _postList.value = homeRepository.getTestPostList()
+            val savedToken = userPreferences.accessToken.last()
+            if(savedToken.isNullOrEmpty()){
+                _postList.value = homeRepository.getRandomPostPublic("Male")
+            }else{
+                _postList.value = homeRepository.getRandomPost("Male")
+            }
         }
     }
 }

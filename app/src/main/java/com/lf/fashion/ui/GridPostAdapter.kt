@@ -9,6 +9,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.data.response.Post
+import com.lf.fashion.data.response.RandomPostResponse
 import com.lf.fashion.databinding.HomeGridItemBinding
 import com.lf.fashion.databinding.ItemSearchResultItemListBinding
 import com.lf.fashion.ui.home.adapter.DefaultPostDiff
@@ -18,7 +19,7 @@ class GridPostAdapter(
     private val gridPhotoClickListener: GridPhotoClickListener,
     private val resultCategory: String? = null,
     private val scrapPage : Boolean?=null
-) : ListAdapter<Post, GridPostAdapter.GridPostViewHolder>(
+) : ListAdapter<RandomPostResponse, GridPostAdapter.GridPostViewHolder>(
     DefaultPostDiff()
 ), SpanCountEditBtnListener {
 
@@ -48,11 +49,11 @@ class GridPostAdapter(
         RecyclerView.ViewHolder(binding.root) {
         private val layoutParams = itemView.layoutParams as ViewGroup.MarginLayoutParams
 
-        fun bind(post: Post) {
+        fun bind(post: RandomPostResponse) {
             when(binding){
                 is HomeGridItemBinding ->{
                     //post 내부 첫번째 사진을 grid 로 노출
-                    binding.photoUrl = post.photo[0].imageUrl
+                    binding.photoUrl = post.images[0].url
                     binding.gridImage.setOnClickListener {
                         gridPhotoClickListener.gridPhotoClicked(currentList.indexOf(post))
                     }
@@ -71,7 +72,7 @@ class GridPostAdapter(
                     }
                 }
                 is ItemSearchResultItemListBinding ->{
-                    binding.includedClothSpace.photoUrl = post.photo[0].imageUrl
+                    binding.includedClothSpace.photoUrl = post.images[0].url
                     layoutParams.height = when (spanCount ?: 2) {
                         2 -> convertDPtoPX(context, 300)
                         3 -> convertDPtoPX(context, 250)

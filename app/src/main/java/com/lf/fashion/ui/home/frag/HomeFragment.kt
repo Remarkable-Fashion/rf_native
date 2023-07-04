@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
 import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.response.ImageUrl
 import com.lf.fashion.data.response.Photo
 import com.lf.fashion.data.response.Post
+import com.lf.fashion.data.response.RandomPostResponse
 import com.lf.fashion.databinding.HomeAFragmentBinding
 import com.lf.fashion.ui.home.HomeViewModel
 import com.lf.fashion.ui.home.PhotoClickListener
@@ -40,7 +42,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
     GridPhotoClickListener {
     private lateinit var binding: HomeAFragmentBinding
     private val viewModel: HomeViewModel by viewModels()
-    private val postList = MutableLiveData<List<Post>>()
+    private val postList = MutableLiveData<List<RandomPostResponse>>()
     private val gridAdapter = GridPostAdapter(gridPhotoClickListener = this)
     private lateinit var userPref :PreferenceManager
 
@@ -63,7 +65,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
                 if(userPref.firstActivate.first().isNullOrEmpty()){
                     val dialog = GenderSelectionDialog()
                     dialog.show(parentFragmentManager, "gender_selection_dialog")
-                   // userPref.isNotFirstActivate()  //테스트를 위해 계속 띄우려고 지워둠 !
+                    userPref.isNotFirstActivate()  //테스트를 위해 계속 띄우려고 지워둠 ! -> 거슬려서 활성화
                 }
             }
         }
@@ -116,7 +118,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
 
     //TODO :  유저 프로필 페이지로 연결
     //default layout 모드에서 photo 클릭시 클릭한 이미지 url 만 safe args 에 담아 fragment 로 전송
-    override fun photoClicked(bool: Boolean, photo: List<Photo>) {
+    override fun photoClicked(bool: Boolean, photo: List<ImageUrl>) {
         if (bool) {
             val action =
                 MainNaviDirections.actionGlobalToPhotoDetailFragment(photo.toTypedArray())

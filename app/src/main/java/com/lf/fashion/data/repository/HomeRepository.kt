@@ -1,30 +1,41 @@
 package com.lf.fashion.data.repository
 
+import com.lf.fashion.data.network.api.PostApi
 import com.lf.fashion.data.network.api.test.ChipTestApi
 import com.lf.fashion.data.network.api.test.PhotoTestApi
-import com.lf.fashion.data.response.ChipInfo
-import com.lf.fashion.data.response.LookBook
-import com.lf.fashion.data.response.Post
-import com.lf.fashion.data.response.UserInfo
+import com.lf.fashion.data.response.*
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
-    private val photoTestApi : PhotoTestApi,
+    //private val photoTestApi : PhotoTestApi,
+    private val postApi: PostApi,
     private val chipTestApi: ChipTestApi
-) : BaseRepository(photoTestApi) {
+) {
 
-    suspend fun getTestPostList() : List<Post> {
-        return photoTestApi.getTestImages()
-    }
 
-    suspend fun getChipInfo():List<ChipInfo>{
+    /*   suspend fun getTestPostList() : List<Post> {
+           return photoTestApi.getTestImages()
+       }
+   */
+    suspend fun getChipInfo(): List<ChipInfo> {
         return chipTestApi.getFilterInfo()
     }
 
-    suspend fun getUserInfoAndStyle() : UserInfo{
+    suspend fun getUserInfoAndStyle(): TestUserInfo {
         return chipTestApi.getUserInfoAndStyle()
     }
-    suspend fun getLookBook() : List<LookBook>{
+
+    suspend fun getLookBook(): List<LookBook> {
         return chipTestApi.getLookBook()
+    }
+
+
+    /*dev */
+    suspend fun getRandomPost(sex: String): List<RandomPostResponse> {
+        return postApi.getRandomPost(sex)
+    }
+
+    suspend fun getRandomPostPublic(sex: String): List<RandomPostResponse> {
+        return postApi.getRandomPostPublic(sex)
     }
 }

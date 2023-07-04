@@ -6,7 +6,7 @@
     <data>
         <variable
             name="profile"
-            type="com.lf.fashion.data.response.Profile" />
+            type="com.lf.fashion.data.response.TestProfile" />
     </data>
 
     <LinearLayout

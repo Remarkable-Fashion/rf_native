@@ -16,6 +16,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
+
+//TODO DEV 객체로 옮기고 나서 api 두개 사용하는 것으로 바뀜 ! binding 다시 해줘야한다 ~
 @AndroidEntryPoint
 class MyPageFragment : Fragment(), GridPhotoClickListener {
     private lateinit var binding: MypageFragmentBinding

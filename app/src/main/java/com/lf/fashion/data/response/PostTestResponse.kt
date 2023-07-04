@@ -4,7 +4,6 @@ import android.net.Uri
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 
 
 /*
@@ -62,7 +61,7 @@ data class ChipContents(
     val emoji : String?
 )
 
-data class UserInfo(
+data class TestUserInfo(
     @SerializedName("user_info")
     val modelInfo: ModelInfo,
     @SerializedName("clothes")
@@ -70,7 +69,7 @@ data class UserInfo(
 )
 
 data class ModelInfo(
-    val profile: Profile,
+    val profile: TestProfile,
     val height : String,
     val weight : String,
     val place : String,
@@ -99,11 +98,11 @@ data class RegClothes(
     val detail: String? = null
 )
 data class LookBook(
-    val profile: Profile,
+    val profile: TestProfile,
     val likes: String,
     val clothes: ClothesInfo
 )
-data class Profile(
+data class TestProfile(
     @SerializedName("profile_image")
     val profileImage: String,
     @SerializedName("user_id")
