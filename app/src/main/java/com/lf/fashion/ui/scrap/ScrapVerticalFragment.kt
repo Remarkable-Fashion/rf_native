@@ -16,6 +16,7 @@ import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.frag.HomeBottomSheetFragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.lf.fashion.MainNaviDirections
+import com.lf.fashion.data.response.ImageUrl
 
 
 class ScrapVerticalFragment : Fragment(),
@@ -53,7 +54,7 @@ class ScrapVerticalFragment : Fragment(),
     }
 
 
-    override fun photoClicked(bool: Boolean, photo: List<Photo>) {
+    override fun photoClicked(bool: Boolean, photo: List<ImageUrl>) {
         if (bool) {
             val action =
                 MainNaviDirections.actionGlobalToPhotoDetailFragment(photo.toTypedArray())

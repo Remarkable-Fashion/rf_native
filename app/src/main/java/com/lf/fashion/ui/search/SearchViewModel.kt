@@ -6,21 +6,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lf.fashion.TAG
-import com.lf.fashion.data.repository.HomeRepository
-import com.lf.fashion.data.response.Post
+import com.lf.fashion.data.repository.SearchRepository
+import com.lf.fashion.data.response.RandomPostResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(private val homeRepository: HomeRepository) :
+class SearchViewModel @Inject constructor(private val searchRepository: SearchRepository) :
     ViewModel() {
     private val _gridMode = MutableLiveData<Int>()
     val gridMode: LiveData<Int> = _gridMode
 
     //지금은 POST LIST 하나로 LOOK ITEM 모두 테스트 돌리는 중 ~
-    private val _postList = MutableLiveData<List<Post>>()
-    var postList: LiveData<List<Post>> = _postList
+    private val _postList = MutableLiveData<List<RandomPostResponse>>()
+    var postList: LiveData<List<RandomPostResponse>> = _postList
 
     init {
         getPostList()
@@ -28,7 +28,7 @@ class SearchViewModel @Inject constructor(private val homeRepository: HomeReposi
 
     private fun getPostList() {
         viewModelScope.launch {
-            _postList.value = homeRepository.getTestPostList()
+            _postList.value = searchRepository.getSearchResult()
         }
     }
 

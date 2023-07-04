@@ -4,6 +4,7 @@ import android.content.Context
 import com.lf.fashion.data.network.api.JWTApi
 import com.lf.fashion.data.network.api.MyPageApi
 import com.lf.fashion.data.network.api.PostApi
+import com.lf.fashion.data.network.api.ScrapApi
 import com.lf.fashion.data.network.api.test.ChipTestApi
 import com.lf.fashion.data.network.api.test.PhotoTestApi
 import com.lf.fashion.data.response.Post
@@ -60,6 +61,14 @@ object AppModule {
         remoteDataSource: RemoteDataSource
     ) : MyPageApi{
         return remoteDataSource.buildApi(MyPageApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSrcapApi(
+        remoteDataSource: RemoteDataSource
+    ) : ScrapApi{
+        return remoteDataSource.buildApi(ScrapApi::class.java)
     }
 
 }

@@ -7,16 +7,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lf.fashion.TAG
 import com.lf.fashion.data.repository.HomeRepository
+import com.lf.fashion.data.repository.ScrapRepository
 import com.lf.fashion.data.response.Post
+import com.lf.fashion.data.response.RandomPostResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ScrapViewModel @Inject constructor(private val homeRepository: HomeRepository) : ViewModel() {
+class ScrapViewModel @Inject constructor(private val scrapRepository: ScrapRepository) : ViewModel() {
 
-    private val _postList = MutableLiveData<List<Post>>()
-    var postList: LiveData<List<Post>> = _postList
+    private val _postList = MutableLiveData<List<RandomPostResponse>>()
+    var postList: LiveData<List<RandomPostResponse>> = _postList
 
     private val _startIndex = MutableLiveData<Int>()
     var startIndex : MutableLiveData<Int> = _startIndex
@@ -28,7 +30,7 @@ class ScrapViewModel @Inject constructor(private val homeRepository: HomeReposit
     private fun getPostList() {
         Log.d(TAG, "ScrapViewModel - getPostList: !!!");
         viewModelScope.launch {
-            _postList.value = homeRepository.getTestPostList()
+            _postList.value = scrapRepository.getScrapPosts()
         }
     }
     fun editClickedPostIndex(postIndex: Int) {
