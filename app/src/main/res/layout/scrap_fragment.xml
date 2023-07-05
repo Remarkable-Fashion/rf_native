@@ -33,4 +33,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:overScrollMode="never"
         />
+    <TextView
+        android:id="@+id/array_empty_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="스크랩한 게시물이 존재하지 않습니다."
+        android:gravity="center"
+        style="@style/montserrat_bold_label_grey"
+        android:visibility="gone"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

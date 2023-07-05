@@ -38,28 +38,30 @@ class ScrapVerticalFragment : Fragment(),
         super.onViewCreated(view, savedInstanceState)
         cancelBtnBackStack(binding.backBtn)
 
-        binding.verticalViewpager.apply {
-            adapter = DefaultPostAdapter(
-                this@ScrapVerticalFragment,
-                this@ScrapVerticalFragment
-            )
 
-            viewModel.postList.observe(viewLifecycleOwner) { resource ->
-                when(resource){
-                    is Resource.Success->{
-                        val response = resource.value
+
+        viewModel.postList.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    val response = resource.value
+
+                    binding.verticalViewpager.apply {
+                        adapter = DefaultPostAdapter(
+                            this@ScrapVerticalFragment,
+                            this@ScrapVerticalFragment
+                        )
                         (adapter as? DefaultPostAdapter)?.apply {
                             submitList(response)
                             //scrapFragment 에서 선택한 item 의 index 를 시작 index 로 지정 , animation false 처리
-                            setCurrentItem(viewModel.startIndex.value?:0,false)
+                            setCurrentItem(viewModel.startIndex.value ?: 0, false)
                         }
                     }
-                    is Resource.Failure ->{
+                }
+                is Resource.Failure -> {
 
-                    }
-                    is Resource.Loading->{
+                }
+                is Resource.Loading -> {
 
-                    }
                 }
             }
         }

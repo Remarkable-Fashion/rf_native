@@ -33,39 +33,48 @@ class ScrapFragment : Fragment(), GridPhotoClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding.scrapRv) {
-            adapter = GridPostAdapter(3, this@ScrapFragment, scrapPage = true).apply {
-                viewModel.postList.observe(viewLifecycleOwner) { resources->
-                    when(resources){
-                        is Resource.Success ->{
-                            val response = resources.value
+        viewModel.postList.observe(viewLifecycleOwner) { resources ->
+            when (resources) {
+                is Resource.Success -> {
+                    val response = resources.value
+                    if (response.isNotEmpty()) {
+                        binding.scrapRv.visibility = View.VISIBLE
+                        binding.arrayEmptyText.visibility = View.GONE
 
-                            while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
-                                removeItemDecorationAt(0)
-                            }
-                            addItemDecoration(GridSpaceItemDecoration(3,6))
-                            this.submitList(response)
+                        with(binding.scrapRv) {
+                            adapter =
+                                GridPostAdapter(3, this@ScrapFragment, scrapPage = true).apply {
+                                    while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
+                                        removeItemDecorationAt(0)
+                                    }
+                                    addItemDecoration(GridSpaceItemDecoration(3, 6))
+                                    this.submitList(response)
 
+                                }
                         }
-                        is Resource.Failure->{
-                            if(resources.errorCode == 401){
-                                Toast.makeText(requireContext(),"로그인 후 이용가능합니다.",Toast.LENGTH_SHORT ).show()
-                            }else{
-                                Log.e(TAG, "onViewCreated postList response Error: $resources ")
-                            }
-
-                        }
-                        is Resource.Loading->{
-
-                        }
+                    } else {
+                        binding.scrapRv.visibility = View.GONE
+                        binding.arrayEmptyText.visibility = View.VISIBLE
+                    }
+                }
+                is Resource.Failure -> {
+                    if (resources.errorCode == 401) {
+                        Toast.makeText(requireContext(), "로그인 후 이용가능합니다.", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        Log.e(TAG, "onViewCreated postList response Error: $resources ")
                     }
 
                 }
+                is Resource.Loading -> {
+
+                }
             }
+
         }
     }
 
-    override fun gridPhotoClicked(postIndex:Int){
+    override fun gridPhotoClicked(postIndex: Int) {
         Log.d(TAG, "ScrapFragment - gridPhotoClicked: grid 포토 클릭 $postIndex")
         // post list 에서 클릭한 포토의 포지션을 viewModel 에 저장
         viewModel.editClickedPostIndex(postIndex)
