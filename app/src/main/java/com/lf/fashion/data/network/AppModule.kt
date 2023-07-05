@@ -1,10 +1,7 @@
 package com.lf.fashion.data.network
 
 import android.content.Context
-import com.lf.fashion.data.network.api.JWTApi
-import com.lf.fashion.data.network.api.MyPageApi
-import com.lf.fashion.data.network.api.PostApi
-import com.lf.fashion.data.network.api.ScrapApi
+import com.lf.fashion.data.network.api.*
 import com.lf.fashion.data.network.api.test.ChipTestApi
 import com.lf.fashion.data.network.api.test.PhotoTestApi
 import com.lf.fashion.data.response.Post
@@ -65,10 +62,18 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideSrcapApi(
+    fun provideScrapApi(
         remoteDataSource: RemoteDataSource
     ) : ScrapApi{
         return remoteDataSource.buildApi(ScrapApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSearchApi(
+        remoteDataSource: RemoteDataSource
+    ) : SearchApi {
+        return remoteDataSource.buildApi(SearchApi::class.java)
     }
 
 }

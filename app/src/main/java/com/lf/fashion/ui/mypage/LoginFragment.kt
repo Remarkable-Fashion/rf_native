@@ -38,7 +38,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userPreferences = PreferenceManager(requireContext().applicationContext)
+//        userPreferences = PreferenceManager(requireContext().applicationContext)
 
         binding.kakaoLoginBackground.setOnClickListener {
             binding.progressBar.visibility = View.VISIBLE

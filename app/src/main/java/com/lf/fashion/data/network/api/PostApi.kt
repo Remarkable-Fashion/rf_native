@@ -13,3 +13,4 @@ interface PostApi {
     suspend fun getRandomPostPublic(@Query("sex") sex:String) :List<RandomPostResponse>
 
 }
+

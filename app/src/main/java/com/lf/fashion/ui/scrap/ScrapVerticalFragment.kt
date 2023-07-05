@@ -16,6 +16,7 @@ import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.frag.HomeBottomSheetFragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.lf.fashion.MainNaviDirections
+import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.ImageUrl
 
 
@@ -43,11 +44,22 @@ class ScrapVerticalFragment : Fragment(),
                 this@ScrapVerticalFragment
             )
 
-            viewModel.postList.observe(viewLifecycleOwner) { posts ->
-                (adapter as? DefaultPostAdapter)?.apply {
-                    submitList(posts)
-                    //scrapFragment 에서 선택한 item 의 index 를 시작 index 로 지정 , animation false 처리
-                    setCurrentItem(viewModel.startIndex.value?:0,false)
+            viewModel.postList.observe(viewLifecycleOwner) { resource ->
+                when(resource){
+                    is Resource.Success->{
+                        val response = resource.value
+                        (adapter as? DefaultPostAdapter)?.apply {
+                            submitList(response)
+                            //scrapFragment 에서 선택한 item 의 index 를 시작 index 로 지정 , animation false 처리
+                            setCurrentItem(viewModel.startIndex.value?:0,false)
+                        }
+                    }
+                    is Resource.Failure ->{
+
+                    }
+                    is Resource.Loading->{
+
+                    }
                 }
             }
         }

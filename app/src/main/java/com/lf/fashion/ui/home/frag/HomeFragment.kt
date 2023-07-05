@@ -2,6 +2,7 @@ package com.lf.fashion.ui.home.frag
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
+import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.response.ImageUrl
 import com.lf.fashion.data.response.Photo
@@ -100,6 +102,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
                     addItemDecoration(GridSpaceItemDecoration(2,6))
                     submitList(response)
                 }
+                Log.d(TAG, "HomeFragment - setMainViewPagerUI: $gridAdapter & $adapter");
                 visibility = View.INVISIBLE
             }
         }

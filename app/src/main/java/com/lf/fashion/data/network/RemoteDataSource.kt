@@ -2,19 +2,27 @@ package com.lf.fashion.data.network
 
 import android.content.Context
 import android.util.Log
+import com.google.gson.Gson
+import com.kakao.sdk.common.util.KakaoJson.toJson
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.BASE_WEB_URL
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.common.TEST_WEB_URL
 import com.lf.fashion.data.network.api.TokenRefreshApi
+import com.lf.fashion.data.response.Count
+import com.lf.fashion.data.response.RandomPostResponse
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.last
 import okhttp3.*
+import okhttp3.ResponseBody.Companion.toResponseBody
+import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
+import kotlin.math.log
 
 
 class RemoteDataSource @Inject constructor(@ApplicationContext private val context: Context) {
@@ -35,33 +43,86 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
         client.interceptors().add(Interceptor { chain ->
             val original: Request = chain.request()
 
-            val requestAuthKey: Deferred<String> = CoroutineScope(Dispatchers.IO).async { userPref.accessToken.last()?:"" }
+            val requestAuthKey: Deferred<String> =
+                CoroutineScope(Dispatchers.IO).async {
+
+                    userPref.accessToken.first() ?: ""
+
+                }
+
             val authKey = runBlocking { requestAuthKey.await() }
-            val requestBuilder: Request.Builder = original.newBuilder()
-                .header(
-                    "Authorization",
-                       authKey
-                    )
-            val request: Request = requestBuilder.build()
-            Log.d(TAG, "RemoteDataSource - provideOkHttpClient REQUEST HEADER !! : ${request.headers}");
+            Log.d(TAG, "RemoteDataSource - provideOkHttpClient: ${authKey}");
+            //if(authKey.isNotEmpty()) {
+                val requestBuilder: Request.Builder = original.newBuilder()
+                    .addHeader("Authorization", "Bearer $authKey")
+                val request: Request = requestBuilder.build()
+                Log.d(
+                    TAG,
+                    "RemoteDataSource - provideOkHttpClient REQUEST HEADER !! : ${request.headers}"
+                );
+           // }
+            val response =
+                with(original.url.toString()) {
+                    when {
+                        startsWith(BASE_WEB_URL + "auth/kakao") -> {
+                            val response: Response = chain.proceed(request)
+                            val allHeaders: Headers = response.headers
+                            val accessJWT: String? = allHeaders["x-auth-cookie"]
+                            val refreshJWT: String? = allHeaders["x-auth-cookie-refresh"]
 
-            val response: Response = chain.proceed(request)
-            val allHeaders: Headers = response.headers
-            val accessJWT: String? = allHeaders["x-auth-cookie"]
-            val refreshJWT: String? = allHeaders["x-auth-cookie-refresh"]
+                            Log.d(TAG, "RemoteDataSource - provideOkHttpClient: $accessJWT")
 
+                            if (accessJWT != null && refreshJWT != null) {
+                                runBlocking {
+                                    launch(Dispatchers.IO) {
+                                        userPref.saveAccessTokens(accessJWT, refreshJWT)
+                                    }
+                                }
+                            }
+                            return@with response
+                        }
 
-            if (accessJWT != null && refreshJWT != null) {
-                runBlocking {
-                    launch(Dispatchers.IO) {
-                        userPref.saveAccessTokens(accessJWT, refreshJWT)
+                        startsWith(BASE_WEB_URL + "post") -> {
+                            return@with getPostResponseOnly(chain, request)
+                        }
+                        startsWith(BASE_WEB_URL + "scrap") -> {
+                            return@with getPostResponseOnly(chain, request)
+                        }
+                        else -> {
+                            return@with chain.proceed(request)
+                        }
                     }
                 }
-            }
             response
         })
 
         return client.build()
+    }
+
+    private fun getPostResponseOnly(
+        chain: Interceptor.Chain,
+        original: Request
+    ): Response {
+
+        val response = chain.proceed(original)
+        val responseBody = response.body?.string()
+        val jsonObject = JSONObject(responseBody)
+        return try {
+            val postsArray = jsonObject.getJSONArray("posts").toString()
+
+            response.newBuilder()
+                .body(postsArray.toResponseBody(response.body?.contentType()))
+                .build()
+
+        } catch (e: Exception) {
+
+            val msg = jsonObject.getString("msg")
+            val errorResponse = RandomPostResponse(msg = msg, id = 0, isScrap = false, createdAt = "", images = emptyList(), user = null, count = Count())
+            val errorResponseBody = Gson().toJson(errorResponse)
+            Log.d(TAG, "RemoteDataSource - scrap: $errorResponseBody");
+
+            response.newBuilder().body(errorResponseBody.toResponseBody(response.body?.contentType())).build()
+        }
     }
 
 
@@ -87,7 +148,7 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
     }
 
     fun <Api> buildApi(
-        api: Class<Api>,
+        api: Class<Api>
     ): Api {
         // val authenticator = TokenAuthenticator(context, buildTokenApi())
         return Retrofit.Builder()

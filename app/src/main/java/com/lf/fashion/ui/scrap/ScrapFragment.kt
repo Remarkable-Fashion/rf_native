@@ -5,11 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
 import com.lf.fashion.TAG
+import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.ScrapFragmentBinding
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener
@@ -33,12 +35,31 @@ class ScrapFragment : Fragment(), GridPhotoClickListener {
         super.onViewCreated(view, savedInstanceState)
         with(binding.scrapRv) {
             adapter = GridPostAdapter(3, this@ScrapFragment, scrapPage = true).apply {
-                viewModel.postList.observe(viewLifecycleOwner) {
-                    while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
-                        removeItemDecorationAt(0)
+                viewModel.postList.observe(viewLifecycleOwner) { resources->
+                    when(resources){
+                        is Resource.Success ->{
+                            val response = resources.value
+
+                            while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
+                                removeItemDecorationAt(0)
+                            }
+                            addItemDecoration(GridSpaceItemDecoration(3,6))
+                            this.submitList(response)
+
+                        }
+                        is Resource.Failure->{
+                            if(resources.errorCode == 401){
+                                Toast.makeText(requireContext(),"로그인 후 이용가능합니다.",Toast.LENGTH_SHORT ).show()
+                            }else{
+                                Log.e(TAG, "onViewCreated postList response Error: $resources ")
+                            }
+
+                        }
+                        is Resource.Loading->{
+
+                        }
                     }
-                    addItemDecoration(GridSpaceItemDecoration(3,6))
-                    this.submitList(it)
+
                 }
             }
         }
