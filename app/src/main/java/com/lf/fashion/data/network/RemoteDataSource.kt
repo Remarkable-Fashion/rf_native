@@ -33,12 +33,11 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
         }
 
 
-        // 헤더 값을 가져오기 위해 Interceptor 를 추가
-        // requestBuilder 는 요청시 header 에 jwt 토큰을 담는 역할
-        // response header 탐색은 loginFragment 에서 getJwt 요청시 accessToken 과 refreshToken 을 받기 위해 사용됨 !
+        // 헤더 값 수정을 위한 Interceptor 를 추가
         client.interceptors().add(Interceptor { chain ->
             val original: Request = chain.request()
 
+            //userPref 에 저장된 jwt 토큰 가져와서 request Authorization Header 추가
             val requestAuthKey: Deferred<String> =
                 CoroutineScope(Dispatchers.IO).async {
 
@@ -59,9 +58,12 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
             val request: Request = requestBuilder.build()
 
            // }
+
+            //api url 에 따라 분류하여 response 인터셉트
             val response =
                 with(original.url.toString()) {
                     when {
+                        //로그인 시 발급된 jwt 헤더에서 추출
                         startsWith(BASE_WEB_URL + "auth/kakao") -> {
                             val response: Response = chain.proceed(request)
                             val allHeaders: Headers = response.headers
@@ -97,6 +99,7 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
         return client.build()
     }
 
+    //response json 에서 posts 만 꺼내오기
     private fun getPostResponseOnly(
         chain: Interceptor.Chain,
         original: Request
@@ -104,9 +107,9 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
 
         val response = chain.proceed(original)
         val responseBody = response.body?.string()
-        val jsonObject = JSONObject(responseBody)
+        val jsonObject = responseBody?.let { JSONObject(it) }
         return try {
-            val postsArray = jsonObject.getJSONArray("posts").toString()
+            val postsArray = jsonObject?.getJSONArray("posts").toString()
 
             response.newBuilder()
                 .body(postsArray.toResponseBody(response.body?.contentType()))
@@ -114,7 +117,7 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
 
         } catch (e: Exception) {
             //response 객체 타입을 RandomPostResponse 로 고정해서, 새객체 생성후 msg 만 추가 -> 나중에 CallBack Model 재구성해도 된당
-            val msg = jsonObject.getString("msg")
+            val msg = jsonObject?.getString("msg")
             val errorResponse = RandomPostResponse(msg = msg, id = 0, isScrap = false, createdAt = "", images = emptyList(), user = null, count = Count())
             val errorResponseBody = Gson().toJson(errorResponse)
             Log.d(TAG, "RemoteDataSource - scrap: $errorResponseBody");
