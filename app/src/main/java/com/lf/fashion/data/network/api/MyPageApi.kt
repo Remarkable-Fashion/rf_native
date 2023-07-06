@@ -8,7 +8,7 @@ interface MyPageApi {
     @GET("user/me")
     suspend fun getMyPageInfo() : MyInfo
 
-    @GET("user/me?take=5")
+    @GET("post/me?take=5")
     suspend fun getMyPagePost(): List<RandomPostResponse>
 
 }

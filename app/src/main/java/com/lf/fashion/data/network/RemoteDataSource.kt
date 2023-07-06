@@ -3,7 +3,6 @@ package com.lf.fashion.data.network
 import android.content.Context
 import android.util.Log
 import com.google.gson.Gson
-import com.kakao.sdk.common.util.KakaoJson.toJson
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.BASE_WEB_URL
 import com.lf.fashion.data.common.PreferenceManager
@@ -14,15 +13,12 @@ import com.lf.fashion.data.response.RandomPostResponse
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.last
 import okhttp3.*
 import okhttp3.ResponseBody.Companion.toResponseBody
-import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
-import kotlin.math.log
 
 
 class RemoteDataSource @Inject constructor(@ApplicationContext private val context: Context) {
@@ -53,13 +49,15 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
             val authKey = runBlocking { requestAuthKey.await() }
             Log.d(TAG, "RemoteDataSource - provideOkHttpClient: ${authKey}");
             //if(authKey.isNotEmpty()) {
+
+            //testJWT 유효기간 365
+            val testJWT = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjg4MDA4MzQxLCJleHAiOjE3MTk1NDQzNDF9.gr5Ijgdyy_ptL29Y3CE60fZZGNJQbli_eOdrzEOHL_o"
+            //  .addHeader("Authorization", "Bearer $authKey")
+
                 val requestBuilder: Request.Builder = original.newBuilder()
-                    .addHeader("Authorization", "Bearer $authKey")
-                val request: Request = requestBuilder.build()
-                Log.d(
-                    TAG,
-                    "RemoteDataSource - provideOkHttpClient REQUEST HEADER !! : ${request.headers}"
-                );
+                    .addHeader("Authorization","Bearer $testJWT")
+            val request: Request = requestBuilder.build()
+
            // }
             val response =
                 with(original.url.toString()) {
@@ -115,7 +113,7 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
                 .build()
 
         } catch (e: Exception) {
-
+            //response 객체 타입을 RandomPostResponse 로 고정해서, 새객체 생성후 msg 만 추가 -> 나중에 CallBack Model 재구성해도 된당
             val msg = jsonObject.getString("msg")
             val errorResponse = RandomPostResponse(msg = msg, id = 0, isScrap = false, createdAt = "", images = emptyList(), user = null, count = Count())
             val errorResponseBody = Gson().toJson(errorResponse)
@@ -132,7 +130,7 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
      * access token의 만료시간을 연장 .. ?
      * 중간에 만료 오류 뜨면 오류 수정하기 ..
      *
-     * RF -> 우선 token 점검하는 부분 주석해둠둠     */
+     * RF -> 우선 token 점검하는 부분 주석해둠     */
     fun <Api> buildTestApi(
         api: Class<Api>,
         context: Context

@@ -58,7 +58,17 @@
     <string name="upload_photo_title">사진 등록하기</string>
     <string name="_3">3</string>
 
+
+    <string name="mypage_title">%1$s 님의 룩북</string>
+    <string name="user_body_profile">%1$s | %2$dcm | %3$dkg</string>
+    <string name="edit_profile">프로필 수정하기</string>
+    <string name="count_posts">게시물\n%1$d</string>
+    <string name="count_follower">팔로워\n%1$d</string>
+    <string name="count_following">팔로잉\n%1$d</string>
+    <string name="no_reg_post">등록한 게시물이 존재하지 않습니다.</string>
     <string-array name="spinner_array">
         <item> All</item>
     </string-array>
+
+
 </resources>
