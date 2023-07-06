@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 
-/*
+/**
 * main post 에서 필요한 정보
 * 프로필 이미지 url , 유저 아이디, 포스트 이미지 url 리스트, 좋아요 , 사진모아보기 옆에 표시될 전체 게시물 갯수,
 * post scrap 여부 , 팔로잉 여부
@@ -35,7 +35,10 @@ import kotlinx.parcelize.Parcelize
 * 검색 결과 -> Look 결과 : post 리스트 (main post 정보와 동일) Item 결과 : post 리스트(이미지 , 스크랩여부)+ 쇼핑몰명, 제품명, 가격
 * 검색결과에 성별,체형,계절 필터를 먹일 수 있기때문에 해당 정보도 필요합니다
 *
-* */
+ *
+ * 2023-7-06 차례로 의존 제거중 ...
+** */
+
 @Parcelize
 data class Post(
     val id : Int,
@@ -112,4 +115,28 @@ data class ImageItem(
     var uri: Uri?,
     var isChecked: Boolean,
     var checkCount : String
+)
+
+data class PostResponse(
+    @SerializedName("_id")
+    val id: String,
+    val mysqlId: Int,
+    val userId: Int,
+    val profileImage: String?, // 추가 요구
+    val likes : String?, // 추가요구
+    val title: String,
+    val description: String,
+    val images: List<PostImage>,
+    val clothes: List<String>?,
+    val tpo: String,
+    val season: String,
+    val style: String,
+    val isPublic: Boolean,
+    val sex: String
+)
+
+data class PostImage(
+    val id : Int,
+    val url : String,
+    val postId : Int
 )
