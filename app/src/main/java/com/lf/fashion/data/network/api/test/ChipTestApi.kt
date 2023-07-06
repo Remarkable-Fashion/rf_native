@@ -1,12 +1,11 @@
 package com.lf.fashion.data.network.api.test
 
-import com.lf.fashion.data.network.api.BaseApi
 import com.lf.fashion.data.response.ChipInfo
 import com.lf.fashion.data.response.LookBook
 import com.lf.fashion.data.response.TestUserInfo
 import retrofit2.http.GET
 
-interface ChipTestApi : BaseApi {
+interface ChipTestApi {
     @GET("filter_chip.json")
     suspend fun getFilterInfo() : List<ChipInfo>
 

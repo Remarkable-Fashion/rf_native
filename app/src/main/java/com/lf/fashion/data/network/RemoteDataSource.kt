@@ -138,10 +138,8 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
         api: Class<Api>,
         context: Context
     ): Api {
-        // val authenticator = TokenAuthenticator(context, buildTokenApi())
         return Retrofit.Builder()
             .baseUrl(providesTestingWebUrl())
-//            .client(provideOkHttpClient(authenticator))
             .client(provideOkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -151,10 +149,8 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
     fun <Api> buildApi(
         api: Class<Api>
     ): Api {
-        // val authenticator = TokenAuthenticator(context, buildTokenApi())
         return Retrofit.Builder()
             .baseUrl(providesHostingWebUrl())
-            // .client(provideOkHttpClient(authenticator))
             .client(provideOkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
