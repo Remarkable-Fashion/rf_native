@@ -7,15 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.kakao.sdk.user.UserApiClient
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
-import com.lf.fashion.databinding.MypageFragmentBinding
 import com.lf.fashion.databinding.MypageProfileFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking

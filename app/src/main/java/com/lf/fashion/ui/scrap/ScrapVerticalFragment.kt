@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
-import com.lf.fashion.data.response.Photo
 import com.lf.fashion.databinding.ScrapVerticalFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.home.PhotoClickListener

@@ -14,7 +14,6 @@ import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener
 import com.lf.fashion.ui.GridPostAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
