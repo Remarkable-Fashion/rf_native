@@ -19,7 +19,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 
-//TODO DEV 객체로 옮기고 나서 api 두개 사용하는 것으로 바뀜 ! binding 다시 해줘야한다 ~
 @AndroidEntryPoint
 class MyPageFragment : Fragment(), GridPhotoClickListener {
     private lateinit var binding: MypageFragmentBinding
@@ -35,16 +34,14 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                 viewModel.getSavedLoginToken()
             }
         }
-        //Bottom dialog 에서도 사용하기 편하도록 viewModel 로 넣어서 observe 했지만 ,preferenceManager.accessToken.asLiveData().observe 해도 된다.
-
         binding = MypageFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //TODO 등록한 게시물 없을 경우 테-ㄱ스트 노출 시키기
-        viewModel.savedLoginToken.observe(viewLifecycleOwner) { it ->
+
+        viewModel.savedLoginToken.observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) {
                 findNavController().navigate(R.id.action_navigation_mypage_to_loginFragment)
             } else {
@@ -63,7 +60,8 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                         binding.arrayEmptyText.visibility = View.GONE
                         binding.gridRv.visibility = View.VISIBLE
 
-                    with(binding.gridRv) { //grid layout
+                    with(binding.gridRv) {
+                        //grid layout
                         adapter = GridPostAdapter(3, this@MyPageFragment, null).apply {
 
                             while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.

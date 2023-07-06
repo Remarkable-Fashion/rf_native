@@ -1,18 +1,17 @@
 package com.lf.fashion.ui.home.frag
 
-import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import androidx.fragment.app.DialogFragment
-import com.lf.fashion.TAG
 import com.lf.fashion.databinding.ItemGenderDialogBinding
 
+/**
+ * 앱 최초 설치시에만 노출되는 gender 선택 dialog fragment 입니다
+ * **/
 
 class GenderSelectionDialog : DialogFragment() , View.OnClickListener {
     private lateinit var binding : ItemGenderDialogBinding
