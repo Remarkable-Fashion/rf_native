@@ -18,17 +18,27 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
     private val _gridMode = MutableLiveData<Int>()
     val gridMode: LiveData<Int> = _gridMode
 
-    //지금은 POST LIST 하나로 LOOK ITEM 모두 테스트 돌리는 중 ~
+    //지금은 POST LIST 하나로 LOOK ITEM 모두 테스트 돌리는 중 ~ -> dev 연결하면서 분리해둠 2023.7.7
     private val _postList = MutableLiveData<List<RandomPostResponse>>()
     var postList: LiveData<List<RandomPostResponse>> = _postList
 
-    init {
-        getPostList()
+
+    private val _itemList = MutableLiveData<List<RandomPostResponse>>()
+    var itemList: LiveData<List<RandomPostResponse>> = _itemList
+
+    /*  init {
+          getPostList()
+      }*/
+
+     fun getSearchResult(term : String) {
+        viewModelScope.launch {
+            _postList.value = searchRepository.getSearchResult(term)
+        }
     }
 
-    private fun getPostList() {
+     fun getItemSearchResult(term : String){
         viewModelScope.launch {
-            _postList.value = searchRepository.getSearchResult()
+            _itemList.value = searchRepository.getItemSearchResult(term)
         }
     }
 

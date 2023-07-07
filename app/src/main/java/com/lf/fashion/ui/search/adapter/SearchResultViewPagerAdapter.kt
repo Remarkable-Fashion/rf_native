@@ -1,27 +1,35 @@
 package com.lf.fashion.ui.search.adapter
 
-import android.util.Log
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.lf.fashion.TAG
-import com.lf.fashion.ui.search.SearchResultViewPager
+import com.lf.fashion.ui.search.SearchResultFragment
 
 
 private const val NUM_TABS = 2
-class SearchResultViewPagerAdapter(fragment: Fragment) :
+class SearchResultViewPagerAdapter(fragment: Fragment,private val searchTerm :String) :
     FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int {
         return NUM_TABS
     }
 
     override fun createFragment(position: Int): Fragment {
-//        Log.d(TAG, "SearchResultViewPagerAdapter - getItemId: ${getItemId(position)}");
-
+        val bundle = bundleOf("searchTerm" to searchTerm)
         return when (position) {
-            0 -> SearchResultViewPager("look")
-            1 -> SearchResultViewPager("item")
+            0 -> {
+                val lookFrag = SearchResultFragment("look")
+                lookFrag.arguments = bundle
+                lookFrag
+            }
+            1 -> {
+                val itemFrag = SearchResultFragment("item")
+                itemFrag.arguments = bundle
+                itemFrag
+            }
             else -> {
-                SearchResultViewPager("look")
+                val lookFrag = SearchResultFragment("look")
+                lookFrag.arguments = bundle
+                lookFrag
             }
         }
     }

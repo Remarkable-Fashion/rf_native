@@ -35,7 +35,6 @@ class SearchFragment : Fragment(){
     private val tabTitleArray = arrayOf("LOOK", "ITEM")
     private val historyList = MutableLiveData<MutableList<String>>()
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -72,8 +71,7 @@ class SearchFragment : Fragment(){
         recentSearchHistoryClear()  // 최근 검색어 모두 지우기
         popularSearchTermRvSetting() // 인기 검색어 recycler view 세팅
 
-        //검색 결과 레이아웃 관련
-        searchResultViewSetting()  //결과 레이아웃 내부 세팅 (tab,viewpager)
+
         searchResultSpanCountBtnOnClick() // 결과 레이아웃 사진 모아보기 갯수 버튼 클릭
     }
 
@@ -94,6 +92,9 @@ class SearchFragment : Fragment(){
                         Log.d(TAG, "SearchFragment - onViewCreated: ${historyList.value}");
                     }
                 }
+                //검색 결과 레이아웃 관련
+                searchResultViewSetting(searchTerm)  //결과 레이아웃 내부 세팅 (tab,viewpager)
+
                 hideKeyboard()
                 binding.searchEt.isCursorVisible = false // 검색 실행시 edittext 커서 focus 제거
                 binding.searchTerm.root.visibility = View.GONE
@@ -120,11 +121,11 @@ class SearchFragment : Fragment(){
         binding.searchTerm.nest.setOnClickListener{hideKeyboard()}
     }
 
-    private fun searchResultViewSetting() {
+    private fun searchResultViewSetting(searchTerm : String) {
         val tabViewpager = binding.searchResult.tabViewpager
         val tabLayout = binding.searchResult.tab
 
-        tabViewpager.adapter = SearchResultViewPagerAdapter(this)
+        tabViewpager.adapter = SearchResultViewPagerAdapter(this,searchTerm)
         TabLayoutMediator(tabLayout, tabViewpager) { tab, position ->
             tab.text = tabTitleArray[position]
         }.attach()

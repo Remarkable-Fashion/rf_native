@@ -82,7 +82,7 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
                             return@with response
                         }
 
-                        startsWith(BASE_WEB_URL + "post") -> {
+                        contains("post") -> {
                             return@with getPostResponseOnly(chain, request)
                         }
                         startsWith(BASE_WEB_URL + "scrap") -> {

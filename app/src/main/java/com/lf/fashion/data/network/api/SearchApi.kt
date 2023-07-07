@@ -2,10 +2,14 @@ package com.lf.fashion.data.network.api
 
 import com.lf.fashion.data.response.RandomPostResponse
 import retrofit2.http.GET
+import retrofit2.http.Query
 
-//TODO SEARCH 엔드포인트 미개발 ? ?
 interface SearchApi {
 
-    @GET("scrap?cursorId=3&take=5")
-    suspend fun getSearchResult(): List<RandomPostResponse>
+    @GET("search/post?take=2")
+    suspend fun getSearchResult(@Query("search") term : String): List<RandomPostResponse>
+
+    @GET("search/post?take=2")
+    suspend fun getItemSearchResult(@Query("search") term : String): List<RandomPostResponse>
+
 }

@@ -2,7 +2,6 @@ package com.lf.fashion.ui.search
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.lf.fashion.TAG
 import com.lf.fashion.databinding.SearchResultViewpagerBinding
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener
@@ -20,14 +18,16 @@ import com.lf.fashion.ui.search.adapter.LookVerticalAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchResultViewPager(resultCategory: String?) : Fragment(), GridPhotoClickListener {
+class SearchResultFragment(resultCategory: String?) : Fragment(),
+    GridPhotoClickListener {
     private lateinit var binding: SearchResultViewpagerBinding
+
     //TODO : 이부분 해결해야합니당
-    constructor() : this("look") // 외부 메뉴 이동후 재진입할 경우 기본 생성자 필요!
+    constructor() : this("look" ) // 외부 메뉴 이동후 재진입할 경우 기본 생성자 필요!
 
     /**중요@ parentFragment 의 viewModel 데이터 변동 사항을 인지할 수 있도록 requireParentFragment()를 넣어줘야한다 (GRID 모드 조정 버튼이 PARENT FRAG 에 위치 )**/
     private val viewModel: SearchViewModel by viewModels({ requireParentFragment() })
-    private val gridAdapter = GridPostAdapter(3, this,resultCategory)
+    private val gridAdapter = GridPostAdapter(3, this, resultCategory)
     private val verticalAdapter = LookVerticalAdapter(resultCategory)
 
     override fun onCreateView(
@@ -45,9 +45,15 @@ class SearchResultViewPager(resultCategory: String?) : Fragment(), GridPhotoClic
         /** 메인 홈 post 구조와 동일하게, viewPager , staggerGrid RecyclerView 를 동시에 활용하고 visibility 로 노출을 조정
          * 특히 staggerGridAdapter 는 메인 홈과 동일하기 때문에 같은 어뎁터를 사용함 (GridPostAdapter)**/
         binding.gridRv.adapter = gridAdapter
-        viewModel.postList.observe(viewLifecycleOwner) { response ->
 
-            with(binding.gridRv) {
+        val searchTerm = arguments?.get("searchTerm") .toString()
+
+        viewModel.getSearchResult(searchTerm)
+        viewModel.getItemSearchResult(searchTerm)
+
+        with(binding.gridRv) {
+            viewModel.postList.observe(viewLifecycleOwner) { response ->
+
                 layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
                 gridAdapter.apply {
                     while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
@@ -57,16 +63,18 @@ class SearchResultViewPager(resultCategory: String?) : Fragment(), GridPhotoClic
                     submitList(response)
                 }
             }
-            with(binding.verticalViewpager) {
+        }
+        with(binding.verticalViewpager) {
+            viewModel.itemList.observe(viewLifecycleOwner) { response ->
                 adapter = verticalAdapter.apply {
                     submitList(response)
                 }
-                getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
+                getChildAt(0).overScrollMode =
+                    RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
             }
         }
 
         viewModel.gridMode.observe(viewLifecycleOwner) { gridMode ->
-            Log.d(TAG, "GRID !!!! : $gridMode");
             when (gridMode) {
                 1 -> {
                     layoutVisibilityUpdate(false)
