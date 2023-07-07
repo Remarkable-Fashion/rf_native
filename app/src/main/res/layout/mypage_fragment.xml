@@ -13,27 +13,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/sandwich_btn"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginEnd="17dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/ic_sandwich" />
+
 
         <TextView
             android:id="@+id/look_book_title"
             style="@style/app_bar_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
             android:text="@{@string/mypage_title(userInfo.name)}"
             tools:text="rf_user 님의 룩북"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sandwich_btn" />
+           app:layout_constraintTop_toTopOf="parent"
+            />
 
         <View
             android:id="@+id/title_underline"

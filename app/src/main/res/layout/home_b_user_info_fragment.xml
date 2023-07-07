@@ -23,24 +23,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/sandwich_btn"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/cancel_btn"
-            android:layout_marginEnd="17dp"
-            android:src="@drawable/ic_sandwich" />
-
         <include
             android:id="@+id/profile_space"
             layout="@layout/item_profile_space"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/cancel_btn"
-            app:layout_constraintEnd_toEndOf="@id/sandwich_btn"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cancel_btn"
-            android:layout_marginTop="12dp" />
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="20dp"/>
 
         <View
             android:id="@+id/title_underline"

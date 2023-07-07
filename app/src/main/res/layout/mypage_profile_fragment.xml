@@ -13,15 +13,7 @@
         android:src="@drawable/ic_back_btn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <ImageView
-        android:id="@+id/sandwich_btn"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginEnd="17dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/ic_sandwich" />
+
     <TextView
         android:id="@+id/profile_setting_title"
         style="@style/app_bar_label"
@@ -44,7 +36,8 @@
         android:textColor="@color/light_text"
         app:layout_constraintTop_toTopOf="@id/profile_setting_title"
         app:layout_constraintBottom_toBottomOf="@id/profile_setting_title"
-        app:layout_constraintEnd_toEndOf="@id/sandwich_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="20dp"
         />
     <View
         android:id="@+id/title_underline"
