@@ -14,6 +14,7 @@ import com.lf.fashion.ui.home.VerticalViewPagerClickListener
 import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.frag.HomeBottomSheetFragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.ImageUrl
@@ -54,6 +55,7 @@ class ScrapVerticalFragment : Fragment(),
                             //scrapFragment 에서 선택한 item 의 index 를 시작 index 로 지정 , animation false 처리
                             setCurrentItem(viewModel.startIndex.value ?: 0, false)
                         }
+                        getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
                     }
                 }
                 is Resource.Failure -> {

@@ -36,29 +36,35 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
         // 헤더 값 수정을 위한 Interceptor 를 추가
         client.interceptors().add(Interceptor { chain ->
             val original: Request = chain.request()
+            val isTestUrl = original.url.toString().contains("firebaseio")
+            var request: Request = original
 
-            //userPref 에 저장된 jwt 토큰 가져와서 request Authorization Header 추가
-            val requestAuthKey: Deferred<String> =
-                CoroutineScope(Dispatchers.IO).async {
+            if(!isTestUrl) {
+                //userPref 에 저장된 jwt 토큰 가져와서 request Authorization Header 추가
+                val requestAuthKey: Deferred<String> =
+                    CoroutineScope(Dispatchers.IO).async {
 
-                    userPref.accessToken.first() ?: ""
+                        userPref.accessToken.first() ?: ""
 
-                }
+                    }
 
-            val authKey = runBlocking { requestAuthKey.await() }
-            Log.d(TAG, "RemoteDataSource - provideOkHttpClient: ${authKey}");
-            //if(authKey.isNotEmpty()) {
+                val authKey = runBlocking { requestAuthKey.await() }
+                Log.d(TAG, "RemoteDataSource - provideOkHttpClient: ${authKey}");
+                //if(authKey.isNotEmpty()) {
 
-            //testJWT 유효기간 365
-            val testJWT = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjg4MDA4MzQxLCJleHAiOjE3MTk1NDQzNDF9.gr5Ijgdyy_ptL29Y3CE60fZZGNJQbli_eOdrzEOHL_o"
-            //  .addHeader("Authorization", "Bearer $authKey")
+                //testJWT 유효기간 365
+                val testJWT =
+                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjg4MDA4MzQxLCJleHAiOjE3MTk1NDQzNDF9.gr5Ijgdyy_ptL29Y3CE60fZZGNJQbli_eOdrzEOHL_o"
+                //  .addHeader("Authorization", "Bearer $authKey")
 
                 val requestBuilder: Request.Builder = original.newBuilder()
-                    .addHeader("Authorization","Bearer $testJWT")
-            val request: Request = requestBuilder.build()
+                    .addHeader("Authorization", "Bearer $testJWT")
+                request = requestBuilder.build()
 
-           // }
+                // }
+                Log.d(TAG, "RemoteDataSource - provideOkHttpClient: ${request.url}")
 
+            }
             //api url 에 따라 분류하여 response 인터셉트
             val response =
                 with(original.url.toString()) {

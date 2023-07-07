@@ -38,6 +38,7 @@ class DefaultPostAdapter(
         init {
             with(binding.horizontalViewPager) {
                 adapter = nestedAdapter
+                getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER // 양옆 오버 스크롤 이벤트 shadow 제거
 
                 TabLayoutMediator(
                     binding.viewpagerIndicator,

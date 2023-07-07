@@ -23,7 +23,7 @@ class SearchResultFragment(resultCategory: String?) : Fragment(),
     private lateinit var binding: SearchResultViewpagerBinding
 
     //TODO : 이부분 해결해야합니당
-    constructor() : this("look" ) // 외부 메뉴 이동후 재진입할 경우 기본 생성자 필요!
+    constructor() : this("look") // 외부 메뉴 이동후 재진입할 경우 기본 생성자 필요!
 
     /**중요@ parentFragment 의 viewModel 데이터 변동 사항을 인지할 수 있도록 requireParentFragment()를 넣어줘야한다 (GRID 모드 조정 버튼이 PARENT FRAG 에 위치 )**/
     private val viewModel: SearchViewModel by viewModels({ requireParentFragment() })
@@ -46,7 +46,7 @@ class SearchResultFragment(resultCategory: String?) : Fragment(),
          * 특히 staggerGridAdapter 는 메인 홈과 동일하기 때문에 같은 어뎁터를 사용함 (GridPostAdapter)**/
         binding.gridRv.adapter = gridAdapter
 
-        val searchTerm = arguments?.get("searchTerm") .toString()
+        val searchTerm = arguments?.get("searchTerm").toString()
 
         viewModel.getSearchResult(searchTerm)
         viewModel.getItemSearchResult(searchTerm)
@@ -54,23 +54,36 @@ class SearchResultFragment(resultCategory: String?) : Fragment(),
         with(binding.gridRv) {
             viewModel.postList.observe(viewLifecycleOwner) { response ->
 
-                layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
-                gridAdapter.apply {
-                    while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
-                        removeItemDecorationAt(0)
+                if (response.isEmpty()) {
+                    binding.arrayEmptyText.isVisible = true
+                } else {
+                    binding.arrayEmptyText.isVisible = false
+
+                    layoutManager =
+                        StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
+                    gridAdapter.apply {
+                        while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
+                            removeItemDecorationAt(0)
+                        }
+                        addItemDecoration(GridSpaceItemDecoration(3, 6))
+                        submitList(response)
                     }
-                    addItemDecoration(GridSpaceItemDecoration(3, 6))
-                    submitList(response)
                 }
             }
         }
         with(binding.verticalViewpager) {
             viewModel.itemList.observe(viewLifecycleOwner) { response ->
-                adapter = verticalAdapter.apply {
-                    submitList(response)
+                if (response.isEmpty()) {
+                    binding.arrayEmptyText.isVisible = true
+                } else {
+                    binding.arrayEmptyText.isVisible = false
+
+                    adapter = verticalAdapter.apply {
+                        submitList(response)
+                    }
+                    getChildAt(0).overScrollMode =
+                        RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
                 }
-                getChildAt(0).overScrollMode =
-                    RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
             }
         }
 
@@ -117,4 +130,5 @@ class SearchResultFragment(resultCategory: String?) : Fragment(),
     override fun gridPhotoClicked(postIndex: Int) {
         //grid 포토 클릭시!!
     }
+
 }

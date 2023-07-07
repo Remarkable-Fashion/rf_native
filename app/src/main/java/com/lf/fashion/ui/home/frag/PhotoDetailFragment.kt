@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lf.fashion.data.response.ImageUrl
 import com.lf.fashion.data.response.Photo
@@ -35,6 +36,8 @@ class PhotoDetailFragment : Fragment() {
             adapter = PhotoHorizontalAdapter(null).apply {
                 submitList(photoUrl.asList())
             }
+            getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
+
             TabLayoutMediator(
                 binding.viewpagerIndicator,
                 this
