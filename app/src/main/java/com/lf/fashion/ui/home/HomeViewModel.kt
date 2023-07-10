@@ -10,17 +10,14 @@ import com.lf.fashion.data.response.RandomPostResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import okhttp3.internal.wait
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val homeRepository: HomeRepository,@ApplicationContext context : Context) : ViewModel() {
 
-    private val _postList = MutableLiveData<List<RandomPostResponse>>()
-    var postList: LiveData<List<RandomPostResponse>> = _postList
+    private val _response = MutableLiveData<RandomPostResponse>()
+    var response: LiveData<RandomPostResponse> = _response
     private val userPreferences = PreferenceManager(context)
 
 
@@ -43,11 +40,11 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
             val savedToken = userPreferences.accessToken.first()
             Log.d(TAG, "HomeViewModel - getPostList: $savedToken");
             if(savedToken.isNullOrEmpty()){
-                _postList.value = homeRepository.getRandomPostPublic("Male")
-                Log.d(TAG, "HomeViewModel - getPostList: public ! ${_postList.value}")
+                _response.value = homeRepository.getRandomPostPublic("Male")
+                Log.d(TAG, "HomeViewModel - getPostList: public ! ${_response.value}")
             }else{
-                _postList.value = homeRepository.getRandomPost("Male")
-                Log.d(TAG, "HomeViewModel - getPostList: private ! ${_postList.value}")
+                _response.value = homeRepository.getRandomPost("Male")
+                Log.d(TAG, "HomeViewModel - getPostList: private ! ${_response.value}")
             }
         }
     }

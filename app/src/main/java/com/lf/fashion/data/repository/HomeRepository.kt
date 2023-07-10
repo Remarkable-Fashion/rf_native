@@ -31,11 +31,11 @@ class HomeRepository @Inject constructor(
 
 
     /*dev */
-    suspend fun getRandomPost(sex: String): List<RandomPostResponse> {
+    suspend fun getRandomPost(sex: String): RandomPostResponse {
         return postApi.getRandomPost(sex)
     }
 
-    suspend fun getRandomPostPublic(sex: String): List<RandomPostResponse> {
+    suspend fun getRandomPostPublic(sex: String): RandomPostResponse {
         return postApi.getRandomPostPublic(sex)
     }
 }

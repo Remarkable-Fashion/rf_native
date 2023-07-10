@@ -18,10 +18,7 @@ import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
-import com.lf.fashion.data.response.ImageUrl
-import com.lf.fashion.data.response.Photo
-import com.lf.fashion.data.response.Post
-import com.lf.fashion.data.response.RandomPostResponse
+import com.lf.fashion.data.response.*
 import com.lf.fashion.databinding.HomeAFragmentBinding
 import com.lf.fashion.ui.home.HomeViewModel
 import com.lf.fashion.ui.home.PhotoClickListener
@@ -44,7 +41,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
     GridPhotoClickListener {
     private lateinit var binding: HomeAFragmentBinding
     private val viewModel: HomeViewModel by viewModels()
-    private val postList = MutableLiveData<List<RandomPostResponse>>()
+    private val postList = MutableLiveData<List<Posts>>()
     private val gridAdapter = GridPostAdapter(gridPhotoClickListener = this)
     private lateinit var userPref :PreferenceManager
 
@@ -86,21 +83,21 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
         /*response 로 post 를 받아서 중첩 viewPager 와 recyclerView 모두에게 adapter 연결/submitList 후 visibility 로 노출을 관리한다
         (전환 속도 감소, 메모리에 무리가 가지않는다면 ok)*/
         photoLayoutVisibilityMode(true) // default ui visibility
-        viewModel.postList.observe(viewLifecycleOwner) { response ->
+        viewModel.response.observe(viewLifecycleOwner) { response ->
             with(binding.homeMainViewpager) {
                 adapter = DefaultPostAdapter(this@HomeFragment, this@HomeFragment).apply {
-                    submitList(response)
+                    submitList(response.posts)
                 }
                 getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
             }
-            postList.value = response
+            postList.value = response.posts
             with(binding.gridRecyclerView) {
 
                 //staggeredGrid layoutManager 연결
                 layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
                 adapter = gridAdapter.apply {
                     addItemDecoration(GridSpaceItemDecoration(2,6))
-                    submitList(response)
+                    submitList(response.posts)
                 }
                 Log.d(TAG, "HomeFragment - setMainViewPagerUI: $gridAdapter & $adapter");
                 visibility = View.INVISIBLE

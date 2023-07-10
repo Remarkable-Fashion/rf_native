@@ -33,11 +33,12 @@ class ScrapFragment : Fragment(), GridPhotoClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.postList.observe(viewLifecycleOwner) { resources ->
+        viewModel.postResponse.observe(viewLifecycleOwner) { resources ->
             when (resources) {
                 is Resource.Success -> {
                     val response = resources.value
-                    if (response.isNotEmpty()) {
+                    Log.d(TAG, "ScrapFragment - onViewCreated RESPONSE: $response");
+                    if (response.posts.isNotEmpty()) {
                         binding.scrapRv.visibility = View.VISIBLE
                         binding.arrayEmptyText.visibility = View.GONE
 
@@ -48,7 +49,7 @@ class ScrapFragment : Fragment(), GridPhotoClickListener {
                                         removeItemDecorationAt(0)
                                     }
                                     addItemDecoration(GridSpaceItemDecoration(3, 6))
-                                    this.submitList(response)
+                                    this.submitList(response.posts)
 
                                 }
                         }

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lf.fashion.data.response.Post
+import com.lf.fashion.data.response.Posts
 import com.lf.fashion.data.response.RandomPostResponse
 import com.lf.fashion.databinding.HomeAVerticalItemBinding
 import com.lf.fashion.ui.home.PhotoClickListener
@@ -17,7 +18,7 @@ class DefaultPostAdapter(
     private val verticalViewPagerClickListener: VerticalViewPagerClickListener,
   //  private val itemPosition: Int
 ) :
-    ListAdapter<RandomPostResponse, DefaultPostAdapter.DefaultPostViewHolder>(DefaultPostDiff()) {
+    ListAdapter<Posts, DefaultPostAdapter.DefaultPostViewHolder>(DefaultPostDiff()) {
 
     private lateinit var binding: HomeAVerticalItemBinding
 
@@ -47,7 +48,7 @@ class DefaultPostAdapter(
             }
         }
 
-        fun bind(post: RandomPostResponse) {
+        fun bind(post: Posts) {
             binding.post = post
             nestedAdapter.submitList(post.images)
 
@@ -74,7 +75,8 @@ class DefaultPostAdapter(
     }
 }
 
-class DefaultPostDiff : DiffUtil.ItemCallback<RandomPostResponse>() {
+class DefaultPostDiff : DiffUtil.ItemCallback<Posts>() {
+    /*
     override fun areItemsTheSame(
         oldItem: RandomPostResponse,
         newItem: RandomPostResponse
@@ -86,6 +88,14 @@ class DefaultPostDiff : DiffUtil.ItemCallback<RandomPostResponse>() {
         oldItem: RandomPostResponse,
         newItem: RandomPostResponse
     ): Boolean {
+        return oldItem == newItem
+    }
+*/
+    override fun areItemsTheSame(oldItem: Posts, newItem: Posts): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Posts, newItem: Posts): Boolean {
         return oldItem == newItem
     }
 

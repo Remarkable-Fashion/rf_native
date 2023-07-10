@@ -6,6 +6,11 @@ import kotlinx.parcelize.Parcelize
 
 data class RandomPostResponse(
     val msg: String? = null,
+    val nextCursor : Int? = null,
+    val posts : List<Posts>
+)
+
+data class Posts(
     val id: Int,
     val isFavorite: Boolean?=false,
     val isFollow: Boolean?=false,
@@ -14,7 +19,7 @@ data class RandomPostResponse(
     val images: List<ImageUrl>,
     val user: UserInfo?,
     @SerializedName("_count")
-    val count: Count
+    val count: Count,
 )
 
 @Parcelize
@@ -26,7 +31,12 @@ data class UserInfo(
     val id : Int,
     val name : String,
     val profile : Profile,
-    val followers : List<String>?
+    val followers : List<FollowIdSet>?
+)
+
+data class FollowIdSet(
+    val followerId : Int,
+    val followingId : Int
 )
 
 

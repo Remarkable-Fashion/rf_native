@@ -6,12 +6,13 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.data.response.Post
+import com.lf.fashion.data.response.Posts
 import com.lf.fashion.data.response.RandomPostResponse
 import com.lf.fashion.databinding.ItemSearchResultItemVerticalBinding
 import com.lf.fashion.databinding.ItemSearchVerticalBinding
 import com.lf.fashion.ui.home.adapter.DefaultPostDiff
 
-class LookVerticalAdapter(private val resultCategory: String?) : ListAdapter<RandomPostResponse, LookVerticalAdapter.LookVerticalViewHolder>(DefaultPostDiff()) {
+class LookVerticalAdapter(private val resultCategory: String?) : ListAdapter<Posts, LookVerticalAdapter.LookVerticalViewHolder>(DefaultPostDiff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LookVerticalViewHolder {
         val binding = when (resultCategory) {
@@ -35,7 +36,7 @@ class LookVerticalAdapter(private val resultCategory: String?) : ListAdapter<Ran
     }
 
     inner class LookVerticalViewHolder(private val binding : ViewDataBinding):RecyclerView.ViewHolder(binding.root){
-        fun bind(post:RandomPostResponse){
+        fun bind(post:Posts){
             when(binding){
                 is ItemSearchVerticalBinding ->{
                     binding.photoUrl = post.images[0].url

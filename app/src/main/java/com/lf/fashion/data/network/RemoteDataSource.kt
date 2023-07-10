@@ -39,7 +39,7 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
             val isTestUrl = original.url.toString().contains("firebaseio")
             var request: Request = original
 
-            if(!isTestUrl) {
+            if (!isTestUrl) {
                 //userPref 에 저장된 jwt 토큰 가져와서 request Authorization Header 추가
                 val requestAuthKey: Deferred<String> =
                     CoroutineScope(Dispatchers.IO).async {
@@ -88,12 +88,16 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
                             return@with response
                         }
 
-                        contains("post") -> {
-                            return@with getPostResponseOnly(chain, request)
+                       /* contains("post") -> {
+
+                            if (this.startsWith(BASE_WEB_URL + "me")) {
+                                return@with getPostResponse(chain, request)
+                            }
+                            return@with getPostResponse(chain, request, true)
                         }
                         startsWith(BASE_WEB_URL + "scrap") -> {
-                            return@with getPostResponseOnly(chain, request)
-                        }
+                            return@with getPostResponse(chain, request, true)
+                        }*/
                         else -> {
                             return@with chain.proceed(request)
                         }
@@ -104,33 +108,56 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
 
         return client.build()
     }
-
+/*
     //response json 에서 posts 만 꺼내오기
-    private fun getPostResponseOnly(
+    private fun getPostResponse(
         chain: Interceptor.Chain,
-        original: Request
+        original: Request,
+        haveCursor: Boolean? = null
     ): Response {
 
         val response = chain.proceed(original)
         val responseBody = response.body?.string()
         val jsonObject = responseBody?.let { JSONObject(it) }
-        return try {
-            val postsArray = jsonObject?.getJSONArray("posts").toString()
+        try {
+            val postsArray = jsonObject?.getJSONArray("posts")
+            var newJsonObject: JSONObject? = null
 
-            response.newBuilder()
-                .body(postsArray.toResponseBody(response.body?.contentType()))
+            if ((haveCursor != null) && haveCursor) {
+                newJsonObject = JSONObject()
+                val nextCursor = jsonObject?.getJSONObject("nextCursor")
+
+                newJsonObject.put("posts", postsArray)
+                newJsonObject.put("nextCursor", nextCursor)
+            }
+            Log.d(TAG, "RemoteDataSource - getPostResponse: ${newJsonObject.toString().toResponseBody(response.body?.contentType())}");
+
+            newJsonObject?.let{
+
+            }
+            return response.newBuilder()
+                .body(newJsonObject.toString().toResponseBody(response.body?.contentType()))
                 .build()
 
         } catch (e: Exception) {
             //response 객체 타입을 RandomPostResponse 로 고정해서, 새객체 생성후 msg 만 추가 -> 나중에 CallBack Model 재구성해도 된당
             val msg = jsonObject?.getString("msg")
-            val errorResponse = RandomPostResponse(msg = msg, id = 0, isScrap = false, createdAt = "", images = emptyList(), user = null, count = Count())
+            val errorResponse = RandomPostResponse(
+                msg = msg,
+                id = 0,
+                isScrap = false,
+                createdAt = "",
+                images = emptyList(),
+                user = null,
+                count = Count()
+            )
             val errorResponseBody = Gson().toJson(errorResponse)
             Log.d(TAG, "RemoteDataSource - scrap: $errorResponseBody");
 
-            response.newBuilder().body(errorResponseBody.toResponseBody(response.body?.contentType())).build()
+            response.newBuilder()
+                .body(errorResponseBody.toResponseBody(response.body?.contentType())).build()
         }
-    }
+    }*/
 
 
     /**

@@ -16,8 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ScrapViewModel @Inject constructor(private val scrapRepository: ScrapRepository) : ViewModel() {
 
-    private val _postList = MutableLiveData<Resource<List<RandomPostResponse>>>()
-    var postList: LiveData<Resource<List<RandomPostResponse>>> = _postList
+    private val _postResponse = MutableLiveData<Resource<RandomPostResponse>>()
+    var postResponse: LiveData<Resource<RandomPostResponse>> = _postResponse
 
     private val _startIndex = MutableLiveData<Int>()
     var startIndex : MutableLiveData<Int> = _startIndex
@@ -28,8 +28,8 @@ class ScrapViewModel @Inject constructor(private val scrapRepository: ScrapRepos
 
     private fun getPostList() {
         viewModelScope.launch {
-            _postList.value = scrapRepository.getScrapPosts()
-            Log.d(TAG, "ScrapViewModel - getPostList: ${_postList.value}");
+            _postResponse.value = scrapRepository.getScrapPosts()
+            Log.d(TAG, "ScrapViewModel - getPostList: ${_postResponse.value}");
         }
     }
     fun editClickedPostIndex(postIndex: Int) {

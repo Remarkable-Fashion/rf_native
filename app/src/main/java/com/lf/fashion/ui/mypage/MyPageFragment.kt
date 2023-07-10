@@ -53,9 +53,9 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                 }
 
                 //내 게시물 불러오기
-                viewModel.postList.observe(viewLifecycleOwner) { response ->
+                viewModel.postResponse.observe(viewLifecycleOwner) { response ->
 
-                    if(response.isNotEmpty()){
+                    if(response.posts.isNotEmpty()){
                         binding.arrayEmptyText.visibility = View.GONE
                         binding.gridRv.visibility = View.VISIBLE
 
@@ -67,7 +67,7 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                                 removeItemDecorationAt(0)
                             }
                             addItemDecoration(GridSpaceItemDecoration(3, 6))
-                            submitList(response)
+                            submitList(response.posts)
                         }
                     }
                     }else{

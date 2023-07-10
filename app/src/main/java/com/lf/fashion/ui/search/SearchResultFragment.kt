@@ -52,9 +52,9 @@ class SearchResultFragment(resultCategory: String?) : Fragment(),
         viewModel.getItemSearchResult(searchTerm)
 
         with(binding.gridRv) {
-            viewModel.postList.observe(viewLifecycleOwner) { response ->
+            viewModel.postResponse.observe(viewLifecycleOwner) { response ->
 
-                if (response.isEmpty()) {
+                if (response.posts.isEmpty()) {
                     binding.arrayEmptyText.isVisible = true
                 } else {
                     binding.arrayEmptyText.isVisible = false
@@ -66,20 +66,20 @@ class SearchResultFragment(resultCategory: String?) : Fragment(),
                             removeItemDecorationAt(0)
                         }
                         addItemDecoration(GridSpaceItemDecoration(3, 6))
-                        submitList(response)
+                        submitList(response.posts)
                     }
                 }
             }
         }
         with(binding.verticalViewpager) {
             viewModel.itemList.observe(viewLifecycleOwner) { response ->
-                if (response.isEmpty()) {
+                if (response.posts.isEmpty()) {
                     binding.arrayEmptyText.isVisible = true
                 } else {
                     binding.arrayEmptyText.isVisible = false
 
                     adapter = verticalAdapter.apply {
-                        submitList(response)
+                        submitList(response.posts)
                     }
                     getChildAt(0).overScrollMode =
                         RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거

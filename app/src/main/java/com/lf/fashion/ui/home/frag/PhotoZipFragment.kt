@@ -35,12 +35,12 @@ class PhotoZipFragment : Fragment(), GridPhotoClickListener {
 
         with(binding.gridRv) { //grid layout
             adapter = GridPostAdapter(3, this@PhotoZipFragment,null).apply {
-                viewModel.postList.observe(viewLifecycleOwner) { response ->
+                viewModel.response.observe(viewLifecycleOwner) { response ->
                     while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
                         removeItemDecorationAt(0)
                     }
                     addItemDecoration(GridSpaceItemDecoration(3, 6))
-                    submitList(response)
+                    submitList(response.posts)
                 }
             }
         }

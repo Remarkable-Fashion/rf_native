@@ -40,7 +40,7 @@ class ScrapVerticalFragment : Fragment(),
 
 
 
-        viewModel.postList.observe(viewLifecycleOwner) { resource ->
+        viewModel.postResponse.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
                     val response = resource.value
@@ -51,7 +51,7 @@ class ScrapVerticalFragment : Fragment(),
                             this@ScrapVerticalFragment
                         )
                         (adapter as? DefaultPostAdapter)?.apply {
-                            submitList(response)
+                            submitList(response.posts)
                             //scrapFragment 에서 선택한 item 의 index 를 시작 index 로 지정 , animation false 처리
                             setCurrentItem(viewModel.startIndex.value ?: 0, false)
                         }

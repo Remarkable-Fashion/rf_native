@@ -9,11 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
-import com.lf.fashion.data.repository.HomeRepository
 import com.lf.fashion.data.repository.MyPageRepository
 import com.lf.fashion.data.response.MsgResponse
 import com.lf.fashion.data.response.MyInfo
-import com.lf.fashion.data.response.Post
 import com.lf.fashion.data.response.RandomPostResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -27,8 +25,8 @@ class MyPageViewModel @Inject constructor(private val myPageRepository: MyPageRe
     val savedLoginToken : LiveData<String?> = _savedLoginToken
     private val userPreferences = PreferenceManager(context)
 
-    private val _postList = MutableLiveData<List<RandomPostResponse>>()
-    var postList: LiveData<List<RandomPostResponse>> = _postList
+    private val _postResponse = MutableLiveData<RandomPostResponse>()
+    var postResponse: LiveData<RandomPostResponse> = _postResponse
 
     private var _myInfo = MutableLiveData<MyInfo>()
     val myInfo :LiveData<MyInfo> = _myInfo
@@ -60,7 +58,7 @@ class MyPageViewModel @Inject constructor(private val myPageRepository: MyPageRe
      fun getPostList() {
         Log.d(TAG, "suspend getPostList 호출 ")
         viewModelScope.launch {
-            _postList.value = myPageRepository.getMyPost()
+            _postResponse.value = myPageRepository.getMyPost()
         }
     }
 }

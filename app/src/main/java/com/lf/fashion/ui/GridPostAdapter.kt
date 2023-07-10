@@ -9,6 +9,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.data.response.Post
+import com.lf.fashion.data.response.Posts
 import com.lf.fashion.data.response.RandomPostResponse
 import com.lf.fashion.databinding.HomeGridItemBinding
 import com.lf.fashion.databinding.ItemSearchResultItemListBinding
@@ -19,7 +20,7 @@ class GridPostAdapter(
     private val gridPhotoClickListener: GridPhotoClickListener,
     private val resultCategory: String? = null,
     private val scrapPage : Boolean?=null
-) : ListAdapter<RandomPostResponse, GridPostAdapter.GridPostViewHolder>(
+) : ListAdapter<Posts, GridPostAdapter.GridPostViewHolder>(
     DefaultPostDiff()
 ), SpanCountEditBtnListener {
 
@@ -49,7 +50,7 @@ class GridPostAdapter(
         RecyclerView.ViewHolder(binding.root) {
         private val layoutParams = itemView.layoutParams as ViewGroup.MarginLayoutParams
 
-        fun bind(post: RandomPostResponse) {
+        fun bind(post: Posts) {
             when(binding){
                 is HomeGridItemBinding ->{
                     //post 내부 첫번째 사진을 grid 로 노출

@@ -7,9 +7,9 @@ import retrofit2.http.Query
 interface SearchApi {
 
     @GET("search/post?take=2")
-    suspend fun getSearchResult(@Query("search") term : String): List<RandomPostResponse>
+    suspend fun getSearchResult(@Query("search") term : String): RandomPostResponse
 
     @GET("search/post?take=2")
-    suspend fun getItemSearchResult(@Query("search") term : String): List<RandomPostResponse>
+    suspend fun getItemSearchResult(@Query("search") term : String): RandomPostResponse
 
 }

@@ -6,10 +6,10 @@ import javax.inject.Inject
 
 class SearchRepository @Inject constructor(private val searchApi: SearchApi) {
 
-    suspend fun getSearchResult(term : String) : List<RandomPostResponse>{
+    suspend fun getSearchResult(term : String) : RandomPostResponse{
         return searchApi.getSearchResult(term)
     }
-    suspend fun getItemSearchResult(term : String) : List<RandomPostResponse>{
+    suspend fun getItemSearchResult(term : String) : RandomPostResponse{
         return searchApi.getItemSearchResult(term)
     }
 }
