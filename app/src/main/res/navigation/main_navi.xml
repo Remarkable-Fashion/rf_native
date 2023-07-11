@@ -59,6 +59,9 @@
         <action
             android:id="@+id/action_navigation_scrap_to_scrapVerticalFragment"
             app:destination="@id/scrapVerticalFragment" />
+        <action
+            android:id="@+id/action_navigation_scrap_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/photoDetailFragment"
