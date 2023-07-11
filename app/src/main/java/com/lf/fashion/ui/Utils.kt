@@ -8,6 +8,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
@@ -80,3 +81,4 @@ fun Fragment.showPermissionDialog(
         setPositiveButton("동의") { _, _ -> requestPermissionLauncher.launch(permissions) }
     }.show()
 }
+

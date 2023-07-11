@@ -7,8 +7,8 @@ import javax.inject.Inject
 
 class ScrapRepository @Inject constructor(private val scrapApi: ScrapApi ) :SafeApiCall{
 
-    suspend fun getScrapPosts() =safeApiCall{
-        scrapApi.getScrapPost()
+    suspend fun getScrapPosts(nextCursor: Int? = null) = safeApiCall {
+        scrapApi.getScrapPost(nextCursor)
     }
 
 }

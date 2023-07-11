@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -52,6 +53,8 @@ class SearchResultFragment(resultCategory: String?) : Fragment(),
         viewModel.getItemSearchResult(searchTerm)
 
         with(binding.gridRv) {
+
+
             viewModel.postResponse.observe(viewLifecycleOwner) { response ->
 
                 if (response.posts.isEmpty()) {
@@ -62,6 +65,7 @@ class SearchResultFragment(resultCategory: String?) : Fragment(),
                     layoutManager =
                         StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
                     gridAdapter.apply {
+
                         while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
                             removeItemDecorationAt(0)
                         }
@@ -77,7 +81,6 @@ class SearchResultFragment(resultCategory: String?) : Fragment(),
                     binding.arrayEmptyText.isVisible = true
                 } else {
                     binding.arrayEmptyText.isVisible = false
-
                     adapter = verticalAdapter.apply {
                         submitList(response.posts)
                     }

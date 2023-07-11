@@ -130,11 +130,11 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
     override fun onClick(view: View?) {
         when (view) {
             //상단 바의 랜덤,팔로잉 버튼 각각 클릭 (임시로 select 여부만 변경 처리)
-            binding.appBarFollowing -> { //팔로잉 버튼 클릭
+            binding.topFollowingMenuLayer -> { //팔로잉 버튼 클릭
                 binding.appBarFollowing.isSelected = true
                 binding.appBarRandom.isSelected = false
             }
-            binding.topRandomMenuLayer -> { //랜덤 버튼 클릭
+            binding.appBarRandom -> { //랜덤 버튼 클릭
                 binding.appBarFollowing.isSelected = false
                 binding.appBarRandom.isSelected = true
             }

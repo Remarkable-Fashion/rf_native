@@ -6,9 +6,11 @@ import kotlinx.parcelize.Parcelize
 
 data class RandomPostResponse(
     val msg: String? = null,
+    val size : Int,
+    val hasNext : Boolean? = true,
     val nextCursor : Int? = null,
     val posts : List<Posts>
-)
+    )
 
 data class Posts(
     val id: Int,

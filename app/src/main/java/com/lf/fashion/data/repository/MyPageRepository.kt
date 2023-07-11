@@ -19,7 +19,7 @@ class MyPageRepository @Inject constructor(private val jwtApi: JWTApi,private va
         return myPageApi.getMyPageInfo()
     }
 
-    suspend fun getMyPost() : RandomPostResponse{
-        return myPageApi.getMyPagePost()
+    suspend fun getMyPost(nextCursor : Int?=null)  = safeApiCall {
+         myPageApi.getMyPagePost(nextCursor)
     }
 }
