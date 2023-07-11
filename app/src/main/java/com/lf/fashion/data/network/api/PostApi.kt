@@ -6,11 +6,11 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface PostApi {
-    @GET("post?take=5")
-    suspend fun getRandomPost(@Query("sex") sex: String): RandomPostResponse
+    @GET("post")
+    suspend fun getRandomPost(@Query("sex") sex: String,@Query("take") take : Int): RandomPostResponse
 
-    @GET("post/public?take=5")
-    suspend fun getRandomPostPublic(@Query("sex") sex:String) :RandomPostResponse
+    @GET("post/public")
+    suspend fun getRandomPostPublic(@Query("sex") sex:String , @Query("take") take: Int) :RandomPostResponse
 
 }
 

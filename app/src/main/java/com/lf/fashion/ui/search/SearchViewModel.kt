@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lf.fashion.TAG
+import com.lf.fashion.data.common.Event
+import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.SearchRepository
 import com.lf.fashion.data.response.RandomPostResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,12 +21,12 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
     val gridMode: LiveData<Int> = _gridMode
 
     //지금은 POST LIST 하나로 LOOK ITEM 모두 테스트 돌리는 중 ~ -> dev 연결하면서 분리해둠 2023.7.7
-    private val _postResponse = MutableLiveData<RandomPostResponse>()
-    var postResponse: LiveData<RandomPostResponse> = _postResponse
+    private val _postResponse = MutableLiveData<Event<Resource<RandomPostResponse>>>()
+    var postResponse: LiveData<Event<Resource<RandomPostResponse>>> = _postResponse
 
 
-    private val _itemList = MutableLiveData<RandomPostResponse>()
-    var itemList: LiveData<RandomPostResponse> = _itemList
+    private val _itemList = MutableLiveData<Event<Resource<RandomPostResponse>>>()
+    var itemList: LiveData<Event<Resource<RandomPostResponse>>> = _itemList
 
     /*  init {
           getPostList()
@@ -32,13 +34,14 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
 
      fun getSearchResult(term : String) {
         viewModelScope.launch {
-            _postResponse.value = searchRepository.getSearchResult(term)
+            _postResponse.value = Event(searchRepository.getSearchResult(term))
         }
     }
 
      fun getItemSearchResult(term : String){
         viewModelScope.launch {
-            _itemList.value = searchRepository.getItemSearchResult(term)
+            _itemList.value = Event(searchRepository.getItemSearchResult(term))
+
         }
     }
 

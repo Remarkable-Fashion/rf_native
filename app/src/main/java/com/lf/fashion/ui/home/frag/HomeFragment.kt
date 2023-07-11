@@ -18,6 +18,7 @@ import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.*
 import com.lf.fashion.databinding.HomeAFragmentBinding
 import com.lf.fashion.ui.home.HomeViewModel
@@ -31,19 +32,22 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlin.math.log
 
 /**
  * 메인 포스트 스크롤 페이지 프래그먼트입니다.
  */
+//TODO swipe refresh 추가
 @AndroidEntryPoint
 class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
     VerticalViewPagerClickListener,
     GridPhotoClickListener {
     private lateinit var binding: HomeAFragmentBinding
     private val viewModel: HomeViewModel by viewModels()
-    private val postList = MutableLiveData<List<Posts>>()
+   // private val postList = MutableLiveData<List<Posts>>()
     private val gridAdapter = GridPostAdapter(gridPhotoClickListener = this)
-    private lateinit var userPref :PreferenceManager
+    private lateinit var userPref: PreferenceManager
+    //private lateinit var layoutMode : String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,13 +65,15 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
         userPref = PreferenceManager(requireContext().applicationContext)
         runBlocking {
             launch {
-                if(userPref.firstActivate.first().isNullOrEmpty()){
+                if (userPref.firstActivate.first().isNullOrEmpty()) {
                     val dialog = GenderSelectionDialog()
                     dialog.show(parentFragmentManager, "gender_selection_dialog")
                     userPref.isNotFirstActivate()  //테스트를 위해 계속 띄우려고 지워둠 ! -> 거슬려서 활성화
+                    //TODO : 아직 다이얼로그 띄우기만하고 클릭시 api 요청 파라미터에 넣는 작업 x -> 필터기능 파라미터로 전부 정리되고나면 pref 에 넣어 관리할것
                 }
             }
         }
+
         // 상단 메뉴 - 랜덤 모드 선택이 디폴트
         binding.appBarRandom.isSelected = true
 
@@ -83,35 +89,52 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
         /*response 로 post 를 받아서 중첩 viewPager 와 recyclerView 모두에게 adapter 연결/submitList 후 visibility 로 노출을 관리한다
         (전환 속도 감소, 메모리에 무리가 가지않는다면 ok)*/
         photoLayoutVisibilityMode(true) // default ui visibility
-        viewModel.response.observe(viewLifecycleOwner) { response ->
-            with(binding.homeMainViewpager) {
-                adapter = DefaultPostAdapter(this@HomeFragment, this@HomeFragment).apply {
-                    submitList(response.posts)
-                }
-                getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
-            }
-            postList.value = response.posts
-            with(binding.gridRecyclerView) {
+        viewModel.response.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    val response = resource.value
 
-                //staggeredGrid layoutManager 연결
-                layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                adapter = gridAdapter.apply {
-                    addItemDecoration(GridSpaceItemDecoration(2,6))
-                    submitList(response.posts)
+                    //1개씩 보기 뷰페이저 세팅
+                    with(binding.homeMainViewpager) {
+                        adapter = DefaultPostAdapter(this@HomeFragment, this@HomeFragment).apply {
+                            submitList(response.posts)
+                        }
+                        getChildAt(0).overScrollMode =
+                            RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
+                    }
+
+                    //postList.value = response.posts
+
+                    // 2-3개 씩 모아보기 리사이클러뷰 세팅
+                    with(binding.gridRecyclerView) {
+                        //staggeredGrid layoutManager 연결
+                        layoutManager =
+                            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                        adapter = gridAdapter.apply {
+                            addItemDecoration(GridSpaceItemDecoration(2, 6))
+                            submitList(response.posts)
+                        }
+                        visibility = View.INVISIBLE // 기본 설정 invisible
+                    }
                 }
-                Log.d(TAG, "HomeFragment - setMainViewPagerUI: $gridAdapter & $adapter");
-                visibility = View.INVISIBLE
+                is Resource.Loading -> {
+
+                }
+                else -> {
+
+                }
             }
         }
     }
 
     private fun editGridSpanCount(spanCount: Int) {
-        with(binding.gridRecyclerView){
-            layoutManager = StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL)
+        with(binding.gridRecyclerView) {
+            layoutManager =
+                StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL)
             while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
                 removeItemDecorationAt(0)
             }
-            addItemDecoration(GridSpaceItemDecoration(spanCount,6))
+            addItemDecoration(GridSpaceItemDecoration(spanCount, 6))
             gridAdapter.editSpanCountBtnClicked(spanCount)  // 이미지 높이 조정을 위한 리스너에 span 값 전송
         }
     }
@@ -189,7 +212,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
         findNavController().navigate(R.id.action_global_to_userInfoFragment)
     }
 
-    override fun gridPhotoClicked(postIndex:Int) {
+    override fun gridPhotoClicked(postIndex: Int) {
         //grid 각 포토 클릭시 !!
     }
 }

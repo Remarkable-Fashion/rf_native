@@ -22,6 +22,7 @@ import com.lf.fashion.ui.OnScrollUtils
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
+//TODO swipe refresh 추가
 
 @AndroidEntryPoint
 class ScrapFragment : Fragment(), GridPhotoClickListener {
@@ -49,8 +50,8 @@ class ScrapFragment : Fragment(), GridPhotoClickListener {
         onScrollListener = OnScrollUtils { loadMorePost() }
         binding.myNestedScrollView.setOnScrollChangeListener(onScrollListener)
 
-        viewModel.postResponse.observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let { resources ->
+        viewModel.postResponse.observe(viewLifecycleOwner) {
+           resources ->
                 when (resources) {
                     is Resource.Success -> {
                         val response = resources.value
@@ -90,7 +91,7 @@ class ScrapFragment : Fragment(), GridPhotoClickListener {
                     }
                 }
 
-            }
+
         }
     }
 

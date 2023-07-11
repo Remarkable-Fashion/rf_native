@@ -40,8 +40,8 @@ class ScrapVerticalFragment : Fragment(),
 
 
 
-        viewModel.postResponse.observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let { resource ->
+        viewModel.postResponse.observe(viewLifecycleOwner) { /*event ->
+            event.getContentIfNotHandled()?.let {*/ resource ->
                 when (resource) {
                     is Resource.Success -> {
                         val response = resource.value
@@ -67,7 +67,7 @@ class ScrapVerticalFragment : Fragment(),
 
                     }
                 }
-            }
+           // }
         }
     }
 
