@@ -1,7 +1,10 @@
 package com.lf.fashion.ui.home
 
+import com.lf.fashion.data.response.Posts
+
 interface VerticalViewPagerClickListener {
-    fun shareBtnClicked(bool:Boolean)
-    fun photoZipBtnClicked(bool: Boolean)
-    fun infoBtnClicked(bool:Boolean)
+    fun likeBtnClicked(likeState: Boolean,post: Posts)
+    fun shareBtnClicked()
+    fun photoZipBtnClicked()
+    fun infoBtnClicked()
 }

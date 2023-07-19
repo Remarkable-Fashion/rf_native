@@ -8,6 +8,7 @@ import com.lf.fashion.data.common.Event
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.HomeRepository
+import com.lf.fashion.data.response.MsgResponse
 import com.lf.fashion.data.response.RandomPostResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -23,6 +24,10 @@ class HomeViewModel @Inject constructor(
 
     private val _response = MutableLiveData<Resource<RandomPostResponse>>()
     var response: LiveData<Resource<RandomPostResponse>> = _response
+
+    private val _createLikeResponse = MutableLiveData<Resource<MsgResponse>>()
+    var createLikeResponse = _createLikeResponse
+
     private val userPreferences = PreferenceManager(context)
 
       init {
@@ -43,6 +48,12 @@ class HomeViewModel @Inject constructor(
                 _response.value = homeRepository.getRandomPost(sex, take)
                 Log.d(TAG, "HomeViewModel - getPostList: private ! ${_response.value}")
             }
+        }
+    }
+
+    fun createLike(postId : Int){
+        viewModelScope.launch {
+            _createLikeResponse.value =  homeRepository.createLike(postId)
         }
     }
 }

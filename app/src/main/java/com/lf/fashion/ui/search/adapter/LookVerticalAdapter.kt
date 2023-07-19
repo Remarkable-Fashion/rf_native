@@ -5,9 +5,7 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.lf.fashion.data.response.Post
 import com.lf.fashion.data.response.Posts
-import com.lf.fashion.data.response.RandomPostResponse
 import com.lf.fashion.databinding.ItemSearchResultItemVerticalBinding
 import com.lf.fashion.databinding.ItemSearchVerticalBinding
 import com.lf.fashion.ui.home.adapter.DefaultPostDiff

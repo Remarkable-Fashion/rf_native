@@ -3,8 +3,6 @@ package com.lf.fashion.data.network
 import android.content.Context
 import com.lf.fashion.data.network.api.*
 import com.lf.fashion.data.network.api.test.ChipTestApi
-import com.lf.fashion.data.network.api.test.PhotoTestApi
-import com.lf.fashion.data.response.Post
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,15 +13,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
-    @Singleton
-    @Provides
-    fun provideTestImageApi(
-        remoteDataSource: RemoteDataSource,
-        @ApplicationContext context: Context
-    ): PhotoTestApi {
-        return remoteDataSource.buildTestApi(PhotoTestApi::class.java,context)
-    }
 
     @Singleton
     @Provides
@@ -48,8 +37,8 @@ object AppModule {
     @Provides
     fun providePostApi(
         remoteDataSource: RemoteDataSource
-    ): PostApi {
-        return remoteDataSource.buildApi(PostApi::class.java)
+    ): MainHomeApi {
+        return remoteDataSource.buildApi(MainHomeApi::class.java)
     }
 
     @Singleton

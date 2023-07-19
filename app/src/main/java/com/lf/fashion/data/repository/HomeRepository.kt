@@ -1,15 +1,14 @@
 package com.lf.fashion.data.repository
 
 import com.lf.fashion.data.network.SafeApiCall
-import com.lf.fashion.data.network.api.PostApi
+import com.lf.fashion.data.network.api.MainHomeApi
 import com.lf.fashion.data.network.api.test.ChipTestApi
-import com.lf.fashion.data.network.api.test.PhotoTestApi
 import com.lf.fashion.data.response.*
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
     //private val photoTestApi : PhotoTestApi,
-    private val postApi: PostApi,
+    private val postApi: MainHomeApi,
     private val chipTestApi: ChipTestApi
 ) : SafeApiCall {
 
@@ -38,5 +37,9 @@ class HomeRepository @Inject constructor(
 
     suspend fun getRandomPostPublic(sex: String, take: Int) = safeApiCall {
         postApi.getRandomPostPublic(sex, take)
+    }
+
+    suspend fun createLike(postId : Int) = safeApiCall {
+        postApi.createLike(postId)
     }
 }

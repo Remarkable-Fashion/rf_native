@@ -1,13 +1,10 @@
 package com.lf.fashion.ui.scrap
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -25,6 +22,7 @@ import com.lf.fashion.ui.GridPhotoClickListener
 import com.lf.fashion.ui.GridPostAdapter
 import com.lf.fashion.ui.OnScrollUtils
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
+import com.lf.fashion.ui.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
@@ -61,18 +59,6 @@ class ScrapFragment : Fragment(), GridPhotoClickListener {
 
         val authKey = runBlocking { requestAuthKey.await() }
 
-        val loginDialog = AlertDialog.Builder(requireContext())
-            .setMessage("로그인 후 이용가능합니다.")
-            .setPositiveButton("로그인하러 가기") { _, _ ->
-                val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-                val loginMenuItem = bottomNavigationView.menu.findItem(R.id.navigation_mypage)
-                loginMenuItem.isChecked = true
-                bottomNavigationView.selectedItemId = R.id.navigation_mypage
-            }
-            .setNegativeButton("닫기"){_,_->
-                findNavController().navigateUp()
-            }
-
         if (authKey.isNotEmpty()) {
             gridPostAdapter = GridPostAdapter(3, this@ScrapFragment, scrapPage = true)
 
@@ -108,7 +94,7 @@ class ScrapFragment : Fragment(), GridPhotoClickListener {
                     }
                     is Resource.Failure -> {
                         if (resources.errorCode == 401) {
-                            loginDialog.show()
+                            showRequireLoginDialog()
                         } else {
                             Log.e(TAG, "onViewCreated postList response Error: $resources ")
                         }
@@ -118,11 +104,9 @@ class ScrapFragment : Fragment(), GridPhotoClickListener {
 
                     }
                 }
-
-
             }
         } else {
-            loginDialog.show()
+            showRequireLoginDialog()
 
         }
 

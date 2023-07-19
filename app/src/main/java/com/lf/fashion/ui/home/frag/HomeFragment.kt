@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -28,10 +29,11 @@ import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.GridPostAdapter
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener
+import com.lf.fashion.ui.PrefCheckService
+import com.lf.fashion.ui.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlin.math.log
 
 /**
@@ -44,11 +46,14 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
     GridPhotoClickListener {
     private lateinit var binding: HomeAFragmentBinding
     private val viewModel: HomeViewModel by viewModels()
-   // private val postList = MutableLiveData<List<Posts>>()
-    private val gridAdapter = GridPostAdapter(gridPhotoClickListener = this)
-    private lateinit var userPref: PreferenceManager
-    //private lateinit var layoutMode : String
 
+    // private val postList = MutableLiveData<List<Posts>>()
+    private val gridAdapter = GridPostAdapter(gridPhotoClickListener = this)
+    private val defaultAdapter = DefaultPostAdapter(this@HomeFragment, this@HomeFragment)
+    private lateinit var userPref: PreferenceManager
+
+    //private lateinit var layoutMode : String
+    private lateinit var prefCheckService: PrefCheckService
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -63,6 +68,8 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
 
         //앱 최초 실행시 gender 선택 다이얼로그 띄우기
         userPref = PreferenceManager(requireContext().applicationContext)
+        prefCheckService = PrefCheckService(userPref)
+
         runBlocking {
             launch {
                 if (userPref.firstActivate.first().isNullOrEmpty()) {
@@ -96,7 +103,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
 
                     //1개씩 보기 뷰페이저 세팅
                     with(binding.homeMainViewpager) {
-                        adapter = DefaultPostAdapter(this@HomeFragment, this@HomeFragment).apply {
+                        adapter = defaultAdapter.apply {
                             submitList(response.posts)
                         }
                         getChildAt(0).overScrollMode =
@@ -196,19 +203,48 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
         binding.gridRecyclerView.isVisible = !default
     }
 
-    //vertical fragment 에서 공유버튼 클릭시 바텀 다이얼로그를 생성한다.
-    override fun shareBtnClicked(bool: Boolean) {
-        if (bool) {
-            val dialog = HomeBottomSheetFragment()
-            dialog.show(parentFragmentManager, "bottom_sheet")
+    override fun likeBtnClicked(likeState: Boolean, post: Posts) {
+        if (prefCheckService.loginCheck()) {
+            when(likeState){
+                true ->{
+                    //deleteLike
+                }
+                false ->{
+                    viewModel.createLike(post.id)
+                    viewModel.createLikeResponse.observe(viewLifecycleOwner) { resources ->
+                        if (resources is Resource.Success && resources.value.success != null) {
+                            val currentList = defaultAdapter.currentList
+                            val position = currentList.indexOf(post)
+
+                            if (position != -1) {
+                                //defaultAdapter.currentList[position].isFavorite = true
+                                defaultAdapter.currentList[position].apply {
+                                    isFavorite = true
+                                    count.favorites = count.favorites?.plus(1)
+                                }
+                                defaultAdapter.notifyItemChanged(position)
+
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
-    override fun photoZipBtnClicked(bool: Boolean) {
+    //vertical fragment 에서 공유버튼 클릭시 바텀 다이얼로그를 생성한다.
+    override fun shareBtnClicked() {
+
+        val dialog = HomeBottomSheetFragment()
+        dialog.show(parentFragmentManager, "bottom_sheet")
+
+    }
+
+    override fun photoZipBtnClicked() {
         findNavController().navigate(R.id.action_global_to_photoZipFragment)
     }
 
-    override fun infoBtnClicked(bool: Boolean) {
+    override fun infoBtnClicked() {
         findNavController().navigate(R.id.action_global_to_userInfoFragment)
     }
 

@@ -108,12 +108,12 @@
                 android:background="@drawable/selector_heart_btn"
                 />
             <TextView
+                android:id="@+id/likes_value"
                 style="@style/main_bottom_menu_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="5dp"
-                android:text="@{String.valueOf(post.count.favorites)}"
                 tools:text="130"/>
 
             <ImageView

@@ -1,8 +1,8 @@
 package com.lf.fashion.data.response
 
 data class Count(
-    val favorites : Int?=0,
-    val followers : Int?=0,
-    val following : Int?=0,
-    val posts :Int?=0
+    var favorites : Int?=0,
+    var followers : Int?=0,
+    var following : Int?=0,
+    var posts :Int?=0
 )

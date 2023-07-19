@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.ImageUrl
+import com.lf.fashion.data.response.Posts
 
 
 class ScrapVerticalFragment : Fragment(),
@@ -42,32 +43,32 @@ class ScrapVerticalFragment : Fragment(),
 
         viewModel.postResponse.observe(viewLifecycleOwner) { /*event ->
             event.getContentIfNotHandled()?.let {*/ resource ->
-                when (resource) {
-                    is Resource.Success -> {
-                        val response = resource.value
+            when (resource) {
+                is Resource.Success -> {
+                    val response = resource.value
 
-                        binding.verticalViewpager.apply {
-                            adapter = DefaultPostAdapter(
-                                this@ScrapVerticalFragment,
-                                this@ScrapVerticalFragment
-                            )
-                            (adapter as? DefaultPostAdapter)?.apply {
-                                submitList(response.posts)
-                                //scrapFragment 에서 선택한 item 의 index 를 시작 index 로 지정 , animation false 처리
-                                setCurrentItem(viewModel.startIndex.value ?: 0, false)
-                            }
-                            getChildAt(0).overScrollMode =
-                                RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
+                    binding.verticalViewpager.apply {
+                        adapter = DefaultPostAdapter(
+                            this@ScrapVerticalFragment,
+                            this@ScrapVerticalFragment
+                        )
+                        (adapter as? DefaultPostAdapter)?.apply {
+                            submitList(response.posts)
+                            //scrapFragment 에서 선택한 item 의 index 를 시작 index 로 지정 , animation false 처리
+                            setCurrentItem(viewModel.startIndex.value ?: 0, false)
                         }
-                    }
-                    is Resource.Failure -> {
-
-                    }
-                    is Resource.Loading -> {
-
+                        getChildAt(0).overScrollMode =
+                            RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
                     }
                 }
-           // }
+                is Resource.Failure -> {
+
+                }
+                is Resource.Loading -> {
+
+                }
+            }
+            // }
         }
     }
 
@@ -80,18 +81,21 @@ class ScrapVerticalFragment : Fragment(),
         }
     }
 
-    override fun shareBtnClicked(bool: Boolean) {
-        if (bool) {
-            val dialog = HomeBottomSheetFragment()
-            dialog.show(parentFragmentManager, "bottom_sheet")
-        }
+    override fun likeBtnClicked(likeState: Boolean, post: Posts) {
+
     }
 
-    override fun photoZipBtnClicked(bool: Boolean) {
+    override fun shareBtnClicked() {
+        val dialog = HomeBottomSheetFragment()
+        dialog.show(parentFragmentManager, "bottom_sheet")
+
+    }
+
+    override fun photoZipBtnClicked() {
         findNavController().navigate(R.id.action_global_to_photoZipFragment)
     }
 
-    override fun infoBtnClicked(bool: Boolean) {
+    override fun infoBtnClicked() {
         findNavController().navigate(R.id.action_global_to_userInfoFragment)
     }
 }

@@ -3,6 +3,7 @@ package com.lf.fashion.ui
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -11,9 +12,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.lf.fashion.R
+import com.lf.fashion.TAG
 import com.lf.fashion.data.response.ChipContents
 import kotlin.math.roundToInt
 
@@ -82,3 +85,23 @@ fun Fragment.showPermissionDialog(
     }.show()
 }
 
+fun Fragment.showRequireLoginDialog(alreadyHome: Boolean? = null) {
+    val loginDialog = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+        .setMessage("로그인 후 이용가능합니다.")
+        .setPositiveButton("로그인하러 가기") { _, _ ->
+            //그냥 navigate to 로 보낼 경우 바텀 메뉴 이동에 오류가 생길 때가 있어서 bottomNavigationView 를 통해 이동, checked 조정
+            val bottomNavigationView =
+                requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
+            val loginMenuItem = bottomNavigationView.menu.findItem(R.id.navigation_mypage)
+            loginMenuItem.isChecked = true
+            bottomNavigationView.selectedItemId = R.id.navigation_mypage
+        }
+        .setNegativeButton("닫기") { _, _ ->
+            if(alreadyHome != true){
+                findNavController().navigateUp()
+            }
+        }
+
+    loginDialog.show()
+
+}

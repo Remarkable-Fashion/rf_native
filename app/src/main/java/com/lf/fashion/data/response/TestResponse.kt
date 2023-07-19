@@ -39,6 +39,7 @@ import kotlinx.parcelize.Parcelize
  * 2023-7-06 차례로 의존 제거중 ...
 ** */
 
+/*
 @Parcelize
 data class Post(
     val id : Int,
@@ -47,6 +48,7 @@ data class Post(
     val userId : String,
     val likes:String
 ) : Parcelable
+*/
 
 @Parcelize
 data class Photo(
