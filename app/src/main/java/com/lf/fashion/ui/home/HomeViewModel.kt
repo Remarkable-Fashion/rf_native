@@ -6,6 +6,7 @@ import androidx.lifecycle.*
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
+import com.lf.fashion.data.repository.CommunicateRepository
 import com.lf.fashion.data.repository.HomeRepository
 import com.lf.fashion.data.response.MsgResponse
 import com.lf.fashion.data.response.RandomPostResponse
@@ -18,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val homeRepository: HomeRepository,
+    private val communicateRepository: CommunicateRepository,
     @ApplicationContext context: Context
 ) : ViewModel() {
 
@@ -53,9 +55,9 @@ class HomeViewModel @Inject constructor(
     fun changeLikesState(create : Boolean, postId : Int){
         viewModelScope.launch {
             if(create){
-                _changeLikeResponse.value =  homeRepository.createLike(postId)
+                _changeLikeResponse.value =  communicateRepository.createLike(postId)
             }else{
-                _changeLikeResponse.value = homeRepository.deleteLike(postId)
+                _changeLikeResponse.value = communicateRepository.deleteLike(postId)
             }
         }
     }

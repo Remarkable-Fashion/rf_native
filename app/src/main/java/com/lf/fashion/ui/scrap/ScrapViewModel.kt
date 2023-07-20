@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.Event
 import com.lf.fashion.data.network.Resource
+import com.lf.fashion.data.repository.CommunicateRepository
 import com.lf.fashion.data.repository.HomeRepository
 import com.lf.fashion.data.repository.ScrapRepository
 import com.lf.fashion.data.response.MsgResponse
@@ -17,7 +18,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ScrapViewModel @Inject constructor(private val scrapRepository: ScrapRepository) : ViewModel() {
+class ScrapViewModel @Inject constructor(private val scrapRepository: ScrapRepository,private val communicateRepository: CommunicateRepository) : ViewModel() {
 
     private val _postResponse = MutableLiveData<Resource<RandomPostResponse>>()
     var postResponse: LiveData<Resource<RandomPostResponse>> = _postResponse
@@ -56,9 +57,9 @@ class ScrapViewModel @Inject constructor(private val scrapRepository: ScrapRepos
     fun changeLikesState(create : Boolean, postId : Int){
         viewModelScope.launch {
             if(create){
-                _changeLikeResponse.value =  scrapRepository.createLike(postId)
+                _changeLikeResponse.value =  communicateRepository.createLike(postId)
             }else{
-                _changeLikeResponse.value = scrapRepository.deleteLike(postId)
+                _changeLikeResponse.value = communicateRepository.deleteLike(postId)
             }
         }
     }
