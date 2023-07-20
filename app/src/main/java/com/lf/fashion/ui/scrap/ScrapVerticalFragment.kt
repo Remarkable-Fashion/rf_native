@@ -19,12 +19,18 @@ import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.ImageUrl
 import com.lf.fashion.data.response.Posts
+import com.lf.fashion.ui.PrefCheckService
 
 
 class ScrapVerticalFragment : Fragment(),
     PhotoClickListener, VerticalViewPagerClickListener {
     private lateinit var binding: ScrapVerticalFragmentBinding
     private val viewModel: ScrapViewModel by hiltNavGraphViewModels(R.id.navigation_scrap) // hilt navi 함께 사용할때 viewModel 공유
+    private val defaultAdapter =  DefaultPostAdapter(
+        this@ScrapVerticalFragment,
+        this@ScrapVerticalFragment
+    )
+    private lateinit var likeClickedPosts: Posts
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,10 +54,7 @@ class ScrapVerticalFragment : Fragment(),
                     val response = resource.value
 
                     binding.verticalViewpager.apply {
-                        adapter = DefaultPostAdapter(
-                            this@ScrapVerticalFragment,
-                            this@ScrapVerticalFragment
-                        )
+                        adapter = defaultAdapter
                         (adapter as? DefaultPostAdapter)?.apply {
                             submitList(response.posts)
                             //scrapFragment 에서 선택한 item 의 index 를 시작 index 로 지정 , animation false 처리
@@ -70,6 +73,24 @@ class ScrapVerticalFragment : Fragment(),
             }
             // }
         }
+
+        //좋아요 상태 변화 관찰&업데이트
+        viewModel.changeLikeResponse.observe(viewLifecycleOwner) {
+                resources ->
+            if (resources is Resource.Success && resources.value.success != null) {
+                val currentList = defaultAdapter.currentList
+                val position = currentList.indexOf(likeClickedPosts)
+
+                if (position != -1) {
+                    defaultAdapter.currentList[position].apply {
+                        isFavorite = likeClickedPosts.isFavorite
+                        count.favorites = likeClickedPosts.count.favorites
+                    }
+                    defaultAdapter.notifyItemChanged(position,"FAVORITES_COUNT")
+
+                }
+            }
+        }
     }
 
 
@@ -82,7 +103,18 @@ class ScrapVerticalFragment : Fragment(),
     }
 
     override fun likeBtnClicked(likeState: Boolean, post: Posts) {
-
+        when (likeState) {
+            true -> {
+                viewModel.changeLikesState(create = false,post.id)
+                post.count.favorites = post.count.favorites?.minus(1) // 좋아요 카운트 -1
+            }
+            false -> {
+                viewModel.changeLikesState(create = true,post.id)
+                post.count.favorites = post.count.favorites?.plus(1)  // 좋아요 카운트 +1
+            }
+        }
+        post.isFavorite = !post.isFavorite!!  // 좋아요 상태 반전
+        likeClickedPosts = post
     }
 
     override fun shareBtnClicked() {
