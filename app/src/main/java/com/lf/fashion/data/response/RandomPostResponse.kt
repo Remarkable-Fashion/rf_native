@@ -16,7 +16,7 @@ data class Posts(
     val id: Int,
     var isFavorite: Boolean?=false,
     val isFollow: Boolean?=false,
-    val isScrap: Boolean?, // default false 로 주게되면 scrap 모아보기에서 해제된 상태로 보이기 때문에 그냥 null로 받는다 .
+    var isScrap: Boolean?, // default false 로 주게되면 scrap 모아보기에서 해제된 상태로 보이기 때문에 그냥 null로 받는다 .
     val createdAt : String,
     val images: List<ImageUrl>,
     val user: UserInfo?,

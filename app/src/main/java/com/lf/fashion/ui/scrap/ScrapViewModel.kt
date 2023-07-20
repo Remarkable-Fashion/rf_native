@@ -32,9 +32,12 @@ class ScrapViewModel @Inject constructor(private val scrapRepository: ScrapRepos
     private val _changeLikeResponse = MutableLiveData<Resource<MsgResponse>>()
     var changeLikeResponse = _changeLikeResponse
 
-    init {
+    private val _scrapResponse = MutableLiveData<Resource<MsgResponse>>()
+    val scrapResponse = _scrapResponse
+
+    /*init {
         getPostList()
-    }
+    }*/
 
      fun getPostList() {
         viewModelScope.launch {
@@ -60,6 +63,15 @@ class ScrapViewModel @Inject constructor(private val scrapRepository: ScrapRepos
                 _changeLikeResponse.value =  communicateRepository.createLike(postId)
             }else{
                 _changeLikeResponse.value = communicateRepository.deleteLike(postId)
+            }
+        }
+    }
+    fun changeScrapState(create : Boolean, postId : Int){
+        viewModelScope.launch {
+            if(create){
+                _scrapResponse.value =  communicateRepository.createScrap(postId)
+            }else{
+                _scrapResponse.value = communicateRepository.deleteScrap(postId)
             }
         }
     }

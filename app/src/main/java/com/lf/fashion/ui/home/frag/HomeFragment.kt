@@ -45,7 +45,9 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
     private val gridAdapter = GridPostAdapter(gridPhotoClickListener = this)
     private val defaultAdapter = DefaultPostAdapter(this@HomeFragment, this@HomeFragment)
     private lateinit var userPref: PreferenceManager
- private lateinit var likeClickedPosts: Posts
+    private lateinit var likeClickedPosts: Posts
+    private lateinit var scrapClickedPosts : Posts
+
     //private lateinit var layoutMode : String
     private lateinit var prefCheckService: PrefCheckService
     override fun onCreateView(
@@ -85,26 +87,12 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
         binding.topMenu.children.forEach { it.setOnClickListener(this) }
 
         //좋아요 상태 변화 관찰&업데이트
-        viewModel.changeLikeResponse.observe(viewLifecycleOwner) {
-                resources ->
-            if (resources is Resource.Success && resources.value.success != null) {
-                val currentList = defaultAdapter.currentList
-                val position = currentList.indexOf(likeClickedPosts)
+        updateLikeState()
 
-                if (position != -1) {
-                    defaultAdapter.currentList[position].apply {
-                        isFavorite = likeClickedPosts.isFavorite
-                        count.favorites = likeClickedPosts.count.favorites
-                    }
-                    defaultAdapter.notifyItemChanged(position,"FAVORITES_COUNT")
-
-                }
-            }
-
-
-        }
-
+        //스크랩 상태 변화 관찰&업데이트
+        updateScrapState()
     }
+
 
     private fun setMainViewPagerUI() {
         /*response 로 post 를 받아서 중첩 viewPager 와 recyclerView 모두에게 adapter 연결/submitList 후 visibility 로 노출을 관리한다
@@ -217,16 +205,50 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
         binding.gridRecyclerView.isVisible = !default
     }
 
+    private fun updateLikeState() {
+        viewModel.likeResponse.observe(viewLifecycleOwner) { resources ->
+            if (resources is Resource.Success && resources.value.success != null) {
+                val currentList = defaultAdapter.currentList
+                val position = currentList.indexOf(likeClickedPosts)
+
+                if (position != -1) {
+                    defaultAdapter.currentList[position].apply {
+                        isFavorite = likeClickedPosts.isFavorite
+                        count.favorites = likeClickedPosts.count.favorites
+                    }
+                    defaultAdapter.notifyItemChanged(position, "FAVORITES_COUNT")
+
+                }
+            }
+        }
+    }
+
+    private fun updateScrapState(){
+        viewModel.scrapResponse.observe(viewLifecycleOwner){ resources->
+            if(resources is Resource.Success && resources.value.success !=null){
+                val currentList = defaultAdapter.currentList
+                val position = currentList.indexOf(scrapClickedPosts)
+
+                if(position != -1){
+                    defaultAdapter.currentList[position].apply {
+                        isScrap = scrapClickedPosts.isScrap
+                    }
+                    defaultAdapter.notifyItemChanged(position,"SCRAP_STATE")
+                }
+            }
+        }
+    }
+
     override fun likeBtnClicked(likeState: Boolean, post: Posts) {
         if (prefCheckService.loginCheck()) {
             //likeState 기존 좋아요 상태
             when (likeState) {
                 true -> {
-                    viewModel.changeLikesState(create = false,post.id)
+                    viewModel.changeLikesState(create = false, post.id)
                     post.count.favorites = post.count.favorites?.minus(1) // 좋아요 카운트 -1
                 }
                 false -> {
-                    viewModel.changeLikesState(create = true,post.id)
+                    viewModel.changeLikesState(create = true, post.id)
                     post.count.favorites = post.count.favorites?.plus(1)  // 좋아요 카운트 +1
                 }
             }
@@ -235,9 +257,18 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
         }
     }
 
+    override fun scrapBtnClicked(scrapState: Boolean, post: Posts) {
+        if (prefCheckService.loginCheck()) {
+            //scrapState 기존 스크랩 상태
+            viewModel.changeScrapState(create = !scrapState, post.id)
+            post.isScrap = !post.isScrap!!
+            scrapClickedPosts = post
+        }
+
+    }
+
     //vertical fragment 에서 공유버튼 클릭시 바텀 다이얼로그를 생성한다.
     override fun shareBtnClicked() {
-
         val dialog = HomeBottomSheetFragment()
         dialog.show(parentFragmentManager, "bottom_sheet")
 

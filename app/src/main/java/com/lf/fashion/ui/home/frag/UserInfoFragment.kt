@@ -1,7 +1,6 @@
 package com.lf.fashion.ui.home.frag
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
-import com.lf.fashion.TAG
 import com.lf.fashion.databinding.HomeBUserInfoFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.childChip

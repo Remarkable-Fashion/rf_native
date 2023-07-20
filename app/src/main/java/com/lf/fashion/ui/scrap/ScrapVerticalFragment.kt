@@ -19,18 +19,18 @@ import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.ImageUrl
 import com.lf.fashion.data.response.Posts
-import com.lf.fashion.ui.PrefCheckService
 
 
 class ScrapVerticalFragment : Fragment(),
     PhotoClickListener, VerticalViewPagerClickListener {
     private lateinit var binding: ScrapVerticalFragmentBinding
     private val viewModel: ScrapViewModel by hiltNavGraphViewModels(R.id.navigation_scrap) // hilt navi 함께 사용할때 viewModel 공유
-    private val defaultAdapter =  DefaultPostAdapter(
+    private val defaultAdapter = DefaultPostAdapter(
         this@ScrapVerticalFragment,
         this@ScrapVerticalFragment
     )
     private lateinit var likeClickedPosts: Posts
+    private lateinit var scrapClickedPosts : Posts
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +44,6 @@ class ScrapVerticalFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         cancelBtnBackStack(binding.backBtn)
-
 
 
         viewModel.postResponse.observe(viewLifecycleOwner) { /*event ->
@@ -75,8 +74,12 @@ class ScrapVerticalFragment : Fragment(),
         }
 
         //좋아요 상태 변화 관찰&업데이트
-        viewModel.changeLikeResponse.observe(viewLifecycleOwner) {
-                resources ->
+        updateLikeState()
+        updateScrapState()
+    }
+
+    private fun updateLikeState() {
+        viewModel.changeLikeResponse.observe(viewLifecycleOwner) { resources ->
             if (resources is Resource.Success && resources.value.success != null) {
                 val currentList = defaultAdapter.currentList
                 val position = currentList.indexOf(likeClickedPosts)
@@ -86,14 +89,28 @@ class ScrapVerticalFragment : Fragment(),
                         isFavorite = likeClickedPosts.isFavorite
                         count.favorites = likeClickedPosts.count.favorites
                     }
-                    defaultAdapter.notifyItemChanged(position,"FAVORITES_COUNT")
+                    defaultAdapter.notifyItemChanged(position, "FAVORITES_COUNT")
 
                 }
             }
         }
     }
 
+    private fun updateScrapState(){
+        viewModel.scrapResponse.observe(viewLifecycleOwner){ resources->
+            if(resources is Resource.Success && resources.value.success !=null){
+                val currentList = defaultAdapter.currentList
+                val position = currentList.indexOf(scrapClickedPosts)
 
+                if(position != -1){
+                    defaultAdapter.currentList[position].apply {
+                        isScrap = scrapClickedPosts.isScrap
+                    }
+                    defaultAdapter.notifyItemChanged(position,"SCRAP_STATE")
+                }
+            }
+        }
+    }
     override fun photoClicked(bool: Boolean, photo: List<ImageUrl>) {
         if (bool) {
             val action =
@@ -105,16 +122,23 @@ class ScrapVerticalFragment : Fragment(),
     override fun likeBtnClicked(likeState: Boolean, post: Posts) {
         when (likeState) {
             true -> {
-                viewModel.changeLikesState(create = false,post.id)
+                viewModel.changeLikesState(create = false, post.id)
                 post.count.favorites = post.count.favorites?.minus(1) // 좋아요 카운트 -1
             }
             false -> {
-                viewModel.changeLikesState(create = true,post.id)
+                viewModel.changeLikesState(create = true, post.id)
                 post.count.favorites = post.count.favorites?.plus(1)  // 좋아요 카운트 +1
             }
         }
         post.isFavorite = !post.isFavorite!!  // 좋아요 상태 반전
         likeClickedPosts = post
+    }
+
+    override fun scrapBtnClicked(scrapState: Boolean, post: Posts) {
+        //scrapState 기존 스크랩 상태
+        viewModel.changeScrapState(create = !scrapState, post.id)
+        post.isScrap = !(post.isScrap?:true)
+        scrapClickedPosts = post
     }
 
     override fun shareBtnClicked() {

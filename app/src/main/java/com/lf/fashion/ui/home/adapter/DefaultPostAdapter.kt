@@ -49,6 +49,7 @@ class DefaultPostAdapter(
             binding.post = post
             binding.likeBtn.isSelected = post.isFavorite!!
             binding.likesValue.text = post.count.favorites.toString()
+            binding.scrapBtn.isSelected = post.isScrap?:true //null 인경우는 내 스크랩 모아보기이기 때문에, 모두 true
 
             nestedAdapter.submitList(post.images)
 
@@ -58,7 +59,9 @@ class DefaultPostAdapter(
                 verticalViewPagerClickListener.likeBtnClicked(it.isSelected,post)
 
             }
-
+            binding.scrapBtn.setOnClickListener {
+                verticalViewPagerClickListener.scrapBtnClicked(it.isSelected,post)
+            }
             binding.shareBtn.setOnClickListener {
                 verticalViewPagerClickListener.shareBtnClicked()
             }
@@ -98,6 +101,10 @@ class DefaultPostDiff : DiffUtil.ItemCallback<Posts>() {
 
         if (oldItem.count.favorites != newItem.count.favorites) {
             payload.add("FAVORITES_COUNT")
+        }
+
+        if (oldItem.isScrap != newItem.isScrap) {
+            payload.add("SCRAP_STATE")
         }
 
         return if (payload.isEmpty()) null else payload

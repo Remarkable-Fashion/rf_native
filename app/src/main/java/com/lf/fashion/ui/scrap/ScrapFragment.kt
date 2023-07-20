@@ -18,11 +18,8 @@ import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.Posts
 import com.lf.fashion.data.response.RandomPostResponse
 import com.lf.fashion.databinding.ScrapFragmentBinding
-import com.lf.fashion.ui.GridPhotoClickListener
-import com.lf.fashion.ui.GridPostAdapter
-import com.lf.fashion.ui.OnScrollUtils
+import com.lf.fashion.ui.*
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
-import com.lf.fashion.ui.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
@@ -37,7 +34,8 @@ class ScrapFragment : Fragment(), GridPhotoClickListener {
     private lateinit var gridPostAdapter: GridPostAdapter
     private lateinit var recentResponse: RandomPostResponse
     private lateinit var onScrollListener: NestedScrollView.OnScrollChangeListener
-    private lateinit var userPref: PreferenceManager
+    private lateinit var userPref : PreferenceManager
+    private lateinit var prefCheckService: PrefCheckService
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,21 +49,16 @@ class ScrapFragment : Fragment(), GridPhotoClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userPref = PreferenceManager(requireContext())
+        prefCheckService = PrefCheckService(userPref)
 
-        val requestAuthKey: Deferred<String> =
-            CoroutineScope(Dispatchers.IO).async {
-                userPref.accessToken.first() ?: ""
-            }
-
-        val authKey = runBlocking { requestAuthKey.await() }
-
-        if (authKey.isNotEmpty()) {
+        if (prefCheckService.loginCheck()) {
             gridPostAdapter = GridPostAdapter(3, this@ScrapFragment, scrapPage = true)
 
             //스크롤 리스너 설정
             onScrollListener = OnScrollUtils { loadMorePost() }
             binding.myNestedScrollView.setOnScrollChangeListener(onScrollListener)
 
+            viewModel.getPostList()
             viewModel.postResponse.observe(viewLifecycleOwner) { resources ->
                 when (resources) {
                     is Resource.Success -> {
