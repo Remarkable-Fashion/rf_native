@@ -6,12 +6,21 @@ import retrofit2.http.*
 
 interface MainHomeApi {
     @GET("post")
-    suspend fun getRandomPost(@Query("sex") sex: String,@Query("take") take : Int): RandomPostResponse
+    suspend fun getRandomPost(
+        @Query("sex") sex: String,
+        @Query("take") take: Int
+    ): RandomPostResponse
 
     @GET("post/public")
-    suspend fun getRandomPostPublic(@Query("sex") sex:String , @Query("take") take: Int) :RandomPostResponse
+    suspend fun getRandomPostPublic(
+        @Query("sex") sex: String,
+        @Query("take") take: Int
+    ): RandomPostResponse
 
     @POST("post/{id}/favorite")
-    suspend fun createLike(@Path("id") postId : Int) : MsgResponse
+    suspend fun createLike(@Path("id") postId: Int): MsgResponse
+
+    @DELETE("post/{id}/favorite")
+    suspend fun deleteLike(@Path("id") postId : Int) : MsgResponse
 }
 

@@ -42,4 +42,8 @@ class HomeRepository @Inject constructor(
     suspend fun createLike(postId : Int) = safeApiCall {
         postApi.createLike(postId)
     }
+
+    suspend fun deleteLike(postId : Int)=safeApiCall {
+        postApi.deleteLike(postId)
+    }
 }

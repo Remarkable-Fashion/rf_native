@@ -75,35 +75,32 @@ class DefaultPostAdapter(
 
         }
     }
-
-    fun likeStateChanged(post : Posts){
-
-    }
 }
 
 class DefaultPostDiff : DiffUtil.ItemCallback<Posts>() {
-    /*
-    override fun areItemsTheSame(
-        oldItem: RandomPostResponse,
-        newItem: RandomPostResponse
-    ): Boolean {
-        return oldItem.id == newItem.id
-    }
 
-    override fun areContentsTheSame(
-        oldItem: RandomPostResponse,
-        newItem: RandomPostResponse
-    ): Boolean {
-        return oldItem == newItem
-    }
-*/
     override fun areItemsTheSame(oldItem: Posts, newItem: Posts): Boolean {
         return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: Posts, newItem: Posts): Boolean {
-        return oldItem == newItem
+        return oldItem.copy(isFavorite = newItem.isFavorite, count = newItem.count) == newItem
+
     }
 
+    override fun getChangePayload(oldItem: Posts, newItem: Posts): Any? {
+
+        val payload = mutableSetOf<String>()
+
+        if (oldItem.isFavorite != newItem.isFavorite) {
+            payload.add("IS_FAVORITE")
+        }
+
+        if (oldItem.count.favorites != newItem.count.favorites) {
+            payload.add("FAVORITES_COUNT")
+        }
+
+        return if (payload.isEmpty()) null else payload
+    }
 }
 

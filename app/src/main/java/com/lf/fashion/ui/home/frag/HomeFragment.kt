@@ -2,22 +2,18 @@ package com.lf.fashion.ui.home.frag
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
-import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.*
@@ -30,11 +26,9 @@ import com.lf.fashion.ui.GridPostAdapter
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener
 import com.lf.fashion.ui.PrefCheckService
-import com.lf.fashion.ui.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
-import kotlin.math.log
 
 /**
  * 메인 포스트 스크롤 페이지 프래그먼트입니다.
@@ -51,7 +45,7 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
     private val gridAdapter = GridPostAdapter(gridPhotoClickListener = this)
     private val defaultAdapter = DefaultPostAdapter(this@HomeFragment, this@HomeFragment)
     private lateinit var userPref: PreferenceManager
-
+ private lateinit var likeClickedPosts: Posts
     //private lateinit var layoutMode : String
     private lateinit var prefCheckService: PrefCheckService
     override fun onCreateView(
@@ -89,6 +83,26 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
 
         //onclick listener 묶어서 한번에 달기
         binding.topMenu.children.forEach { it.setOnClickListener(this) }
+
+        //좋아요 상태 변화 관찰&업데이트
+        viewModel.changeLikeResponse.observe(viewLifecycleOwner) {
+                resources ->
+            if (resources is Resource.Success && resources.value.success != null) {
+                val currentList = defaultAdapter.currentList
+                val position = currentList.indexOf(likeClickedPosts)
+
+                if (position != -1) {
+                    defaultAdapter.currentList[position].apply {
+                        isFavorite = likeClickedPosts.isFavorite
+                        count.favorites = likeClickedPosts.count.favorites
+                    }
+                    defaultAdapter.notifyItemChanged(position,"FAVORITES_COUNT")
+
+                }
+            }
+
+
+        }
 
     }
 
@@ -205,30 +219,19 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
 
     override fun likeBtnClicked(likeState: Boolean, post: Posts) {
         if (prefCheckService.loginCheck()) {
-            when(likeState){
-                true ->{
-                    //deleteLike
+            //likeState 기존 좋아요 상태
+            when (likeState) {
+                true -> {
+                    viewModel.changeLikesState(create = false,post.id)
+                    post.count.favorites = post.count.favorites?.minus(1) // 좋아요 카운트 -1
                 }
-                false ->{
-                    viewModel.createLike(post.id)
-                    viewModel.createLikeResponse.observe(viewLifecycleOwner) { resources ->
-                        if (resources is Resource.Success && resources.value.success != null) {
-                            val currentList = defaultAdapter.currentList
-                            val position = currentList.indexOf(post)
-
-                            if (position != -1) {
-                                //defaultAdapter.currentList[position].isFavorite = true
-                                defaultAdapter.currentList[position].apply {
-                                    isFavorite = true
-                                    count.favorites = count.favorites?.plus(1)
-                                }
-                                defaultAdapter.notifyItemChanged(position)
-
-                            }
-                        }
-                    }
+                false -> {
+                    viewModel.changeLikesState(create = true,post.id)
+                    post.count.favorites = post.count.favorites?.plus(1)  // 좋아요 카운트 +1
                 }
             }
+            post.isFavorite = !post.isFavorite!!  // 좋아요 상태 반전
+            likeClickedPosts = post
         }
     }
 

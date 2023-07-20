@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
 import com.lf.fashion.TAG
-import com.lf.fashion.data.common.Event
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.HomeRepository
@@ -25,8 +24,8 @@ class HomeViewModel @Inject constructor(
     private val _response = MutableLiveData<Resource<RandomPostResponse>>()
     var response: LiveData<Resource<RandomPostResponse>> = _response
 
-    private val _createLikeResponse = MutableLiveData<Resource<MsgResponse>>()
-    var createLikeResponse = _createLikeResponse
+    private val _changeLikeResponse = MutableLiveData<Resource<MsgResponse>>()
+    var changeLikeResponse = _changeLikeResponse
 
     private val userPreferences = PreferenceManager(context)
 
@@ -51,9 +50,13 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun createLike(postId : Int){
+    fun changeLikesState(create : Boolean, postId : Int){
         viewModelScope.launch {
-            _createLikeResponse.value =  homeRepository.createLike(postId)
+            if(create){
+                _changeLikeResponse.value =  homeRepository.createLike(postId)
+            }else{
+                _changeLikeResponse.value = homeRepository.deleteLike(postId)
+            }
         }
     }
 }
