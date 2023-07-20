@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ScrapViewModel @Inject constructor(private val scrapRepository: ScrapRepository, private val homeRepository: HomeRepository) : ViewModel() {
+class ScrapViewModel @Inject constructor(private val scrapRepository: ScrapRepository) : ViewModel() {
 
     private val _postResponse = MutableLiveData<Resource<RandomPostResponse>>()
     var postResponse: LiveData<Resource<RandomPostResponse>> = _postResponse
@@ -56,9 +56,9 @@ class ScrapViewModel @Inject constructor(private val scrapRepository: ScrapRepos
     fun changeLikesState(create : Boolean, postId : Int){
         viewModelScope.launch {
             if(create){
-                _changeLikeResponse.value =  homeRepository.createLike(postId)
+                _changeLikeResponse.value =  scrapRepository.createLike(postId)
             }else{
-                _changeLikeResponse.value = homeRepository.deleteLike(postId)
+                _changeLikeResponse.value = scrapRepository.deleteLike(postId)
             }
         }
     }

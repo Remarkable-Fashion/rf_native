@@ -17,10 +17,5 @@ interface MainHomeApi {
         @Query("take") take: Int
     ): RandomPostResponse
 
-    @POST("post/{id}/favorite")
-    suspend fun createLike(@Path("id") postId: Int): MsgResponse
-
-    @DELETE("post/{id}/favorite")
-    suspend fun deleteLike(@Path("id") postId : Int) : MsgResponse
 }
 

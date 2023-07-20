@@ -65,4 +65,12 @@ object AppModule {
         return remoteDataSource.buildApi(SearchApi::class.java)
     }
 
+    @Singleton
+    @Provides
+    fun provideCommunicateApi(
+        remoteDataSource: RemoteDataSource
+    ) : CommunicateApi {
+        return remoteDataSource.buildApi(CommunicateApi::class.java)
+    }
+
 }
