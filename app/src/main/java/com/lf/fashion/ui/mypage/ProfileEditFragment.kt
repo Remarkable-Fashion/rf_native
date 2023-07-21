@@ -15,10 +15,7 @@ import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.response.ImageUrl
 import com.lf.fashion.data.response.MyInfo
 import com.lf.fashion.databinding.MypageProfileFragmentBinding
-import com.lf.fashion.ui.PrefCheckService
-import com.lf.fashion.ui.addTextChangeListener
-import com.lf.fashion.ui.addTextLengthCounter
-import com.lf.fashion.ui.cancelBtnBackStack
+import com.lf.fashion.ui.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -56,6 +53,8 @@ class ProfileEditFragment : Fragment() {
 
         genderListener(myInfo)
         addTextLengthCounter(binding.introduceValue, binding.textCounter, 50)
+        addUnitTextListener(binding.heightValue, height = true)
+        addUnitTextListener(binding.weightValue, height = false)
 
        // 값 변경시 완료 버튼 활성화
         addTextChangeListener(

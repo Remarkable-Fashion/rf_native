@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
@@ -125,7 +126,7 @@ fun addTextLengthCounter(editText: EditText, counterTextView: TextView, maxLengt
                     editText.setSelection(truncatedText.length) // Move cursor to the end
                 }
 
-                val count = it.length
+                val count = if(it.length>50) 50 else it.length
                 counterTextView.text = "$count/$maxLength"
             }
         }
@@ -151,5 +152,49 @@ fun addTextChangeListener(editTexts: List<EditText>, changeListener: (changed : 
             }
         })
     }
+}
+fun addUnitTextListener(editText: EditText, height:Boolean) {
+    if (height) {
+        editText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                val text = editText.text.toString()
+                if (!text.endsWith("cm")) {
+                    editText.setText("$text cm")
+                }
+            }
+        }
+    }else{
+        editText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                val text = editText.text.toString()
+                if (!text.endsWith("kg")) {
+                    editText.setText("$text kg")
+                }
+            }
+        }
+    }
+/*    editText.addTextChangedListener(object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            if (height && !s.isNullOrEmpty() && !s.toString().endsWith("cm")) {
+                editText.removeTextChangedListener(this)
+                val text = s.toString() + "cm"
+                editText.setText(text)
+                editText.setSelection(text.length)
+                editText.addTextChangedListener(this)
+            }else if(!height && !s.isNullOrEmpty() && !s.toString().endsWith("kg")){
+                editText.removeTextChangedListener(this)
+                val text = s.toString() + "kg"
+                editText.setText(text)
+                editText.setSelection(text.length)
+                editText.addTextChangedListener(this)
+            }
+        }
+    })*/
 }
 

@@ -138,6 +138,8 @@
                         style="@style/edittext_style"
                         android:layout_marginTop="12dp"
                         tools:text="ddd"
+                        android:singleLine="true"
+                        android:maxLength="20"
                         />
 
                     <TextView
@@ -177,7 +179,8 @@
                             android:background="@drawable/selector_btn_whitegrey"
                             style="@style/edittext_style"
                             app:layout_constraintTop_toTopOf="parent"
-                            tools:text="dddd"/>
+                            android:inputType="phone"
+                            tools:text="022"/>
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:layout_width="70dp"
@@ -222,7 +225,10 @@
                         android:background="@drawable/selector_btn_whitegrey"
                         style="@style/edittext_style"
                         userHeight="@{myInfo.profile.height}"
-                        android:layout_marginTop="12dp" />
+                        android:layout_marginTop="12dp"
+                        android:singleLine="true"
+                        android:inputType="number"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -238,7 +244,9 @@
                         android:background="@drawable/selector_btn_whitegrey"
                         style="@style/edittext_style"
                         userWeight="@{myInfo.profile.weight}"
-                        android:layout_marginTop="12dp" />
+                        android:layout_marginTop="12dp"
+                        android:singleLine="true"
+                        android:inputType="number"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -255,6 +263,8 @@
                     android:background="@drawable/selector_btn_whitegrey"
                     style="@style/edittext_style"
                     android:layout_marginTop="12dp"
+                    android:singleLine="false"
+                    android:padding="10dp"
                     app:layout_constraintStart_toStartOf="@id/guideline_vertical"
                     app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
                     app:layout_constraintTop_toBottomOf="@id/linear"
