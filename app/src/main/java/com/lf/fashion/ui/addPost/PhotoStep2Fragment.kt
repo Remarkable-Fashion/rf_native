@@ -19,6 +19,7 @@ import com.lf.fashion.TAG
 import com.lf.fashion.data.response.RegClothes
 import com.lf.fashion.databinding.PhotoStep2FragmentBinding
 import com.lf.fashion.ui.AddPostClothesRvAdapter
+import com.lf.fashion.ui.addTextLengthCounter
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.childChip
 import com.lf.fashion.ui.home.FilterViewModel
@@ -55,7 +56,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         genderSelectUISetting()
         chipSetting()
         registerCloth()
-        introduceLengthCounting()
+        addTextLengthCounter(binding.introduceValue,binding.textCounter,50)
         imagePickerOpen()
         cancelBtnBackStack(binding.backBtn)
     }
@@ -141,22 +142,6 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
 
     }
 
-
-    private fun introduceLengthCounting() {
-        binding.introduceValue.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                val count = s.toString().count()
-                binding.textCounter.text = "$count/50"
-            }
-
-        })
-    }
     //TODO 의상 등록을 하고 backstack 으로 돌아오면 edittext는 남아잇지만 버튼 isSelected 가 다 해제된다.
     private fun imagePickerOpen(){
         binding.clothRegistForm.productImage.setOnClickListener {

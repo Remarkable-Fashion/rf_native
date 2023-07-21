@@ -18,3 +18,17 @@ fun bodyInfo(textView: TextView,userInfo : MyInfo){
     val sexKo = if (userInfo.profile.sex.equals("Male")) "남" else "여"
     textView.text = textView.context.getString(R.string.user_body_profile,sexKo,userInfo.profile.height,userInfo.profile.weight)
 }
+
+@BindingAdapter("userHeight")
+fun height(textView: TextView,height:Int? ){
+    height?.let{
+        textView.text = textView.context.getString(R.string.height,it)
+    }
+}
+
+@BindingAdapter("userWeight")
+fun weight(textView: TextView,weight:Int? ){
+    weight?.let{
+        textView.text = textView.context.getString(R.string.weight,it)
+    }
+}

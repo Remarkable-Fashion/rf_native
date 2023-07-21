@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
+import com.lf.fashion.data.response.MyInfo
 import com.lf.fashion.data.response.Posts
 import com.lf.fashion.data.response.RandomPostResponse
 import com.lf.fashion.databinding.MypageFragmentBinding
@@ -32,7 +34,7 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
     private lateinit var gridAdapter: GridPostAdapter
     private lateinit var recentResponse: RandomPostResponse
     private lateinit var onScrollListener: NestedScrollView.OnScrollChangeListener
-
+    private lateinit var globalMyInfo : MyInfo
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -66,6 +68,7 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                 //내 정보 불러오기
                 viewModel.myInfo.observe(viewLifecycleOwner) { myInfo ->
                     binding.userInfo = myInfo
+                    globalMyInfo = myInfo
                 }
 
                 //내 게시물 불러오기
@@ -112,7 +115,8 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
         }
 
         binding.profileEditBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_mypage_to_profileEditFragment)
+            findNavController().navigate(R.id.action_navigation_mypage_to_profileEditFragment,
+                bundleOf("myInfo" to globalMyInfo))
         }
         //바텀 다이얼로그 show
         binding.settingBtn.setOnClickListener {

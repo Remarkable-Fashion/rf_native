@@ -1,264 +1,293 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <ImageView
-        android:id="@+id/back_btn"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/ic_back_btn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/profile_setting_title"
-        style="@style/app_bar_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:layout_marginStart="20dp"
-        android:text="프로필 설정"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/back_btn" />
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/submit_btn"
-        android:layout_width="60dp"
-        android:layout_height="34dp"
-        android:text="완료"
-        android:background="@drawable/bg_grey_btn"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:textSize="14sp"
-        android:fontFamily="@font/spoqahansansneo_medium"
-        android:textColor="@color/light_text"
-        app:layout_constraintTop_toTopOf="@id/profile_setting_title"
-        app:layout_constraintBottom_toBottomOf="@id/profile_setting_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="20dp"
-        />
-    <View
-        android:id="@+id/title_underline"
+    <data>
+        <variable
+            name="myInfo"
+            type="com.lf.fashion.data.response.MyInfo" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/line_grey"
-        app:layout_constraintTop_toBottomOf="@id/profile_setting_title" />
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:scrollbars="none"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_underline"
-        >
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/back_btn"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_back_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/profile_setting_title"
+            style="@style/app_bar_label"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="76dp"
-            >
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/profile_image"
-                android:layout_width="81dp"
-                android:layout_height="81dp"
-                android:background="@color/profile_back_grey"
-                android:layout_marginTop="24dp"
-                app:shapeAppearance="@style/radi20"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:scaleType="centerCrop"
-                />
+            android:layout_marginTop="14dp"
+            android:layout_marginStart="20dp"
+            android:text="프로필 설정"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/back_btn" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/selected_cancel_btn"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/bg_add_image"
-                app:layout_constraintBottom_toBottomOf="@id/profile_image"
-                app:layout_constraintEnd_toEndOf="@id/profile_image"
-                app:layout_constraintTop_toTopOf="@id/profile_image"
-                app:layout_constraintStart_toStartOf="@id/profile_image"
-                android:layout_marginTop="65dp"
-                android:layout_marginStart="70dp"
-                />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/submit_btn"
+            android:layout_width="60dp"
+            android:layout_height="34dp"
+            android:text="완료"
+            android:background="@drawable/selector_btn_greyblack"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:textSize="14sp"
+            android:fontFamily="@font/spoqahansansneo_medium"
+            android:textColor="@drawable/selector_text_color"
+            app:layout_constraintTop_toTopOf="@id/profile_setting_title"
+            app:layout_constraintBottom_toBottomOf="@id/profile_setting_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="20dp" />
 
-            <LinearLayout
-                android:id="@+id/linear"
-                android:layout_width="0dp"
+        <View
+            android:id="@+id/title_underline"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/line_grey"
+            app:layout_constraintTop_toBottomOf="@id/profile_setting_title" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_underline">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="10dp"
-                app:layout_constraintStart_toStartOf="@id/guideline_vertical"
-                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
-                app:layout_constraintTop_toBottomOf="@id/profile_image">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ID"
-                    style="@style/app_bar_label"
-                    />
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@drawable/selector_btn_whitegrey"
-                    style="@style/edittext_style"
-                    android:layout_marginTop="12dp"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="닉네임"
-                    android:layout_marginTop="20dp"
-                    style="@style/app_bar_label"
-                    />
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@drawable/selector_btn_whitegrey"
-                    style="@style/edittext_style"
-                    android:layout_marginTop="12dp"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="E-Mail"
-                    android:layout_marginTop="20dp"
-                    style="@style/app_bar_label"
-                    />
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@drawable/selector_btn_whitegrey"
-                    style="@style/edittext_style"
-                    android:layout_marginTop="12dp"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="전화번호"
-                    android:layout_marginTop="20dp"
-                    style="@style/app_bar_label"
-                    />
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    >
-                <EditText
-                    android:id="@+id/phone_value"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@drawable/selector_btn_whitegrey"
-                    style="@style/edittext_style"
+                android:paddingBottom="76dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="81dp"
+                    android:layout_height="81dp"
+                    android:background="@color/profile_back_grey"
+                    android:layout_marginTop="24dp"
+                    app:shapeAppearance="@style/radi20"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:scaleType="centerCrop"
+                    imageUrl="@{myInfo.profile.profileImage}"
                     />
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:layout_width="70dp"
-                        android:layout_height="24dp"
-                        app:layout_constraintEnd_toEndOf="@id/phone_value"
-                        app:layout_constraintTop_toTopOf="@id/phone_value"
-                        app:layout_constraintBottom_toBottomOf="@id/phone_value"
-                        android:background="@drawable/bg_black_radi12"
-                        android:text="인증하기"
-                        android:fontFamily="@font/spoqahansansneo_medium"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_marginEnd="12dp"
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/selected_cancel_btn"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/bg_add_image"
+                    app:layout_constraintBottom_toBottomOf="@id/profile_image"
+                    app:layout_constraintEnd_toEndOf="@id/profile_image"
+                    app:layout_constraintTop_toTopOf="@id/profile_image"
+                    app:layout_constraintStart_toStartOf="@id/profile_image"
+                    android:layout_marginTop="65dp"
+                    android:layout_marginStart="70dp" />
+
+                <LinearLayout
+                    android:id="@+id/linear"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                    app:layout_constraintTop_toBottomOf="@id/profile_image">
+                    <!--   <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="ID"
+                           style="@style/app_bar_label"
+                           />
+                       <EditText
+                           android:layout_width="match_parent"
+                           android:layout_height="40dp"
+                           android:background="@drawable/selector_btn_whitegrey"
+                           style="@style/edittext_style"
+                           android:layout_marginTop="12dp"
+                           />-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="닉네임"
+                        android:layout_marginTop="20dp"
+                        style="@style/app_bar_label"
                         />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Gender"
-                    android:layout_marginTop="20dp"
-                    style="@style/app_bar_label"
-                    />
-                <include
-                    layout="@layout/item_gender_btn_set"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Height"
-                    android:layout_marginTop="20dp"
-                    style="@style/app_bar_label"
-                    />
+                    <EditText
+                        android:id="@+id/name_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:text="@{myInfo.name}"
+                        android:background="@drawable/selector_btn_whitegrey"
+                        style="@style/edittext_style"
+                        android:layout_marginTop="12dp"
+                        tools:text="ddd"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="E-Mail"
+                        android:layout_marginTop="20dp"
+                        style="@style/app_bar_label" />
+
+                    <TextView
+                        android:id="@+id/emailAccount"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_radi3_filled"
+                        style="@style/edittext_style"
+                        android:layout_marginTop="12dp"
+                        tools:text="dlwjdgus327@gmail.com"
+                        android:gravity="center_vertical"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="전화번호"
+                        android:layout_marginTop="20dp"
+                        style="@style/app_bar_label" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp">
+
+                        <EditText
+                            android:id="@+id/phone_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/selector_btn_whitegrey"
+                            style="@style/edittext_style"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="dddd"/>
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="70dp"
+                            android:layout_height="24dp"
+                            app:layout_constraintEnd_toEndOf="@id/phone_value"
+                            app:layout_constraintTop_toTopOf="@id/phone_value"
+                            app:layout_constraintBottom_toBottomOf="@id/phone_value"
+                            android:background="@drawable/bg_black_radi12"
+                            android:text="인증하기"
+                            android:fontFamily="@font/spoqahansansneo_medium"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_marginEnd="12dp" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gender"
+                        android:layout_marginTop="20dp"
+                        style="@style/app_bar_label" />
+
+                    <include
+                        android:id="@+id/gender_include"
+                        layout="@layout/item_gender_btn_set"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Height"
+                        android:layout_marginTop="20dp"
+                        style="@style/app_bar_label" />
+
+                    <EditText
+                        android:id="@+id/height_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/selector_btn_whitegrey"
+                        style="@style/edittext_style"
+                        userHeight="@{myInfo.profile.height}"
+                        android:layout_marginTop="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Weight"
+                        android:layout_marginTop="20dp"
+                        style="@style/app_bar_label" />
+
+                    <EditText
+                        android:id="@+id/weight_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/selector_btn_whitegrey"
+                        style="@style/edittext_style"
+                        userWeight="@{myInfo.profile.weight}"
+                        android:layout_marginTop="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="자기소개"
+                        android:layout_marginTop="20dp"
+                        style="@style/app_bar_label" />
+                </LinearLayout>
+
                 <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:id="@+id/introduce_value"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
                     android:background="@drawable/selector_btn_whitegrey"
                     style="@style/edittext_style"
                     android:layout_marginTop="12dp"
-                    />
+                    app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                    app:layout_constraintTop_toBottomOf="@id/linear"
+                    android:text="@{myInfo.profile.introduction}"/>
+
                 <TextView
+                    android:id="@+id/text_counter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Weight"
-                    android:layout_marginTop="20dp"
-                    style="@style/app_bar_label"
-                    />
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@drawable/selector_btn_whitegrey"
-                    style="@style/edittext_style"
-                    android:layout_marginTop="12dp"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="자기소개"
-                   android:layout_marginTop="20dp"
-                    style="@style/app_bar_label"
-                    />
-            </LinearLayout>
-            <EditText
-                android:id="@+id/introduce_value"
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:background="@drawable/selector_btn_whitegrey"
-                style="@style/edittext_style"
-                android:layout_marginTop="12dp"
-                app:layout_constraintStart_toStartOf="@id/guideline_vertical"
-                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
-                app:layout_constraintTop_toBottomOf="@id/linear"
-                />
-            <TextView
-                android:id="@+id/text_counter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0/50"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="15dp"
-                app:layout_constraintEnd_toEndOf="@id/introduce_value"
-                app:layout_constraintBottom_toBottomOf="@id/introduce_value"
-                style="@style/montserrat_medium_12"
+                    android:text="0/50"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="15dp"
+                    app:layout_constraintEnd_toEndOf="@id/introduce_value"
+                    app:layout_constraintBottom_toBottomOf="@id/introduce_value"
+                    style="@style/montserrat_medium_12"
 
-                />
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_vertical2"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.95" />
+                    />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_vertical"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.05" />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_vertical2"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.95" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.05" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

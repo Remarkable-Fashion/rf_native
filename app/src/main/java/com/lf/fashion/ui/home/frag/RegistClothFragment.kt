@@ -24,6 +24,7 @@ import com.lf.fashion.data.response.RegClothes
 import com.lf.fashion.databinding.HomeBRegistClothFragmentBinding
 import com.lf.fashion.ui.AddPostClothesRvAdapter
 import com.lf.fashion.ui.addPost.ImagePickerFragment
+import com.lf.fashion.ui.addTextLengthCounter
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.showPermissionDialog
 
@@ -87,7 +88,7 @@ class RegistClothFragment : Fragment(), View.OnClickListener {
 
         binding.clothesDetailRv.adapter = addClothesAdapter
         registerCloth()
-        detailValueLengthCounting()
+        addTextLengthCounter(binding.detailValue,binding.textCounter,50)
         imageOnclickPermissionCheck() // 이미지 부분 눌리면 permission 체크 -> 허용시엔 imagePickerFragment 로 이동
         cancelBtnBackStack(binding.cancelBtn)
     }
@@ -171,21 +172,7 @@ class RegistClothFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun detailValueLengthCounting() {
-        binding.detailValue.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                val count = s.toString().count()
-                binding.textCounter.text = "$count/50"
-            }
-
-        })
-    }
 
 
 }

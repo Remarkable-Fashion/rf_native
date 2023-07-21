@@ -61,6 +61,9 @@
 
     <string name="mypage_title">%1$s 님의 룩북</string>
     <string name="user_body_profile">%1$s | %2$dcm | %3$dkg</string>
+    <string name="height">%1$d cm</string>
+    <string name="weight">%1$d kg</string>
+
     <string name="edit_profile">프로필 수정하기</string>
     <string name="count_posts">게시물\n%1$d</string>
     <string name="count_follower">팔로워\n%1$d</string>

@@ -3,10 +3,14 @@ package com.lf.fashion.ui
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.NestedScrollView
@@ -105,3 +109,47 @@ fun Fragment.showRequireLoginDialog(alreadyHome: Boolean? = null) {
     loginDialog.show()
 
 }
+fun addTextLengthCounter(editText: EditText, counterTextView: TextView, maxLength: Int) {
+    editText.addTextChangedListener(object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            s?.let {
+                if (it.length > maxLength) {
+                    val truncatedText = it.subSequence(0, maxLength)
+                    editText.setText(truncatedText)
+                    editText.setSelection(truncatedText.length) // Move cursor to the end
+                }
+
+                val count = it.length
+                counterTextView.text = "$count/$maxLength"
+            }
+        }
+    })
+}
+fun addTextChangeListener(editTexts: List<EditText>, changeListener: (changed : Boolean) -> Unit) {
+    for (editText in editTexts) {
+        editText.addTextChangedListener(object : TextWatcher {
+            private var beforeText = ""
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                beforeText = s?.toString() ?: ""
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val afterText = s.toString()
+                if (beforeText != afterText) {
+                    changeListener(true)
+                }
+            }
+        })
+    }
+}
+

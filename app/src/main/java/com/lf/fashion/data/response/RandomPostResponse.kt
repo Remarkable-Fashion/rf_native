@@ -21,7 +21,7 @@ data class Posts(
     val images: List<ImageUrl>,
     val user: UserInfo?,
     @SerializedName("_count")
-    val count: Count,
+    val count: Count
 )
 
 @Parcelize
@@ -41,5 +41,14 @@ data class FollowIdSet(
     val followingId : Int
 )
 
+
+data class ChipInfo(
+    val id: String, //  카테고리 , style tpo season 등등
+    val chips : List<ChipContents>
+)
+data class ChipContents(
+    val text:String,
+    val emoji : String?
+)
 
 
