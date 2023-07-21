@@ -47,26 +47,27 @@ class DefaultPostAdapter(
 
         fun bind(post: Posts) {
             binding.post = post
-            binding.likeBtn.isSelected = post.isFavorite!!
-            binding.likesValue.text = post.count.favorites.toString()
-            binding.scrapBtn.isSelected = post.isScrap?:true //null 인경우는 내 스크랩 모아보기이기 때문에, 모두 true
+            val postDetailMenu = binding.postDetailMenu
+            postDetailMenu.likeBtn.isSelected = post.isFavorite!!
+            postDetailMenu.likesValue.text = post.count.favorites.toString()
+            postDetailMenu.scrapBtn.isSelected = post.isScrap?:true //null 인경우는 내 스크랩 모아보기이기 때문에, 모두 true
 
             nestedAdapter.submitList(post.images)
 
             //좋아요 아이콘 ic 변경 _ 임시적으로 이미지만 처리하기에 여기서 적용함
-            binding.likeBtn.setOnClickListener {
+            postDetailMenu.likeBtn.setOnClickListener {
                 //  it.isSelected = !it.isSelected
                 verticalViewPagerClickListener.likeBtnClicked(it.isSelected,post)
 
             }
-            binding.scrapBtn.setOnClickListener {
+            postDetailMenu.scrapBtn.setOnClickListener {
                 verticalViewPagerClickListener.scrapBtnClicked(it.isSelected,post)
             }
-            binding.shareBtn.setOnClickListener {
+            postDetailMenu.shareBtn.setOnClickListener {
                 verticalViewPagerClickListener.shareBtnClicked()
             }
 
-            binding.photoZipBtn.setOnClickListener {
+            postDetailMenu.photoZipBtn.setOnClickListener {
                 verticalViewPagerClickListener.photoZipBtnClicked()
             }
 

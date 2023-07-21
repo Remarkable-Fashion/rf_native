@@ -87,8 +87,18 @@
             app:layout_constraintBottom_toBottomOf="@id/horizontal_view_pager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
-        <LinearLayout
+        <include
+            android:id="@+id/post_detail_menu"
+            layout="@layout/item_vertical_bottom_menu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+        <!--<LinearLayout
             android:id="@+id/post_detail_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,10 +111,11 @@
             android:paddingTop="13dp"
             app:layout_constraintBottom_toBottomOf="parent"
             >
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/like_btn"
                 android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_height="match_parent"
                 android:background="@drawable/selector_heart_btn"
                 />
             <TextView
@@ -112,7 +123,7 @@
                 style="@style/main_bottom_menu_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="15dp"
                 android:layout_marginStart="5dp"
                 tools:text="130"
 
@@ -123,12 +134,12 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/ic_image" />
-           <!-- <TextView
+           &lt;!&ndash; <TextView
                 style="@style/main_bottom_menu_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:text="30" />-->
+                android:text="30" />&ndash;&gt;
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -144,8 +155,8 @@
                 android:id="@+id/scrap_btn"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
                 android:src="@drawable/selector_scrap_greyblack" />
 
             <ImageView
@@ -153,6 +164,4 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/ic_dot_unselected" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+        </LinearLayout>-->
