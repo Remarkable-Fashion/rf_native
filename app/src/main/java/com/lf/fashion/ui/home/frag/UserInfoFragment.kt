@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
+import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.HomeBUserInfoFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.childChip
@@ -21,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class UserInfoFragment : Fragment() {
     private lateinit var binding: HomeBUserInfoFragmentBinding
-    private val viewModel : UserInfoViewModel by viewModels()
+    private val viewModel: UserInfoViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,24 +36,40 @@ class UserInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.recommendBtn.setOnClickListener{
-            findNavController().navigate(R.id.action_userInfoFragment_to_recommendFragment)
-        }
+
         cancelBtnBackStack(binding.cancelBtn)
 
+        val postId = arguments?.get("postId") as Int
 
-        viewModel.getUserInfoAndStyle()
-        viewModel.userInfo.observe(viewLifecycleOwner){event->
-            event.getContentIfNotHandled()?.let{
-                binding.infoSpace.userInfo = it.modelInfo
-                binding.profileSpace.profile = it.modelInfo.profile
-                binding.clothesRv.apply {
-                    adapter = ClothesRvAdapter().apply {
-                        submitList(it.clothesInfo)
+        binding.recommendBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_userInfoFragment_to_recommendFragment, bundleOf("postId" to postId))
+        }
+
+        viewModel.getUserInfoAndStyle(postId)
+        viewModel.userInfo.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        val response = resource.value
+                        binding.infoSpace.postInfo = response
+                        binding.infoSpace.userInfo = response.user.profile
+                        binding.profileSpace.profile = response.user
+                        binding.clothesRv.apply {
+                            adapter = ClothesRvAdapter().apply {
+                                submitList(response.clothes)
+                            }
+                        }
+                        val styleChipGroup = binding.infoSpace.styleChipGroup
+                        childChip(response.styles, styleChipGroup, "purple")
+                    }
+                    is Resource.Loading -> {
+
+                    }
+                    else -> {
+
                     }
                 }
-                val styleChipGroup = binding.infoSpace.styleChipGroup
-                childChip(it.modelInfo.styleChips, styleChipGroup, "purple")
+
             }
         }
     }

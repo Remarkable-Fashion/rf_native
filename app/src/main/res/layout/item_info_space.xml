@@ -6,7 +6,10 @@
     <data>
         <variable
             name="userInfo"
-            type="com.lf.fashion.data.response.ModelInfo" />
+            type="com.lf.fashion.data.response.Profile" />
+        <variable
+            name="postInfo"
+            type="com.lf.fashion.data.response.PostInfo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -80,7 +83,7 @@
             android:id="@+id/introduce_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{userInfo.introduce}"
+            android:text="@{postInfo.description}"
             tools:text="안녕하세요 반갑습니다."
             style="@style/spoqa_14sp_default_color"
             app:layout_constraintTop_toBottomOf="@id/introduce_label"
@@ -107,6 +110,7 @@
             android:layout_marginEnd="15dp"
             app:layout_constraintBaseline_toBaselineOf="@id/height_label"
             app:layout_constraintEnd_toEndOf="parent"
+            userHeight="@{userInfo.height}"
             tools:text="160cm"
             style="@style/spoqa_16sp_sub_label"
             android:textColor="@color/default_text" />
@@ -118,6 +122,7 @@
             app:layout_constraintBaseline_toBaselineOf="@id/weight_label"
             app:layout_constraintEnd_toEndOf="@id/height_value"
             tools:text="48kg"
+            userWeight="@{userInfo.weight}"
             style="@style/spoqa_16sp_sub_label"
             android:textColor="@color/default_text" />
 <!--        android:text='@{userInfo.weight!=null?userInfo.weight+`kg`:""}'-->
@@ -128,7 +133,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintBaseline_toBaselineOf="@id/place_label"
             app:layout_constraintEnd_toEndOf="@id/height_value"
-            android:text="@{userInfo.place}"
+            android:text="@{postInfo.place}"
             tools:text="광명 이케아"
             style="@style/spoqa_16sp_sub_label"
             android:textColor="@color/default_text" />

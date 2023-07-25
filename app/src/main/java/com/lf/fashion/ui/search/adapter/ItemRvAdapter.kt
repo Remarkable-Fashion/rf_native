@@ -2,16 +2,18 @@ package com.lf.fashion.ui.search.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.lf.fashion.data.response.Cloth
 import com.lf.fashion.data.response.ClothesInfo
 import com.lf.fashion.databinding.ItemClothesListBinding
-import com.lf.fashion.ui.home.adapter.ClothesDiff
+import com.lf.fashion.ui.home.adapter.ClothDiff
 
-class ItemRvAdapter : ListAdapter<ClothesInfo, ItemRvAdapter.ClothesViewHolder>(ClothesDiff()) {
+class ItemRvAdapter : ListAdapter<Cloth, ItemRvAdapter.ClothesViewHolder>(ClothDiff()) {
 
     inner class ClothesViewHolder(private val binding : ItemClothesListBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(clothesInfo: ClothesInfo){
+        fun bind(clothesInfo: Cloth){
             binding.includedClothSpace.cloth = clothesInfo
         }
     }
@@ -26,8 +28,7 @@ class ItemRvAdapter : ListAdapter<ClothesInfo, ItemRvAdapter.ClothesViewHolder>(
         holder.bind(getItem(position))
     }
 }
-/*
-class ClothesDiff : DiffUtil.ItemCallback<ClothesInfo>(){
+/*class ClothesDiff : DiffUtil.ItemCallback<ClothesInfo>(){
     override fun areItemsTheSame(oldItem: ClothesInfo, newItem: ClothesInfo): Boolean {
         return oldItem.name == newItem.name
     }

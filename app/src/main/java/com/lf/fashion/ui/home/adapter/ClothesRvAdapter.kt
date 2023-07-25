@@ -5,13 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.lf.fashion.data.response.Cloth
 import com.lf.fashion.data.response.ClothesInfo
 import com.lf.fashion.databinding.ItemClothesRecommendBinding
 
-class ClothesRvAdapter : ListAdapter<ClothesInfo, ClothesRvAdapter.ClothesViewHolder>(ClothesDiff()) {
+class ClothesRvAdapter : ListAdapter<Cloth, ClothesRvAdapter.ClothesViewHolder>(ClothDiff()) {
 
     inner class ClothesViewHolder(private val binding : ItemClothesRecommendBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(clothesInfo: ClothesInfo){
+        fun bind(clothesInfo: Cloth){
             binding.includedClothSpace.cloth = clothesInfo
         }
     }
@@ -26,12 +27,14 @@ class ClothesRvAdapter : ListAdapter<ClothesInfo, ClothesRvAdapter.ClothesViewHo
         holder.bind(getItem(position))
     }
 }
-class ClothesDiff : DiffUtil.ItemCallback<ClothesInfo>(){
-    override fun areItemsTheSame(oldItem: ClothesInfo, newItem: ClothesInfo): Boolean {
-        return oldItem.name == newItem.name
+class ClothDiff : DiffUtil.ItemCallback<Cloth>(){
+    override fun areItemsTheSame(oldItem: Cloth, newItem: Cloth): Boolean {
+        return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: ClothesInfo, newItem: ClothesInfo): Boolean {
-        return oldItem.name == newItem.name    }
+    override fun areContentsTheSame(oldItem: Cloth, newItem: Cloth): Boolean {
+        return oldItem == newItem
+    }
+
 
 }

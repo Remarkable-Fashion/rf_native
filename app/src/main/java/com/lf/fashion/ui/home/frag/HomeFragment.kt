@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -278,8 +279,8 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
         findNavController().navigate(R.id.action_global_to_photoZipFragment)
     }
 
-    override fun infoBtnClicked() {
-        findNavController().navigate(R.id.action_global_to_userInfoFragment)
+    override fun infoBtnClicked(postId : Int) {
+        findNavController().navigate(R.id.action_global_to_userInfoFragment, bundleOf("postId" to postId))
     }
 
     override fun gridPhotoClicked(postIndex: Int) {

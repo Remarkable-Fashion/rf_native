@@ -6,7 +6,7 @@
     <data>
         <variable
             name="profile"
-            type="com.lf.fashion.data.response.TestProfile" />
+            type="com.lf.fashion.data.response.UserInfo" />
     </data>
 
     <LinearLayout
@@ -18,7 +18,7 @@
             android:id="@+id/profile_image"
             android:layout_width="43dp"
             android:layout_height="43dp"
-            imageUrl="@{profile.profileImage}"
+            imageUrl="@{profile.profile.profileImage}"
             android:scaleType="centerCrop"
             app:shapeAppearance="@style/radi13"
             android:background="@drawable/bg_profile" />
@@ -27,7 +27,7 @@
             android:id="@+id/profile_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{profile.userId}"
+            android:text="@{profile.name}"
             android:layout_marginStart="10dp"
             style="@style/montserrat_bold_label"
             tools:text="rf_user" />

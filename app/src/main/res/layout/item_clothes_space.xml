@@ -5,7 +5,7 @@
     <data>
         <variable
             name="cloth"
-            type="com.lf.fashion.data.response.ClothesInfo" />
+            type="com.lf.fashion.data.response.Cloth" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +18,7 @@
             android:layout_width="101dp"
             android:layout_height="101dp"
             android:scaleType="centerCrop"
-            imageUrl="@{cloth.image}"
+            imageUrl="@{cloth.imageUrl}"
             tools:src="@color/default_text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -59,7 +59,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{cloth.detail}"
+            clothDetail="@{cloth}"
             tools:text="블랙(black) | M 사이즈 | 96,000원"
             app:layout_constraintStart_toStartOf="@id/product_brand"
             app:layout_constraintTop_toBottomOf="@id/product_brand"

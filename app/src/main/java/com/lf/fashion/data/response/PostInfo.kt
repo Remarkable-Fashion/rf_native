@@ -10,6 +10,36 @@ data class PostInfo(
     val user: UserInfo,
     @SerializedName("_count")
     val count: Count,
-    val style : List<ChipContents>,
-    val introduce: String?,
+    val styles : List<ChipContents>,
+    val description: String?,
+    val place : String?,
+    val clothes: List<Cloth>
     )
+data class Cloth(
+    val id : Int,
+    val brand : String?,
+    val imageUrl: String? = null,
+    val category: String,
+    val name: String,
+    val price: String,
+    val color: String?,
+    val size: String?,
+)
+
+data class RecommendCloth(
+    val category: String,
+    val hasNext : Boolean,
+    val nextCursor:Int,
+    val clothes : List<ClothPost>
+)
+
+data class ClothPost(
+    val id: Int,
+    val isFavorite: Boolean?,
+    val isScrap: Boolean?,
+    val isFollowing: Boolean?,
+    val name: String,
+    @SerializedName("_count")
+    val count: Count,
+    val user : UserInfo
+)

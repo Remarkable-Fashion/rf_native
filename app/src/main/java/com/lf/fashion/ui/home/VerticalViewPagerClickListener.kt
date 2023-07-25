@@ -7,5 +7,5 @@ interface VerticalViewPagerClickListener {
     fun scrapBtnClicked(scrapState : Boolean,post:Posts)
     fun shareBtnClicked()
     fun photoZipBtnClicked()
-    fun infoBtnClicked()
+    fun infoBtnClicked(postId:Int)
 }

@@ -72,7 +72,7 @@ class DefaultPostAdapter(
             }
 
             binding.infoBtn.setOnClickListener {
-                verticalViewPagerClickListener.infoBtnClicked()
+                verticalViewPagerClickListener.infoBtnClicked(post.id)
             }
 
             binding.executePendingBindings()

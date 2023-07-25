@@ -35,5 +35,11 @@ class HomeRepository @Inject constructor(
         postApi.getRandomPostPublic(sex, take)
     }
 
+    suspend fun getPostInfoByPostId(postId : Int) = safeApiCall {
+        postApi.getPostInfoById(postId)
+    }
 
+    suspend fun getRecommendClothesInfo(postId: Int,category : String) = safeApiCall {
+        postApi.getRecommendClothesInfo(postId,category)
+    }
 }

@@ -164,7 +164,7 @@ class MyPageVerticalFragment : Fragment(),
             findNavController().navigate(R.id.action_global_to_photoZipFragment)
         }
 
-        override fun infoBtnClicked() {
+        override fun infoBtnClicked(postId: Int) {
             findNavController().navigate(R.id.action_global_to_userInfoFragment)
         }
     }

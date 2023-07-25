@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.data.response.ClothesInfo
 import com.lf.fashion.databinding.ItemClothesRecommendBinding
+/*
 
 class UserInfoAdapter : ListAdapter<ClothesInfo, UserInfoAdapter.UserInfoViewHolder>(UserInfoDiff()) {
 
@@ -37,4 +38,4 @@ class UserInfoDiff : DiffUtil.ItemCallback<ClothesInfo>(){
         return oldItem.name == newItem.name
     }
 
-}
+}*/
