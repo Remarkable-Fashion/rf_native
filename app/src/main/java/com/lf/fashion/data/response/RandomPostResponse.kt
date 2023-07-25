@@ -11,7 +11,7 @@ data class RandomPostResponse(
     val nextCursor : Int? = null,
     val posts : List<Posts>
     )
-
+@Parcelize
 data class Posts(
     val id: Int,
     var isFavorite: Boolean?=false,
@@ -22,24 +22,25 @@ data class Posts(
     val user: UserInfo?,
     @SerializedName("_count")
     val count: Count
-)
+):Parcelable
 
 @Parcelize
 data class ImageUrl (
     val url : String
         ):Parcelable
-
+@Parcelize
 data class UserInfo(
     val id : Int,
     val name : String,
     val profile : Profile,
     val followers : List<FollowIdSet>?
-)
+):Parcelable
 
+@Parcelize
 data class FollowIdSet(
     val followerId : Int,
     val followingId : Int
-)
+):Parcelable
 
 
 data class ChipInfo(

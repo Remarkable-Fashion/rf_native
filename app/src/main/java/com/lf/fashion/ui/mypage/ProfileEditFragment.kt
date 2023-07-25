@@ -60,7 +60,7 @@ class ProfileEditFragment : Fragment() {
         addTextChangeListener(
             listOf(
                 binding.nameValue,
-                binding.phoneValue,
+               /* binding.phoneValue,*/
                 binding.heightValue,
                 binding.weightValue
             )

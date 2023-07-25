@@ -48,7 +48,7 @@ class DefaultPostAdapter(
         fun bind(post: Posts) {
             binding.post = post
             val postDetailMenu = binding.postDetailMenu
-            postDetailMenu.likeBtn.isSelected = post.isFavorite!!
+            postDetailMenu.likeBtn.isSelected = post.isFavorite?:false
             postDetailMenu.likesValue.text = post.count.favorites.toString()
             postDetailMenu.scrapBtn.isSelected = post.isScrap?:true //null 인경우는 내 스크랩 모아보기이기 때문에, 모두 true
 

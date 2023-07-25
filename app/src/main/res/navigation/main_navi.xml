@@ -37,6 +37,9 @@
         <action
             android:id="@+id/action_navigation_mypage_to_profileEditFragment"
             app:destination="@id/profileEditFragment" />
+        <action
+            android:id="@+id/action_navigation_mypage_to_myPageVerticalFragment"
+            app:destination="@id/myPageVerticalFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_photo"
@@ -45,7 +48,6 @@
         <action
             android:id="@+id/action_navigation_photo_to_imagePickerFragment"
             app:destination="@id/imagePickerFragment" >
-
         </action>
     </fragment>
     <fragment
@@ -152,4 +154,8 @@
             android:id="@+id/action_registClothFragment_to_imagePickerFragment"
             app:destination="@id/imagePickerFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/myPageVerticalFragment"
+        android:name="com.lf.fashion.ui.mypage.MyPageVerticalFragment"
+        android:label="MyPageVerticalFragment" />
 </navigation>

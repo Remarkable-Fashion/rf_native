@@ -159,7 +159,22 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
 
     override fun gridPhotoClicked(postIndex: Int) {
         //grid 포토 클릭시!!
+        Log.d(TAG, "MyPageFragment - gridPhotoClicked: 마이페이지 grid 포토클릭 ${postList}" +
+                "클릭된 인덱스 : ${postIndex}"
+                );
+        viewModel.editClickedPostIndex(postIndex)
+       /* findNavController().navigate(R.id.action_navigation_mypage_to_myPageVerticalFragment,
+            bundleOf("postList" to postList))*/
+        val actionId = findNavController().currentDestination?.id ?: -1
+        val bundle = when (actionId) {
+            R.id.navigation_mypage -> bundleOf("postList" to postList)
+            else -> null
+        }
+
+        findNavController().navigate(R.id.action_navigation_mypage_to_myPageVerticalFragment, bundle)
+
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
 

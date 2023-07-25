@@ -163,6 +163,24 @@ fun addUnitTextListener(editText: EditText, height:Boolean) {
                 }
             }
         }
+        editText.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                s?.let {
+                    if (it.length > 3) {
+                        val truncatedText = it.subSequence(0, 3)
+                        editText.setText(truncatedText)
+                        editText.setSelection(truncatedText.length) // Move cursor to the end
+                    }
+                }
+            }
+
+        })
     }else{
         editText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
@@ -172,6 +190,23 @@ fun addUnitTextListener(editText: EditText, height:Boolean) {
                 }
             }
         }
+        editText.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                s?.let{
+                if (it.length > 3) {
+                    val truncatedText = it.subSequence(0, 3)
+                    editText.setText(truncatedText)
+                    editText.setSelection(truncatedText.length) // Move cursor to the end
+                }}
+            }
+
+        })
     }
 /*    editText.addTextChangedListener(object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
