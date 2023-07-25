@@ -15,6 +15,7 @@ import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.frag.HomeBottomSheetFragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.ImageUrl
@@ -37,6 +38,12 @@ class ScrapVerticalFragment : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val bottomNavigationView =
+            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
+        val scrapMenu = bottomNavigationView.menu.findItem(R.id.navigation_scrap)
+        scrapMenu.isChecked = true
+        bottomNavigationView.selectedItemId = R.id.navigation_scrap
+
         binding = ScrapVerticalFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }

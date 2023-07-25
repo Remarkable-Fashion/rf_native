@@ -39,7 +39,8 @@
             app:destination="@id/profileEditFragment" />
         <action
             android:id="@+id/action_navigation_mypage_to_myPageVerticalFragment"
-            app:destination="@id/myPageVerticalFragment" />
+            app:destination="@id/myPageVerticalFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/navigation_photo"

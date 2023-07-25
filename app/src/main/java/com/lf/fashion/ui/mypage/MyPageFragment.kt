@@ -9,6 +9,7 @@ import androidx.core.os.bundleOf
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
 import com.lf.fashion.TAG
@@ -29,7 +30,7 @@ import kotlinx.coroutines.runBlocking
 @AndroidEntryPoint
 class MyPageFragment : Fragment(), GridPhotoClickListener {
     private lateinit var binding: MypageFragmentBinding
-    private val viewModel: MyPageViewModel by viewModels()
+    private val viewModel: MyPageViewModel by hiltNavGraphViewModels(R.id.navigation_mypage)
     private var postList = mutableListOf<Posts>()
     private lateinit var gridAdapter: GridPostAdapter
     private lateinit var recentResponse: RandomPostResponse
@@ -72,8 +73,8 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                 }
 
                 //내 게시물 불러오기
-                viewModel.postResponse.observe(viewLifecycleOwner) { event ->
-                    event.getContentIfNotHandled()?.let { resource ->
+                viewModel.postResponse.observe(viewLifecycleOwner) { /*event ->
+                    event.getContentIfNotHandled()?.let { */resource ->
                         when (resource) {
                             is Resource.Success -> {
                                 val response = resource.value
@@ -108,7 +109,7 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
 
                             }
                         }
-                    }
+                    //}
 
                 }
             }
@@ -159,20 +160,11 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
 
     override fun gridPhotoClicked(postIndex: Int) {
         //grid 포토 클릭시!!
-        Log.d(TAG, "MyPageFragment - gridPhotoClicked: 마이페이지 grid 포토클릭 ${postList}" +
-                "클릭된 인덱스 : ${postIndex}"
+        Log.d(TAG, "MyPageFragment - gridPhotoClicked: 마이페이지 grid"
+                +"클릭된 인덱스 : ${postIndex}"
                 );
         viewModel.editClickedPostIndex(postIndex)
-       /* findNavController().navigate(R.id.action_navigation_mypage_to_myPageVerticalFragment,
-            bundleOf("postList" to postList))*/
-        val actionId = findNavController().currentDestination?.id ?: -1
-        val bundle = when (actionId) {
-            R.id.navigation_mypage -> bundleOf("postList" to postList)
-            else -> null
-        }
-
-        findNavController().navigate(R.id.action_navigation_mypage_to_myPageVerticalFragment, bundle)
-
+        findNavController().navigate(R.id.action_navigation_mypage_to_myPageVerticalFragment, bundleOf("postList" to postList))
     }
 
     override fun onDestroyView() {

@@ -32,8 +32,8 @@ class MyPageViewModel @Inject constructor(
     val savedLoginToken: LiveData<String?> = _savedLoginToken
     private val userPreferences = PreferenceManager(context)
 
-    private val _postResponse = MutableLiveData<Event<Resource<RandomPostResponse>>>()
-    var postResponse: LiveData<Event<Resource<RandomPostResponse>>> = _postResponse
+    private val _postResponse = MutableLiveData<Resource<RandomPostResponse>>()
+    var postResponse: LiveData<Resource<RandomPostResponse>> = _postResponse
 
     private val _morePost = MutableLiveData<Event<Resource<RandomPostResponse>>>()
     var morePost: MutableLiveData<Event<Resource<RandomPostResponse>>> = _morePost
@@ -80,7 +80,7 @@ class MyPageViewModel @Inject constructor(
     fun getPostList() {
         Log.d(TAG, "suspend getPostList 호출 ")
         viewModelScope.launch {
-            _postResponse.value = Event(myPageRepository.getMyPost())
+            _postResponse.value = myPageRepository.getMyPost()
         }
     }
 
