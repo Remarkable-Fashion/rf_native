@@ -2,7 +2,6 @@ package com.lf.fashion.ui.mypage
 
 import androidx.fragment.app.Fragment
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import com.lf.fashion.ui.home.frag.HomeBottomSheetFragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.MainNaviDirections
-import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.ImageUrl
 import com.lf.fashion.data.response.Posts
@@ -50,7 +48,6 @@ class MyPageVerticalFragment : Fragment(),
         cancelBtnBackStack(binding.backBtn)
 
         val postList = arguments?.get("postList") as List<Posts>
-        Log.d(TAG, "Vertical Argument: 마이페이지 grid 포토클릭 ${postList}");
 
         binding.verticalViewpager.apply {
             adapter = defaultAdapter
@@ -58,7 +55,6 @@ class MyPageVerticalFragment : Fragment(),
                 submitList(postList)
                 //scrapFragment 에서 선택한 item 의 index 를 시작 index 로 지정 , animation false 처리
                 setCurrentItem(viewModel.startIndex.value ?: 0, false)
-                Log.d(TAG, "Vertical Argument: 마이페이지 grid 포토클릭 index ${viewModel.startIndex.value}");
             }
             getChildAt(0).overScrollMode =
                 RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
