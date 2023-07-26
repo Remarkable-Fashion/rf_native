@@ -1,14 +1,11 @@
 package com.lf.fashion.ui.home.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.lf.fashion.TAG
 import com.lf.fashion.data.response.ClothPost
-import com.lf.fashion.data.response.LookBook
 import com.lf.fashion.databinding.ItemRecommendStyleCardBinding
 
 class LookBookRvAdapter : ListAdapter<ClothPost, LookBookRvAdapter.LookBookViewHolder>(LookBookDiff()) {
@@ -28,8 +25,9 @@ class LookBookRvAdapter : ListAdapter<ClothPost, LookBookRvAdapter.LookBookViewH
             if(position <3){
                 binding.cardName.text = "Best ${position+1}"
             }
-            Log.d(TAG, "LookBookViewHolder - bind: ${lookBook.clothesInfo.reason}");
             binding.likes = lookBook.clothesInfo.count?.favorites
+            binding.clothPost = lookBook
+
             binding.profileSpace.profile = lookBook.user
             binding.clothesSpace.cloth = lookBook.clothesInfo
             binding.likeBtn.setOnClickListener {

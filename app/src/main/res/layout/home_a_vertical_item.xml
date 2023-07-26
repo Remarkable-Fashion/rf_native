@@ -58,21 +58,31 @@
             android:textColor="@color/white"
             tools:text="rf_user"/>
 
-        <androidx.appcompat.widget.AppCompatButton
+        <ImageView
             android:id="@+id/info_btn"
-            android:layout_width="53dp"
-            android:layout_height="23dp"
-            android:layout_marginEnd="23dp"
-            android:background="@drawable/bg_grey_radi15"
+            android:layout_width="93dp"
+            android:layout_height="45dp"
+            android:src="@drawable/bg_grey_radi15"
+            app:layout_constraintTop_toTopOf="@id/profile_image"
+            app:layout_constraintBottom_toBottomOf="@id/profile_image"
+            app:layout_constraintEnd_toEndOf="@id/horizontal_view_pager"
+            android:padding="10dp"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="정보+"
             android:textColor="@color/white"
             android:textSize="11sp"
             android:fontFamily="@font/spoqahansansneo_medium"
-            app:layout_constraintTop_toTopOf="@id/profile_image"
-            app:layout_constraintBottom_toBottomOf="@id/profile_image"
-            app:layout_constraintEnd_toEndOf="@id/horizontal_view_pager"
-            style="@style/Widget.AppCompat.Button.Borderless" />
-
+            app:layout_constraintTop_toTopOf="@id/info_btn"
+            app:layout_constraintStart_toStartOf="@id/info_btn"
+            app:layout_constraintEnd_toEndOf="@id/info_btn"
+            app:layout_constraintBottom_toBottomOf="@id/info_btn"
+            />
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/viewpager_indicator"
             android:layout_width="0dp"
@@ -98,70 +108,3 @@
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
-        <!--<LinearLayout
-            android:id="@+id/post_detail_menu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:paddingBottom="13dp"
-            android:paddingEnd="24dp"
-            android:paddingStart="20dp"
-            android:paddingTop="13dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            >
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/like_btn"
-                android:layout_width="25dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/selector_heart_btn"
-                />
-            <TextView
-                android:id="@+id/likes_value"
-                style="@style/main_bottom_menu_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:layout_marginStart="5dp"
-                tools:text="130"
-
-                />
-
-            <ImageView
-                android:id="@+id/photo_zip_btn"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/ic_image" />
-           &lt;!&ndash; <TextView
-                style="@style/main_bottom_menu_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="30" />&ndash;&gt;
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:id="@+id/share_btn"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/ic_share_unselected" />
-
-            <ImageView
-                android:id="@+id/scrap_btn"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginStart="15dp"
-                android:src="@drawable/selector_scrap_greyblack" />
-
-            <ImageView
-                android:id="@+id/kebab_btn"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/ic_dot_unselected" />
-        </LinearLayout>-->
