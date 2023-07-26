@@ -5,8 +5,11 @@
 
     <data>
         <variable
-            name="look"
-            type="com.lf.fashion.data.response.LookBook" />
+            name="likes"
+            type="Integer" />
+        <variable
+            name="clothPost"
+            type="com.lf.fashion.data.response.ClothPost" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +21,7 @@
             android:id="@+id/card_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Best 1"
+            tools:text="Best 1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             style="@style/montserrat_bold_label" />
@@ -42,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:layout_marginStart="5dp"
-            android:text="@{look.likes}"
+            android:text="@{String.valueOf(likes)}"
             tools:text="130"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -95,6 +98,7 @@
             app:layout_constraintEnd_toEndOf="@id/profile_space"
             app:layout_constraintTop_toBottomOf="@id/clothes_space"
             android:background="@drawable/bg_radi3_filled_no_line"
-            android:text="제 생각엔 이 디자인이 더 잘어울릴 것 같아요!" />
+            android:text="@{clothPost.clothesInfo.reason}"
+            tools:text="제 생각엔 이 디자인이 더 잘어울릴 것 같아요!" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

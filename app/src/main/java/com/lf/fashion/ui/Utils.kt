@@ -54,8 +54,8 @@ fun Fragment.childChip(chipList: List<ChipContents>, chipGroup: ChipGroup, style
         var content = chipList[j].text
 
         chipList[j].emoji?.let {
-            val emoji = it.substring(2).toInt(16)
-            content += " " + String(Character.toChars(emoji))
+          //  val emoji = it.substring(2).toInt(16)
+          //  content += " " + String(Character.toChars(emoji))
         }
 
         chip.text = content

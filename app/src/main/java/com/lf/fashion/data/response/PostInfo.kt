@@ -21,9 +21,13 @@ data class Cloth(
     val imageUrl: String? = null,
     val category: String,
     val name: String,
-    val price: String,
+    val price: Int,
     val color: String?,
     val size: String?,
+    @SerializedName("_count")
+    val count : Count?, // 이 의상은 어때
+    val siteUrl : String?,  // 이 의상은 어때
+    val reason : String?
 )
 
 data class RecommendCloth(
@@ -38,8 +42,6 @@ data class ClothPost(
     val isFavorite: Boolean?,
     val isScrap: Boolean?,
     val isFollowing: Boolean?,
-    val name: String,
-    @SerializedName("_count")
-    val count: Count,
-    val user : UserInfo
+    val user: UserInfo,
+    val clothesInfo : Cloth
 )

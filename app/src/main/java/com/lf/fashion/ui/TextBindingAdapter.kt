@@ -1,8 +1,11 @@
 package com.lf.fashion.ui
 
+import android.annotation.SuppressLint
+import android.util.Log
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.lf.fashion.R
+import com.lf.fashion.TAG
 import com.lf.fashion.data.response.Cloth
 import com.lf.fashion.data.response.MyInfo
 
@@ -40,15 +43,12 @@ fun weight(textView: TextView, weight: Int?) {
     }
 }
 
+@SuppressLint("SetTextI18n")
 @BindingAdapter("clothDetail")
 fun clothDetail(textView: TextView, cloth: Cloth) {
     val color = if (cloth.color.isNullOrEmpty()) "" else cloth.color + " | "
     val size = if (cloth.size.isNullOrEmpty()) "" else cloth.size + " | "
     val decimalFormat = DecimalFormat("#,###")
-    val price = if (cloth.price.isNullOrEmpty()) "" else textView.context.getString(
-        R.string.price_format,
-        decimalFormat.format(cloth.price)
-    )
-
-    textView.text=color+size+price
+    val price = textView.context.getString(R.string.price_format, decimalFormat.format(cloth.price))
+    textView.text = color + size + price
 }

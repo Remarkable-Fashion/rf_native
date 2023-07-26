@@ -20,9 +20,12 @@ interface MainHomeApi {
     ): RandomPostResponse
 
     @GET("post/{id}")
-    suspend fun getPostInfoById(postId : Int) : PostInfo
+    suspend fun getPostInfoById(@Path("id") postId : Int) : PostInfo
 
-    @GET("clothes/{id}/recommend")
-    suspend fun getRecommendClothesInfo(postId: Int,@Query("category") category: String) : RecommendCloth
+    @GET("clothes/{id}/recommend/top") //@Query("category") category: String
+    suspend fun getRecommendTopClothes(@Path("id") postId: Int) : RecommendCloth
+
+    @GET("clothes/{id}/recommend") //@Query("category") category: String
+    suspend fun getRecommendClothesInfo(@Path("id") postId: Int) : RecommendCloth
 }
 

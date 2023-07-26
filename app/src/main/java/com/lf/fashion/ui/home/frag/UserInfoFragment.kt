@@ -1,6 +1,7 @@
 package com.lf.fashion.ui.home.frag
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
+import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.HomeBUserInfoFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
@@ -51,6 +53,7 @@ class UserInfoFragment : Fragment() {
                 when (resource) {
                     is Resource.Success -> {
                         val response = resource.value
+                        Log.d(TAG, "UserInfoFragment - onViewCreated: $response");
                         binding.infoSpace.postInfo = response
                         binding.infoSpace.userInfo = response.user.profile
                         binding.profileSpace.profile = response.user

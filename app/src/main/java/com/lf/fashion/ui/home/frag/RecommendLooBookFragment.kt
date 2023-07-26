@@ -11,6 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
+import com.lf.fashion.TAG
+import com.lf.fashion.data.network.Resource
+import com.lf.fashion.data.response.Cloth
+import com.lf.fashion.data.response.ClothPost
+import com.lf.fashion.data.response.RecommendCloth
 import com.lf.fashion.databinding.HomeBRecommendFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.home.UserInfoViewModel
@@ -21,9 +26,11 @@ import dagger.hilt.android.AndroidEntryPoint
  * 메인 홈에서 유저 정보보기 -> 이 의상은 어때 버튼 클릭시 노출되는 프래그먼트입니다.
  */
 @AndroidEntryPoint
-class RecommendLooBookFragment : Fragment(), View.OnClickListener , AdapterView.OnItemSelectedListener {
+class RecommendLooBookFragment : Fragment(), View.OnClickListener,
+    AdapterView.OnItemSelectedListener {
     private lateinit var binding: HomeBRecommendFragmentBinding
     private val viewModel: UserInfoViewModel by viewModels()
+    private val topList = mutableListOf<ClothPost>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,17 +43,42 @@ class RecommendLooBookFragment : Fragment(), View.OnClickListener , AdapterView.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         cancelBtnBackStack(binding.cancelBtn)
+        val postId = arguments?.get("postId") as Int
 
         binding.orderByBestBtn.setOnClickListener(this)
         binding.orderByRecentBtn.setOnClickListener(this)
 
-        viewModel.getLookBook()
-        viewModel.lookBook.observe(viewLifecycleOwner) {
-            binding.styleRecommendRv.apply {
-                adapter = LookBookRvAdapter().apply {
-                    submitList(it)
-                }
+        viewModel.getTopLook(postId,"All")
+        viewModel.getLookBook(postId, "All")
 
+        viewModel.topLook.observe(viewLifecycleOwner){resources->
+            when (resources) {
+                is Resource.Success -> {
+                    Log.d(TAG, "RecommendLooBookFragment - onViewCreated: ${resources.value}");
+                    topList.removeAll(topList)
+                    topList.addAll(resources.value.clothes)
+                }
+                else -> {
+
+                }
+            }
+
+        }
+        viewModel.lookBook.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    val response = resource.value
+                    binding.styleRecommendRv.apply {
+                        adapter = LookBookRvAdapter().apply {
+                            topList.addAll(response.clothes)
+                            submitList(topList)
+                        }
+
+                    }
+                }
+                else -> {
+
+                }
             }
         }
 
@@ -66,15 +98,17 @@ class RecommendLooBookFragment : Fragment(), View.OnClickListener , AdapterView.
             spinner.adapter = adapter
         }
     }
-    private fun clothesRegButtonOnclick(){
+
+    private fun clothesRegButtonOnclick() {
         binding.registBtn.setOnClickListener {
             findNavController().navigate(R.id.action_recommendFragment_to_registClothFragment)
 
         }
     }
+
     override fun onClick(view: View?) {
-        val singleClickableList = listOf(binding.orderByRecentBtn,binding.orderByBestBtn)
-        singleClickableList.forEach { button->
+        val singleClickableList = listOf(binding.orderByRecentBtn, binding.orderByBestBtn)
+        singleClickableList.forEach { button ->
             button.isSelected = button == view
         }
 
