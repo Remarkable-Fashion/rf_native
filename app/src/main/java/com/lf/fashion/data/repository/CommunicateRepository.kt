@@ -24,4 +24,12 @@ class CommunicateRepository @Inject constructor(
     suspend fun deleteScrap(postId: Int) = safeApiCall {
         comApi.deleteScrap(postId)
     }
+
+    suspend fun createFollowing(userId: Int) =safeApiCall {
+        comApi.createFollowing(userId)
+    }
+
+    suspend fun deleteFollowing(userId: Int) = safeApiCall {
+        comApi.deleteFollowing(userId)
+    }
 }
