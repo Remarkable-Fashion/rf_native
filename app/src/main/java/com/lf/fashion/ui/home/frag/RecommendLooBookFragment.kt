@@ -12,11 +12,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
 import com.lf.fashion.TAG
+import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.Cloth
 import com.lf.fashion.data.response.ClothPost
 import com.lf.fashion.data.response.RecommendCloth
 import com.lf.fashion.databinding.HomeBRecommendFragmentBinding
+import com.lf.fashion.ui.PrefCheckService
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.home.UserInfoViewModel
 import com.lf.fashion.ui.home.adapter.LookBookRvAdapter
@@ -31,6 +33,9 @@ class RecommendLooBookFragment : Fragment(), View.OnClickListener,
     private lateinit var binding: HomeBRecommendFragmentBinding
     private val viewModel: UserInfoViewModel by viewModels()
     private val topList = mutableListOf<ClothPost>()
+  /*  private lateinit var userPref: PreferenceManager
+    private lateinit var prefCheckService: PrefCheckService*/
+    private val lookBookRvAdapter = LookBookRvAdapter()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,7 +47,10 @@ class RecommendLooBookFragment : Fragment(), View.OnClickListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+      /*  userPref = PreferenceManager(requireContext().applicationContext)
+        prefCheckService = PrefCheckService(userPref)*/
         cancelBtnBackStack(binding.cancelBtn)
+//        lookBookRvAdapter = LookBookRvAdapter(requireContext().applicationContext)
         val postId = arguments?.get("postId") as Int
 
         binding.orderByBestBtn.setOnClickListener(this)
@@ -69,7 +77,7 @@ class RecommendLooBookFragment : Fragment(), View.OnClickListener,
                 is Resource.Success -> {
                     val response = resource.value
                     binding.styleRecommendRv.apply {
-                        adapter = LookBookRvAdapter().apply {
+                        adapter = lookBookRvAdapter.apply {
                             topList.addAll(response.clothes)
                             submitList(topList)
                         }

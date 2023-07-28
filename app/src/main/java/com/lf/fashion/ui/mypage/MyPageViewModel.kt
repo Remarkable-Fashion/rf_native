@@ -65,7 +65,7 @@ class MyPageViewModel @Inject constructor(
 
     fun clearSavedLoginToken() {
         viewModelScope.launch {
-            userPreferences.clearAccessToken()
+            userPreferences.clearAccessTokenAndId()
             _savedLoginToken.value = null
         }
         Log.d(TAG, "MyPageViewModel - clearSavedLoginToken: ${savedLoginToken.value}");

@@ -13,6 +13,7 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
 import com.lf.fashion.TAG
+import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.MyInfo
 import com.lf.fashion.data.response.Posts
@@ -22,6 +23,7 @@ import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener
 import com.lf.fashion.ui.GridPostAdapter
 import com.lf.fashion.ui.OnScrollUtils
+import com.lf.fashion.ui.PrefCheckService
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -35,7 +37,9 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
     private lateinit var gridAdapter: GridPostAdapter
     private lateinit var recentResponse: RandomPostResponse
     private lateinit var onScrollListener: NestedScrollView.OnScrollChangeListener
-    private lateinit var globalMyInfo : MyInfo
+    private lateinit var globalMyInfo: MyInfo
+    private lateinit var userPref: PreferenceManager
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,6 +56,8 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        userPref = PreferenceManager(requireContext().applicationContext)
+
         gridAdapter = GridPostAdapter(3, this@MyPageFragment, null)
 
         //스크롤 리스너 설정
@@ -70,51 +76,17 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                 viewModel.myInfo.observe(viewLifecycleOwner) { myInfo ->
                     binding.userInfo = myInfo
                     globalMyInfo = myInfo
+                    runBlocking {
+                        launch {
+                            userPref.saveMyId(myInfo.id)
+                        }
+                    }
                 }
 
                 //내 게시물 불러오기
-                viewModel.postResponse.observe(viewLifecycleOwner) { /*event ->
-                    event.getContentIfNotHandled()?.let { */resource ->
-                        when (resource) {
-                            is Resource.Success -> {
-                                val response = resource.value
-                                if (response.posts.isNotEmpty()) {
-                                    binding.arrayEmptyText.visibility = View.GONE
-                                    binding.gridRv.visibility = View.VISIBLE
-                                    Log.d(TAG, "MyPageFragment - onViewCreated FIRST RESPONSE: $response")
-
-                                    recentResponse = response
-                                    postList.addAll(response.posts)
-
-                                    with(binding.gridRv) {
-                                        //grid layout
-                                        adapter = gridAdapter.apply {
-
-                                            while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
-                                                removeItemDecorationAt(0)
-                                            }
-                                            addItemDecoration(GridSpaceItemDecoration(3, 6))
-                                            submitList(response.posts)
-                                        }
-                                    }
-                                } else {
-                                    binding.arrayEmptyText.visibility = View.VISIBLE
-                                    binding.gridRv.visibility = View.GONE
-                                }
-                            }
-                            is Resource.Loading -> {
-
-                            }
-                            else -> {
-
-                            }
-                        }
-                    //}
-
-                }
+                loadMyPost()
             }
         }
-
         binding.profileEditBtn.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_mypage_to_profileEditFragment,
                 bundleOf("myInfo" to globalMyInfo))
@@ -128,6 +100,45 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
 
     }
 
+    private fun loadMyPost() {
+        viewModel.postResponse.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    val response = resource.value
+                    if (response.posts.isNotEmpty()) {
+                        binding.arrayEmptyText.visibility = View.GONE
+                        binding.gridRv.visibility = View.VISIBLE
+                        Log.d(TAG, "MyPageFragment - onViewCreated FIRST RESPONSE: $response")
+
+                        recentResponse = response
+                        postList.addAll(response.posts)
+
+                        with(binding.gridRv) {
+                            //grid layout
+                            adapter = gridAdapter.apply {
+
+                                while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
+                                    removeItemDecorationAt(0)
+                                }
+                                addItemDecoration(GridSpaceItemDecoration(3, 6))
+                                submitList(response.posts)
+                            }
+                        }
+                    } else {
+                        binding.arrayEmptyText.visibility = View.VISIBLE
+                        binding.gridRv.visibility = View.GONE
+                    }
+                }
+                is Resource.Loading -> {
+
+                }
+                else -> {
+
+                }
+            }
+        }
+    }
+
     private fun loadMorePost() {
         if (recentResponse.hasNext == true) {
             viewModel.getMorePostList(recentResponse.nextCursor!!)
@@ -139,7 +150,10 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                             postList.addAll(more.posts)
                             recentResponse = more // new nextCursor , hasNext check 를 위해 값 재초기화
 
-                            Log.d(TAG, "MyPageFragment - onScrolled LOAD MORE RECENT: $recentResponse")
+                            Log.d(
+                                TAG,
+                                "MyPageFragment - onScrolled LOAD MORE RECENT: $recentResponse"
+                            )
 
                             gridAdapter.apply {
                                 submitList(postList)
@@ -160,11 +174,15 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
 
     override fun gridPhotoClicked(postIndex: Int) {
         //grid 포토 클릭시!!
-        Log.d(TAG, "MyPageFragment - gridPhotoClicked: 마이페이지 grid"
-                +"클릭된 인덱스 : ${postIndex}"
-                );
+        Log.d(
+            TAG, "MyPageFragment - gridPhotoClicked: 마이페이지 grid"
+                    + "클릭된 인덱스 : ${postIndex}"
+        );
         viewModel.editClickedPostIndex(postIndex)
-        findNavController().navigate(R.id.action_navigation_mypage_to_myPageVerticalFragment, bundleOf("postList" to postList))
+        findNavController().navigate(
+            R.id.action_navigation_mypage_to_myPageVerticalFragment,
+            bundleOf("postList" to postList)
+        )
     }
 
     override fun onDestroyView() {

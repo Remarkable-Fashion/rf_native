@@ -1,6 +1,6 @@
 package com.lf.fashion.data.response
 
 data class MsgResponse(
-    val success : String?,
+    val success : Boolean,
     val msg : String?
 )

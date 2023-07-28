@@ -24,7 +24,6 @@ import kotlinx.coroutines.runBlocking
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
     private lateinit var binding: LoginFragmentBinding
-    private lateinit var userPreferences: PreferenceManager
     private val viewModel: MyPageViewModel by viewModels()
 
     override fun onCreateView(
@@ -38,7 +37,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        userPreferences = PreferenceManager(requireContext().applicationContext)
 
         binding.kakaoLoginBackground.setOnClickListener {
             binding.progressBar.visibility = View.VISIBLE
@@ -78,7 +76,7 @@ class LoginFragment : Fragment() {
                 response.let { resource ->
                     when (resource) {
                         is Resource.Success -> {
-                            if (resource.value.success.toBoolean()) {
+                            if (resource.value.success) {
                           //      showLoading(requireActivity(),false)
                                 Log.d(TAG, "LoginFragment - requestJWTToken: ");
                                 findNavController().navigate(R.id.action_loginFragment_to_navigation_mypage)

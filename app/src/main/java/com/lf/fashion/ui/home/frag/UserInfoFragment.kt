@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -50,6 +51,8 @@ class UserInfoFragment : Fragment() {
         cancelBtnBackStack(binding.cancelBtn)
 
         val postId = arguments?.get("postId") as Int
+        //val me = arguments?.get("me") as Boolean?
+        val myUniqueId = prefCheckService.getMyUniqueId()
 
         binding.recommendBtn.setOnClickListener {
             findNavController().navigate(
@@ -59,18 +62,23 @@ class UserInfoFragment : Fragment() {
         }
 
         viewModel.getUserInfoAndStyle(postId)
-        userInfoObserveAndBinding()
+        userInfoObserveAndBinding(myUniqueId)
+
+        followBtnOnclick()
+        // 팔로우 응답 success -> ui update
+        updateFollowingState()
+    }
+
+    private fun followBtnOnclick() {
         binding.profileSpace.followBtn.setOnClickListener {
             if (prefCheckService.loginCheck()) {
-
-                viewModel.changeFollowingState(!binding.profileSpace.followBtn.isSelected,userId)
-
-
+                //팔로우 create / delete
+                viewModel.changeFollowingState(!binding.profileSpace.followBtn.isSelected, userId)
             }
         }
     }
 
-    private fun userInfoObserveAndBinding() {
+    private fun userInfoObserveAndBinding(me: Int?) {
         viewModel.userInfo.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { resource ->
                 when (resource) {
@@ -85,7 +93,10 @@ class UserInfoFragment : Fragment() {
                                 submitList(response.clothes)
                             }
                         }
+
                         //팔로우 관련
+                        // 내 포스트인 경우 팔로우 버튼 숨기기
+                        binding.profileSpace.followBtn.isVisible = me != response.user.id
                         binding.profileSpace.followBtn.isSelected =
                             response.isFollow ?: false
                         userId = response.user.id
@@ -102,6 +113,16 @@ class UserInfoFragment : Fragment() {
                     }
                 }
 
+            }
+        }
+    }
+
+    private fun updateFollowingState() {
+        viewModel.followResponse.observe(viewLifecycleOwner) { resources ->
+            if (resources is Resource.Success && resources.value.success) {
+                //팔로우 버튼 ui 반전
+                binding.profileSpace.followBtn.isSelected =
+                    !binding.profileSpace.followBtn.isSelected
             }
         }
     }

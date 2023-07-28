@@ -5,12 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
-import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.lf.fashion.data.common.PreferenceManager
-import com.lf.fashion.databinding.HomeBottomDialogItemBinding
 import com.lf.fashion.databinding.MypageSettingBottomDialogBinding
-import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.NonDisposableHandle.parent
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -21,6 +19,7 @@ import kotlinx.coroutines.runBlocking
 class SettingBottomSheetFragment(private val viewModel: MyPageViewModel) :
     BottomSheetDialogFragment(), View.OnClickListener {
     lateinit var binding: MypageSettingBottomDialogBinding
+    //private lateinit var userPref: PreferenceManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,6 +32,7 @@ class SettingBottomSheetFragment(private val viewModel: MyPageViewModel) :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //userPref = PreferenceManager(requireContext().applicationContext)
 
         binding.bottomLayout.children.forEach { it.setOnClickListener(this) }
     }
@@ -53,6 +53,12 @@ class SettingBottomSheetFragment(private val viewModel: MyPageViewModel) :
             }
             binding.logoutBtn -> {
                 viewModel.clearSavedLoginToken()
+
+                /*runBlocking {
+                    launch {
+                        userPref.clearAccessTokenAndId()
+                    }
+                }*/
                 this@SettingBottomSheetFragment.dismiss()
             }
             binding.Withdrawal -> {

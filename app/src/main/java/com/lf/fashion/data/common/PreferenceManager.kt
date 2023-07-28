@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.Gson
@@ -31,20 +32,27 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
         get() = appContext.dataStore.data.map { preferences ->
             preferences[REFRESH_TOKEN]
         }
+
     val searchHistoryList : Flow<String?>
     get() = appContext.dataStore.data.map { preferences ->
         preferences[RECENT_SEARCH_TERM]
     }
+
     val firstActivate : Flow<String?>
         get() = appContext.dataStore.data.map { preferences ->
             preferences[FIRST_ACTIVATE]
         }
+
+    val myUniqueId : Flow<Int?>
+        get() = appContext.dataStore.data.map { preferences ->
+            preferences[MY_UNIQUE_ID]
+        }
+
     suspend fun saveAccessTokens(accessToken: String, refreshToken: String) {
         Log.d(TAG, "PreferenceManager - saveAccessTokens: $accessToken");
         appContext.dataStore.edit { preferences ->
             preferences[ACCESS_TOKEN] = accessToken
             preferences[REFRESH_TOKEN] = refreshToken
-
         }
     }
 
@@ -60,6 +68,11 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
             pref[FIRST_ACTIVATE] = "false"
         }
     }
+    suspend fun saveMyId(userId: Int) {
+        appContext.dataStore.edit { preferences ->
+            preferences[MY_UNIQUE_ID] = userId
+        }
+    }
 
     suspend fun clearGender(){
         appContext.dataStore.edit { pref->
@@ -67,7 +80,7 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
         }
     }
 
-    suspend fun clear() {
+    suspend fun clearAll() {
         appContext.dataStore.edit { preferences ->
             preferences.clear()
         }
@@ -80,9 +93,10 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
     }
 
     //테스트용
-    suspend fun clearAccessToken(){
+    suspend fun clearAccessTokenAndId(){
         appContext.dataStore.edit { preferences->
             preferences.remove(ACCESS_TOKEN)
+            preferences.remove(MY_UNIQUE_ID)
         }
     }
     companion object {
@@ -90,6 +104,6 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
         private val REFRESH_TOKEN = stringPreferencesKey("key_refresh_token")
         private val RECENT_SEARCH_TERM = stringPreferencesKey("recent_search_term")
         private val FIRST_ACTIVATE = stringPreferencesKey("first_activate")
-
+        private val MY_UNIQUE_ID = intPreferencesKey("my_unique_id")
     }
 }

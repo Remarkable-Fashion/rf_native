@@ -6,6 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MyInfo (
+    val id :Int,
     val profile : Profile,
     val name : String,
     @SerializedName("_count")

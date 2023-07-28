@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
 import com.lf.fashion.ui.cancelBtnBackStack
@@ -92,7 +93,7 @@ class MyPageVerticalFragment : Fragment(),
 
         private fun updateLikeState() {
             viewModel.changeLikeResponse.observe(viewLifecycleOwner) { resources ->
-                if (resources is Resource.Success && resources.value.success != null) {
+                if (resources is Resource.Success && resources.value.success) {
                     val currentList = defaultAdapter.currentList
                     val position = currentList.indexOf(likeClickedPosts)
 
@@ -110,7 +111,7 @@ class MyPageVerticalFragment : Fragment(),
 
         private fun updateScrapState() {
             viewModel.scrapResponse.observe(viewLifecycleOwner) { resources ->
-                if (resources is Resource.Success && resources.value.success != null && this::scrapClickedPosts.isInitialized) {
+                if (resources is Resource.Success && resources.value.success && this::scrapClickedPosts.isInitialized) {
                     val currentList = defaultAdapter.currentList
                     val position = currentList.indexOf(scrapClickedPosts)
 
@@ -165,6 +166,8 @@ class MyPageVerticalFragment : Fragment(),
         }
 
         override fun infoBtnClicked(postId: Int) {
-            findNavController().navigate(R.id.action_global_to_userInfoFragment)
+            findNavController().navigate(R.id.action_global_to_userInfoFragment,
+                bundleOf("postId" to postId)
+            )
         }
     }

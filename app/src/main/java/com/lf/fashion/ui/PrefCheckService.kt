@@ -15,4 +15,13 @@ class PrefCheckService(private val userPref: PreferenceManager) {
 
         return authKey.isNotEmpty()
     }
+
+    fun getMyUniqueId(): Int? {
+        val requestMyId: Deferred<Int?> =
+            CoroutineScope(Dispatchers.IO).async {
+                userPref.myUniqueId.first()
+            }
+
+        return runBlocking { requestMyId.await() }
+    }
 }
