@@ -87,7 +87,7 @@ class ScrapVerticalFragment : Fragment(),
 
     private fun updateLikeState() {
         viewModel.changeLikeResponse.observe(viewLifecycleOwner) { resources ->
-            if (resources is Resource.Success && resources.value.success != null) {
+            if (resources is Resource.Success && resources.value.success) {
                 val currentList = defaultAdapter.currentList
                 val position = currentList.indexOf(likeClickedPosts)
 
@@ -105,7 +105,7 @@ class ScrapVerticalFragment : Fragment(),
 
     private fun updateScrapState(){
         viewModel.scrapResponse.observe(viewLifecycleOwner){ resources->
-            if(resources is Resource.Success && resources.value.success !=null){
+            if(resources is Resource.Success && resources.value.success){
                 val currentList = defaultAdapter.currentList
                 val position = currentList.indexOf(scrapClickedPosts)
 

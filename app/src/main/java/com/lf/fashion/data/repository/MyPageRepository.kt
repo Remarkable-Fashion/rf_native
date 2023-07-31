@@ -6,20 +6,34 @@ import com.lf.fashion.data.network.api.MyPageApi
 import com.lf.fashion.data.response.MsgResponse
 import com.lf.fashion.data.response.MyInfo
 import com.lf.fashion.data.response.RandomPostResponse
+import com.lf.fashion.data.response.UpdateMyInfo
 import javax.inject.Inject
 import kotlin.math.log
 
-class MyPageRepository @Inject constructor(private val jwtApi: JWTApi,private val myPageApi: MyPageApi) :SafeApiCall {
+class MyPageRepository @Inject constructor(
+    private val jwtApi: JWTApi,
+    private val myPageApi: MyPageApi
+) : SafeApiCall {
 
-    suspend fun getJWT(loginAccessToken : String) = safeApiCall{
+    suspend fun getJWT(loginAccessToken: String) = safeApiCall {
         jwtApi.getJWT(loginAccessToken)
     }
 
-    suspend fun getMyInfo():MyInfo{
+    suspend fun getMyInfo(): MyInfo {
         return myPageApi.getMyPageInfo()
     }
 
-    suspend fun getMyPost(nextCursor : Int?=null)  = safeApiCall {
-         myPageApi.getMyPagePost(nextCursor)
+    suspend fun getMyPost(nextCursor: Int? = null) = safeApiCall {
+        myPageApi.getMyPagePost(nextCursor)
+    }
+
+    suspend fun updateMyProfile(updateMyInfo: UpdateMyInfo) = safeApiCall{
+        myPageApi.updateProfileInfo(
+            updateMyInfo.avartar,
+            updateMyInfo.sex,
+            updateMyInfo.height,
+            updateMyInfo.weight,
+            updateMyInfo.introduction
+        )
     }
 }

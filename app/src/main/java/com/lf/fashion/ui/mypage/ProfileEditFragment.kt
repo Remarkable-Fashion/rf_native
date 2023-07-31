@@ -1,12 +1,12 @@
 package com.lf.fashion.ui.mypage
 
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.kakao.sdk.user.UserApiClient
 import com.lf.fashion.R
 import com.lf.fashion.TAG
+import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.MyInfo
 import com.lf.fashion.data.response.UpdateMyInfo
 import com.lf.fashion.databinding.MypageProfileFragmentBinding
@@ -27,13 +28,13 @@ import java.io.File
 @AndroidEntryPoint
 class ProfileEditFragment : Fragment() {
     private lateinit var binding: MypageProfileFragmentBinding
-    private val viewModel : MyPageViewModel by hiltNavGraphViewModels(R.id.navigation_mypage)
-    private lateinit var nameValue :EditText
+    private val viewModel: MyPageViewModel by hiltNavGraphViewModels(R.id.navigation_mypage)
+    private lateinit var nameValue: EditText
     private lateinit var heightValue: EditText
-    private lateinit var weightValue : EditText
-    private lateinit var introduceValue : EditText
-    private var updatedSex :String? =null
-    private var selectedImageUri :String? = null
+    private lateinit var weightValue: EditText
+    private lateinit var introduceValue: EditText
+    private var updatedSex: String? = null
+    private var selectedImageUri: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,22 +56,43 @@ class ProfileEditFragment : Fragment() {
         introduceValue = binding.introduceValue
         heightValue = binding.heightValue
         weightValue = binding.weightValue
-        nameValue  = binding.nameValue
+        nameValue = binding.nameValue
 
         getMyEmailInfo() // 이메일 정보 바인딩
         genderListener(myInfo) // 성별 선택 택 1 제한
         textListenerSetting(myInfo)
         onclickProfileImage()
+        submitProfileInfo()
 
+        viewModel.updateProfileResponse.observe(viewLifecycleOwner) { resources ->
+            if (resources is Resource.Success && resources.value.success ) {
+                Toast.makeText(requireContext(),"프로필 수정이 완료되었습니다.",Toast.LENGTH_SHORT).show()
+                findNavController().navigateUp()
+            }else{
+                Toast.makeText(requireContext(),"오류 발생",Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
+    private fun submitProfileInfo() {
         binding.submitBtn.setOnClickListener {
             if (nameValue.text.isNotBlank()) {
-                val profileImageFile :File? = if(selectedImageUri != null) File(selectedImageUri!!) else null
+                val profileImageFile: File? =
+                    if (selectedImageUri != null) File(selectedImageUri!!) else null
                 val weight = weightValue.text.toString().replace("kg", "").toInt()
                 val height = heightValue.text.toString().replace("cm", "").toInt()
-                UpdateMyInfo(profileImageFile,updatedSex ,height,weight,introduceValue.text.toString())
+
 
                 // 등록 api 연결
+                viewModel.updateMyProfile(
+                    UpdateMyInfo(
+                        profileImageFile,
+                        updatedSex,
+                        height,
+                        weight,
+                        introduceValue.text.toString()
+                    )
+                )
 
             }
         }
@@ -116,7 +138,7 @@ class ProfileEditFragment : Fragment() {
             womanBtn.isSelected = true
         }
 
-        updatedSex = if(Male) "Male" else "Female"
+        updatedSex = if (Male) "Male" else "Female"
     }
 
     private fun textListenerSetting(myInfo: MyInfo) {
@@ -161,14 +183,15 @@ class ProfileEditFragment : Fragment() {
         }
     }
 
-    private fun onclickProfileImage(){
+    private fun onclickProfileImage() {
         binding.profileImage.setOnClickListener {
-            findNavController().navigate(R.id.action_profileEditFragment_to_imagePickerFragment,
-                bundleOf("from" to "ProfileEditFragment" , "limit" to 1))
+            findNavController().navigate(
+                R.id.action_profileEditFragment_to_imagePickerFragment,
+                bundleOf("from" to "ProfileEditFragment", "limit" to 1)
+            )
         }
 
-        setFragmentResultListener(requestKey = ImagePickerFragment.REQUEST_KEY){
-                _, bundle ->
+        setFragmentResultListener(requestKey = ImagePickerFragment.REQUEST_KEY) { _, bundle ->
             val imageUris = bundle.get("imageURI") as Array<*>
             imageUris[0]?.let {
                 selectedImageUri = imageUris[0].toString()

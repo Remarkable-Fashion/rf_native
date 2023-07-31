@@ -15,6 +15,7 @@ import com.lf.fashion.data.repository.MyPageRepository
 import com.lf.fashion.data.response.MsgResponse
 import com.lf.fashion.data.response.MyInfo
 import com.lf.fashion.data.response.RandomPostResponse
+import com.lf.fashion.data.response.UpdateMyInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
@@ -51,6 +52,8 @@ class MyPageViewModel @Inject constructor(
     private val _scrapResponse = MutableLiveData<Resource<MsgResponse>>()
     val scrapResponse = _scrapResponse
 
+    private val _updateProfileResponse =  MutableLiveData<Resource<MsgResponse>>()
+    val updateProfileResponse = _updateProfileResponse
 
     suspend fun getJWT(loginAccessToken: String): Resource<MsgResponse> {
         return myPageRepository.getJWT(loginAccessToken)
@@ -113,6 +116,12 @@ class MyPageViewModel @Inject constructor(
             } else {
                 _scrapResponse.value = communicateRepository.deleteScrap(postId)
             }
+        }
+    }
+
+    fun updateMyProfile(updateMyInfo: UpdateMyInfo){
+        viewModelScope.launch {
+            _updateProfileResponse.value = myPageRepository.updateMyProfile(updateMyInfo)
         }
     }
 }
