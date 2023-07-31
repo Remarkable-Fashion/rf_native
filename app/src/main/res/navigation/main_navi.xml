@@ -129,6 +129,9 @@
 <!--                app:argType="string[]"-->
 <!--                app:nullable="true" />-->
         </action>
+        <action
+            android:id="@+id/action_imagePickerFragment_to_profileEditFragment"
+            app:destination="@id/profileEditFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -142,7 +145,11 @@
     <fragment
         android:id="@+id/profileEditFragment"
         android:name="com.lf.fashion.ui.mypage.ProfileEditFragment"
-        android:label="ProfileEditFragment" />
+        android:label="ProfileEditFragment" >
+        <action
+            android:id="@+id/action_profileEditFragment_to_imagePickerFragment"
+            app:destination="@id/imagePickerFragment" />
+    </fragment>
     <fragment
         android:id="@+id/scrapVerticalFragment"
         android:name="com.lf.fashion.ui.scrap.ScrapVerticalFragment"

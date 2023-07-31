@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
@@ -33,9 +34,10 @@ class PhotoFragment : Fragment() {
             if (allPermissionsGranted || galleryPermission ) {
                 //모든 이미지타입
                 // requestImageUriLauncher.launch("image/*") // 여기서 요청할경우 권한 동의 후 바로 파일접근으로 넘어갈 수 있다.
-                Log.d(TAG, "PhotoFragment - : granted");
-                val direction = PhotoFragmentDirections.actionNavigationPhotoToImagePickerFragment()
-                findNavController().navigate(direction)
+                //Log.d(TAG, "PhotoFragment - : granted");
+                //val direction = PhotoFragmentDirections.actionNavigationPhotoToImagePickerFragment()
+                findNavController().navigate(R.id.action_navigation_photo_to_imagePickerFragment,
+                    bundleOf("from" to "PhotoFragment" , "limit" to 4))
             } else {
                 Log.d(TAG, "PhotoFragment - : granted fail");
             }

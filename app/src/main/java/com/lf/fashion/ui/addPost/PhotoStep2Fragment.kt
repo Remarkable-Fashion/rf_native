@@ -46,9 +46,9 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //이미지 등록에서 받아온 이미지들 ..
+        //photoFragment -> ImagePicker -> PHtoStep2Fragment 로 받아온 이미지들 ..
         val imageUris = arguments?.get("image_uri") as Array<*>
-        Log.d(TAG, "PhotoStep2Fragment - onViewCreated: ${imageUris.get(0)}")
+        Log.d(TAG, "PhotoStep2Fragment - onViewCreated: ${imageUris[0]}")
 
         with(binding.clothesDetailRv){
             adapter = addClothesAdapter
@@ -147,11 +147,12 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         binding.clothRegistForm.productImage.setOnClickListener {
             findNavController().navigate(
                 R.id.action_photoStep2Fragment_to_imagePickerFragment,
-                bundleOf("from" to "PhotoStep2Fragment")
+                bundleOf("from" to "PhotoStep2Fragment" , "limit" to 4)
             )
         }
         setFragmentResultListener(requestKey = ImagePickerFragment.REQUEST_KEY){
             _, bundle ->
+            //의상 등록 부분에서 이미지 받아온 것
             val imageUris = bundle.get("imageURI") as Array<*>
             imageUris[0]?.let {
                 selectedImageUri = imageUris[0].toString()

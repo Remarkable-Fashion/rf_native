@@ -20,7 +20,8 @@ import com.lf.fashion.ui.addPost.ImagePickerViewModel
  */
 class ImageAdapter(
     private val parentViewModel: ImagePickerViewModel,
-    private val galleryRvListener: GalleryRvListener
+    private val galleryRvListener: GalleryRvListener,
+    private val imageLimit : Int
 ) : ListAdapter<ImageItem, RecyclerView.ViewHolder>(ImageDiffCallback()) {
 
     companion object {
@@ -30,7 +31,7 @@ class ImageAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            VIEW_TYPE_FIRST_ITEM -> {
+            VIEW_TYPE_FIRST_ITEM -> { // 첫번째 아이템은 카메라 실행 ui 로 !
                 val binding =
                     ItemCameraBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 val holder = FirstImageViewHolder(binding)
@@ -56,7 +57,11 @@ class ImageAdapter(
     private fun subscribeUi(binding: ItemImageBinding, holder: ImageViewHolder) {
         binding.image.setOnClickListener {
             parentViewModel.imageItemList.value?.let { it ->
-                checkBoxConverse(holder, binding, it)
+                if(it.size in 1..imageLimit) {
+                    checkBoxConverse(holder, binding, it)
+                }else{
+                    galleryRvListener.checkedCountOver()  // TODO : 테스트 필요
+                }
             }
         }
     }

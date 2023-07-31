@@ -47,6 +47,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
     private val viewModel: ImagePickerViewModel by viewModels {
         ImagePickerViewModelFactory(requireContext())
     }
+    private val checkedImageAdapter =CheckedImageAdapter(this@ImagePickerFragment)
     companion object{
         val REQUEST_KEY ="REGISTER_CLOTH_IMAGE"
     }
@@ -92,6 +93,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val backStackFragment = arguments?.get("from")
+        val imageLimit = arguments?.get("limit") as Int
 
 
         //submit(등록) 버튼 클릭시 편집 fragment 로 이동
@@ -99,28 +101,39 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
             // Pass Uri list to fragment outside
             Log.d(TAG, "ImagePickerFragment - onCreateView: ${viewModel.getCheckedImageUriList()}");
             val imageUriArray = viewModel.getCheckedImageUriList().toTypedArray()
-            if (backStackFragment == "RegistClothFragment") {
-                setFragmentResult(REQUEST_KEY, bundleOf("imageURI" to imageUriArray ))
-                findNavController().navigateUp()
-            }else if(backStackFragment =="PhotoStep2Fragment"){
-                setFragmentResult(REQUEST_KEY, bundleOf("imageURI" to imageUriArray))
-                findNavController().navigateUp()
+            // TODO : PhotoFragment 에서 넘어오는 경우만 from 다르게 처리해둠 , 테스트하기 ..
+            when (backStackFragment) {
+              /*  "RegistClothFragment" -> {
+                    setFragmentResult(REQUEST_KEY, bundleOf("imageURI" to imageUriArray ))
+                    findNavController().navigateUp()
+                }
+                "PhotoStep2Fragment" -> {
+                    setFragmentResult(REQUEST_KEY, bundleOf("imageURI" to imageUriArray))
+                    findNavController().navigateUp()
 
-            }else {
-               val action =  ImagePickerFragmentDirections.actionImagePickerFragmentToPhotoStep2Fragment(imageUriArray)
-                findNavController().navigate(action)
+                }*/
+                "PhotoFragment" ->{ //PhotoFragment -> ImagePicker 일땐 backstack 이 아니라 PhotoStep2로 가야하기 때문에 분리..
+                    val action =  ImagePickerFragmentDirections.actionImagePickerFragmentToPhotoStep2Fragment(imageUriArray)
+                    findNavController().navigate(action)
+                }
+                else -> {
+                    /*val action =  ImagePickerFragmentDirections.actionImagePickerFragmentToPhotoStep2Fragment(imageUriArray)
+                    findNavController().navigate(action)*/
+                    setFragmentResult(REQUEST_KEY, bundleOf("imageURI" to imageUriArray))
+                    findNavController().navigateUp()
 
+                }
             }
         }
 
-        galleryImageRvSetting()
+        galleryImageRvSetting(imageLimit)
 
         checkedImageRvSetting()
 
     }
 
-    private fun galleryImageRvSetting() {
-        val galleryImageAdapter = ImageAdapter(viewModel, this@ImagePickerFragment)
+    private fun galleryImageRvSetting(imageLimit : Int) {
+        val galleryImageAdapter = ImageAdapter(viewModel, this@ImagePickerFragment, imageLimit)
         binding.recyclerviewImage.adapter = galleryImageAdapter
         viewModel.imageItemList.observe(viewLifecycleOwner) { imageItemList ->
             Log.d(TAG, "ImagePickerFragment - galleryImageRvSetting:  view model response");
@@ -130,7 +143,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
     }
 
     private fun checkedImageRvSetting() {
-        val checkedImageAdapter = CheckedImageAdapter(this@ImagePickerFragment)
+        val checkedImageAdapter = checkedImageAdapter
         binding.selectedPhotoRv.adapter = checkedImageAdapter
         viewModel.checkedItemList.observe(viewLifecycleOwner) { checked ->
             if (checked.isEmpty()) {
@@ -150,7 +163,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
     }
 
     private fun submitBtnUIUpdate(checkedListSize: Int) {
-        if (checkedListSize > 0) {
+        if (checkedListSize in 1..4) {
             val dynamicText = "$checkedListSize"
             val staticText = " 등록"
             val finalText = dynamicText + staticText
@@ -171,7 +184,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
 
             binding.submitBtn.text = spannableString
             binding.submitBtn.isSelected = true
-        } else {
+        }else {
             binding.submitBtn.text = "등록"
             binding.submitBtn.isSelected = false
         }

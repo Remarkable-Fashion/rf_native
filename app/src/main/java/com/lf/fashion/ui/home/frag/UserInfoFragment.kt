@@ -51,7 +51,6 @@ class UserInfoFragment : Fragment() {
         cancelBtnBackStack(binding.cancelBtn)
 
         val postId = arguments?.get("postId") as Int
-        //val me = arguments?.get("me") as Boolean?
         val myUniqueId = prefCheckService.getMyUniqueId()
 
         binding.recommendBtn.setOnClickListener {

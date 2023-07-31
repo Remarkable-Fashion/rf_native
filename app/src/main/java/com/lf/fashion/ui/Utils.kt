@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -27,6 +28,8 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.response.ChipContents
+import com.lf.fashion.data.response.MyInfo
+import java.io.File
 import kotlin.math.roundToInt
 
 fun Fragment.cancelBtnBackStack(view: ImageView) {
@@ -58,8 +61,8 @@ fun Fragment.childChip(chipList: List<ChipContents>, chipGroup: ChipGroup, style
         var content = chipList[j].text
 
         chipList[j].emoji?.let {
-          //  val emoji = it.substring(2).toInt(16)
-          //  content += " " + String(Character.toChars(emoji))
+            //  val emoji = it.substring(2).toInt(16)
+            //  content += " " + String(Character.toChars(emoji))
         }
 
         chip.text = content
@@ -106,7 +109,7 @@ fun Fragment.showRequireLoginDialog(alreadyHome: Boolean? = null) {
             bottomNavigationView.selectedItemId = R.id.navigation_mypage
         }
         .setNegativeButton("닫기") { _, _ ->
-            if(alreadyHome != true){
+            if (alreadyHome != true) {
                 findNavController().navigateUp()
             }
         }
@@ -114,6 +117,7 @@ fun Fragment.showRequireLoginDialog(alreadyHome: Boolean? = null) {
     loginDialog.show()
 
 }
+
 fun addTextLengthCounter(editText: EditText, counterTextView: TextView, maxLength: Int) {
     editText.addTextChangedListener(object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -130,19 +134,21 @@ fun addTextLengthCounter(editText: EditText, counterTextView: TextView, maxLengt
                     editText.setSelection(truncatedText.length) // Move cursor to the end
                 }
 
-                val count = if(it.length>50) 50 else it.length
+                val count = if (it.length > 50) 50 else it.length
                 counterTextView.text = "$count/$maxLength"
             }
         }
     })
 }
-fun addTextChangeListener(editTexts: List<EditText>, changeListener: (changed : Boolean) -> Unit) {
+
+fun addTextChangeListener(editTexts: List<EditText>,myInfo: MyInfo, changeListener: (changed: Boolean) -> Unit) {
     for (editText in editTexts) {
         editText.addTextChangedListener(object : TextWatcher {
             private var beforeText = ""
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 beforeText = s?.toString() ?: ""
+                Log.d(TAG, " - beforeTextChanged: $beforeText");
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -157,62 +163,23 @@ fun addTextChangeListener(editTexts: List<EditText>, changeListener: (changed : 
         })
     }
 }
-fun addUnitTextListener(editText: EditText, height:Boolean) {
-    if (height) {
-        editText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-                val text = editText.text.toString()
-                if (!text.endsWith("cm")) {
-                    editText.setText("$text cm")
-                }
+
+@SuppressLint("SetTextI18n")
+fun addUnitTextListener(editText: EditText, height: Boolean) {
+    val endText = if (height) "cm" else "kg"
+    editText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+        if (!hasFocus) {
+            val text = editText.text.toString()
+            if (!text.endsWith(endText)) {
+                editText.setText("$text $endText")
             }
         }
-        editText.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                s?.let {
-                    if (it.length > 3) {
-                        val truncatedText = it.subSequence(0, 3)
-                        editText.setText(truncatedText)
-                        editText.setSelection(truncatedText.length) // Move cursor to the end
-                    }
-                }
-            }
-
-        })
-    }else{
-        editText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-                val text = editText.text.toString()
-                if (!text.endsWith("kg")) {
-                    editText.setText("$text kg")
-                }
-            }
-        }
-        editText.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                s?.let{
-                if (it.length > 3) {
-                    val truncatedText = it.subSequence(0, 3)
-                    editText.setText(truncatedText)
-                    editText.setSelection(truncatedText.length) // Move cursor to the end
-                }}
-            }
-
-        })
     }
-/*    editText.addTextChangedListener(object : TextWatcher {
+    editText.addTextLengthLimit()
+}
+
+fun EditText.addTextLengthLimit() {
+    this@addTextLengthLimit.addTextChangedListener(object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
         }
 
@@ -220,24 +187,32 @@ fun addUnitTextListener(editText: EditText, height:Boolean) {
         }
 
         override fun afterTextChanged(s: Editable?) {
-            if (height && !s.isNullOrEmpty() && !s.toString().endsWith("cm")) {
-                editText.removeTextChangedListener(this)
-                val text = s.toString() + "cm"
-                editText.setText(text)
-                editText.setSelection(text.length)
-                editText.addTextChangedListener(this)
-            }else if(!height && !s.isNullOrEmpty() && !s.toString().endsWith("kg")){
-                editText.removeTextChangedListener(this)
-                val text = s.toString() + "kg"
-                editText.setText(text)
-                editText.setSelection(text.length)
-                editText.addTextChangedListener(this)
+            s?.let {
+                if (it.length > 3) {
+                    val truncatedText = it.subSequence(0, 3)
+                    this@addTextLengthLimit.setText(truncatedText)
+                    this@addTextLengthLimit.setSelection(truncatedText.length) // Move cursor to the end
+                }
             }
         }
-    })*/
+
+    })
 }
 
-fun Fragment.createDynamicLink(activity : Activity) {
+fun Fragment.uriToFile(context : Context, uri : Uri) : File?{
+    val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+    val cursor = context.contentResolver.query(uri, filePathColumn, null, null, null)
+    cursor?.use {
+        it.moveToFirst()
+        val columnIndex = it.getColumnIndex(filePathColumn[0])
+        val filePath = it.getString(columnIndex)
+        return File(filePath)
+    }
+    return null
+}
+
+
+fun Fragment.createDynamicLink(activity: Activity) {
     // 파라미터로 전달할 데이터를 정의합니다.
     val customParameter = "value123"
 
@@ -258,8 +233,8 @@ fun Fragment.createDynamicLink(activity : Activity) {
         .addOnSuccessListener { shortDynamicLink ->
             // 단축 링크를 얻은 후 원하는 처리를 수행합니다.
             val shortLink = shortDynamicLink.shortLink
-            shortLink?.let{
-              //  shareDynamicLink(it) // 링크를 공유하는 메서드 호출
+            shortLink?.let {
+                //  shareDynamicLink(it) // 링크를 공유하는 메서드 호출
             }
         }
         .addOnFailureListener(activity) { e ->

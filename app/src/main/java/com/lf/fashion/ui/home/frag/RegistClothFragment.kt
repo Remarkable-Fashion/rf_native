@@ -50,7 +50,7 @@ class RegistClothFragment : Fragment(), View.OnClickListener {
                 // requestImageUriLauncher.launch("image/*") // 여기서 요청할경우 권한 동의 후 바로 파일접근으로 넘어갈 수 있다.
                 findNavController().navigate(
                     R.id.action_registClothFragment_to_imagePickerFragment,
-                    bundleOf("from" to "RegistClothFragment")
+                    bundleOf("from" to "RegistClothFragment", "limit" to 1)
                 )
             } else {
                 Log.d(TAG, "PhotoFragment - : granted fail")
@@ -74,7 +74,7 @@ class RegistClothFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //이미지 등록에서 받아온 이미지들 ..
-        setFragmentResultListener(ImagePickerFragment.REQUEST_KEY){ requestKey, bundle ->
+        setFragmentResultListener(ImagePickerFragment.REQUEST_KEY){ _, bundle ->
           //  Log.d(TAG, "PhotoStep2Fragment - onViewCreated: ${bundle.get("imageURI")}");
             val imageUris = bundle.get("imageURI") as Array<*>
             imageUris[0]?.let {
