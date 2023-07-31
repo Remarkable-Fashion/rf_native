@@ -2,7 +2,6 @@ package com.lf.fashion.data.network
 
 import android.content.Context
 import com.lf.fashion.data.network.api.*
-import com.lf.fashion.data.network.api.test.ChipTestApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,14 +15,12 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideTestChipApi(
+    fun provideChipApi(
         remoteDataSource: RemoteDataSource,
         @ApplicationContext context: Context
-    ): ChipTestApi {
-        return remoteDataSource.buildTestApi(ChipTestApi::class.java,context)
+    ): ChipApi {
+        return remoteDataSource.buildTestApi(ChipApi::class.java,context)
     }
-
-    /* --------------------------- */
 
     @Singleton
     @Provides

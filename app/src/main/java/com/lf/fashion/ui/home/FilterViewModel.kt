@@ -12,15 +12,33 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FilterViewModel @Inject constructor(private val repository: HomeRepository) : ViewModel() {
-    private val _chipList = MutableLiveData<List<ChipInfo>>()
-    var chipList: LiveData<List<ChipInfo>> = _chipList
+    private val _tpoChipList = MutableLiveData<List<ChipInfo>>()
+    var tpoChipList: LiveData<List<ChipInfo>> = _tpoChipList
+
+    private val _seasonChipList = MutableLiveData<List<ChipInfo>>()
+    var seasonChipList: LiveData<List<ChipInfo>> = _seasonChipList
+
+    private val _styleChipList = MutableLiveData<List<ChipInfo>>()
+    var styleChipList: LiveData<List<ChipInfo>> = _styleChipList
 
     init {
-        getChipsInfo()
+        getTPOChipsInfo()
+        getSeasonChipsInfo()
+        getStyleChipsInfo()
     }
-    private fun getChipsInfo(){
+    private fun getTPOChipsInfo(){
         viewModelScope.launch {
-            _chipList.value = repository.getChipInfo()
+            _tpoChipList.value = repository.getTPOChips()
+        }
+    }
+    private fun getSeasonChipsInfo(){
+        viewModelScope.launch {
+            _tpoChipList.value = repository.getSeasonChips()
+        }
+    }
+    private fun getStyleChipsInfo(){
+        viewModelScope.launch {
+            _tpoChipList.value = repository.getStyleChips()
         }
     }
 }

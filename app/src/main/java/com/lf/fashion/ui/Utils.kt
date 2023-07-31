@@ -27,7 +27,7 @@ import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.lf.fashion.R
 import com.lf.fashion.TAG
-import com.lf.fashion.data.response.ChipContents
+import com.lf.fashion.data.response.ChipInfo
 import com.lf.fashion.data.response.MyInfo
 import java.io.File
 import kotlin.math.roundToInt
@@ -39,7 +39,7 @@ fun Fragment.cancelBtnBackStack(view: ImageView) {
 }
 
 @SuppressLint("InflateParams")
-fun Fragment.childChip(chipList: List<ChipContents>, chipGroup: ChipGroup, style: String) {
+fun Fragment.childChip(chipList: List<ChipInfo>, chipGroup: ChipGroup, style: String) {
     for (j in chipList.indices) {
         /* val chip =
              if (style == "default") LayoutInflater.from(context)

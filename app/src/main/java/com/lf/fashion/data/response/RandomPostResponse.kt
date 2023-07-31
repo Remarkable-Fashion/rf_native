@@ -43,13 +43,12 @@ data class FollowIdSet(
 ):Parcelable
 
 
+/*
 data class ChipInfo(
     val id: String, //  카테고리 , style tpo season 등등
     val chips : List<ChipContents>
 )
-data class ChipContents(
-    val text:String,
-    val emoji : String?
-)
+*/
+
 
 

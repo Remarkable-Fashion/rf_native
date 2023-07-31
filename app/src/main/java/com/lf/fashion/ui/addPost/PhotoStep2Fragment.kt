@@ -1,8 +1,6 @@
 package com.lf.fashion.ui.addPost
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.widget.Toast
@@ -33,6 +31,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
     private val addClothesAdapter = AddPostClothesRvAdapter()
     private var selectedCategory: String? = null
     private var selectedImageUri :String? = null
+    private val chipStyle = "default"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,27 +70,22 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
     }
 
     private fun chipSetting() {
-        viewModel.chipList.observe(viewLifecycleOwner) {
+        viewModel.tpoChipList.observe(viewLifecycleOwner) {
             it?.let {
                 val tpoChipGroup = binding.filterSpace.filterInclude.tpoChipGroup
+                childChip(it, tpoChipGroup, chipStyle)
+            }
+        }
+        viewModel.seasonChipList.observe(viewLifecycleOwner) {
+            it?.let {
                 val seasonChipGroup = binding.filterSpace.filterInclude.seasonChipGroup
+                childChip(it, seasonChipGroup, chipStyle)
+            }
+        }
+        viewModel.tpoChipList.observe(viewLifecycleOwner) {
+            it?.let {
                 val styleChipGroup = binding.filterSpace.filterInclude.styleChipGroup
-                val chipStyle = "default"
-
-                for (i in it.indices) {
-                    when (it[i].id) {
-                        "tpo" -> {
-                            childChip(it[i].chips, tpoChipGroup, chipStyle)
-
-                        }
-                        "season" -> {
-                            childChip(it[i].chips, seasonChipGroup, chipStyle)
-                        }
-                        "style" -> {
-                            childChip(it[i].chips, styleChipGroup, chipStyle)
-                        }
-                    }
-                }
+                childChip(it, styleChipGroup, chipStyle)
             }
         }
     }

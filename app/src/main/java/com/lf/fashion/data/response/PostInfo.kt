@@ -10,7 +10,7 @@ data class PostInfo(
     val user: UserInfo,
     @SerializedName("_count")
     val count: Count,
-    val styles : List<ChipContents>,
+    val styles : List<ChipInfo>,
     val description: String?,
     val place : String?,
     val clothes: List<Cloth>

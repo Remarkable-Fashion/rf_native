@@ -57,14 +57,14 @@ data class Photo(
 ):Parcelable
 
 
-data class TestUserInfo(
+/*data class TestUserInfo(
     @SerializedName("user_info")
     val modelInfo: ModelInfo,
     @SerializedName("clothes")
     val clothesInfo : List<ClothesInfo>
-)
+)*/
 
-data class ModelInfo(
+/*data class ModelInfo(
     val profile: TestProfile,
     val height : String,
     val weight : String,
@@ -72,7 +72,7 @@ data class ModelInfo(
     @SerializedName("style_chips")
     val styleChips : List<ChipContents>,
     val introduce : String
-)
+)*/
 
 // 나중에 RegClothes 로 다 대체할것 ..
 data class ClothesInfo(
