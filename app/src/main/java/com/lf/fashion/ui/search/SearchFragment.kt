@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayoutMediator
@@ -74,6 +76,11 @@ class SearchFragment : Fragment(){
 
 
         searchResultSpanCountBtnOnClick() // 결과 레이아웃 사진 모아보기 갯수 버튼 클릭
+
+        binding.searchResult.filter.setOnClickListener {
+            findNavController().navigate(R.id.action_global_to_filterFragment, bundleOf("searchResult" to true))
+        }
+
     }
 
     private fun searchAction() {

@@ -140,6 +140,7 @@ class SearchResultFragment(resultCategory: String?) : Fragment(),
             }
             gridAdapter.notifyDataSetChanged()
         }
+
     }
 
     private fun layoutVisibilityUpdate(default: Boolean) {

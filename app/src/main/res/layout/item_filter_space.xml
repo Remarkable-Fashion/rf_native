@@ -3,6 +3,40 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Spinner
+        android:id="@+id/sex_spinner"
+        android:layout_width="73dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/bg_spinner"
+        android:theme="@style/spoqa_12sp_lf_grey"
+        android:visibility="gone"
+        />
+
+    <Spinner
+        android:id="@+id/height_spinner"
+        android:layout_width="62dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@id/sex_spinner"
+        app:layout_constraintTop_toTopOf="@id/sex_spinner"
+        android:background="@drawable/bg_spinner"
+        android:theme="@style/spoqa_12sp_lf_grey"
+        android:visibility="gone"
+        />
+
+    <Spinner
+        android:id="@+id/weight_spinner"
+        android:layout_width="83dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@id/height_spinner"
+        app:layout_constraintTop_toTopOf="@id/sex_spinner"
+        android:background="@drawable/bg_spinner"
+        android:theme="@style/spoqa_12sp_lf_grey"
+        android:visibility="gone"/>
     <CheckBox
         android:id="@+id/height_check_box"
         style="@style/spoqa_12sp_label"
@@ -58,7 +92,7 @@
         android:layout_marginTop="32dp"
         android:text="@string/gender_label"
         app:layout_constraintStart_toStartOf="@id/guideline_vertical"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/sex_spinner" />
 
     <TextView
         android:id="@+id/height_label"

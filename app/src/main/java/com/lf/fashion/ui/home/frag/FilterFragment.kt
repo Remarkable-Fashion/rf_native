@@ -32,7 +32,11 @@ class FilterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        arguments?.get("searchResult")?.let {
+            if( it as Boolean) {
 
+            }
+        }
         binding.filterSpace.genderManBtn.setOnClickListener {
             it.isSelected = !it.isSelected
         }
