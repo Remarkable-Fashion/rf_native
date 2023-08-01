@@ -155,8 +155,8 @@ class MyPageVerticalFragment : Fragment(),
             scrapClickedPosts = post
         }
 
-        override fun shareBtnClicked() {
-            val dialog = PostBottomSheetFragment()
+        override fun shareBtnClicked(post : Posts) {
+            val dialog = PostBottomSheetFragment(post)
             dialog.show(parentFragmentManager, "bottom_sheet")
 
         }

@@ -24,13 +24,11 @@
 
             />
 
-       <!--
-            shadow gradient 삭제
-            <ImageView
+         <ImageView
             android:layout_width="match_parent"
             android:layout_height="129dp"
             android:src="@drawable/bg_gradiant_black"
-            app:layout_constraintBottom_toBottomOf="@id/horizontal_view_pager" />-->
+            app:layout_constraintBottom_toBottomOf="@id/horizontal_view_pager" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/profile_image"
