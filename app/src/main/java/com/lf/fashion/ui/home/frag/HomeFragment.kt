@@ -269,8 +269,8 @@ class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
     }
 
     //vertical fragment 에서 공유버튼 클릭시 바텀 다이얼로그를 생성한다.
-    override fun shareBtnClicked() {
-        val dialog = HomeBottomSheetFragment()
+    override fun shareBtnClicked(post : Posts) {
+        val dialog = PostBottomSheetFragment(post)
         dialog.show(parentFragmentManager, "bottom_sheet")
 
     }

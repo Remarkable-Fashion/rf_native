@@ -64,7 +64,7 @@ class DefaultPostAdapter(
                 verticalViewPagerClickListener.scrapBtnClicked(it.isSelected,post)
             }
             postDetailMenu.shareBtn.setOnClickListener {
-                verticalViewPagerClickListener.shareBtnClicked()
+                verticalViewPagerClickListener.shareBtnClicked(post)
             }
 
             postDetailMenu.photoZipBtn.setOnClickListener {

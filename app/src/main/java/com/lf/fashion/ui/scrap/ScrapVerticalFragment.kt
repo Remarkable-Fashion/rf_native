@@ -12,7 +12,7 @@ import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.VerticalViewPagerClickListener
 import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
-import com.lf.fashion.ui.home.frag.HomeBottomSheetFragment
+import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -149,7 +149,7 @@ class ScrapVerticalFragment : Fragment(),
     }
 
     override fun shareBtnClicked() {
-        val dialog = HomeBottomSheetFragment()
+        val dialog = PostBottomSheetFragment()
         dialog.show(parentFragmentManager, "bottom_sheet")
 
     }

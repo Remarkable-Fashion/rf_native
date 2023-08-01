@@ -39,7 +39,7 @@
     <string name="recommend_btn_text"><![CDATA[이 의상은 어때? >]]></string>
     <string name="link_btn_text">링크 복사하기</string>
     <string name="share_btn_text">공유하기</string>
-    <string name="bookmark_btn_text">북마크하기</string>
+    <string name="bookmark_btn_text">스크랩하기</string>
     <string name="no_interest_btn_text">관심없음</string>
     <string name="cancel_follow_btn_text">팔로우 취소</string>
     <string name="block_btn_text">차단하기</string>
