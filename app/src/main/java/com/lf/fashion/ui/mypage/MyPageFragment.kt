@@ -97,7 +97,16 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
             dialog.show(parentFragmentManager, "setting_bottom_sheet")
         }
 
+        navigateFollowDetailFrag()
+    }
 
+    private fun navigateFollowDetailFrag() {
+        binding.followerCount.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_mypage_to_myPageFollowDetailFragment)
+        }
+        binding.followingCount.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_mypage_to_myPageFollowDetailFragment)
+        }
     }
 
     private fun loadMyPost() {

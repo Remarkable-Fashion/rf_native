@@ -41,6 +41,9 @@
             android:id="@+id/action_navigation_mypage_to_myPageVerticalFragment"
             app:destination="@id/myPageVerticalFragment"
             />
+        <action
+            android:id="@+id/action_navigation_mypage_to_myPageFollowDetailFragment"
+            app:destination="@id/myPageFollowDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_photo"
@@ -166,4 +169,8 @@
         android:id="@+id/myPageVerticalFragment"
         android:name="com.lf.fashion.ui.mypage.MyPageVerticalFragment"
         android:label="MyPageVerticalFragment" />
+    <fragment
+        android:id="@+id/myPageFollowDetailFragment"
+        android:name="com.lf.fashion.ui.mypage.MyPageFollowDetailFragment"
+        android:label="MyPageFollowDetailFragment" />
 </navigation>

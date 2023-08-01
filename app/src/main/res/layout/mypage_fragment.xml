@@ -159,11 +159,11 @@
                     <TextView
                         android:id="@+id/follower_count"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:text="@{@string/count_follower(userInfo.count.followers??0)}"
                         tools:text="팔로워\n 1000"
                         android:layout_weight="1"
-                        android:textAlignment="center"
+                        android:gravity="center"
                         style="@style/spoqa_14sp_default_color" />
 
                     <View
@@ -174,11 +174,11 @@
                     <TextView
                         android:id="@+id/following_count"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:text="@{@string/count_following(userInfo.count.following??0)}"
                         tools:text="팔로잉\n 1000"
                         android:layout_weight="1"
-                        android:textAlignment="center"
+                        android:gravity="center"
                         style="@style/spoqa_14sp_default_color" />
                 </LinearLayout>
 
