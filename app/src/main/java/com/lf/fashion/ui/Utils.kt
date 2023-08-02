@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.NestedScrollView
@@ -27,6 +28,7 @@ import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.lf.fashion.R
 import com.lf.fashion.TAG
+import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.ChipInfo
 import com.lf.fashion.data.response.MyInfo
 import java.io.File
@@ -173,12 +175,19 @@ fun addUnitTextListener(editText: EditText, height: Boolean) {
             if (!text.endsWith(endText)) {
                 editText.setText("$text $endText")
             }
+            if(editText.text.toString()==" $endText"){
+                val replace = editText.text.toString().replace(" $endText", "")
+                editText.setText(replace)
+            }
+        }else{
+            val replace = editText.text.toString().replace(" $endText", "")
+            editText.setText(replace)
         }
     }
-    editText.addTextLengthLimit()
+    editText.addTextLengthLimit(endText)
 }
 
-fun EditText.addTextLengthLimit() {
+fun EditText.addTextLengthLimit(endText:String) {
     this@addTextLengthLimit.addTextChangedListener(object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
         }
@@ -188,11 +197,14 @@ fun EditText.addTextLengthLimit() {
 
         override fun afterTextChanged(s: Editable?) {
             s?.let {
-                if (it.length > 3) {
-                    val truncatedText = it.subSequence(0, 3)
+                val number = it.toString().replace(endText, "")
+                if (number.length > 3) {
+                    val truncatedText = "${number.subSequence(0, 3)} $endText"
+                    this@addTextLengthLimit.removeTextChangedListener(this)
                     this@addTextLengthLimit.setText(truncatedText)
                     this@addTextLengthLimit.setSelection(truncatedText.length) // Move cursor to the end
-                }
+                    this@addTextLengthLimit.addTextChangedListener(this)
+            }
             }
         }
 
@@ -245,3 +257,32 @@ fun Fragment.createDynamicLink(activity: Activity) {
 
 }
 
+fun Fragment.handleApiError(
+    failure: Resource.Failure,
+    retry: (() -> Unit)? = null
+) {
+    when {
+        failure.isNetworkError -> {
+          /*  try {
+                val findViewById = requireActivity().findViewById<View>(R.id.abb_bar_layout)
+                findViewById.snackbar(
+                    R.string.network_message,
+                    retry
+                )
+            }catch (e:NullPointerException){
+                Toast.makeText(context, R.string.network_message, Toast.LENGTH_SHORT).show()
+            }*/
+        }
+        failure.errorCode == 401 -> {
+          //  Toast.makeText(context, R.string.login_over, Toast.LENGTH_SHORT).show()
+
+            //logout()
+        }
+        else -> {
+
+            val error = failure.errorBody?.string().toString()
+            Log.e(TAG, "handleApiError: $error")
+        //requireView().snackbar(error)
+        }
+    }
+}

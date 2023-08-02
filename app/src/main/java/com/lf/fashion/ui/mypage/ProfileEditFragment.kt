@@ -68,8 +68,13 @@ class ProfileEditFragment : Fragment() {
             if (resources is Resource.Success && resources.value.success ) {
                 Toast.makeText(requireContext(),"프로필 수정이 완료되었습니다.",Toast.LENGTH_SHORT).show()
                 findNavController().navigateUp()
-            }else{
-                Toast.makeText(requireContext(),"오류 발생",Toast.LENGTH_SHORT).show()
+
+            }else if(resources is Resource.Failure){
+                Toast.makeText(requireContext(), "오류 발생 ", Toast.LENGTH_SHORT).show()
+                handleApiError(resources)
+
+            }else if(resources is Resource.Success){
+                Log.d(TAG, "ProfileEditFragment - onViewCreated: ${resources.value}");
             }
         }
     }
@@ -79,21 +84,18 @@ class ProfileEditFragment : Fragment() {
             if (nameValue.text.isNotBlank()) {
                 val profileImageFile: File? =
                     if (selectedImageUri != null) File(selectedImageUri!!) else null
-                val weight = weightValue.text.toString().replace("kg", "").toInt()
-                val height = heightValue.text.toString().replace("cm", "").toInt()
-
+                val weight =  weightValue.text.toString().replace(" kg", "")
+                val height = heightValue.text.toString().replace(" cm", "")
 
                 // 등록 api 연결
                 viewModel.updateMyProfile(
-                    UpdateMyInfo(
                         profileImageFile,
                         updatedSex,
                         height,
                         weight,
                         introduceValue.text.toString()
-                    )
-                )
 
+                )
             }
         }
     }
@@ -163,19 +165,6 @@ class ProfileEditFragment : Fragment() {
                 val introduceChange =
                     introduceValue.text.toString() != (myInfo.profile.introduction ?: "")
                 val nameChange = nameValue.text.toString() != myInfo.name
-                /*  Log.d(
-                    TAG,
-                    "ProfileEditFragment - onViewCreated: $heightChange , $weightChange , $introduceChange , $nameChange"
-                );
-                Log.d(
-                    TAG,
-                    "ProfileEditFragment - onViewCreated: ${heightValue.text}"
-                );
-                Log.d(
-                    TAG,
-                    "ProfileEditFragment - onViewCreated: ${myInfo.profile.weight.toString()}"
-                );*/
-
                 if (heightChange || weightChange || introduceChange || nameChange) {
                     binding.submitBtn.isSelected = changed
                 }

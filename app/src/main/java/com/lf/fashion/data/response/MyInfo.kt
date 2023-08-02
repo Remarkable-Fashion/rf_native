@@ -18,7 +18,7 @@ data class MyInfo(
 data class UpdateMyInfo(
     val avartar : File?,
     val sex : String?,
-    val height : Int?,
-    val weight : Int?,
+    val height : String?,
+    val weight : String?,
     val introduction : String?
 )

@@ -171,6 +171,6 @@
         android:label="MyPageVerticalFragment" />
     <fragment
         android:id="@+id/myPageFollowDetailFragment"
-        android:name="com.lf.fashion.ui.mypage.MyPageFollowDetailFragment"
+        android:name="com.lf.fashion.ui.mypage.followDetail.MyPageFollowDetailFragment"
         android:label="MyPageFollowDetailFragment" />
 </navigation>

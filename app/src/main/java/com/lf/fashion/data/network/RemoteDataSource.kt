@@ -15,6 +15,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import okhttp3.*
 import okhttp3.ResponseBody.Companion.toResponseBody
+import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -63,7 +64,6 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
 
                 // }
                 Log.d(TAG, "RemoteDataSource - provideOkHttpClient: ${request.url}")
-
             }
             //api url 에 따라 분류하여 response 인터셉트
             val response =
@@ -105,6 +105,11 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
                 }
             response
         })
+     /*
+        body log 찍기
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        client.addInterceptor(loggingInterceptor)*/
 
         return client.build()
     }

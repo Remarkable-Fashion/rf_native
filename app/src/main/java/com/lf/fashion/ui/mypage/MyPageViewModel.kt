@@ -20,6 +20,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -52,7 +53,7 @@ class MyPageViewModel @Inject constructor(
     private val _scrapResponse = MutableLiveData<Resource<MsgResponse>>()
     val scrapResponse = _scrapResponse
 
-    private val _updateProfileResponse =  MutableLiveData<Resource<MsgResponse>>()
+    private val _updateProfileResponse = MutableLiveData<Resource<MsgResponse>>()
     val updateProfileResponse = _updateProfileResponse
 
     suspend fun getJWT(loginAccessToken: String): Resource<MsgResponse> {
@@ -119,9 +120,21 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    fun updateMyProfile(updateMyInfo: UpdateMyInfo){
+    fun updateMyProfile(
+        profileImage: File?,
+        sex: String?,
+        height: String?,
+        weight: String?,
+        introText: String?
+    ) {
         viewModelScope.launch {
-            _updateProfileResponse.value = myPageRepository.updateMyProfile(updateMyInfo)
+            _updateProfileResponse.value = myPageRepository.updateMyProfile(
+                profileImage,
+                sex,
+                height,
+                weight,
+                introText
+            )
         }
     }
 }
