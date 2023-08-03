@@ -22,7 +22,7 @@ class HomeRepository @Inject constructor(
 
     /*테스트를 위해 우선 postId 1로 하드코딩 ! */
     suspend fun getPostInfoByPostId(postId: Int) = safeApiCall {
-        postApi.getPostInfoById(1)
+        postApi.getPostInfoById(21)
     }
 
     suspend fun getRecommendClothesTop3(postId: Int, category: String) = safeApiCall {

@@ -14,11 +14,13 @@ import com.lf.fashion.data.response.Posts
 import com.lf.fashion.databinding.HomeBottomDialogItemBinding
 import com.lf.fashion.ui.PrefCheckService
 import com.lf.fashion.ui.home.PostBottomViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
 
 /**
  * 공유 버튼 클릭시 노출되는 바텀 다이얼로그 시트입니다
  */
+@AndroidEntryPoint
 class PostBottomSheetFragment(private val post: Posts) : BottomSheetDialogFragment(),
     View.OnClickListener {
     private lateinit var binding: HomeBottomDialogItemBinding

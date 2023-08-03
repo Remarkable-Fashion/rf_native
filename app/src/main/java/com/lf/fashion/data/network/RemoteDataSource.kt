@@ -2,28 +2,22 @@ package com.lf.fashion.data.network
 
 import android.content.Context
 import android.util.Log
-import com.google.gson.Gson
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.BASE_WEB_URL
 import com.lf.fashion.data.common.PreferenceManager
-import com.lf.fashion.data.common.TEST_WEB_URL
 import com.lf.fashion.data.network.api.TokenRefreshApi
-import com.lf.fashion.data.response.Count
-import com.lf.fashion.data.response.RandomPostResponse
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import okhttp3.*
-import okhttp3.ResponseBody.Companion.toResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
-import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
 
 class RemoteDataSource @Inject constructor(@ApplicationContext private val context: Context) {
-    private fun providesTestingWebUrl() = TEST_WEB_URL
+
     private fun providesHostingWebUrl() = BASE_WEB_URL
     private val userPref: PreferenceManager = PreferenceManager(context)
 
@@ -105,65 +99,13 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
                 }
             response
         })
-     /*
-        body log 찍기
+       // body log 찍기
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-        client.addInterceptor(loggingInterceptor)*/
+        client.addInterceptor(loggingInterceptor)
 
         return client.build()
     }
-/*
-    //response json 에서 posts 만 꺼내오기
-    private fun getPostResponse(
-        chain: Interceptor.Chain,
-        original: Request,
-        haveCursor: Boolean? = null
-    ): Response {
-
-        val response = chain.proceed(original)
-        val responseBody = response.body?.string()
-        val jsonObject = responseBody?.let { JSONObject(it) }
-        try {
-            val postsArray = jsonObject?.getJSONArray("posts")
-            var newJsonObject: JSONObject? = null
-
-            if ((haveCursor != null) && haveCursor) {
-                newJsonObject = JSONObject()
-                val nextCursor = jsonObject?.getJSONObject("nextCursor")
-
-                newJsonObject.put("posts", postsArray)
-                newJsonObject.put("nextCursor", nextCursor)
-            }
-            Log.d(TAG, "RemoteDataSource - getPostResponse: ${newJsonObject.toString().toResponseBody(response.body?.contentType())}");
-
-            newJsonObject?.let{
-
-            }
-            return response.newBuilder()
-                .body(newJsonObject.toString().toResponseBody(response.body?.contentType()))
-                .build()
-
-        } catch (e: Exception) {
-            //response 객체 타입을 RandomPostResponse 로 고정해서, 새객체 생성후 msg 만 추가 -> 나중에 CallBack Model 재구성해도 된당
-            val msg = jsonObject?.getString("msg")
-            val errorResponse = RandomPostResponse(
-                msg = msg,
-                id = 0,
-                isScrap = false,
-                createdAt = "",
-                images = emptyList(),
-                user = null,
-                count = Count()
-            )
-            val errorResponseBody = Gson().toJson(errorResponse)
-            Log.d(TAG, "RemoteDataSource - scrap: $errorResponseBody");
-
-            response.newBuilder()
-                .body(errorResponseBody.toResponseBody(response.body?.contentType())).build()
-        }
-    }*/
-
 
     /**
      * 최초 로그인 이후에는,
@@ -172,18 +114,6 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
      * 중간에 만료 오류 뜨면 오류 수정하기 ..
      *
      * RF -> 우선 token 점검하는 부분 주석해둠     */
-    fun <Api> buildTestApi(
-        api: Class<Api>,
-        context: Context
-    ): Api {
-        return Retrofit.Builder()
-            .baseUrl(providesTestingWebUrl())
-            .client(provideOkHttpClient())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(api)
-    }
-
     fun <Api> buildApi(
         api: Class<Api>
     ): Api {

@@ -1,11 +1,9 @@
 package com.lf.fashion.data.network
 
-import android.content.Context
 import com.lf.fashion.data.network.api.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -17,9 +15,8 @@ object AppModule {
     @Provides
     fun provideChipApi(
         remoteDataSource: RemoteDataSource,
-        @ApplicationContext context: Context
     ): ChipApi {
-        return remoteDataSource.buildTestApi(ChipApi::class.java,context)
+        return remoteDataSource.buildApi(ChipApi::class.java)
     }
 
     @Singleton
