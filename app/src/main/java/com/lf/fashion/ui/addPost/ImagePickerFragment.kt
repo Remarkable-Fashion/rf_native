@@ -49,7 +49,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
     }
     private val checkedImageAdapter =CheckedImageAdapter(this@ImagePickerFragment)
     companion object{
-        val REQUEST_KEY ="REGISTER_CLOTH_IMAGE"
+        const val REQUEST_KEY ="REGISTER_CLOTH_IMAGE"
     }
     //권한 런처 초기화
     private val requestPermissionLauncher =

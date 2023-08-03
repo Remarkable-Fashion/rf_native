@@ -56,6 +56,7 @@ class MyPageViewModel @Inject constructor(
     private val _updateProfileResponse = MutableLiveData<Resource<MsgResponse>>()
     val updateProfileResponse = _updateProfileResponse
 
+
     suspend fun getJWT(loginAccessToken: String): Resource<MsgResponse> {
         return myPageRepository.getJWT(loginAccessToken)
     }

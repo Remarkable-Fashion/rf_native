@@ -16,10 +16,7 @@ import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.response.RegClothes
 import com.lf.fashion.databinding.PhotoStep2FragmentBinding
-import com.lf.fashion.ui.AddPostClothesRvAdapter
-import com.lf.fashion.ui.addTextLengthCounter
-import com.lf.fashion.ui.cancelBtnBackStack
-import com.lf.fashion.ui.childChip
+import com.lf.fashion.ui.*
 import com.lf.fashion.ui.home.FilterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -56,6 +53,8 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         chipSetting()
         registerCloth()
         addTextLengthCounter(binding.introduceValue,binding.textCounter,50)
+        addUnitTextListener(binding.filterSpace.heightValue, height = true)
+        addUnitTextListener(binding.filterSpace.weightValue, height = false)
         imagePickerOpen()
         cancelBtnBackStack(binding.backBtn)
     }

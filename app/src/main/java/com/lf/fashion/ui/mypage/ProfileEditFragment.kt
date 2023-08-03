@@ -1,5 +1,6 @@
 package com.lf.fashion.ui.mypage
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -52,7 +53,7 @@ class ProfileEditFragment : Fragment() {
 
         val myInfo = arguments?.get("myInfo") as MyInfo
         binding.myInfo = myInfo
-
+        Log.d(TAG, "ProfileEditFragment - onViewCreated: ${myInfo.profile.profileImage}");
         introduceValue = binding.introduceValue
         heightValue = binding.heightValue
         weightValue = binding.weightValue
@@ -65,15 +66,15 @@ class ProfileEditFragment : Fragment() {
         submitProfileInfo()
 
         viewModel.updateProfileResponse.observe(viewLifecycleOwner) { resources ->
-            if (resources is Resource.Success && resources.value.success ) {
-                Toast.makeText(requireContext(),"프로필 수정이 완료되었습니다.",Toast.LENGTH_SHORT).show()
+            if (resources is Resource.Success && resources.value.success) {
+                Toast.makeText(requireContext(), "프로필 수정이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                 findNavController().navigateUp()
 
-            }else if(resources is Resource.Failure){
+            } else if (resources is Resource.Failure) {
                 Toast.makeText(requireContext(), "오류 발생 ", Toast.LENGTH_SHORT).show()
                 handleApiError(resources)
 
-            }else if(resources is Resource.Success){
+            } else if (resources is Resource.Success) {
                 Log.d(TAG, "ProfileEditFragment - onViewCreated: ${resources.value}");
             }
         }
@@ -82,18 +83,18 @@ class ProfileEditFragment : Fragment() {
     private fun submitProfileInfo() {
         binding.submitBtn.setOnClickListener {
             if (nameValue.text.isNotBlank()) {
-                val profileImageFile: File? =
-                    if (selectedImageUri != null) File(selectedImageUri!!) else null
-                val weight =  weightValue.text.toString().replace(" kg", "")
+              /*  val profileImageFile: File? =
+                    if (selectedImageUri != null) File(selectedImageUri!!) else null*/
+                val weight = weightValue.text.toString().replace(" kg", "")
                 val height = heightValue.text.toString().replace(" cm", "")
 
                 // 등록 api 연결
                 viewModel.updateMyProfile(
-                        profileImageFile,
-                        updatedSex,
-                        height,
-                        weight,
-                        introduceValue.text.toString()
+                    Uri.parse(selectedImageUri).path?.let { it1 -> File(it1) },
+                    updatedSex,
+                    height,
+                    weight,
+                    introduceValue.text.toString()
 
                 )
             }
@@ -184,9 +185,13 @@ class ProfileEditFragment : Fragment() {
             val imageUris = bundle.get("imageURI") as Array<*>
             imageUris[0]?.let {
                 selectedImageUri = imageUris[0].toString()
-                Glide.with(binding.root)
-                    .load(it)
-                    .into(binding.profileImage)
+                Log.d(TAG, "ProfileEditFragment - onclickProfileImage: $it");
+
+                binding.myInfo?.profile?.profileImage = it as String
+                /*Glide.with(binding.root)
+                        .load(it)
+                        .into(binding.profileImage)
+                    Log.d(TAG, "ProfileEditFragment - onclickProfileImage: $it");*/
             }
         }
     }
