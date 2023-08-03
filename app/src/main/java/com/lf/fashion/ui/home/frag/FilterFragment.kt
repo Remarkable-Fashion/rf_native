@@ -1,12 +1,16 @@
 package com.lf.fashion.ui.home.frag
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.lf.fashion.TAG
 import com.lf.fashion.databinding.HomeBPhotoFilterFragmentBinding
+import com.lf.fashion.ui.addUnitTextListener
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.childChip
 import com.lf.fashion.ui.home.FilterViewModel
@@ -33,8 +37,8 @@ class FilterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.get("searchResult")?.let {
-            if( it as Boolean) {
-
+            if (it as Boolean) {
+                //searchResult 일 경우 스피너 visible
             }
         }
         binding.filterSpace.genderManBtn.setOnClickListener {
@@ -48,6 +52,13 @@ class FilterFragment : Fragment() {
         chipSetting()
 
         cancelBtnBackStack(binding.cancelBtn)
+
+        editTextListenerSetting()
+    }
+
+    private fun editTextListenerSetting() {
+        addUnitTextListener(binding.filterSpace.heightValue, height = true)
+        addUnitTextListener(binding.filterSpace.weightValue, height = false)
     }
 
     private fun chipSetting() {
@@ -70,19 +81,4 @@ class FilterFragment : Fragment() {
             }
         }
     }
-
-/*    private fun childChip(chipList : List<ChipContents>,chipGroup: ChipGroup){
-        for (j in chipList.indices) {
-            val chip = LayoutInflater.from(context)
-                .inflate(R.layout.chip_item, null) as Chip
-
-            val emoji = chipList[j].emoji?.substring(2)?.toInt(16)
-            var content = chipList[j].text
-            emoji?.let { unicode ->
-                content += " "+ String(Character.toChars(unicode))
-            }
-            chip.text = content
-            chipGroup.addView(chip)
-        }
-    }*/
 }

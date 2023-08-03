@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lf.fashion.data.repository.FilterRepository
 import com.lf.fashion.data.repository.HomeRepository
 import com.lf.fashion.data.response.ChipInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FilterViewModel @Inject constructor(private val repository: HomeRepository) : ViewModel() {
+class FilterViewModel @Inject constructor(private val repository: FilterRepository) : ViewModel() {
     private val _tpoChipList = MutableLiveData<List<ChipInfo>>()
     var tpoChipList: LiveData<List<ChipInfo>> = _tpoChipList
 
@@ -33,12 +34,12 @@ class FilterViewModel @Inject constructor(private val repository: HomeRepository
     }
     private fun getSeasonChipsInfo(){
         viewModelScope.launch {
-            _tpoChipList.value = repository.getSeasonChips()
+            _seasonChipList.value = repository.getSeasonChips()
         }
     }
     private fun getStyleChipsInfo(){
         viewModelScope.launch {
-            _tpoChipList.value = repository.getStyleChips()
+            _styleChipList.value = repository.getStyleChips()
         }
     }
 }

@@ -15,10 +15,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -63,8 +60,7 @@ fun Fragment.childChip(chipList: List<ChipInfo>, chipGroup: ChipGroup, style: St
         var content = chipList[j].text
 
         chipList[j].emoji?.let {
-            //  val emoji = it.substring(2).toInt(16)
-            //  content += " " + String(Character.toChars(emoji))
+              content += " $it"
         }
 
         chip.text = content
