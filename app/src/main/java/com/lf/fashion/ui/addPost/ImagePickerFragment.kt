@@ -239,8 +239,8 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
         }.show()
     }
 
-    override fun checkedCountOver() {
-        Toast.makeText(requireContext(), "사진은 4장까지 선택 가능합니다.", Toast.LENGTH_SHORT).show()
+    override fun checkedCountOver(limit : Int) {
+        Toast.makeText(requireContext(), "사진은 ${limit}장까지 선택 가능합니다.", Toast.LENGTH_SHORT).show()
     }
 
     // 선택된 이미지 미리보기 뷰에서 , x 버튼을 눌렀을 때
@@ -254,7 +254,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
 interface GalleryRvListener {
     fun imageChecked(imageItem: ImageItem)
     fun cameraBtnClicked()
-    fun checkedCountOver()
+    fun checkedCountOver(imageLimit: Int)
 }
 
 interface CheckedImageRVListener {

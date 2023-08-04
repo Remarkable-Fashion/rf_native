@@ -64,7 +64,7 @@ class ImageAdapter(
                     checkBoxConverse(holder, binding, it)
                     checkedImageCounter += 1 // 사진 선택 갯수 제한에 쓰임
                 } else {
-                    galleryRvListener.checkedCountOver()
+                    galleryRvListener.checkedCountOver(imageLimit)
                 }
             }
         }
