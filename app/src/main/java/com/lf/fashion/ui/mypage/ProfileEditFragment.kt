@@ -13,18 +13,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.kakao.sdk.user.UserApiClient
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.MyInfo
-import com.lf.fashion.data.response.UpdateMyInfo
 import com.lf.fashion.databinding.MypageProfileFragmentBinding
 import com.lf.fashion.ui.*
 import com.lf.fashion.ui.addPost.ImagePickerFragment
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.File
 
 @AndroidEntryPoint
 class ProfileEditFragment : Fragment() {
@@ -36,6 +33,7 @@ class ProfileEditFragment : Fragment() {
     private lateinit var introduceValue: EditText
     private var updatedSex: String? = null
     private var selectedImageUri: String? = null
+    var lastProfileRequest: String? = null // 마지막으로 요청한 값 저장
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,6 +51,7 @@ class ProfileEditFragment : Fragment() {
 
         val myInfo = arguments?.get("myInfo") as MyInfo
         binding.myInfo = myInfo
+
         Log.d(TAG, "ProfileEditFragment - onViewCreated: ${myInfo.profile.profileImage}");
         introduceValue = binding.introduceValue
         heightValue = binding.heightValue
@@ -61,11 +60,15 @@ class ProfileEditFragment : Fragment() {
 
         getMyEmailInfo() // 이메일 정보 바인딩
         genderListener(myInfo) // 성별 선택 택 1 제한
-        textListenerSetting(myInfo)
         onclickProfileImage()
+        textListenerSetting(myInfo)
         submitProfileInfo()
 
         viewModel.updateProfileResponse.observe(viewLifecycleOwner) { resources ->
+            if (lastProfileRequest == null) {
+                return@observe // 아직 요청이 없는 경우, 처리하지 않음
+            }
+
             if (resources is Resource.Success && resources.value.success) {
                 Toast.makeText(requireContext(), "프로필 수정이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                 findNavController().navigateUp()
@@ -77,26 +80,35 @@ class ProfileEditFragment : Fragment() {
             } else if (resources is Resource.Success) {
                 Log.d(TAG, "ProfileEditFragment - onViewCreated: ${resources.value}");
             }
+
+            lastProfileRequest = null // 처리가 완료되었으므로 마지막 요청 초기화
         }
     }
+
 
     private fun submitProfileInfo() {
         binding.submitBtn.setOnClickListener {
             if (nameValue.text.isNotBlank()) {
-              /*  val profileImageFile: File? =
-                    if (selectedImageUri != null) File(selectedImageUri!!) else null*/
+
                 val weight = weightValue.text.toString().replace(" kg", "")
                 val height = heightValue.text.toString().replace(" cm", "")
 
+                var imagePath :String ?= null
+                selectedImageUri?.let{
+                    imagePath = absolutelyPath(Uri.parse(selectedImageUri), requireContext())
+                }
                 // 등록 api 연결
                 viewModel.updateMyProfile(
-                    Uri.parse(selectedImageUri).path?.let { it1 -> File(it1) },
+                    imagePath,
                     updatedSex,
                     height,
                     weight,
                     introduceValue.text.toString()
 
                 )
+
+                // 마지막으로 요청한 값을 설정 _ 그냥 boolean 여부로 해도됨 해당 값 사용 x
+                lastProfileRequest = "${selectedImageUri ?: ""}, $updatedSex, $height, $weight, ${introduceValue.text}"
             }
         }
     }
@@ -151,24 +163,16 @@ class ProfileEditFragment : Fragment() {
 
         // 값 변경시 완료 버튼 활성화
         addTextChangeListener(
-            listOf(
-                nameValue,
-                //  binding.phoneValue,
-                heightValue,
-                weightValue
-            ), myInfo
+            listOf(nameValue, heightValue, weightValue, introduceValue),
+            mapOf(
+                nameValue to myInfo.name,
+                heightValue to myInfo.profile.height.toString() + " cm",
+                weightValue to myInfo.profile.weight.toString() + " kg",
+                introduceValue to myInfo.profile.introduction
+            )
         ) { changed ->
             if (changed) {
-                val heightChange =
-                    heightValue.text.toString() != (myInfo.profile.height ?: "")
-                val weightChange =
-                    weightValue.text.toString() != (myInfo.profile.weight ?: "")
-                val introduceChange =
-                    introduceValue.text.toString() != (myInfo.profile.introduction ?: "")
-                val nameChange = nameValue.text.toString() != myInfo.name
-                if (heightChange || weightChange || introduceChange || nameChange) {
-                    binding.submitBtn.isSelected = changed
-                }
+                binding.submitBtn.isSelected = changed
             }
         }
     }
@@ -181,17 +185,12 @@ class ProfileEditFragment : Fragment() {
             )
         }
 
+        //ImagePickerFragment 에서 선택한 이미지를 바인딩하고 서버에 전송가능하도록 selectedImageUri 에 담아준다.
         setFragmentResultListener(requestKey = ImagePickerFragment.REQUEST_KEY) { _, bundle ->
             val imageUris = bundle.get("imageURI") as Array<*>
             imageUris[0]?.let {
                 selectedImageUri = imageUris[0].toString()
-                Log.d(TAG, "ProfileEditFragment - onclickProfileImage: $it");
-
                 binding.myInfo?.profile?.profileImage = it as String
-                /*Glide.with(binding.root)
-                        .load(it)
-                        .into(binding.profileImage)
-                    Log.d(TAG, "ProfileEditFragment - onclickProfileImage: $it");*/
             }
         }
     }

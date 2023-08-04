@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
 import android.text.Editable
@@ -139,29 +140,32 @@ fun addTextLengthCounter(editText: EditText, counterTextView: TextView, maxLengt
     })
 }
 
-fun addTextChangeListener(editTexts: List<EditText>,myInfo: MyInfo, changeListener: (changed: Boolean) -> Unit) {
-    for (editText in editTexts) {
-        editText.addTextChangedListener(object : TextWatcher {
-            private var beforeText = ""
+fun addTextChangeListener(
+    editTexts: List<EditText>,
+    originalValues: Map<EditText, String?>,
+    changeListener: (changed: Boolean) -> Unit
+) {
+    val editTextChangeListeners = mutableMapOf<EditText, TextWatcher>()
 
+    for (editText in editTexts) {
+        val originalValue = originalValues[editText]
+        val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                beforeText = s?.toString() ?: ""
-                Log.d(TAG, " - beforeTextChanged: $beforeText");
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                val afterText = s.toString()
-                if (beforeText != afterText) {
-                    changeListener(true)
-                }
+                val currentValue = s?.toString() ?: ""
+                val changed = currentValue != originalValue
+                changeListener(changed)
             }
-        })
+        }
+        editText.addTextChangedListener(textWatcher)
+        editTextChangeListeners[editText] = textWatcher
     }
 }
-
 @SuppressLint("SetTextI18n")
 fun addUnitTextListener(editText: EditText, height: Boolean) {
     val endText = if (height) "cm" else "kg"
@@ -207,51 +211,16 @@ fun EditText.addTextLengthLimit(endText:String) {
     })
 }
 
-fun Fragment.uriToFile(context : Context, uri : Uri) : File?{
-    val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-    val cursor = context.contentResolver.query(uri, filePathColumn, null, null, null)
-    cursor?.use {
-        it.moveToFirst()
-        val columnIndex = it.getColumnIndex(filePathColumn[0])
-        val filePath = it.getString(columnIndex)
-        return File(filePath)
-    }
-    return null
+
+fun Fragment.absolutelyPath(path: Uri?, context: Context): String? {
+    val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
+    val c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)
+    val index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+    c?.moveToFirst()
+
+    return c?.getString(index!!)
 }
 
-
-fun Fragment.createDynamicLink(activity: Activity) {
-    // 파라미터로 전달할 데이터를 정의합니다.
-    val customParameter = "value123"
-
-    // 파이어베이스 다이나믹 링크 빌더를 생성합니다.
-    val dynamicLinkBuilder = FirebaseDynamicLinks.getInstance().createDynamicLink()
-        .setDomainUriPrefix("https://example.page.link") // 도메인 URI 프리픽스를 설정합니다.
-        .setLink(Uri.parse("https://example.page.link/?customParam=$customParameter")) // 링크에 파라미터를 추가합니다.
-        .setAndroidParameters(DynamicLink.AndroidParameters.Builder().build()) // Android 링크 설정
-        .setIosParameters(
-            DynamicLink.IosParameters.Builder("your_ios_bundle_id").build()
-        ) // iOS 링크 설정
-        .setSocialMetaTagParameters(
-            DynamicLink.SocialMetaTagParameters.Builder().build()
-        ) // 소셜 메타 태그 설정
-
-    // 단축 다이나믹 링크를 생성하고 처리합니다.
-    dynamicLinkBuilder.buildShortDynamicLink()
-        .addOnSuccessListener { shortDynamicLink ->
-            // 단축 링크를 얻은 후 원하는 처리를 수행합니다.
-            val shortLink = shortDynamicLink.shortLink
-            shortLink?.let {
-                //  shareDynamicLink(it) // 링크를 공유하는 메서드 호출
-            }
-        }
-        .addOnFailureListener(activity) { e ->
-            // 링크 생성에 실패한 경우 에러 처리를 수행합니다.
-            // e.message 등을 사용하여 에러 메시지를 확인할 수 있습니다.
-            Log.e(TAG, "createDynamicLink: link 생성 실패 $e ")
-        }
-
-}
 
 fun Fragment.handleApiError(
     failure: Resource.Failure,

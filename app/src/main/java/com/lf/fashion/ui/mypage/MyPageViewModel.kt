@@ -122,7 +122,7 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun updateMyProfile(
-        profileImage: File?,
+        profileImage: String?,
         sex: String?,
         height: String?,
         weight: String?,

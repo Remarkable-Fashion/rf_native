@@ -1,6 +1,7 @@
 package com.lf.fashion.ui.addPost
 
 import android.annotation.SuppressLint
+import android.content.ContentUris
 import android.content.Context
 import android.net.Uri
 import android.os.Build
@@ -27,36 +28,35 @@ class ImagePickerViewModel(context: Context) : ViewModel() {
     val imageItemList = MutableLiveData<MutableList<ImageItem>>(mutableListOf())
     val checkedItemList = MutableLiveData<MutableList<ImageItem>>()
 
-    //dddd
     init {
         fetchImageItemList(context)
     }
 
-    @SuppressLint("Range")
     private fun fetchImageItemList(context: Context) {
         val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(
-            INDEX_MEDIA_ID,
-            INDEX_MEDIA_URI,
-            INDEX_ALBUM_NAME,
-            INDEX_DATE_ADDED
+            MediaStore.Images.Media._ID,
+            MediaStore.Images.Media.DATE_ADDED
         )
         val selection =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) MediaStore.Images.Media.SIZE + " > 0"
             else null
-        val sortOrder = "$INDEX_DATE_ADDED DESC"
+        val sortOrder = "${MediaStore.Images.Media.DATE_ADDED} DESC"
         val cursor = context.contentResolver.query(uri, projection, selection, null, sortOrder)
 
-        cursor?.let {
+        cursor?.use { cursor ->
+            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
+
             while (cursor.moveToNext()) {
-                val mediaPath = cursor.getString(cursor.getColumnIndex(INDEX_MEDIA_URI))
-                imageItemList.value!!.add(
-                    ImageItem(Uri.fromFile(File(mediaPath)), false, "")
+                val id = cursor.getLong(idColumn)
+                val contentUri = ContentUris.withAppendedId(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    id
                 )
+                 imageItemList.value!!.add(
+                     ImageItem(contentUri, false, ""))
             }
         }
-
-        cursor?.close()
     }
 
     fun getCheckedImageUriList(): MutableList<String> {
