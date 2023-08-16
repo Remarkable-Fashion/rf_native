@@ -1,6 +1,9 @@
 package com.lf.fashion.data.network.api
 
+import com.lf.fashion.data.response.FollowerUserList
+import com.lf.fashion.data.response.FollowingUserList
 import com.lf.fashion.data.response.MsgResponse
+import com.lf.fashion.data.response.MyBlockUserList
 import com.lf.fashion.data.response.MyInfo
 import com.lf.fashion.data.response.RandomPostResponse
 import okhttp3.MultipartBody
@@ -24,4 +27,13 @@ interface MyPageApi {
         @Part("height") height: RequestBody?,
         @Part("weight") weight: RequestBody?,
         @Part("introduction") introduction : RequestBody?) : MsgResponse
+
+    @GET("user/following")
+    suspend fun getMyFollowing() : FollowingUserList
+
+    @GET("user/follower")
+    suspend fun getMyFollowers() : FollowerUserList
+
+    @GET("user/block")
+    suspend fun getMyBlockUser() : MyBlockUserList
 }

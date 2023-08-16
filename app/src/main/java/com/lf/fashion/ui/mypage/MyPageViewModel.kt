@@ -12,7 +12,10 @@ import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.CommunicateRepository
 import com.lf.fashion.data.repository.MyPageRepository
+import com.lf.fashion.data.response.FollowerUserList
+import com.lf.fashion.data.response.FollowingUserList
 import com.lf.fashion.data.response.MsgResponse
+import com.lf.fashion.data.response.MyBlockUserList
 import com.lf.fashion.data.response.MyInfo
 import com.lf.fashion.data.response.RandomPostResponse
 import com.lf.fashion.data.response.UpdateMyInfo
@@ -56,6 +59,14 @@ class MyPageViewModel @Inject constructor(
     private val _updateProfileResponse = MutableLiveData<Resource<MsgResponse>>()
     val updateProfileResponse = _updateProfileResponse
 
+    private val _myFollowings = MutableLiveData<Resource<FollowingUserList>>()
+    val myFollowings = _myFollowings
+
+    private val _myFollowers = MutableLiveData<Resource<FollowerUserList>>()
+    val myFollowers = _myFollowers
+
+    private val _myBlockUsers = MutableLiveData<Resource<MyBlockUserList>>()
+    val myBlockUsers = _myBlockUsers
 
     suspend fun getJWT(loginAccessToken: String): Resource<MsgResponse> {
         return myPageRepository.getJWT(loginAccessToken)
@@ -136,6 +147,22 @@ class MyPageViewModel @Inject constructor(
                 weight,
                 introText
             )
+        }
+    }
+
+    fun getMyFollowings(){
+        viewModelScope.launch {
+            _myFollowings.value = myPageRepository.getMyFollowings()
+        }
+    }
+    fun getMyFollowers(){
+        viewModelScope.launch {
+            _myFollowers.value = myPageRepository.getMyFollowers()
+        }
+    }
+    fun getMyBlockUsers(){
+        viewModelScope.launch {
+            _myBlockUsers.value = myPageRepository.getMyBlockUser()
         }
     }
 }

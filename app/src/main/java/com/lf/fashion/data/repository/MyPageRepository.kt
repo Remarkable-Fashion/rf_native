@@ -31,6 +31,16 @@ class MyPageRepository @Inject constructor(
         myPageApi.getMyPagePost(nextCursor)
     }
 
+    suspend fun getMyFollowings() = safeApiCall {
+        myPageApi.getMyFollowing()
+    }
+    suspend fun getMyFollowers() = safeApiCall {
+        myPageApi.getMyFollowers()
+    }
+    suspend fun getMyBlockUser() = safeApiCall {
+        myPageApi.getMyBlockUser()
+    }
+
     suspend fun updateMyProfile(
         profileImagePath: String?,
         sex: String?,
