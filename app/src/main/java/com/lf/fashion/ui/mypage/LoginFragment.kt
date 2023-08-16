@@ -22,21 +22,13 @@ import kotlinx.coroutines.runBlocking
 
 
 @AndroidEntryPoint
-class LoginFragment : Fragment() {
+class LoginFragment : Fragment(R.layout.login_fragment) {
     private lateinit var binding: LoginFragmentBinding
     private val viewModel: MyPageViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = LoginFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = LoginFragmentBinding.bind(view)
 
         binding.kakaoLoginBackground.setOnClickListener {
             binding.progressBar.visibility = View.VISIBLE

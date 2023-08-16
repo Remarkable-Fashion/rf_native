@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 //TODO swipe refresh 추가
 
 @AndroidEntryPoint
-class ScrapFragment : Fragment(), GridPhotoClickListener {
+class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener {
     private lateinit var binding: ScrapFragmentBinding
     private val viewModel: ScrapViewModel by hiltNavGraphViewModels(R.id.navigation_scrap)
     private var postList = mutableListOf<Posts>()
@@ -32,17 +32,10 @@ class ScrapFragment : Fragment(), GridPhotoClickListener {
     private lateinit var userPref : PreferenceManager
     private lateinit var prefCheckService: PrefCheckService
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = ScrapFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = ScrapFragmentBinding.bind(view)
+
         userPref = PreferenceManager(requireContext())
         prefCheckService = PrefCheckService(userPref)
 

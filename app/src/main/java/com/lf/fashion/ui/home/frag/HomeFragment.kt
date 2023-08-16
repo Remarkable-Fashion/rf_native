@@ -36,32 +36,27 @@ import kotlinx.coroutines.flow.first
  */
 //TODO swipe refresh 추가
 @AndroidEntryPoint
-class HomeFragment : Fragment(), View.OnClickListener, PhotoClickListener,
+class HomeFragment :
+    Fragment(R.layout.home_a_fragment),
+    View.OnClickListener,
+    PhotoClickListener,
     VerticalViewPagerClickListener,
     GridPhotoClickListener {
+
     private lateinit var binding: HomeAFragmentBinding
     private val viewModel: HomeViewModel by viewModels()
-
     // private val postList = MutableLiveData<List<Posts>>()
     private val gridAdapter = GridPostAdapter(gridPhotoClickListener = this)
     private val defaultAdapter = DefaultPostAdapter(this@HomeFragment, this@HomeFragment)
     private lateinit var userPref: PreferenceManager
     private lateinit var likeClickedPosts: Posts
     private lateinit var scrapClickedPosts : Posts
-
     //private lateinit var layoutMode : String
     private lateinit var prefCheckService: PrefCheckService
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = HomeAFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = HomeAFragmentBinding.bind(view)
 
         //앱 최초 실행시 gender 선택 다이얼로그 띄우기
         userPref = PreferenceManager(requireContext().applicationContext)

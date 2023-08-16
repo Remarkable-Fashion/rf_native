@@ -28,7 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * 메인 홈에서 유저 정보보기 -> 이 의상은 어때 버튼 클릭시 노출되는 프래그먼트입니다.
  */
 @AndroidEntryPoint
-class RecommendLooBookFragment : Fragment(), View.OnClickListener,
+class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
     private lateinit var binding: HomeBRecommendFragmentBinding
     private val viewModel: UserInfoViewModel by viewModels()
@@ -36,18 +36,11 @@ class RecommendLooBookFragment : Fragment(), View.OnClickListener,
   /*  private lateinit var userPref: PreferenceManager
     private lateinit var prefCheckService: PrefCheckService*/
     private val lookBookRvAdapter = LookBookRvAdapter()
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = HomeBRecommendFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-      /*  userPref = PreferenceManager(requireContext().applicationContext)
+        binding = HomeBRecommendFragmentBinding.bind(view)
+        /*  userPref = PreferenceManager(requireContext().applicationContext)
         prefCheckService = PrefCheckService(userPref)*/
         cancelBtnBackStack(binding.cancelBtn)
 //        lookBookRvAdapter = LookBookRvAdapter(requireContext().applicationContext)

@@ -24,7 +24,7 @@ import com.lf.fashion.ui.addPost.ImagePickerFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ProfileEditFragment : Fragment() {
+class ProfileEditFragment : Fragment(R.layout.mypage_profile_fragment) {
     private lateinit var binding: MypageProfileFragmentBinding
     private val viewModel: MyPageViewModel by hiltNavGraphViewModels(R.id.navigation_mypage)
     private lateinit var nameValue: EditText
@@ -35,17 +35,10 @@ class ProfileEditFragment : Fragment() {
     private var selectedImageUri: String? = null
     var lastProfileRequest: String? = null // 마지막으로 요청한 값 저장
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = MypageProfileFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = MypageProfileFragmentBinding.bind(view)
 
         cancelBtnBackStack(binding.backBtn)
 

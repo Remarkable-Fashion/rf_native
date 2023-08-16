@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.SearchResultViewpagerBinding
@@ -22,7 +23,7 @@ import com.lf.fashion.ui.search.adapter.LookVerticalAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchResultFragment(resultCategory: String?) : Fragment(),
+class SearchResultFragment(resultCategory: String?) : Fragment(R.layout.search_result_fragment),
     GridPhotoClickListener {
     private lateinit var binding: SearchResultViewpagerBinding
 
@@ -34,18 +35,11 @@ class SearchResultFragment(resultCategory: String?) : Fragment(),
     private val gridAdapter = GridPostAdapter(3, this, resultCategory)
     private val verticalAdapter = LookVerticalAdapter(resultCategory)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = SearchResultViewpagerBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = SearchResultViewpagerBinding.bind(view)
+
         /** 메인 홈 post 구조와 동일하게, viewPager , staggerGrid RecyclerView 를 동시에 활용하고 visibility 로 노출을 조정
          * 특히 staggerGridAdapter 는 메인 홈과 동일하기 때문에 같은 어뎁터를 사용함 (GridPostAdapter)**/
         binding.gridRv.adapter = gridAdapter

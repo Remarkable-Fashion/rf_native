@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.lf.fashion.R
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.HomeBPhotoZipFragmentBinding
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
@@ -18,21 +19,13 @@ import dagger.hilt.android.AndroidEntryPoint
  * 메인 홈에서 유저 클릭시 노출되는 특정 유저 사진 모아보기 프래그먼트입니다.
  */
 @AndroidEntryPoint
-class PhotoZipFragment : Fragment(), GridPhotoClickListener {
+class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhotoClickListener {
     lateinit var binding: HomeBPhotoZipFragmentBinding
     private val viewModel: HomeViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = HomeBPhotoZipFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = HomeBPhotoZipFragmentBinding.bind(view)
 
         with(binding.gridRv) { //grid layout
             adapter = GridPostAdapter(3, this@PhotoZipFragment, null).apply {

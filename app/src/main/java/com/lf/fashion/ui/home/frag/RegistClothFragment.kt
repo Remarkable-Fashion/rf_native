@@ -32,7 +32,7 @@ import com.lf.fashion.ui.showPermissionDialog
  * 이 의상은 어때? 내부 + 버튼 클릭시 노출되는 의상 등록 fragment 입니다
  * **/
 //TODO: 업데이트 안내 코드 추가 , 의상등록 이미지 클릭 -> 이미지피커프래그먼트 연결
-class RegistClothFragment : Fragment(), View.OnClickListener {
+class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), View.OnClickListener {
     private lateinit var binding: HomeBRegistClothFragmentBinding
     private val regClothesList = mutableListOf<RegClothes>()
     private var selectedCategory: String? = null
@@ -62,17 +62,10 @@ class RegistClothFragment : Fragment(), View.OnClickListener {
         Manifest.permission.WRITE_EXTERNAL_STORAGE
     )
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = HomeBRegistClothFragmentBinding.inflate(inflater)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = HomeBRegistClothFragmentBinding.bind(view)
+
         //이미지 등록에서 받아온 이미지들 ..
         setFragmentResultListener(ImagePickerFragment.REQUEST_KEY){ _, bundle ->
           //  Log.d(TAG, "PhotoStep2Fragment - onViewCreated: ${bundle.get("imageURI")}");

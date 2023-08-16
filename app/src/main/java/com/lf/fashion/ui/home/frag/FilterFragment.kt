@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.databinding.HomeBPhotoFilterFragmentBinding
 import com.lf.fashion.ui.addUnitTextListener
@@ -20,22 +21,15 @@ import dagger.hilt.android.AndroidEntryPoint
  * 홈 메인 상단의 필터 아이콘을 클릭시 노출되는 프래그먼트입니다.
  */
 @AndroidEntryPoint
-class FilterFragment : Fragment() {
+class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment) {
     private lateinit var binding: HomeBPhotoFilterFragmentBinding
     private val viewModel: FilterViewModel by viewModels()
     private val chipStyle = "default"
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = HomeBPhotoFilterFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = HomeBPhotoFilterFragmentBinding.bind(view)
+
         arguments?.get("searchResult")?.let {
             if (it as Boolean) {
                 //searchResult 일 경우 스피너 visible

@@ -28,7 +28,7 @@ import kotlinx.coroutines.runBlocking
 
 
 @AndroidEntryPoint
-class SearchFragment : Fragment(){
+class SearchFragment : Fragment(R.layout.search_fragment){
     private lateinit var binding: SearchFragmentBinding
     private lateinit var userPreferences: PreferenceManager
     private val searchViewModel: SearchViewModel by viewModels()
@@ -38,17 +38,10 @@ class SearchFragment : Fragment(){
     private val tabTitleArray = arrayOf("LOOK", "ITEM")
     private val historyList = MutableLiveData<MutableList<String>>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = SearchFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = SearchFragmentBinding.bind(view)
+
         userPreferences = PreferenceManager(requireContext().applicationContext)
 
 

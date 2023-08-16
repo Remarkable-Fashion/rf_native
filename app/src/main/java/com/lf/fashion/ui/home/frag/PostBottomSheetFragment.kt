@@ -8,6 +8,7 @@ import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.lf.fashion.R
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.Posts
@@ -21,7 +22,7 @@ import kotlin.properties.Delegates
  * 공유 버튼 클릭시 노출되는 바텀 다이얼로그 시트입니다
  */
 @AndroidEntryPoint
-class PostBottomSheetFragment(private val post: Posts) : BottomSheetDialogFragment(),
+class PostBottomSheetFragment(private val post: Posts) : BottomSheetDialogFragment(R.layout.home_bottom_dialog_item),
     View.OnClickListener {
     private lateinit var binding: HomeBottomDialogItemBinding
     private lateinit var userPref: PreferenceManager
@@ -31,17 +32,10 @@ class PostBottomSheetFragment(private val post: Posts) : BottomSheetDialogFragme
     private var scrapState by Delegates.notNull<Boolean>()
     private var followState by Delegates.notNull<Boolean>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = HomeBottomDialogItemBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding= HomeBottomDialogItemBinding.bind(view)
+
         userPref = PreferenceManager(requireContext().applicationContext)
         prefCheckService = PrefCheckService(userPref)
 

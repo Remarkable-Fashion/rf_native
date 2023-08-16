@@ -27,23 +27,18 @@ import kotlin.properties.Delegates
  * 메인홈 유저 정보보기 프래그먼트입니다.
  */
 @AndroidEntryPoint
-class UserInfoFragment : Fragment() {
+class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
     private lateinit var binding: HomeBUserInfoFragmentBinding
     private val viewModel: UserInfoViewModel by viewModels()
     private lateinit var userPref: PreferenceManager
     private lateinit var prefCheckService: PrefCheckService
     private var userId by Delegates.notNull<Int>()
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = HomeBUserInfoFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = HomeBUserInfoFragmentBinding.bind(view)
+
         userPref = PreferenceManager(requireContext().applicationContext)
         prefCheckService = PrefCheckService(userPref)
 
