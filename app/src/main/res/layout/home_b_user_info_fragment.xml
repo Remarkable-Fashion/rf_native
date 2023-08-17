@@ -15,22 +15,25 @@
 
         <ImageView
             android:id="@+id/cancel_btn"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="20dp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
             android:src="@drawable/ic_cancel"
+            android:padding="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
 
         <include
             android:id="@+id/profile_space"
             layout="@layout/item_profile_space"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/cancel_btn"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cancel_btn"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="20dp"/>
 
