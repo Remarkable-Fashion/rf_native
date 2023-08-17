@@ -50,6 +50,15 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                 viewModel.getSavedLoginToken()
             }
         }
+        viewModel.savedLoginToken.observe(viewLifecycleOwner) {
+            if (it.isNullOrEmpty()) {
+                findNavController().navigate(R.id.action_navigation_mypage_to_loginFragment)
+                return@observe
+            } else {
+                viewModel.getPostList()
+                viewModel.getMyInfo()
+            }
+        }
         binding = MypageFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -64,22 +73,14 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
         onScrollListener = OnScrollUtils { loadMorePost() }
         binding.myNestedScrollView.setOnScrollChangeListener(onScrollListener)
 
-
-        viewModel.savedLoginToken.observe(viewLifecycleOwner) {
-            if (it.isNullOrEmpty()) {
-                findNavController().navigate(R.id.action_navigation_mypage_to_loginFragment)
-            } else {
-                viewModel.getPostList()
-                viewModel.getMyInfo()
-
-                //내 정보 불러오기
-                viewModel.myInfo.observe(viewLifecycleOwner) { myInfo ->
-                    binding.userInfo = myInfo
-                    globalMyInfo = myInfo
-                    runBlocking {
-                        launch {
-                            userPref.saveMyId(myInfo.id)
-                        }
+        //내 정보 불러오기
+        viewModel.myInfo.observe(viewLifecycleOwner) { myInfo ->
+            myInfo?.let {
+                binding.userInfo = myInfo
+                globalMyInfo = myInfo
+                runBlocking {
+                    launch {
+                        userPref.saveMyId(myInfo.id)
                     }
                 }
 
@@ -87,9 +88,14 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                 loadMyPost()
             }
         }
+
         binding.profileEditBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_mypage_to_profileEditFragment,
-                bundleOf("myInfo" to globalMyInfo))
+            if (!::globalMyInfo.isInitialized) return@setOnClickListener
+
+            findNavController().navigate(
+                R.id.action_navigation_mypage_to_profileEditFragment,
+                bundleOf("myInfo" to globalMyInfo)
+            )
         }
         //바텀 다이얼로그 show
         binding.settingBtn.setOnClickListener {
@@ -138,9 +144,11 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                         binding.gridRv.visibility = View.GONE
                     }
                 }
+
                 is Resource.Loading -> {
 
                 }
+
                 else -> {
 
                 }
@@ -169,9 +177,11 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                                 notifyDataSetChanged()
                             }
                         }
+
                         is Resource.Loading -> {
 
                         }
+
                         else -> {
 
                         }

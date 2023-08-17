@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.children
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.R
+import com.lf.fashion.data.response.MyInfo
 import com.lf.fashion.databinding.MypageSettingBottomDialogBinding
-import kotlinx.coroutines.NonDisposableHandle.parent
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 /**
  * 마이페이지 설정 버튼 클릭시 노출되는 바텀 다이얼로그 시트입니다
@@ -19,7 +19,7 @@ import kotlinx.coroutines.runBlocking
 class SettingBottomSheetFragment(private val viewModel: MyPageViewModel) :
     BottomSheetDialogFragment(), View.OnClickListener {
     lateinit var binding: MypageSettingBottomDialogBinding
-    //private lateinit var userPref: PreferenceManager
+    private lateinit var globalMyInfo: MyInfo
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,35 +32,43 @@ class SettingBottomSheetFragment(private val viewModel: MyPageViewModel) :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //userPref = PreferenceManager(requireContext().applicationContext)
-
+        viewModel.myInfo.observe(viewLifecycleOwner) { myInfo ->
+            myInfo?.let {
+                globalMyInfo = myInfo
+            }
+        }
         binding.bottomLayout.children.forEach { it.setOnClickListener(this) }
     }
 
     override fun onClick(view: View?) {
         when (view) {
             binding.profileEditBtn -> {
+                if (!::globalMyInfo.isInitialized) return
 
+                findNavController().navigate(
+                    R.id.action_navigation_mypage_to_profileEditFragment,
+                    bundleOf("myInfo" to globalMyInfo)
+                )
+                this@SettingBottomSheetFragment.dismiss()
             }
+
             binding.alertSettingBtn -> {
 
             }
+
             binding.service -> {
 
             }
+
             binding.personalInfo -> {
 
             }
+
             binding.logoutBtn -> {
                 viewModel.clearSavedLoginToken()
-
-                /*runBlocking {
-                    launch {
-                        userPref.clearAccessTokenAndId()
-                    }
-                }*/
                 this@SettingBottomSheetFragment.dismiss()
             }
+
             binding.Withdrawal -> {
 
             }
