@@ -85,6 +85,7 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment), V
 
         spinnerSetting()
         clothesRegButtonOnclick()
+
     }
 
     private fun spinnerSetting() {

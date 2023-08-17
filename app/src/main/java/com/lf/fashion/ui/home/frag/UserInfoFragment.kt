@@ -5,11 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
@@ -34,7 +36,14 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
     private lateinit var prefCheckService: PrefCheckService
     private var userId by Delegates.notNull<Int>()
 
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //생성 후 다른 바텀 메뉴 이동시 다시 home menu 클릭시 selected 아이콘으로 변경 안되는 오류 해결하기위해 수동 메뉴 checked 코드 추가
+        val bottomNavigationView =
+            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
+        val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_home)
+        homeMenu.isChecked = true
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = HomeBUserInfoFragmentBinding.bind(view)
@@ -65,9 +74,10 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
 
     private fun followBtnOnclick() {
         binding.profileSpace.followBtn.setOnClickListener {
+            val followBtn = binding.profileSpace.followBtn
             if (prefCheckService.loginCheck()) {
                 //팔로우 create / delete
-                viewModel.changeFollowingState(!binding.profileSpace.followBtn.isSelected, userId)
+                viewModel.changeFollowingState(!followBtn.isSelected, userId)
             }
         }
     }
@@ -90,9 +100,11 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
 
                         //팔로우 관련
                         // 내 포스트인 경우 팔로우 버튼 숨기기
-                        binding.profileSpace.followBtn.isVisible = me != response.user.id
-                        binding.profileSpace.followBtn.isSelected =
+                        val followBtn = binding.profileSpace.followBtn
+                        followBtn.isVisible = me != response.user.id
+                        followBtn.isSelected =
                             response.isFollow ?: false
+                        followBtn.text = if(followBtn.isSelected) "팔로잉" else "+ 팔로우"
                         userId = response.user.id
 
                         //스타일 칩
@@ -114,9 +126,17 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
     private fun updateFollowingState() {
         viewModel.followResponse.observe(viewLifecycleOwner) { resources ->
             if (resources is Resource.Success && resources.value.success) {
+                val followBtn = binding.profileSpace.followBtn
+
                 //팔로우 버튼 ui 반전
-                binding.profileSpace.followBtn.isSelected =
-                    !binding.profileSpace.followBtn.isSelected
+                followBtn.isSelected =
+                    !followBtn.isSelected
+
+                if(followBtn.isSelected){
+                    followBtn.text = "팔로잉"
+                }else{
+                    followBtn.text = "+ 팔로우"
+                }
             }
         }
     }

@@ -14,6 +14,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.kakao.sdk.user.UserApiClient
+import com.lf.fashion.MainActivity
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
@@ -35,7 +36,10 @@ class ProfileEditFragment : Fragment(R.layout.mypage_profile_fragment) {
     private var selectedImageUri: String? = null
     var lastProfileRequest: String? = null // 마지막으로 요청한 값 저장
 
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        MainActivity.hideNavi(true)
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = MypageProfileFragmentBinding.bind(view)
@@ -186,5 +190,9 @@ class ProfileEditFragment : Fragment(R.layout.mypage_profile_fragment) {
                 binding.myInfo?.profile?.profileImage = it as String
             }
         }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        MainActivity.hideNavi(false)
     }
 }

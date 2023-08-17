@@ -27,6 +27,7 @@
     <string name="woman">WOMAN</string>
     <string name="photo_zip_title">사진 모아보기</string>
     <string name="follow_btn_text">+ 팔로우</string>
+    <string name="unfollow_btn_text">팔로잉</string>
 
 
     <string name="recommend_title">이 의상은 어때?</string>

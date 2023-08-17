@@ -23,7 +23,7 @@ import com.lf.fashion.ui.search.adapter.LookVerticalAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchResultFragment(resultCategory: String?) : Fragment(R.layout.search_result_fragment),
+class SearchResultFragment(resultCategory: String?) : Fragment(R.layout.search_result_viewpager),
     GridPhotoClickListener {
     private lateinit var binding: SearchResultViewpagerBinding
 
