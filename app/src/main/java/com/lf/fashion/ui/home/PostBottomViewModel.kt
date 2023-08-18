@@ -1,20 +1,26 @@
 package com.lf.fashion.ui.home
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lf.fashion.data.common.Event
 import com.lf.fashion.data.network.Resource
-import com.lf.fashion.data.network.api.CommunicateApi
 import com.lf.fashion.data.repository.CommunicateRepository
+import com.lf.fashion.data.repository.HomeRepository
 import com.lf.fashion.data.response.MsgResponse
+import com.lf.fashion.data.response.PostInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PostBottomViewModel @Inject constructor(
+    private val homeRepository: HomeRepository,
     private val communicateRepository: CommunicateRepository
 ) : ViewModel() {
+    private val _postInfo = MutableLiveData<Resource<PostInfo>>()
+    var postInfo: LiveData<Resource<PostInfo>> = _postInfo
 
     private val _blockResponse = MutableLiveData<Resource<MsgResponse>>()
     val blockResponse = _blockResponse
@@ -25,6 +31,11 @@ class PostBottomViewModel @Inject constructor(
     private val _followResponse = MutableLiveData<Resource<MsgResponse>>()
     val followResponse = _followResponse
 
+    fun getPostByPostId(postId : Int){
+        viewModelScope.launch {
+            _postInfo.value = homeRepository.getPostInfoByPostId(postId)
+        }
+    }
     fun changeBlockUserState(create: Boolean, userId: Int) {
         viewModelScope.launch {
             if(create){

@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName
 data class PostInfo(
     val id: Int,
     val isFollow: Boolean?=false,
+    val isScrap :Boolean?=false,
     val createdAt : String,
     val user: UserInfo,
     @SerializedName("_count")

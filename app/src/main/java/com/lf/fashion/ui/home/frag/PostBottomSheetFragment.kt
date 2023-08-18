@@ -1,6 +1,7 @@
 package com.lf.fashion.ui.home.frag
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.lf.fashion.R
+import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.Posts
@@ -45,29 +47,32 @@ class PostBottomSheetFragment(private val post: Posts) : BottomSheetDialogFragme
         binding.bottomLayout.children.forEach { it.setOnClickListener(this) }
         binding.bottomLinear.children.forEach { it.setOnClickListener(this) }
 
-        scrapState = post.isScrap == true
-        followState = post.isFollow == true
+        //TODO : delete follow 400 에러 뜸 ,     "msg": "Record to delete does not exist" 해결시 다시 테스트
+        viewModel.getPostByPostId(post.id)
+        viewModel.postInfo.observe(viewLifecycleOwner){resources->
+            if (resources is Resource.Success) {
+                val response = resources.value
 
+                scrapState = response.isScrap?:false
+                followState = response.isFollow?:false
+                Log.e(TAG, "onViewCreated: follow ${response.isFollow} ${response.id}")
+                Log.e(TAG, "onViewCreated: follow ${response.isFollow} ${response.id}")
+
+                btnTextUpdate("scrap", scrapState)
+                btnTextUpdate("follow", followState)
+                btnTextUpdate("block", blocked)
+            }
+
+        }
+/*
+        scrapState = post.isScrap == true
+        followState = post.isFollow == true*/
+/*
         btnTextUpdate("scrap", scrapState)
         btnTextUpdate("follow", followState)
-        btnTextUpdate("block", blocked)
+        btnTextUpdate("block", blocked)*/
         observeAllMsgResponse()
 
-    }
-
-    private fun btnTextUpdate(name: String, state: Boolean) {
-        when (name) {
-            "scrap" -> {
-                binding.bottomSheetScrapBtn.text = if (state) "스크랩취소" else "스크랩하기"
-            }
-            "follow" -> {
-                binding.bottomSheetFollowBtn.text = if (state) "팔로우 취소" else "팔로잉하기"
-            }
-            "block" -> {
-                binding.blockBtn.text = if (state) "차단 취소" else "차단하기"
-
-            }
-        }
     }
 
     private fun loginUserUi() {
@@ -124,6 +129,22 @@ class PostBottomSheetFragment(private val post: Posts) : BottomSheetDialogFragme
             if ((it is Resource.Success) && it.value.success) {
                 blocked = !blocked
                 btnTextUpdate("block", blocked)
+
+            }
+        }
+    }
+
+    private fun btnTextUpdate(name: String, state: Boolean) {
+        when (name) {
+            "scrap" -> {
+                binding.bottomSheetScrapBtn.text = if (state) "스크랩취소" else "스크랩하기"
+            }
+            "follow" -> {
+                binding.bottomSheetFollowBtn.text = if (state) "팔로우 취소" else "팔로잉하기"
+            }
+            "block" -> {
+                binding.blockBtn.text = if (state) "차단 취소" else "차단하기"
+
             }
         }
     }
