@@ -2,6 +2,7 @@ package com.lf.fashion.ui.home.frag
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
+import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.*
@@ -45,12 +47,14 @@ class HomeFragment :
 
     private lateinit var binding: HomeAFragmentBinding
     private val viewModel: HomeViewModel by viewModels()
+
     // private val postList = MutableLiveData<List<Posts>>()
     private val gridAdapter = GridPostAdapter(gridPhotoClickListener = this)
     private val defaultAdapter = DefaultPostAdapter(this@HomeFragment, this@HomeFragment)
     private lateinit var userPref: PreferenceManager
     private lateinit var likeClickedPosts: Posts
-    private lateinit var scrapClickedPosts : Posts
+    private lateinit var scrapClickedPosts: Posts
+
     //private lateinit var layoutMode : String
     private lateinit var prefCheckService: PrefCheckService
 
@@ -122,9 +126,11 @@ class HomeFragment :
                         visibility = View.INVISIBLE // 기본 설정 invisible
                     }
                 }
+
                 is Resource.Loading -> {
 
                 }
+
                 else -> {
 
                 }
@@ -162,6 +168,7 @@ class HomeFragment :
                 binding.appBarFollowing.isSelected = true
                 binding.appBarRandom.isSelected = false
             }
+
             binding.appBarRandom -> { //랜덤 버튼 클릭
                 binding.appBarFollowing.isSelected = false
                 binding.appBarRandom.isSelected = true
@@ -175,11 +182,13 @@ class HomeFragment :
                         photoLayoutVisibilityMode(false) // grid visibility
                         editGridSpanCount(2)
                     }
+
                     "2" -> {
                         binding.appBarPhotoGridModeBtn.text = "3"
                         photoLayoutVisibilityMode(false) // grid visibility
                         editGridSpanCount(3)
                     }
+
                     "3" -> {
                         binding.appBarPhotoGridModeBtn.text = "1"
                         photoLayoutVisibilityMode(true) // default visibility
@@ -219,17 +228,22 @@ class HomeFragment :
         }
     }
 
-    private fun updateScrapState(){
-        viewModel.scrapResponse.observe(viewLifecycleOwner){ resources->
-            if(resources is Resource.Success && resources.value.success){
+    private fun updateScrapState() {
+        viewModel.scrapResponse.observe(viewLifecycleOwner) { resources ->
+            if (resources is Resource.Success && resources.value.success) {
                 val currentList = defaultAdapter.currentList
                 val position = currentList.indexOf(scrapClickedPosts)
 
-                if(position != -1){
+                if (position != -1) {
                     defaultAdapter.currentList[position].apply {
                         isScrap = scrapClickedPosts.isScrap
                     }
-                    defaultAdapter.notifyItemChanged(position,"SCRAP_STATE")
+                    defaultAdapter.notifyItemChanged(position, "SCRAP_STATE")
+
+                    gridAdapter.currentList[position].apply {
+                        isScrap = scrapClickedPosts.isScrap
+                    }
+                    gridAdapter.notifyItemChanged(position, "SCRAP_STATE")
                 }
             }
         }
@@ -243,6 +257,7 @@ class HomeFragment :
                     viewModel.changeLikesState(create = false, post.id)
                     post.count.favorites = post.count.favorites?.minus(1) // 좋아요 카운트 -1
                 }
+
                 false -> {
                     viewModel.changeLikesState(create = true, post.id)
                     post.count.favorites = post.count.favorites?.plus(1)  // 좋아요 카운트 +1
@@ -264,21 +279,34 @@ class HomeFragment :
     }
 
     //vertical fragment 에서 공유버튼 클릭시 바텀 다이얼로그를 생성한다.
-    override fun shareBtnClicked(post : Posts) {
+    override fun shareBtnClicked(post: Posts) {
+
+    }
+
+    override fun kebabBtnClicked(post: Posts) {
         val dialog = PostBottomSheetFragment(post)
         dialog.show(parentFragmentManager, "bottom_sheet")
-
     }
 
     override fun photoZipBtnClicked() {
         findNavController().navigate(R.id.action_global_to_photoZipFragment)
     }
 
-    override fun infoBtnClicked(postId : Int) {
-        findNavController().navigate(R.id.action_global_to_userInfoFragment, bundleOf("postId" to postId))
+    override fun infoBtnClicked(postId: Int) {
+        findNavController().navigate(
+            R.id.action_global_to_userInfoFragment,
+            bundleOf("postId" to postId)
+        )
     }
 
     override fun gridPhotoClicked(postIndex: Int) {
         //grid 각 포토 클릭시 !!
+        defaultAdapter.startChangeByGridClicked()
+        binding.homeMainViewpager.apply {
+            setCurrentItem(postIndex,false)
+        }
+        binding.appBarPhotoGridModeBtn.text = "1"
+        photoLayoutVisibilityMode(true)
+
     }
 }

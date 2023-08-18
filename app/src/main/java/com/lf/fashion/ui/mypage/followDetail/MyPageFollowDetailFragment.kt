@@ -1,9 +1,7 @@
 package com.lf.fashion.ui.mypage.followDetail
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lf.fashion.MainActivity

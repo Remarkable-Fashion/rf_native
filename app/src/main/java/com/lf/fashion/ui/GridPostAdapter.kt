@@ -53,9 +53,12 @@ class GridPostAdapter(
                 is HomeGridItemBinding ->{
                     //post 내부 첫번째 사진을 grid 로 노출
                     binding.photoUrl = post.images[0].url
+
                     binding.gridImage.setOnClickListener {
                         gridPhotoClickListener.gridPhotoClicked(currentList.indexOf(post))
                     }
+                    binding.scrapIcon.isSelected = post.isScrap?:false
+
                     //spanCount 갯수에 따라 이미지뷰 (정확히는 이미지뷰를 감싸는 ConstraintLayout 높이를 조정
                     layoutParams.height = when (spanCount ?: 2) {
                         2 -> convertDPtoPX(context, 228)

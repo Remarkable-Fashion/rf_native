@@ -6,6 +6,7 @@ interface VerticalViewPagerClickListener {
     fun likeBtnClicked(likeState: Boolean, post: Posts)
     fun scrapBtnClicked(scrapState : Boolean,post:Posts)
     fun shareBtnClicked(post : Posts)
+    fun kebabBtnClicked(post : Posts)
     fun photoZipBtnClicked()
     fun infoBtnClicked(postId:Int)
 }

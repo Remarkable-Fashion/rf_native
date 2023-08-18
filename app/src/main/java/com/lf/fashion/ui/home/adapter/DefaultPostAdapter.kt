@@ -71,6 +71,10 @@ class DefaultPostAdapter(
                 verticalViewPagerClickListener.photoZipBtnClicked()
             }
 
+            postDetailMenu.kebabBtn.setOnClickListener {
+                verticalViewPagerClickListener.kebabBtnClicked(post)
+            }
+
             binding.infoBtn.setOnClickListener {
                 verticalViewPagerClickListener.infoBtnClicked(post.id)
             }
@@ -78,6 +82,9 @@ class DefaultPostAdapter(
             binding.executePendingBindings()
 
         }
+    }
+    fun startChangeByGridClicked(){
+
     }
 }
 
