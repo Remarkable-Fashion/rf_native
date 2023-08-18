@@ -1,13 +1,11 @@
 package com.lf.fashion.ui
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.lf.fashion.R
-import com.lf.fashion.TAG
 import com.lf.fashion.data.response.Cloth
-import com.lf.fashion.data.response.MyInfo
+import com.lf.fashion.data.response.Profile
 
 import java.text.DecimalFormat
 
@@ -19,14 +17,18 @@ fun applyMonthsSales(view: TextView, price: Int) {
 }
 
 @BindingAdapter("bodyProfile")
-fun bodyInfo(textView: TextView, userInfo: MyInfo) {
-    val sexKo = if (userInfo.profile.sex.equals("Male")) "남" else "여"
-    textView.text = textView.context.getString(
-        R.string.user_body_profile,
-        sexKo,
-        userInfo.profile.height,
-        userInfo.profile.weight
-    )
+fun bodyInfo(textView: TextView, profile: Profile?) {
+    profile?.let {
+        val sexKo = if (it.sex.equals("Male")) "남" else "여"
+        var text = sexKo
+        if (it.height != null) {
+            text += " |  ${it.height}cm"
+        }
+        if (it.weight != null) {
+            text += " |  ${it.weight}kg"
+        }
+        textView.text = text
+    }
 }
 
 @BindingAdapter("userHeight")

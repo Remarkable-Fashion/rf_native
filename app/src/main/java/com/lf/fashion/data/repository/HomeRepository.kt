@@ -7,8 +7,7 @@ import com.lf.fashion.data.response.*
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
-    private val postApi: MainHomeApi,
-    private val chipApi: ChipApi
+    private val postApi: MainHomeApi
 ) : SafeApiCall {
 
 
@@ -33,17 +32,8 @@ class HomeRepository @Inject constructor(
     suspend fun getRecommendClothesInfo(postId: Int, category: String) = safeApiCall {
         postApi.getRecommendClothesInfo(1)
     }
-
-    //filter fragment
-    suspend fun getTPOChips(): List<ChipInfo> {
-        return chipApi.getTPOChips()
+    suspend fun getPostByUserId(userId : Int) = safeApiCall {
+        postApi.getPostByUserId(userId)
     }
 
-    suspend fun getSeasonChips(): List<ChipInfo> {
-        return chipApi.getSeasonChips()
-    }
-
-    suspend fun getStyleChips(): List<ChipInfo> {
-        return chipApi.getStyleChips()
-    }
 }

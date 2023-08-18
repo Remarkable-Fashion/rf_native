@@ -1,10 +1,8 @@
-package com.lf.fashion.ui.home.frag
+package com.lf.fashion.ui.home.userInfo.cloth
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
@@ -12,15 +10,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
 import com.lf.fashion.TAG
-import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
-import com.lf.fashion.data.response.Cloth
 import com.lf.fashion.data.response.ClothPost
-import com.lf.fashion.data.response.RecommendCloth
 import com.lf.fashion.databinding.HomeBRecommendFragmentBinding
-import com.lf.fashion.ui.PrefCheckService
 import com.lf.fashion.ui.cancelBtnBackStack
-import com.lf.fashion.ui.home.UserInfoViewModel
+import com.lf.fashion.ui.home.userInfo.UserInfoViewModel
 import com.lf.fashion.ui.home.adapter.LookBookRvAdapter
 import dagger.hilt.android.AndroidEntryPoint
 

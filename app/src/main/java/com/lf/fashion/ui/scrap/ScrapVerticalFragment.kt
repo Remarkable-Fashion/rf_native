@@ -149,12 +149,15 @@ class ScrapVerticalFragment : Fragment(),
     }
 
     override fun shareBtnClicked(post : Posts) {
-        val dialog = PostBottomSheetFragment(post)
-        dialog.show(parentFragmentManager, "bottom_sheet")
 
     }
 
-    override fun photoZipBtnClicked() {
+    override fun kebabBtnClicked(post: Posts) {
+        val dialog = PostBottomSheetFragment(post)
+        dialog.show(parentFragmentManager, "bottom_sheet")
+    }
+
+    override fun photoZipBtnClicked(post : Posts) {
         findNavController().navigate(R.id.action_global_to_photoZipFragment)
     }
 

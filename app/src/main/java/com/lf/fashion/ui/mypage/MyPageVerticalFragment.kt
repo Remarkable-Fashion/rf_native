@@ -161,7 +161,11 @@ class MyPageVerticalFragment : Fragment(),
 
         }
 
-        override fun photoZipBtnClicked() {
+    override fun kebabBtnClicked(post: Posts) {
+
+    }
+
+    override fun photoZipBtnClicked(post : Posts) {
             findNavController().navigate(R.id.action_global_to_photoZipFragment)
         }
 

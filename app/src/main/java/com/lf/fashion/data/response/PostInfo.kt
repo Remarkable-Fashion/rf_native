@@ -2,7 +2,7 @@ package com.lf.fashion.data.response
 
 import com.google.gson.annotations.SerializedName
 
-//정보보기에서 사용
+//정보 보기에서 사용
 data class PostInfo(
     val id: Int,
     val isFollow: Boolean?=false,

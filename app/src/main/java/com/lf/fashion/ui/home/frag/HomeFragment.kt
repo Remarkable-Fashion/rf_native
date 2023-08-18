@@ -288,8 +288,8 @@ class HomeFragment :
         dialog.show(parentFragmentManager, "bottom_sheet")
     }
 
-    override fun photoZipBtnClicked() {
-        findNavController().navigate(R.id.action_global_to_photoZipFragment)
+    override fun photoZipBtnClicked(post : Posts) {
+        findNavController().navigate(R.id.action_global_to_photoZipFragment, bundleOf("post" to post))
     }
 
     override fun infoBtnClicked(postId: Int) {

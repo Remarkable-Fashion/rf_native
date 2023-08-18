@@ -68,7 +68,7 @@ class DefaultPostAdapter(
             }
 
             postDetailMenu.photoZipBtn.setOnClickListener {
-                verticalViewPagerClickListener.photoZipBtnClicked()
+                verticalViewPagerClickListener.photoZipBtnClicked(post)
             }
 
             postDetailMenu.kebabBtn.setOnClickListener {

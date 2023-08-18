@@ -84,11 +84,11 @@
         android:label="FilterFragment" />
     <fragment
         android:id="@+id/photoZipFragment"
-        android:name="com.lf.fashion.ui.home.frag.PhotoZipFragment"
+        android:name="com.lf.fashion.ui.home.photozip.PhotoZipFragment"
         android:label="PhotoZipFragment" />
     <fragment
         android:id="@+id/userInfoFragment"
-        android:name="com.lf.fashion.ui.home.frag.UserInfoFragment"
+        android:name="com.lf.fashion.ui.home.userInfo.UserInfoFragment"
         android:label="UserInfoFragment">
         <action
             android:id="@+id/action_userInfoFragment_to_recommendFragment"
@@ -96,7 +96,7 @@
     </fragment>
     <fragment
         android:id="@+id/recommendFragment"
-        android:name="com.lf.fashion.ui.home.frag.RecommendLooBookFragment"
+        android:name="com.lf.fashion.ui.home.userInfo.cloth.RecommendLooBookFragment"
         android:label="RecommendFragment" >
         <action
             android:id="@+id/action_recommendFragment_to_registClothFragment"
@@ -159,7 +159,7 @@
         android:label="ScrapVerticalFragment" />
     <fragment
         android:id="@+id/registClothFragment"
-        android:name="com.lf.fashion.ui.home.frag.RegistClothFragment"
+        android:name="com.lf.fashion.ui.home.userInfo.cloth.RegistClothFragment"
         android:label="RegistClothFragment" >
         <action
             android:id="@+id/action_registClothFragment_to_imagePickerFragment"

@@ -1,11 +1,7 @@
-package com.lf.fashion.ui.home.frag
+package com.lf.fashion.ui.home.userInfo
 
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatButton
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -13,14 +9,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
-import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.HomeBUserInfoFragmentBinding
 import com.lf.fashion.ui.PrefCheckService
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.childChip
-import com.lf.fashion.ui.home.UserInfoViewModel
 import com.lf.fashion.ui.home.adapter.ClothesRvAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates

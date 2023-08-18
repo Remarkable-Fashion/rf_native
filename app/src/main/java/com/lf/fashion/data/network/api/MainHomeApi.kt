@@ -27,5 +27,8 @@ interface MainHomeApi {
 
     @GET("clothes/{id}/recommend") //@Query("category") category: String
     suspend fun getRecommendClothesInfo(@Path("id") postId: Int) : RecommendCloth
+
+    @GET("post/user/{id}?take=20")
+    suspend fun getPostByUserId(@Path("id") userId : Int) : RandomPostResponse
 }
 

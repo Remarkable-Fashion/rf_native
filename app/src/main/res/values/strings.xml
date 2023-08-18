@@ -61,7 +61,6 @@
 
 
     <string name="mypage_title">%1$s 님의 룩북</string>
-    <string name="user_body_profile">%1$s | %2$dcm | %3$dkg</string>
     <string name="height">%1$d cm</string>
     <string name="weight">%1$d kg</string>
 
