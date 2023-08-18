@@ -1,0 +1,168 @@
+package com.lf.fashion.ui.home.photozip
+
+import android.os.Bundle
+import android.util.Log
+import android.view.View
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.lf.fashion.MainNaviDirections
+import com.lf.fashion.R
+import com.lf.fashion.TAG
+import com.lf.fashion.data.network.Resource
+import com.lf.fashion.data.response.ImageUrl
+import com.lf.fashion.data.response.Posts
+import com.lf.fashion.databinding.HomeBPhotoZipFragmentBinding
+import com.lf.fashion.databinding.HomeBPhotozipVerticalFragmentBinding
+import com.lf.fashion.ui.cancelBtnBackStack
+import com.lf.fashion.ui.home.PhotoClickListener
+import com.lf.fashion.ui.home.VerticalViewPagerClickListener
+import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
+import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_fragment),
+PhotoClickListener,VerticalViewPagerClickListener{
+    private lateinit var binding : HomeBPhotozipVerticalFragmentBinding
+    private val viewModel : PhotoZipViewModel by hiltNavGraphViewModels(R.id.navigation_home)
+    private lateinit var defaultAdapter : DefaultPostAdapter
+
+    private lateinit var likeClickedPosts: Posts
+    private lateinit var scrapClickedPosts: Posts
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val bottomNavigationView =
+            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
+        val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_home)
+        homeMenu.isChecked = true
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = HomeBPhotozipVerticalFragmentBinding.bind(view)
+        cancelBtnBackStack(binding.backBtn)
+
+        val userInfoPost = arguments?.get("userInfoPost") as Posts
+        defaultAdapter  = DefaultPostAdapter(
+            this@PhotoZipVerticalFragment,
+            this@PhotoZipVerticalFragment,
+            userInfoPost
+        )
+
+        viewModel.posts.observe(viewLifecycleOwner){resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    val response = resource.value
+                    binding.verticalViewpager.apply {
+                        adapter = defaultAdapter
+                        (adapter as? DefaultPostAdapter)?.apply {
+                            submitList(response.posts)
+                            //scrapFragment 에서 선택한 item 의 index 를 시작 index 로 지정 , animation false 처리
+                            setCurrentItem(viewModel.startIndex.value ?: 0, false)
+                        }
+                        getChildAt(0).overScrollMode =
+                            RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
+                    }
+                }
+                is Resource.Failure -> {
+
+                }
+                is Resource.Loading -> {
+
+                }
+            }
+
+        }
+        //좋아요 상태 변화 관찰&업데이트
+        updateLikeState()
+        updateScrapState()
+
+    }
+    private fun updateLikeState() {
+        viewModel.changeLikeResponse.observe(viewLifecycleOwner) { resources ->
+            if (resources is Resource.Success && resources.value.success) {
+                val currentList = defaultAdapter.currentList
+                val position = currentList.indexOf(likeClickedPosts)
+
+                if (position != -1) {
+                    defaultAdapter.currentList[position].apply {
+                        isFavorite = likeClickedPosts.isFavorite
+                        count.favorites = likeClickedPosts.count.favorites
+                    }
+                    defaultAdapter.notifyItemChanged(position, "FAVORITES_COUNT")
+
+                }
+            }
+        }
+    }
+
+    private fun updateScrapState() {
+        viewModel.scrapResponse.observe(viewLifecycleOwner) { resources ->
+            if (resources is Resource.Success && resources.value.success && this::scrapClickedPosts.isInitialized) {
+                val currentList = defaultAdapter.currentList
+                val position = currentList.indexOf(scrapClickedPosts)
+
+                if (position != -1) {
+                    defaultAdapter.currentList[position].apply {
+                        isScrap = scrapClickedPosts.isScrap
+                    }
+                    defaultAdapter.notifyItemChanged(position, "SCRAP_STATE")
+                }
+            }
+        }
+    }
+
+    override fun photoClicked(bool: Boolean, photo: List<ImageUrl>) {
+        if (bool) {
+            val action =
+                MainNaviDirections.actionGlobalToPhotoDetailFragment(photo.toTypedArray())
+            findNavController().navigate(action)
+        }
+    }
+
+    override fun likeBtnClicked(likeState: Boolean, post: Posts) {
+        when (likeState) {
+            true -> {
+                viewModel.changeLikesState(create = false, post.id)
+                post.count.favorites = post.count.favorites?.minus(1) // 좋아요 카운트 -1
+            }
+            false -> {
+                viewModel.changeLikesState(create = true, post.id)
+                post.count.favorites = post.count.favorites?.plus(1)  // 좋아요 카운트 +1
+            }
+        }
+        post.isFavorite = !post.isFavorite!!  // 좋아요 상태 반전
+        likeClickedPosts = post
+    }
+
+    override fun scrapBtnClicked(scrapState: Boolean, post: Posts) {
+        //scrapState 기존 스크랩 상태
+        viewModel.changeScrapState(create = !scrapState, post.id)
+        post.isScrap = !(post.isScrap ?: true)
+        scrapClickedPosts = post
+    }
+
+    override fun shareBtnClicked(post : Posts) {
+        val dialog = PostBottomSheetFragment(post)
+        dialog.show(parentFragmentManager, "bottom_sheet")
+
+    }
+
+    override fun kebabBtnClicked(post: Posts) {
+
+    }
+
+    override fun photoZipBtnClicked(post : Posts) {
+        findNavController().navigate(R.id.action_global_to_photoZipFragment)
+    }
+
+    override fun infoBtnClicked(postId: Int) {
+        findNavController().navigate(R.id.action_global_to_userInfoFragment,
+            bundleOf("postId" to postId)
+        )
+    }
+}

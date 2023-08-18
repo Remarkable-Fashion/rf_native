@@ -112,9 +112,9 @@
                     app:layout_constraintEnd_toStartOf="@id/kebab_btn"
                     android:layout_marginEnd="20dp"
                     style="@style/Widget.AppCompat.Button.Borderless"
-                    android:background="@color/lf_light_purple"
+                    android:background="@drawable/selector_followbtn_color"
                     android:text="@string/follow_btn_text"
-                    android:textColor="@color/lf_purple"
+                    android:textColor="@drawable/selector_purple_text_color"
                     android:fontFamily="@font/spoqahansansneo_bold"
                     android:textSize="12sp" />
 

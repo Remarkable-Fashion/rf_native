@@ -2,6 +2,7 @@ package com.lf.fashion.ui.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +14,8 @@ import com.lf.fashion.ui.home.VerticalViewPagerClickListener
 
 class DefaultPostAdapter(
     private val photoClickListener: PhotoClickListener,
-    private val verticalViewPagerClickListener: VerticalViewPagerClickListener
+    private val verticalViewPagerClickListener: VerticalViewPagerClickListener,
+    private val userInfoPost : Posts?=null
 ) :
     ListAdapter<Posts, DefaultPostAdapter.DefaultPostViewHolder>(DefaultPostDiff()) {
 
@@ -43,14 +45,21 @@ class DefaultPostAdapter(
                     this
                 ) { _, _ -> }.attach()
             }
+
         }
 
         fun bind(post: Posts) {
             binding.post = post
+
+            if(userInfoPost!=null){   // photoZipVertical 에서 response 받는 posts 에는 user 정보가 없기 때문에, 파라미터가 존재할 시 이를 바인딩 해주도록 .
+                binding.post = userInfoPost
+            }
+            profileSpaceVisibilityBinding(post) // 마이페이지일 경우 userInfo 도 post 내부 user 도 없기 때문에 숨김 처리
+
             val postDetailMenu = binding.postDetailMenu
             postDetailMenu.likeBtn.isSelected = post.isFavorite?:false
             postDetailMenu.likesValue.text = post.count.favorites.toString()
-            postDetailMenu.scrapBtn.isSelected = post.isScrap?:true //null 인경우는 내 스크랩 모아보기이기 때문에, 모두 true
+            postDetailMenu.scrapBtn.isSelected = post.isScrap?:true //null 인 경우는 내 스크랩 모아보기이기 때문에, 모두 true
 
             nestedAdapter.submitList(post.images)
 
@@ -81,6 +90,21 @@ class DefaultPostAdapter(
 
             binding.executePendingBindings()
 
+        }
+
+        private fun profileSpaceVisibilityBinding(post: Posts) {
+            if (userInfoPost == null && post.user == null) {
+                binding.profileImage.isVisible = false
+                binding.profileName.isVisible = false
+                binding.infoBtn.isVisible = false
+                binding.infoBtnText.isVisible = false
+            } else {
+
+                binding.profileImage.isVisible = true
+                binding.profileName.isVisible = true
+                binding.infoBtn.isVisible = true
+                binding.infoBtnText.isVisible = true
+            }
         }
     }
     fun startChangeByGridClicked(){

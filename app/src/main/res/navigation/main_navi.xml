@@ -85,7 +85,11 @@
     <fragment
         android:id="@+id/photoZipFragment"
         android:name="com.lf.fashion.ui.home.photozip.PhotoZipFragment"
-        android:label="PhotoZipFragment" />
+        android:label="PhotoZipFragment" >
+        <action
+            android:id="@+id/action_photoZipFragment_to_photoZipVerticalFragment"
+            app:destination="@id/photoZipVerticalFragment" />
+    </fragment>
     <fragment
         android:id="@+id/userInfoFragment"
         android:name="com.lf.fashion.ui.home.userInfo.UserInfoFragment"
@@ -173,4 +177,8 @@
         android:id="@+id/myPageFollowDetailFragment"
         android:name="com.lf.fashion.ui.mypage.followDetail.MyPageFollowDetailFragment"
         android:label="MyPageFollowDetailFragment" />
+    <fragment
+        android:id="@+id/photoZipVerticalFragment"
+        android:name="com.lf.fashion.ui.home.photozip.PhotoZipVerticalFragment"
+        android:label="PhotoZipVerticalFragment" />
 </navigation>

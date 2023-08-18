@@ -2,17 +2,19 @@ package com.lf.fashion.ui.home.photozip
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.Posts
+import com.lf.fashion.data.response.UserInfo
 import com.lf.fashion.databinding.HomeBPhotoZipFragmentBinding
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
-import com.lf.fashion.ui.home.HomeViewModel
 import com.lf.fashion.ui.GridPhotoClickListener
 import com.lf.fashion.ui.GridPostAdapter
 import com.lf.fashion.ui.PrefCheckService
@@ -25,9 +27,12 @@ import kotlin.properties.Delegates
 @AndroidEntryPoint
 class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhotoClickListener {
     lateinit var binding: HomeBPhotoZipFragmentBinding
-    private val viewModel: PhotoZipViewModel by viewModels()
+    private val viewModel : PhotoZipViewModel by hiltNavGraphViewModels(R.id.navigation_home)
     private var userId by Delegates.notNull<Int>()
-   // private var followState by Delegates.notNull<Boolean>()
+    private lateinit var userInfoPost: Posts
+   // private var postList = mutableListOf<Posts>()
+
+    // private var followState by Delegates.notNull<Boolean>()
 
     private lateinit var userPref: PreferenceManager
     private lateinit var prefCheckService: PrefCheckService
@@ -48,7 +53,9 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
 
 
         val post = arguments?.get("post") as Posts
+        userInfoPost = post // photoZip 엔드포인트 response 에는 post 내부에 user 정보가 없어서 vertical Fragment 로 이동시 같이 보낸다
         binding.userInfo = post.user
+
 
         followStateBinding(post)
         followBtnOnclick()
@@ -67,6 +74,7 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
                                 removeItemDecorationAt(0)
                             }
                             addItemDecoration(GridSpaceItemDecoration(3, 6))
+                            //postList.addAll(response.posts)
                             submitList(response.posts)
                         }
 
@@ -122,5 +130,11 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
     }
     override fun gridPhotoClicked(postIndex: Int) {
         //grid 포토 클릭시!!
+        viewModel.editClickedPostIndex(postIndex)
+        //,
+        //            bundleOf("postList" to postList)
+        findNavController().navigate(
+            R.id.action_photoZipFragment_to_photoZipVerticalFragment, bundleOf("userInfoPost" to userInfoPost)
+        )
     }
 }
