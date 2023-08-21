@@ -1,5 +1,6 @@
 package com.lf.fashion.ui.home.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
+import com.lf.fashion.TAG
 import com.lf.fashion.data.response.Posts
 import com.lf.fashion.databinding.HomeAVerticalItemBinding
 import com.lf.fashion.ui.home.PhotoClickListener
@@ -81,6 +83,7 @@ class DefaultPostAdapter(
             }
 
             postDetailMenu.kebabBtn.setOnClickListener {
+                Log.d(TAG, "kebabBtnClicked In DefaultAdapter  - postId : $post.id");
                 verticalViewPagerClickListener.kebabBtnClicked(post)
             }
 

@@ -1,5 +1,6 @@
 package com.lf.fashion.ui.home.frag
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -47,7 +48,6 @@ class PostBottomSheetFragment(private val post: Posts) : BottomSheetDialogFragme
         binding.bottomLayout.children.forEach { it.setOnClickListener(this) }
         binding.bottomLinear.children.forEach { it.setOnClickListener(this) }
 
-        //TODO : delete follow 400 에러 뜸 ,     "msg": "Record to delete does not exist" 해결시 다시 테스트
         viewModel.getPostByPostId(post.id)
         viewModel.postInfo.observe(viewLifecycleOwner){resources->
             if (resources is Resource.Success) {
@@ -55,26 +55,22 @@ class PostBottomSheetFragment(private val post: Posts) : BottomSheetDialogFragme
 
                 scrapState = response.isScrap?:false
                 followState = response.isFollow?:false
-                Log.e(TAG, "onViewCreated: follow ${response.isFollow} ${response.id}")
-                Log.e(TAG, "onViewCreated: follow ${response.isFollow} ${response.id}")
 
                 btnTextUpdate("scrap", scrapState)
                 btnTextUpdate("follow", followState)
                 btnTextUpdate("block", blocked)
             }
-
         }
-/*
-        scrapState = post.isScrap == true
-        followState = post.isFollow == true*/
-/*
-        btnTextUpdate("scrap", scrapState)
-        btnTextUpdate("follow", followState)
-        btnTextUpdate("block", blocked)*/
         observeAllMsgResponse()
 
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        post.isScrap = scrapState
+      //  post.isFollow = followState follow는 바꿀필요 없을 것 같 ui 에서 바로 노출 x
+        (parentFragment as? BottomSheetListener)?.onBottomSheetDismissed(post)
+        super.onDismiss(dialog)
+    }
     private fun loginUserUi() {
         if (prefCheckService.loginCheck()) {
             binding.bottomSheetFollowBtn.isVisible = true

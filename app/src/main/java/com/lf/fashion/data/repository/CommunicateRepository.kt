@@ -1,5 +1,7 @@
 package com.lf.fashion.data.repository
 
+import android.util.Log
+import com.lf.fashion.TAG
 import com.lf.fashion.data.network.SafeApiCall
 import com.lf.fashion.data.network.api.CommunicateApi
 import javax.inject.Inject
@@ -18,18 +20,23 @@ class CommunicateRepository @Inject constructor(
     }
 
     suspend fun createScrap(postId: Int) =safeApiCall {
+        Log.d(TAG, "CommunicateRepository - createScrap: SCRAP POST ID : $postId");
         comApi.createScrap(postId)
     }
 
     suspend fun deleteScrap(postId: Int) = safeApiCall {
+        Log.d(TAG, "CommunicateRepository - deleteScrap: SCRAP POST ID : $postId");
         comApi.deleteScrap(postId)
     }
 
     suspend fun createFollowing(userId: Int) =safeApiCall {
+        Log.d(TAG, "CommunicateRepository - createFollowing: SCRAP POST ID : $userId");
         comApi.createFollowing(userId)
     }
 
     suspend fun deleteFollowing(userId: Int) = safeApiCall {
+        Log.d(TAG, "CommunicateRepository - deleteFollowing: SCRAP POST ID : $userId");
+
         comApi.deleteFollowing(userId)
     }
 

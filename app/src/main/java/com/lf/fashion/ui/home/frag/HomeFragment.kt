@@ -10,6 +10,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -43,7 +44,8 @@ class HomeFragment :
     View.OnClickListener,
     PhotoClickListener,
     VerticalViewPagerClickListener,
-    GridPhotoClickListener {
+    GridPhotoClickListener,
+    BottomSheetListener {
 
     private lateinit var binding: HomeAFragmentBinding
     private val viewModel: HomeViewModel by viewModels()
@@ -284,12 +286,16 @@ class HomeFragment :
     }
 
     override fun kebabBtnClicked(post: Posts) {
+        Log.d(TAG, "HomeFragment - kebabBtnClicked postId : ${post.id}");
         val dialog = PostBottomSheetFragment(post)
-        dialog.show(parentFragmentManager, "bottom_sheet")
+        dialog.show(childFragmentManager, "bottom_sheet")
     }
 
-    override fun photoZipBtnClicked(post : Posts) {
-        findNavController().navigate(R.id.action_global_to_photoZipFragment, bundleOf("post" to post))
+    override fun photoZipBtnClicked(post: Posts) {
+        findNavController().navigate(
+            R.id.action_global_to_photoZipFragment,
+            bundleOf("post" to post)
+        )
     }
 
     override fun infoBtnClicked(postId: Int) {
@@ -303,10 +309,34 @@ class HomeFragment :
         //grid 각 포토 클릭시 !!
         defaultAdapter.startChangeByGridClicked()
         binding.homeMainViewpager.apply {
-            setCurrentItem(postIndex,false)
+            setCurrentItem(postIndex, false)
         }
         binding.appBarPhotoGridModeBtn.text = "1"
         photoLayoutVisibilityMode(true)
 
     }
+
+    //PostBottomSheetFragment 를 통해 Scrap 할 시 , dismiss 되면 scrap 버튼 색상 selected 상태 update가 필요.
+    override fun onBottomSheetDismissed(post: Posts) {
+        val currentList = defaultAdapter.currentList
+        val position = currentList.indexOf(post)
+
+        if (position != -1) {
+            defaultAdapter.currentList[position].apply {
+                isScrap = post.isScrap
+            }
+            defaultAdapter.notifyItemChanged(position, "SCRAP_STATE")
+
+            gridAdapter.currentList[position].apply {
+                isScrap = post.isScrap
+            }
+            gridAdapter.notifyItemChanged(position, "SCRAP_STATE")
+        }
+    }
+
+
+}
+
+interface BottomSheetListener {
+    fun onBottomSheetDismissed(post : Posts)
 }

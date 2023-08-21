@@ -1,9 +1,11 @@
 package com.lf.fashion.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lf.fashion.TAG
 import com.lf.fashion.data.common.Event
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.CommunicateRepository
@@ -48,6 +50,7 @@ class PostBottomViewModel @Inject constructor(
 
     fun changeScrapState(create : Boolean, postId : Int){
         viewModelScope.launch {
+            Log.d(TAG, "PostBottomViewModel - changeScrapState: CREATE $create");
             if(create){
                 _scrapResponse.value =  communicateRepository.createScrap(postId)
             }else{
@@ -58,6 +61,7 @@ class PostBottomViewModel @Inject constructor(
 
     fun changeFollowingState(create : Boolean, userId : Int){
         viewModelScope.launch {
+            Log.d(TAG, "PostBottomViewModel - changeFollowingState: CREATE $create");
             if(create){
                 followResponse.value = communicateRepository.createFollowing(userId)
             }else{
