@@ -29,15 +29,16 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FollowDetailItemFragment(private val tabName: String) :
-    Fragment(R.layout.mypage_follow_viewpager) {
+    Fragment(R.layout.mypage_follow_viewpager)
+{
     private lateinit var binding: MypageFollowViewpagerBinding
     private val viewModel: MyPageViewModel by hiltNavGraphViewModels(R.id.navigation_mypage)
-    private val userListAdapter = UserListAdapter()
+    private lateinit var userListAdapter : UserListAdapter
     private lateinit var currentUserList: List<OtherUser>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = MypageFollowViewpagerBinding.bind(view)
-
+        userListAdapter = UserListAdapter(tabName, viewModel)
         binding.profileRV.adapter = userListAdapter
 
         when (tabName) {
@@ -93,6 +94,7 @@ class FollowDetailItemFragment(private val tabName: String) :
                 }.launchIn(this)
 
         }
+
     }
 
     private fun updateEmptyText(isEmpty: Boolean, text: String) {
@@ -150,3 +152,4 @@ class FollowDetailItemFragment(private val tabName: String) :
     }
 
 }
+

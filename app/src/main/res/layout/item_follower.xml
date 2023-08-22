@@ -39,7 +39,7 @@
             android:layout_weight="1" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/follow_btn"
+            android:id="@+id/cancel_btn"
             android:layout_width="60dp"
             android:layout_height="30dp"
             style="@style/Widget.AppCompat.Button.Borderless"

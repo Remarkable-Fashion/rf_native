@@ -16,6 +16,7 @@ import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.Posts
 import com.lf.fashion.databinding.HomeBottomDialogItemBinding
+import com.lf.fashion.ui.MyBottomDialogListener
 import com.lf.fashion.ui.PrefCheckService
 import com.lf.fashion.ui.home.PostBottomViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -68,7 +69,7 @@ class PostBottomSheetFragment(private val post: Posts) : BottomSheetDialogFragme
     override fun onDismiss(dialog: DialogInterface) {
         post.isScrap = scrapState
       //  post.isFollow = followState follow는 바꿀필요 없을 것 같 ui 에서 바로 노출 x
-        (parentFragment as? BottomSheetListener)?.onBottomSheetDismissed(post)
+        (parentFragment as? MyBottomDialogListener)?.onBottomSheetDismissed(post)
         super.onDismiss(dialog)
     }
     private fun loginUserUi() {
@@ -92,9 +93,9 @@ class PostBottomSheetFragment(private val post: Posts) : BottomSheetDialogFragme
             binding.bottomSheetScrapBtn -> {
                 viewModel.changeScrapState(!scrapState, post.id)
             }
-            binding.noInterestBtn -> {
-
-            }
+           /* binding.noInterestBtn -> {
+                // 이 후 동작 알 수 없음 , 엔드포인트 없음
+            }*/
             binding.bottomSheetFollowBtn -> {
                 viewModel.changeFollowingState(!followState, post.user!!.id)
             }

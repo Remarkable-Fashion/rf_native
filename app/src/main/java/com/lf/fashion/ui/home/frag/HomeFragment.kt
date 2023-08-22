@@ -29,6 +29,7 @@ import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.GridPostAdapter
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener
+import com.lf.fashion.ui.MyBottomDialogListener
 import com.lf.fashion.ui.PrefCheckService
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -45,7 +46,7 @@ class HomeFragment :
     PhotoClickListener,
     VerticalViewPagerClickListener,
     GridPhotoClickListener,
-    BottomSheetListener {
+    MyBottomDialogListener {
 
     private lateinit var binding: HomeAFragmentBinding
     private val viewModel: HomeViewModel by viewModels()
@@ -335,8 +336,4 @@ class HomeFragment :
     }
 
 
-}
-
-interface BottomSheetListener {
-    fun onBottomSheetDismissed(post : Posts)
 }

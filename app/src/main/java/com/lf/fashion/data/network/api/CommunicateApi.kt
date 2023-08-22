@@ -30,7 +30,7 @@ interface CommunicateApi {
     @POST("user/block/{id}")
     suspend fun blockUser(@Path("id") userId: Int): MsgResponse
 
-    @DELETE("user/blcok{id}")
+    @DELETE("user/block/{id}")
     suspend fun deleteBlock(@Path("id") userId: Int): MsgResponse
 
 }

@@ -68,6 +68,12 @@ class MyPageViewModel @Inject constructor(
     private val _myBlockUsers = MutableLiveData<Resource<MyBlockUserList>>()
     val myBlockUsers = _myBlockUsers
 
+    private val _followResponse = MutableLiveData<Resource<MsgResponse>>()
+    val followResponse = _followResponse
+
+    private val _blockResponse = MutableLiveData<Resource<MsgResponse>>()
+    val blockResponse = _blockResponse
+
     suspend fun getJWT(loginAccessToken: String): Resource<MsgResponse> {
         return myPageRepository.getJWT(loginAccessToken)
     }
@@ -150,19 +156,44 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    fun getMyFollowings(){
+    fun getMyFollowings() {
         viewModelScope.launch {
             _myFollowings.value = myPageRepository.getMyFollowings()
         }
     }
-    fun getMyFollowers(){
+
+    fun getMyFollowers() {
         viewModelScope.launch {
             _myFollowers.value = myPageRepository.getMyFollowers()
         }
     }
-    fun getMyBlockUsers(){
+
+    fun getMyBlockUsers() {
         viewModelScope.launch {
             _myBlockUsers.value = myPageRepository.getMyBlockUser()
         }
+    }
+
+    suspend fun changeFollowingState(create: Boolean, userId: Int): Resource<MsgResponse> {
+
+        Log.d(TAG, "PostBottomViewModel - changeFollowingState: CREATE $create");
+        val result = if (create) {
+         communicateRepository.createFollowing(userId)
+        } else {
+           communicateRepository.deleteFollowing(userId)
+        }
+
+        return result
+
+    }
+
+    suspend fun changeBlockUserState(create: Boolean, userId: Int): Resource<MsgResponse> {
+        val result: Resource<MsgResponse> = if (create) {
+            communicateRepository.blockUser(userId)
+        } else {
+            communicateRepository.deleteBlock(userId)
+        }
+
+        return result
     }
 }
