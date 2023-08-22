@@ -21,7 +21,9 @@ import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.ImageUrl
+import com.lf.fashion.data.response.MyInfo
 import com.lf.fashion.data.response.Posts
+import com.lf.fashion.data.response.UserInfo
 import com.lf.fashion.databinding.MyVerticalFragmentBinding
 import com.lf.fashion.ui.MyBottomDialogListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +41,7 @@ class MyPageVerticalFragment : Fragment(),
     )
     private lateinit var likeClickedPosts: Posts
     private lateinit var scrapClickedPosts: Posts
-
+    private lateinit var userInfo : UserInfo
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,7 +60,9 @@ class MyPageVerticalFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         cancelBtnBackStack(binding.backBtn)
-
+        viewModel.myInfo.observe(viewLifecycleOwner){
+            userInfo = UserInfo(it.id,it.name,it.profile,null)
+        }
         // val postList = arguments?.get("postList") as List<Posts>
         viewModel.postResponse.observe(viewLifecycleOwner) { resource ->
             when (resource) {
@@ -170,13 +174,23 @@ class MyPageVerticalFragment : Fragment(),
     }
 
     override fun photoZipBtnClicked(post: Posts) {
-        findNavController().navigate(R.id.action_global_to_photoZipFragment)
+        post.user = userInfo
+        findNavController().navigate(
+            R.id.action_global_to_photoZipFragment, bundleOf("post" to post)
+        )
     }
 
     override fun infoBtnClicked(postId: Int) {
         findNavController().navigate(
             R.id.action_global_to_userInfoFragment,
             bundleOf("postId" to postId)
+        )
+    }
+
+    override fun profileSpaceClicked(userId: Int) {
+        findNavController().navigate(
+            R.id.action_global_to_otherUSerFragment,
+            bundleOf("userId" to userId)
         )
     }
 
@@ -189,8 +203,6 @@ class MyPageVerticalFragment : Fragment(),
                 isScrap = post.isScrap
             }
             defaultAdapter.notifyItemChanged(position, "SCRAP_STATE")
-
-
         }
     }
 }

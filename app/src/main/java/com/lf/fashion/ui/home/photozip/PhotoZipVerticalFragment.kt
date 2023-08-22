@@ -162,13 +162,22 @@ class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_frag
     }
 
     override fun photoZipBtnClicked(post: Posts) {
-        findNavController().navigate(R.id.action_global_to_photoZipFragment)
+        findNavController().navigate(
+            R.id.action_global_to_photoZipFragment, bundleOf("post" to post)
+        )
     }
 
     override fun infoBtnClicked(postId: Int) {
         findNavController().navigate(
             R.id.action_global_to_userInfoFragment,
             bundleOf("postId" to postId)
+        )
+    }
+
+    override fun profileSpaceClicked(userId: Int) {
+        findNavController().navigate(
+            R.id.action_global_to_otherUSerFragment,
+            bundleOf("userId" to userId)
         )
     }
 
@@ -183,4 +192,5 @@ class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_frag
             defaultAdapter.notifyItemChanged(position, "SCRAP_STATE")
         }
     }
+
 }

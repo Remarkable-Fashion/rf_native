@@ -21,6 +21,9 @@
     <action
         android:id="@+id/action_global_to_userInfoFragment"
         app:destination="@id/userInfoFragment" />
+    <action
+        android:id="@+id/action_global_to_otherUSerFragment"
+        app:destination="@id/otherUserProfileFragment" />
 
     <fragment
         android:id="@+id/navigation_home"
@@ -181,4 +184,16 @@
         android:id="@+id/photoZipVerticalFragment"
         android:name="com.lf.fashion.ui.home.photozip.PhotoZipVerticalFragment"
         android:label="PhotoZipVerticalFragment" />
+    <fragment
+        android:id="@+id/otherUserProfileFragment"
+        android:name="com.lf.fashion.ui.home.profile.OtherUserProfileFragment"
+        android:label="OtherUserProfileFragment" >
+        <action
+            android:id="@+id/action_otherUserProfileFragment_to_otherUserVerticalPostFragment"
+            app:destination="@id/otherUserVerticalPostFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/otherUserVerticalPostFragment"
+        android:name="com.lf.fashion.ui.home.profile.OtherUserVerticalPostFragment"
+        android:label="OtherUserVerticalPostFragment" />
 </navigation>

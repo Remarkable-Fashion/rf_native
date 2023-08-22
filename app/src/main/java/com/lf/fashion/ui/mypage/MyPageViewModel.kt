@@ -18,7 +18,6 @@ import com.lf.fashion.data.response.MsgResponse
 import com.lf.fashion.data.response.MyBlockUserList
 import com.lf.fashion.data.response.MyInfo
 import com.lf.fashion.data.response.RandomPostResponse
-import com.lf.fashion.data.response.UpdateMyInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
@@ -68,11 +67,11 @@ class MyPageViewModel @Inject constructor(
     private val _myBlockUsers = MutableLiveData<Resource<MyBlockUserList>>()
     val myBlockUsers = _myBlockUsers
 
-    private val _followResponse = MutableLiveData<Resource<MsgResponse>>()
+/*    private val _followResponse = MutableLiveData<Resource<MsgResponse>>()
     val followResponse = _followResponse
 
     private val _blockResponse = MutableLiveData<Resource<MsgResponse>>()
-    val blockResponse = _blockResponse
+    val blockResponse = _blockResponse*/
 
     suspend fun getJWT(loginAccessToken: String): Resource<MsgResponse> {
         return myPageRepository.getJWT(loginAccessToken)

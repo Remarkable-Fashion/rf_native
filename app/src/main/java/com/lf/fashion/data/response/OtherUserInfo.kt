@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 import java.io.File
 
 @Parcelize
-data class MyInfo(
+data class OtherUserInfo(
     val id: Int,
     val profile: Profile,
     val name: String,
@@ -14,13 +14,3 @@ data class MyInfo(
     val count: Count
 ):Parcelable
 
-/*
-
-data class UpdateMyInfo(
-    val avartar : File?,
-    val sex : String?,
-    val height : String?,
-    val weight : String?,
-    val introduction : String?
-)
-*/

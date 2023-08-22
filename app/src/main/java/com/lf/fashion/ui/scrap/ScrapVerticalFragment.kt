@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
@@ -31,7 +32,7 @@ class ScrapVerticalFragment : Fragment(),
         this@ScrapVerticalFragment
     )
     private lateinit var likeClickedPosts: Posts
-    private lateinit var scrapClickedPosts : Posts
+    private lateinit var scrapClickedPosts: Posts
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,9 +71,11 @@ class ScrapVerticalFragment : Fragment(),
                             RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
                     }
                 }
+
                 is Resource.Failure -> {
 
                 }
+
                 is Resource.Loading -> {
 
                 }
@@ -103,21 +106,22 @@ class ScrapVerticalFragment : Fragment(),
         }
     }
 
-    private fun updateScrapState(){
-        viewModel.scrapResponse.observe(viewLifecycleOwner){ resources->
-            if(resources is Resource.Success && resources.value.success){
+    private fun updateScrapState() {
+        viewModel.scrapResponse.observe(viewLifecycleOwner) { resources ->
+            if (resources is Resource.Success && resources.value.success) {
                 val currentList = defaultAdapter.currentList
                 val position = currentList.indexOf(scrapClickedPosts)
 
-                if(position != -1){
+                if (position != -1) {
                     defaultAdapter.currentList[position].apply {
                         isScrap = scrapClickedPosts.isScrap
                     }
-                    defaultAdapter.notifyItemChanged(position,"SCRAP_STATE")
+                    defaultAdapter.notifyItemChanged(position, "SCRAP_STATE")
                 }
             }
         }
     }
+
     override fun photoClicked(bool: Boolean, photo: List<ImageUrl>) {
         if (bool) {
             val action =
@@ -132,6 +136,7 @@ class ScrapVerticalFragment : Fragment(),
                 viewModel.changeLikesState(create = false, post.id)
                 post.count.favorites = post.count.favorites?.minus(1) // 좋아요 카운트 -1
             }
+
             false -> {
                 viewModel.changeLikesState(create = true, post.id)
                 post.count.favorites = post.count.favorites?.plus(1)  // 좋아요 카운트 +1
@@ -144,11 +149,11 @@ class ScrapVerticalFragment : Fragment(),
     override fun scrapBtnClicked(scrapState: Boolean, post: Posts) {
         //scrapState 기존 스크랩 상태
         viewModel.changeScrapState(create = !scrapState, post.id)
-        post.isScrap = !(post.isScrap?:true)
+        post.isScrap = !(post.isScrap ?: true)
         scrapClickedPosts = post
     }
 
-    override fun shareBtnClicked(post : Posts) {
+    override fun shareBtnClicked(post: Posts) {
 
     }
 
@@ -157,11 +162,20 @@ class ScrapVerticalFragment : Fragment(),
         dialog.show(parentFragmentManager, "bottom_sheet")
     }
 
-    override fun photoZipBtnClicked(post : Posts) {
-        findNavController().navigate(R.id.action_global_to_photoZipFragment)
+    override fun photoZipBtnClicked(post: Posts) {
+        findNavController().navigate(
+            R.id.action_global_to_photoZipFragment, bundleOf("post" to post)
+        )
     }
 
-    override fun infoBtnClicked(postId : Int) {
+    override fun infoBtnClicked(postId: Int) {
         findNavController().navigate(R.id.action_global_to_userInfoFragment)
+    }
+
+    override fun profileSpaceClicked(userId: Int) {
+        findNavController().navigate(
+            R.id.action_global_to_otherUSerFragment,
+            bundleOf("userId" to userId)
+        )
     }
 }

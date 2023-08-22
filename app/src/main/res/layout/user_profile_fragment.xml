@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="userInfo"
+            type="com.lf.fashion.data.response.OtherUserInfo" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+        <TextView
+            android:id="@+id/look_book_title"
+            style="@style/app_bar_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:text="@{@string/mypage_title(userInfo.name)}"
+            tools:text="rf_user 님의 룩북"
+            app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <View
+            android:id="@+id/title_underline"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/line_grey"
+            app:layout_constraintTop_toBottomOf="@id/look_book_title" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/myNestedScrollView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_underline"
+            android:overScrollMode="never">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="71dp"
+                    android:layout_height="71dp"
+                    imageUrl="@{userInfo.profile.profileImage}"
+                    tools:src="@color/photo_back_grey"
+                    android:layout_marginTop="24dp"
+                    app:shapeAppearance="@style/radi20"
+                    app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:scaleType="centerCrop" />
+
+
+                <TextView
+                    android:id="@+id/profile_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{userInfo.name}"
+                    app:layout_constraintStart_toEndOf="@id/profile_image"
+                    app:layout_constraintTop_toTopOf="@id/profile_image"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    style="@style/montserrat_bold_label"
+                    tools:text="rf_user" />
+
+                <TextView
+                    android:id="@+id/profile_user_info"
+                    style="@style/montserrat_medium_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    bodyProfile="@{userInfo.profile}"
+                    app:layout_constraintStart_toStartOf="@id/profile_name"
+                    app:layout_constraintTop_toBottomOf="@id/profile_name"
+                    tools:text="여 | 162cm | 48kg" />
+
+                <TextView
+                    android:id="@+id/introduce_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{userInfo.profile.introduction}"
+                    tools:text="안녕하세요 반갑습니다.\n 제 피드에 자주 놀러오세용 맞팔해용"
+                    style="@style/spoqa_14sp_default_color"
+                    app:layout_constraintTop_toBottomOf="@id/profile_image"
+                    app:layout_constraintStart_toStartOf="@id/profile_image"
+                    android:layout_marginTop="10dp" />
+
+
+
+                <LinearLayout
+                    android:id="@+id/user_post_info_space"
+                    android:layout_width="0dp"
+                    android:layout_height="83dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/bg_radi5_line"
+                    android:layout_marginTop="15dp"
+                    app:layout_constraintTop_toBottomOf="@id/introduce_value"
+                    app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/post_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/count_posts(userInfo.count.posts??0)}"
+                        tools:text="게시물\n 1000"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        style="@style/spoqa_14sp_default_color" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="29dp"
+                        android:background="@color/rectangle_grey" />
+
+                    <TextView
+                        android:id="@+id/follower_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@{@string/count_follower(userInfo.count.followers??0)}"
+                        tools:text="팔로워\n 1000"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        style="@style/spoqa_14sp_default_color" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="29dp"
+                        android:background="@color/rectangle_grey" />
+
+                    <TextView
+                        android:id="@+id/following_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@{@string/count_following(userInfo.count.following??0)}"
+                        tools:text="팔로잉\n 1000"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        style="@style/spoqa_14sp_default_color" />
+                </LinearLayout>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/grid_rv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="3"
+                    tools:listitem="@layout/home_grid_item"
+                    android:layout_marginTop="15dp"
+                    app:layout_constraintTop_toBottomOf="@id/user_post_info_space"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                    android:overScrollMode="never"
+                    android:nestedScrollingEnabled="false"
+                    />
+
+                <TextView
+                    android:id="@+id/array_empty_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_reg_post"
+                    android:gravity="center"
+                    style="@style/montserrat_bold_label_grey"
+                    app:layout_constraintTop_toBottomOf="@id/user_post_info_space"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:visibility="gone" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_vertical2"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.95" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.05" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

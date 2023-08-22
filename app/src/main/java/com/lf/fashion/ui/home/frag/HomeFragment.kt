@@ -153,7 +153,6 @@ class HomeFragment :
         }
     }
 
-    //TODO :  유저 프로필 페이지로 연결
     //default layout 모드에서 photo 클릭시 클릭한 이미지 url 만 safe args 에 담아 fragment 로 전송
     override fun photoClicked(bool: Boolean, photo: List<ImageUrl>) {
         if (bool) {
@@ -304,6 +303,11 @@ class HomeFragment :
             R.id.action_global_to_userInfoFragment,
             bundleOf("postId" to postId)
         )
+    }
+
+    //프로필 영역 클릭
+    override fun profileSpaceClicked(userId: Int) {
+        findNavController().navigate(R.id.action_global_to_otherUSerFragment , bundleOf("userId" to userId))
     }
 
     override fun gridPhotoClicked(postIndex: Int) {

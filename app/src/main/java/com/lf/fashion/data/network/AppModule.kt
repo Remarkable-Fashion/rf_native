@@ -67,4 +67,12 @@ object AppModule {
         return remoteDataSource.buildApi(CommunicateApi::class.java)
     }
 
+    @Singleton
+    @Provides
+    fun provideUserProfileApi(
+        remoteDataSource: RemoteDataSource
+    ) : UserProfileApi {
+        return remoteDataSource.buildApi(UserProfileApi::class.java)
+    }
+
 }

@@ -9,7 +9,6 @@ import com.lf.fashion.data.response.RandomPostResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
-import java.io.File
 
 interface MyPageApi {
     @GET("user/me")
@@ -28,12 +27,12 @@ interface MyPageApi {
         @Part("weight") weight: RequestBody?,
         @Part("introduction") introduction : RequestBody?) : MsgResponse
 
-    @GET("user/following")
+    @GET("user/following/me")
     suspend fun getMyFollowing() : FollowingUserList
 
-    @GET("user/follower")
+    @GET("user/follower/me")
     suspend fun getMyFollowers() : FollowerUserList
 
-    @GET("user/block")
+    @GET("user/block/me")
     suspend fun getMyBlockUser() : MyBlockUserList
 }

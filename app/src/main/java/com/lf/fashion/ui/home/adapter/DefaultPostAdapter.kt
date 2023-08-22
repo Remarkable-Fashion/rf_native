@@ -55,6 +55,7 @@ class DefaultPostAdapter(
 
             if(userInfoPost!=null){   // photoZipVertical 에서 response 받는 posts 에는 user 정보가 없기 때문에, 파라미터가 존재할 시 이를 바인딩 해주도록 .
                 binding.post = userInfoPost
+                post.user = userInfoPost.user // 하단에서 사용할 수도 있으니까 초기화
             }
             profileSpaceVisibilityBinding(post) // 마이페이지일 경우 userInfo 도 post 내부 user 도 없기 때문에 숨김 처리
 
@@ -90,7 +91,10 @@ class DefaultPostAdapter(
             binding.infoBtn.setOnClickListener {
                 verticalViewPagerClickListener.infoBtnClicked(post.id)
             }
-
+            binding.profileSpace.setOnClickListener {
+                if(post.user==null) return@setOnClickListener
+                verticalViewPagerClickListener.profileSpaceClicked(post.user!!.id)
+            }
             binding.executePendingBindings()
 
         }

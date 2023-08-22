@@ -198,8 +198,6 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                     + "클릭된 인덱스 : ${postIndex}"
         );
         viewModel.editClickedPostIndex(postIndex)
-        //,
-        //            bundleOf("postList" to postList)
         findNavController().navigate(
             R.id.action_navigation_mypage_to_myPageVerticalFragment
         )

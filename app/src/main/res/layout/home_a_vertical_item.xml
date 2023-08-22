@@ -21,7 +21,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/post_detail_menu"
             tools:listitem="@layout/home_a_nested_horizontal_item"
-
             />
 
          <ImageView
@@ -104,6 +103,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            />
+        <androidx.constraintlayout.helper.widget.Layer
+            android:id="@+id/profile_space"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:constraint_referenced_ids="profile_image,profile_name"
+            tools:ignore="MissingConstraints"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

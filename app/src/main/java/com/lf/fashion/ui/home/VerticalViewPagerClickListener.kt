@@ -9,4 +9,5 @@ interface VerticalViewPagerClickListener {
     fun kebabBtnClicked(post : Posts)
     fun photoZipBtnClicked(post : Posts)
     fun infoBtnClicked(postId:Int)
+    fun profileSpaceClicked(userId : Int)
 }
