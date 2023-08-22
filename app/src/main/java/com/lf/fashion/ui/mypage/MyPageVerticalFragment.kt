@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.TAG
+import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.ImageUrl
 import com.lf.fashion.data.response.MyInfo
@@ -26,6 +27,7 @@ import com.lf.fashion.data.response.Posts
 import com.lf.fashion.data.response.UserInfo
 import com.lf.fashion.databinding.MyVerticalFragmentBinding
 import com.lf.fashion.ui.MyBottomDialogListener
+import com.lf.fashion.ui.navigateToMyPage
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -41,7 +43,7 @@ class MyPageVerticalFragment : Fragment(),
     )
     private lateinit var likeClickedPosts: Posts
     private lateinit var scrapClickedPosts: Posts
-    private lateinit var userInfo : UserInfo
+    private lateinit var userInfo: UserInfo
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,8 +62,8 @@ class MyPageVerticalFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         cancelBtnBackStack(binding.backBtn)
-        viewModel.myInfo.observe(viewLifecycleOwner){
-            userInfo = UserInfo(it.id,it.name,it.profile,null)
+        viewModel.myInfo.observe(viewLifecycleOwner) {
+            userInfo = UserInfo(it.id, it.name, it.profile, null)
         }
         // val postList = arguments?.get("postList") as List<Posts>
         viewModel.postResponse.observe(viewLifecycleOwner) { resource ->
@@ -188,10 +190,7 @@ class MyPageVerticalFragment : Fragment(),
     }
 
     override fun profileSpaceClicked(userId: Int) {
-        findNavController().navigate(
-            R.id.action_global_to_otherUSerFragment,
-            bundleOf("userId" to userId)
-        )
+        //mypage Vertical 에서는 profile space 가 invisible !
     }
 
     override fun onBottomSheetDismissed(post: Posts) {

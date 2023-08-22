@@ -11,17 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.response.ClothPost
 import com.lf.fashion.databinding.ItemRecommendStyleCardBinding
-import com.lf.fashion.ui.PrefCheckService
-import dagger.hilt.android.qualifiers.ApplicationContext
 
 class LookBookRvAdapter : ListAdapter<ClothPost, LookBookRvAdapter.LookBookViewHolder>(LookBookDiff()) {
     private lateinit var userPref: PreferenceManager
-    private lateinit var prefCheckService: PrefCheckService
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LookBookViewHolder {
        val binding = ItemRecommendStyleCardBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         userPref = PreferenceManager(parent.context.applicationContext)
-        prefCheckService = PrefCheckService(userPref)
 
         return LookBookViewHolder(binding)
     }
@@ -34,7 +30,7 @@ class LookBookRvAdapter : ListAdapter<ClothPost, LookBookRvAdapter.LookBookViewH
         RecyclerView.ViewHolder(binding.root) {
         fun bind(lookBook: ClothPost,position : Int) {
 
-            binding.profileSpace.followBtn.isVisible = prefCheckService.getMyUniqueId() != lookBook.user.id
+            binding.profileSpace.followBtn.isVisible = userPref.getMyUniqueId() != lookBook.user.id
 
             if(position <3){
                 binding.cardName.text = "Best ${position+1}"

@@ -18,9 +18,11 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.MainNaviDirections
+import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.ImageUrl
 import com.lf.fashion.data.response.Posts
+import com.lf.fashion.ui.navigateToMyPage
 
 
 class ScrapVerticalFragment : Fragment(),
@@ -31,6 +33,8 @@ class ScrapVerticalFragment : Fragment(),
         this@ScrapVerticalFragment,
         this@ScrapVerticalFragment
     )
+    private lateinit var userPref: PreferenceManager
+
     private lateinit var likeClickedPosts: Posts
     private lateinit var scrapClickedPosts: Posts
 
@@ -52,6 +56,7 @@ class ScrapVerticalFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         cancelBtnBackStack(binding.backBtn)
+        userPref = PreferenceManager(requireContext().applicationContext)
 
 
         viewModel.postResponse.observe(viewLifecycleOwner) { /*event ->
@@ -173,6 +178,11 @@ class ScrapVerticalFragment : Fragment(),
     }
 
     override fun profileSpaceClicked(userId: Int) {
+        val myUniqueId = userPref.getMyUniqueId()
+        if (userId == myUniqueId) {
+            navigateToMyPage()
+            return
+        }
         findNavController().navigate(
             R.id.action_global_to_otherUSerFragment,
             bundleOf("userId" to userId)

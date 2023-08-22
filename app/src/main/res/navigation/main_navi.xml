@@ -24,6 +24,9 @@
     <action
         android:id="@+id/action_global_to_otherUSerFragment"
         app:destination="@id/otherUserProfileFragment" />
+    <action
+        android:id="@+id/action_global_to_myPageFragment"
+        app:destination="@id/navigation_mypage" />
 
     <fragment
         android:id="@+id/navigation_home"

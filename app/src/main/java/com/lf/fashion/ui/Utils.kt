@@ -114,9 +114,16 @@ fun Fragment.showRequireLoginDialog(alreadyHome: Boolean? = null) {
         }
 
     loginDialog.show()
-
 }
 
+fun Fragment.navigateToMyPage(){
+    val bottomNavigationView =
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
+    val loginMenuItem = bottomNavigationView.menu.findItem(R.id.navigation_mypage)
+    loginMenuItem.isChecked = true
+    bottomNavigationView.selectedItemId = R.id.navigation_mypage
+    findNavController().navigate(R.id.action_global_to_myPageFragment)
+}
 fun addTextLengthCounter(editText: EditText, counterTextView: TextView, maxLength: Int) {
     editText.addTextChangedListener(object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

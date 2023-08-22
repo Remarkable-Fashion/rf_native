@@ -17,7 +17,6 @@ import com.lf.fashion.databinding.HomeBPhotoZipFragmentBinding
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener
 import com.lf.fashion.ui.GridPostAdapter
-import com.lf.fashion.ui.PrefCheckService
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
 
@@ -35,7 +34,6 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
     // private var followState by Delegates.notNull<Boolean>()
 
     private lateinit var userPref: PreferenceManager
-    private lateinit var prefCheckService: PrefCheckService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,8 +47,6 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
         super.onViewCreated(view, savedInstanceState)
         binding = HomeBPhotoZipFragmentBinding.bind(view)
         userPref = PreferenceManager(requireContext().applicationContext)
-        prefCheckService = PrefCheckService(userPref)
-
 
         val post = arguments?.get("post") as Posts
         userInfoPost = post // photoZip 엔드포인트 response 에는 post 내부에 user 정보가 없어서 vertical Fragment 로 이동시 같이 보낸다
@@ -94,7 +90,7 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
     }
     private fun followStateBinding(post: Posts){
         //나의 사진 모아보기일 경우 팔로우 버튼을 숨김 (post.user.id == me.id)
-        val myUniqueId = prefCheckService.getMyUniqueId()
+        val myUniqueId = userPref.getMyUniqueId()
         val followBtn = binding.followBtn
         followBtn.isVisible = myUniqueId != post.user?.id
         followBtn.isSelected =
@@ -105,7 +101,7 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
     private fun followBtnOnclick() {
         binding.followBtn.setOnClickListener {
             val followBtn = binding.followBtn
-            if (prefCheckService.loginCheck()) {
+            if (userPref.loginCheck()) {
                 //팔로우 create / delete
                 viewModel.changeFollowingState(!followBtn.isSelected, userId)
             }

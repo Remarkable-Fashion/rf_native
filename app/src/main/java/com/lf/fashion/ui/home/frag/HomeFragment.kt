@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
 import com.lf.fashion.TAG
@@ -30,7 +31,7 @@ import com.lf.fashion.ui.GridPostAdapter
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener
 import com.lf.fashion.ui.MyBottomDialogListener
-import com.lf.fashion.ui.PrefCheckService
+import com.lf.fashion.ui.navigateToMyPage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
@@ -59,7 +60,6 @@ class HomeFragment :
     private lateinit var scrapClickedPosts: Posts
 
     //private lateinit var layoutMode : String
-    private lateinit var prefCheckService: PrefCheckService
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -67,7 +67,6 @@ class HomeFragment :
 
         //앱 최초 실행시 gender 선택 다이얼로그 띄우기
         userPref = PreferenceManager(requireContext().applicationContext)
-        prefCheckService = PrefCheckService(userPref)
 
         runBlocking {
             launch {
@@ -252,7 +251,7 @@ class HomeFragment :
     }
 
     override fun likeBtnClicked(likeState: Boolean, post: Posts) {
-        if (prefCheckService.loginCheck()) {
+        if (userPref.loginCheck()) {
             //likeState 기존 좋아요 상태
             when (likeState) {
                 true -> {
@@ -271,7 +270,7 @@ class HomeFragment :
     }
 
     override fun scrapBtnClicked(scrapState: Boolean, post: Posts) {
-        if (prefCheckService.loginCheck()) {
+        if (userPref.loginCheck()) {
             //scrapState 기존 스크랩 상태
             viewModel.changeScrapState(create = !scrapState, post.id)
             post.isScrap = !post.isScrap!!
@@ -307,7 +306,15 @@ class HomeFragment :
 
     //프로필 영역 클릭
     override fun profileSpaceClicked(userId: Int) {
-        findNavController().navigate(R.id.action_global_to_otherUSerFragment , bundleOf("userId" to userId))
+        val myUniqueId = userPref.getMyUniqueId()
+        if (userId == myUniqueId) {
+            navigateToMyPage()
+            return
+        }
+        findNavController().navigate(
+            R.id.action_global_to_otherUSerFragment,
+            bundleOf("userId" to userId)
+        )
     }
 
     override fun gridPhotoClicked(postIndex: Int) {

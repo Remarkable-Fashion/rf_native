@@ -12,7 +12,6 @@ import com.lf.fashion.R
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.HomeBUserInfoFragmentBinding
-import com.lf.fashion.ui.PrefCheckService
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.childChip
 import com.lf.fashion.ui.home.adapter.ClothesRvAdapter
@@ -27,7 +26,6 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
     private lateinit var binding: HomeBUserInfoFragmentBinding
     private val viewModel: UserInfoViewModel by viewModels()
     private lateinit var userPref: PreferenceManager
-    private lateinit var prefCheckService: PrefCheckService
     private var userId by Delegates.notNull<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,13 +41,12 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
         binding = HomeBUserInfoFragmentBinding.bind(view)
 
         userPref = PreferenceManager(requireContext().applicationContext)
-        prefCheckService = PrefCheckService(userPref)
 
 
         cancelBtnBackStack(binding.cancelBtn)
 
         val postId = arguments?.get("postId") as Int
-        val myUniqueId = prefCheckService.getMyUniqueId()
+        val myUniqueId = userPref.getMyUniqueId()
 
         binding.recommendBtn.setOnClickListener {
             findNavController().navigate(
@@ -69,7 +66,7 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
     private fun followBtnOnclick() {
         binding.profileSpace.followBtn.setOnClickListener {
             val followBtn = binding.profileSpace.followBtn
-            if (prefCheckService.loginCheck()) {
+            if (userPref.loginCheck()) {
                 //팔로우 create / delete
                 viewModel.changeFollowingState(!followBtn.isSelected, userId)
             }

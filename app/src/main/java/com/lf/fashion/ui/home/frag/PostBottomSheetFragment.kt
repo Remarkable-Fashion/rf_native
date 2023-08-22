@@ -17,7 +17,6 @@ import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.Posts
 import com.lf.fashion.databinding.HomeBottomDialogItemBinding
 import com.lf.fashion.ui.MyBottomDialogListener
-import com.lf.fashion.ui.PrefCheckService
 import com.lf.fashion.ui.home.PostBottomViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
@@ -30,7 +29,6 @@ class PostBottomSheetFragment(private val post: Posts) : BottomSheetDialogFragme
     View.OnClickListener {
     private lateinit var binding: HomeBottomDialogItemBinding
     private lateinit var userPref: PreferenceManager
-    private lateinit var prefCheckService: PrefCheckService
     private val viewModel: PostBottomViewModel by viewModels()
     private var blocked: Boolean = false // 최초값 차단 false 로 ..
     private var scrapState by Delegates.notNull<Boolean>()
@@ -41,7 +39,6 @@ class PostBottomSheetFragment(private val post: Posts) : BottomSheetDialogFragme
         binding= HomeBottomDialogItemBinding.bind(view)
 
         userPref = PreferenceManager(requireContext().applicationContext)
-        prefCheckService = PrefCheckService(userPref)
 
         //로그인 유저에게 차단/팔로우 취소 버튼 노출
         loginUserUi()
@@ -73,7 +70,7 @@ class PostBottomSheetFragment(private val post: Posts) : BottomSheetDialogFragme
         super.onDismiss(dialog)
     }
     private fun loginUserUi() {
-        if (prefCheckService.loginCheck()) {
+        if (userPref.loginCheck()) {
             binding.bottomSheetFollowBtn.isVisible = true
             binding.blockBtn.isVisible = true
         } else {

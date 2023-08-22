@@ -5,18 +5,16 @@ import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
-import com.lf.fashion.TAG
+import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.ImageUrl
 import com.lf.fashion.data.response.Posts
-import com.lf.fashion.databinding.HomeBPhotoZipFragmentBinding
 import com.lf.fashion.databinding.HomeBPhotozipVerticalFragmentBinding
 import com.lf.fashion.ui.MyBottomDialogListener
 import com.lf.fashion.ui.cancelBtnBackStack
@@ -24,6 +22,7 @@ import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.VerticalViewPagerClickListener
 import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
+import com.lf.fashion.ui.navigateToMyPage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,6 +31,7 @@ class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_frag
     private lateinit var binding: HomeBPhotozipVerticalFragmentBinding
     private val viewModel: PhotoZipViewModel by hiltNavGraphViewModels(R.id.navigation_home)
     private lateinit var defaultAdapter: DefaultPostAdapter
+    private lateinit var userPref: PreferenceManager
 
     private lateinit var likeClickedPosts: Posts
     private lateinit var scrapClickedPosts: Posts
@@ -47,6 +47,7 @@ class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_frag
         super.onViewCreated(view, savedInstanceState)
         binding = HomeBPhotozipVerticalFragmentBinding.bind(view)
         cancelBtnBackStack(binding.backBtn)
+        userPref = PreferenceManager(requireContext().applicationContext)
 
         val userInfoPost = arguments?.get("userInfoPost") as Posts
         defaultAdapter = DefaultPostAdapter(
@@ -175,6 +176,11 @@ class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_frag
     }
 
     override fun profileSpaceClicked(userId: Int) {
+        val myUniqueId = userPref.getMyUniqueId()
+        if (userId == myUniqueId) {
+            navigateToMyPage()
+            return
+        }
         findNavController().navigate(
             R.id.action_global_to_otherUSerFragment,
             bundleOf("userId" to userId)

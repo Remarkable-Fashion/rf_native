@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
 import com.lf.fashion.TAG
+import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.ImageUrl
 import com.lf.fashion.data.response.Posts
@@ -26,6 +27,7 @@ import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.VerticalViewPagerClickListener
 import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
+import com.lf.fashion.ui.navigateToMyPage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -40,6 +42,7 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
         this@OtherUserVerticalPostFragment,
         this@OtherUserVerticalPostFragment
     )
+    private lateinit var userPref: PreferenceManager
 
     private lateinit var likeClickedPosts: Posts
     private lateinit var scrapClickedPosts: Posts
@@ -49,6 +52,8 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
         super.onViewCreated(view, savedInstanceState)
         binding = UserVerticalFragmentBinding.bind(view)
         cancelBtnBackStack(binding.backBtn)
+        userPref = PreferenceManager(requireContext().applicationContext)
+
         viewModel.profileInfo.observe(viewLifecycleOwner){ resources->
             if(resources is Resource.Success ) {
                 val it = resources.value
@@ -194,6 +199,11 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
     }
 
     override fun profileSpaceClicked(userId: Int) {
+        val myUniqueId = userPref.getMyUniqueId()
+        if (userId == myUniqueId) {
+            navigateToMyPage()
+            return
+        }
         findNavController().navigate(
             R.id.action_global_to_otherUSerFragment,
             bundleOf("userId" to userId)

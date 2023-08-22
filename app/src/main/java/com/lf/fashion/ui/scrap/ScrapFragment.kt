@@ -30,16 +30,13 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
     private lateinit var recentResponse: RandomPostResponse
     private lateinit var onScrollListener: NestedScrollView.OnScrollChangeListener
     private lateinit var userPref : PreferenceManager
-    private lateinit var prefCheckService: PrefCheckService
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = ScrapFragmentBinding.bind(view)
-
         userPref = PreferenceManager(requireContext())
-        prefCheckService = PrefCheckService(userPref)
 
-        if (prefCheckService.loginCheck()) {
+        if (userPref.loginCheck()) {
             gridPostAdapter = GridPostAdapter(3, this@ScrapFragment, scrapPage = true)
 
             //스크롤 리스너 설정

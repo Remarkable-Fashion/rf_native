@@ -14,8 +14,14 @@ import com.kakao.sdk.auth.Constants.ACCESS_TOKEN
 import com.kakao.sdk.auth.Constants.REFRESH_TOKEN
 import com.lf.fashion.TAG
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 private val Context.dataStore : DataStore<Preferences> by preferencesDataStore(name="my_data_store")
@@ -99,6 +105,26 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
             preferences.remove(MY_UNIQUE_ID)
         }
     }
+    fun loginCheck() : Boolean{
+        val requestAuthKey: Deferred<String> =
+            CoroutineScope(Dispatchers.IO).async {
+                accessToken.first() ?: ""
+            }
+
+        val authKey = runBlocking { requestAuthKey.await() }
+
+        return authKey.isNotEmpty()
+    }
+
+    fun getMyUniqueId(): Int? {
+        val requestMyId: Deferred<Int?> =
+            CoroutineScope(Dispatchers.IO).async {
+                myUniqueId.first()
+            }
+
+        return runBlocking { requestMyId.await() }
+    }
+
     companion object {
         private val ACCESS_TOKEN = stringPreferencesKey("key_access_token")
         private val REFRESH_TOKEN = stringPreferencesKey("key_refresh_token")
