@@ -40,7 +40,7 @@ data class RecommendCloth(
 
 data class ClothPost(
     val id: Int,
-    val isFavorite: Boolean?,
+    var isFavorite: Boolean?,
     val isScrap: Boolean?,
     val isFollowing: Boolean?,
     val user: UserInfo,

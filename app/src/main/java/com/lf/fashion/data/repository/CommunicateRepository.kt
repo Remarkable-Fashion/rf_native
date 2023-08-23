@@ -47,4 +47,11 @@ class CommunicateRepository @Inject constructor(
     suspend fun deleteBlock(userId: Int) = safeApiCall {
         comApi.deleteBlock(userId)
     }
+
+    suspend fun createClothesLike(clothesId : Int) = safeApiCall {
+        comApi.createClothesLike(clothesId)
+    }
+    suspend fun deleteClothesLike(clothesId: Int) = safeApiCall {
+        comApi.deleteClothesLike(clothesId)
+    }
 }

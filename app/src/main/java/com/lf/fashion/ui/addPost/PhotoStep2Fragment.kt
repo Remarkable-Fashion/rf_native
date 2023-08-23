@@ -17,7 +17,7 @@ import com.lf.fashion.TAG
 import com.lf.fashion.data.response.RegClothes
 import com.lf.fashion.databinding.PhotoStep2FragmentBinding
 import com.lf.fashion.ui.*
-import com.lf.fashion.ui.home.FilterViewModel
+import com.lf.fashion.ui.home.frag.FilterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -33,4 +33,11 @@ interface CommunicateApi {
     @DELETE("user/block/{id}")
     suspend fun deleteBlock(@Path("id") userId: Int): MsgResponse
 
+
+    @POST("clothes/{id}/favorite")
+    suspend fun createClothesLike(@Path("id") clothesId : Int) : MsgResponse
+
+    @DELETE("clothes/{id}/favorite")
+    suspend fun deleteClothesLike(@Path("id") clothesId : Int) : MsgResponse
+
 }

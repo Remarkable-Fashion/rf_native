@@ -56,14 +56,21 @@ class UserInfoViewModel @Inject constructor(
         }
     }
 
-    fun changeFollowingState(create : Boolean, userId : Int){
+    fun changeFollowingState(create: Boolean, userId: Int) {
         viewModelScope.launch {
-            if(create){
+            if (create) {
                 followResponse.value = communicateRepository.createFollowing(userId)
-            }else{
+            } else {
                 followResponse.value = communicateRepository.deleteFollowing(userId)
             }
         }
     }
 
+    suspend fun changeClotheLikeState(create: Boolean, clothesId: Int): Resource<MsgResponse> {
+        return if (create) {
+            communicateRepository.createClothesLike(clothesId)
+        } else {
+            communicateRepository.deleteClothesLike(clothesId)
+        }
+    }
 }

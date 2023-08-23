@@ -23,7 +23,7 @@ import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.*
 import com.lf.fashion.databinding.HomeAFragmentBinding
-import com.lf.fashion.ui.home.HomeViewModel
+import com.lf.fashion.ui.home.frag.HomeViewModel
 import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.VerticalViewPagerClickListener
 import com.lf.fashion.ui.home.adapter.DefaultPostAdapter

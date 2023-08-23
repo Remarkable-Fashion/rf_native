@@ -1,4 +1,4 @@
-package com.lf.fashion.ui.home
+package com.lf.fashion.ui.home.frag
 
 import android.util.Log
 import androidx.lifecycle.LiveData
