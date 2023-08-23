@@ -10,6 +10,7 @@ import com.lf.fashion.data.common.Event
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.SearchRepository
 import com.lf.fashion.data.response.RandomPostResponse
+import com.lf.fashion.data.response.SearchTerm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,17 +29,32 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
     private val _itemList = MutableLiveData<Event<Resource<RandomPostResponse>>>()
     var itemList: LiveData<Event<Resource<RandomPostResponse>>> = _itemList
 
-    /*  init {
-          getPostList()
-      }*/
 
-     fun getSearchResult(term : String) {
+    private val _searchTermRank = MutableLiveData<List<SearchTerm>>()
+    var searchTermRank: LiveData<List<SearchTerm>> = _searchTermRank
+
+    init {
+        getSearchTermRank()
+    }
+
+    private fun getSearchTermRank() {
+        viewModelScope.launch {
+            val response = searchRepository.getSearchTermRank()
+            if (response is Resource.Success) {
+                response.value?.let {
+                    _searchTermRank.value = it
+                }
+            }
+        }
+    }
+
+    fun getSearchResult(term: String) {
         viewModelScope.launch {
             _postResponse.value = Event(searchRepository.getSearchResult(term))
         }
     }
 
-     fun getItemSearchResult(term : String){
+    fun getItemSearchResult(term: String) {
         viewModelScope.launch {
             _itemList.value = Event(searchRepository.getItemSearchResult(term))
 

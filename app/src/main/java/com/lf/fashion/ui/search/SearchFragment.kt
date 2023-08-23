@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
@@ -21,6 +19,7 @@ import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.databinding.SearchFragmentBinding
 import com.lf.fashion.ui.hideKeyboard
 import com.lf.fashion.ui.search.adapter.SearchResultViewPagerAdapter
+import com.lf.fashion.ui.search.adapter.TermRankAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -31,13 +30,11 @@ import kotlinx.coroutines.runBlocking
 class SearchFragment : Fragment(R.layout.search_fragment){
     private lateinit var binding: SearchFragmentBinding
     private lateinit var userPreferences: PreferenceManager
-    private val searchViewModel: SearchViewModel by viewModels()
-    private val keywordTest = listOf(
-        "어그", "반팔", "t셔츠", "슬랙스", "셔츠", "니트반팔", "린넨반지", "원피스", "셔츠 원피스"
-    )
+    private val viewModel: SearchViewModel by viewModels()
+
     private val tabTitleArray = arrayOf("LOOK", "ITEM")
     private val historyList = MutableLiveData<MutableList<String>>()
-
+    private val termRankAdapter = TermRankAdapter()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = SearchFragmentBinding.bind(view)
@@ -65,7 +62,7 @@ class SearchFragment : Fragment(R.layout.search_fragment){
         // 검색어 레이아웃 관련
         recentSearchTermChipSetting() // 최근 검색어 chip 생성, 개별 삭제
         recentSearchHistoryClear()  // 최근 검색어 모두 지우기
-        popularSearchTermRvSetting() // 인기 검색어 recycler view 세팅
+        searchTermRankingRvSetting() // 인기 검색어 recycler view 세팅
 
 
         searchResultSpanCountBtnOnClick() // 결과 레이아웃 사진 모아보기 갯수 버튼 클릭
@@ -175,12 +172,10 @@ class SearchFragment : Fragment(R.layout.search_fragment){
             }
         }
     }
-
-    private fun popularSearchTermRvSetting() {
-        binding.searchTerm.searchRankRv.apply {
-            adapter = TermRankAdapter().apply {
-                submitList(keywordTest)
-            }
+    private fun searchTermRankingRvSetting() {
+        binding.searchTerm.searchRankRv.adapter = termRankAdapter
+        viewModel.searchTermRank.observe(viewLifecycleOwner){ searTermList ->
+            termRankAdapter.submitList(searTermList)
         }
     }
 
@@ -189,15 +184,15 @@ class SearchFragment : Fragment(R.layout.search_fragment){
             when (binding.searchResult.appBarPhotoGridModeBtn.text) {
                 "1" -> {
                     binding.searchResult.appBarPhotoGridModeBtn.text = "3"
-                    searchViewModel.setGridMode(3)
+                    viewModel.setGridMode(3)
                 }
                 "2" -> {
                     binding.searchResult.appBarPhotoGridModeBtn.text = "1"
-                    searchViewModel.setGridMode(1)
+                    viewModel.setGridMode(1)
                 }
                 "3" -> {
                     binding.searchResult.appBarPhotoGridModeBtn.text = "2"
-                    searchViewModel.setGridMode(2)
+                    viewModel.setGridMode(2)
                 }
             }
         }

@@ -40,8 +40,6 @@ class PostBottomSheetFragment(private val post: Posts? = null, private val userI
 
         userPref = PreferenceManager(requireContext().applicationContext)
 
-
-
         binding.bottomLayout.children.forEach { it.setOnClickListener(this) }
         binding.bottomLinear.children.forEach { it.setOnClickListener(this) }
         if (post != null) {

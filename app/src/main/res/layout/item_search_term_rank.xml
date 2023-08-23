@@ -41,17 +41,21 @@
             android:layout_weight="1" />
 
         <ImageView
+            android:id="@+id/down"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_polygon_down_red" />
+            android:src="@drawable/ic_polygon_down_red"
+            android:visibility="gone"/>
 
         <ImageView
+            android:id="@+id/not_changed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_line"
             android:visibility="gone" />
 
         <ImageView
+            android:id="@+id/up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_polygon_up_purple"
