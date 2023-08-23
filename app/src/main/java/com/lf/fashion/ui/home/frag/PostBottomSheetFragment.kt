@@ -65,7 +65,6 @@ class PostBottomSheetFragment(private val post: Posts? = null, private val userI
             }
             observeAllMsgResponse()
         } else {
-            //TODO 게시물 바텀 시트가 아니라, 프로필 옆 바텀 시트일 경우 신고하기 제외 모든 버튼 invisible
             binding.declareBtn.isVisible = userPref.getMyUniqueId() != userId
             binding.bottomSheetFollowBtn.isVisible = false
             binding.blockBtn.isVisible = false
@@ -106,6 +105,7 @@ class PostBottomSheetFragment(private val post: Posts? = null, private val userI
 
     }
 
+    //TODO 버튼 반응 구현
     override fun onClick(view: View?) {
         when (view) {
             binding.bottomSheetLinkCopyBtn -> {
