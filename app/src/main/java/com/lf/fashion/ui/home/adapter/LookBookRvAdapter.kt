@@ -52,7 +52,7 @@ class LookBookRvAdapter(private val kebabOnClick :(Int)-> Unit , private val clo
         }
     }
 }
-//TODO diff TEST 필요, 좋아요 selected 잘 변경 되는지
+//TODO diff TEST 필요, 좋아요 selected 잘 변경 되는지 + like delete 도 api 추가 및 테스트 필요 !
 class LookBookDiff : DiffUtil.ItemCallback<ClothPost>() {
     override fun areItemsTheSame(oldItem: ClothPost, newItem: ClothPost): Boolean {
         return oldItem.id == newItem.id
