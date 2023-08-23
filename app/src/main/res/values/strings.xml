@@ -71,6 +71,11 @@
     <string name="no_reg_post">등록한 게시물이 존재하지 않습니다.</string>
     <string-array name="spinner_array">
         <item> All</item>
+        <item> Outer</item>
+        <item> Top</item>
+        <item> Bottom</item>
+        <item> Shoes</item>
+        <item> Acc</item>
     </string-array>
 
 

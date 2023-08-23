@@ -66,11 +66,8 @@ class DefaultPostAdapter(
 
             nestedAdapter.submitList(post.images)
 
-            //좋아요 아이콘 ic 변경 _ 임시적으로 이미지만 처리하기에 여기서 적용함
             postDetailMenu.likeBtn.setOnClickListener {
-                //  it.isSelected = !it.isSelected
                 verticalViewPagerClickListener.likeBtnClicked(it.isSelected,post)
-
             }
             postDetailMenu.scrapBtn.setOnClickListener {
                 verticalViewPagerClickListener.scrapBtnClicked(it.isSelected,post)

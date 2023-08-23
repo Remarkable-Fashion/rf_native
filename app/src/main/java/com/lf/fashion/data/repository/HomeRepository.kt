@@ -1,9 +1,7 @@
 package com.lf.fashion.data.repository
 
 import com.lf.fashion.data.network.SafeApiCall
-import com.lf.fashion.data.network.api.ChipApi
 import com.lf.fashion.data.network.api.MainHomeApi
-import com.lf.fashion.data.response.*
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
@@ -24,12 +22,12 @@ class HomeRepository @Inject constructor(
     }
 
     suspend fun getRecommendClothesTop3(postId: Int, category: String) = safeApiCall {
-        postApi.getRecommendTopClothes(1)
+        postApi.getRecommendTopClothes(1,category)
 
     }
 
     suspend fun getRecommendClothesInfo(postId: Int, category: String) = safeApiCall {
-        postApi.getRecommendClothesInfo(1)
+        postApi.getRecommendClothesInfo(1,category)
     }
     suspend fun getPostByUserId(userId : Int) = safeApiCall {
         postApi.getPostByUserId(userId)

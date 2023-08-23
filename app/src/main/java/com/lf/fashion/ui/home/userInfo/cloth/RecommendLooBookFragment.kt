@@ -7,6 +7,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
 import com.lf.fashion.TAG
@@ -28,26 +30,31 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment), V
     private lateinit var binding: HomeBRecommendFragmentBinding
     private val viewModel: UserInfoViewModel by viewModels()
     private val topList = mutableListOf<ClothPost>()
-
+    private var selectedCategory: MutableLiveData<String> = MutableLiveData()
+    private var orderByMode : String = "Best"
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = HomeBRecommendFragmentBinding.bind(view)
 
         cancelBtnBackStack(binding.cancelBtn)
+        spinnerSetting()
 
         val postId = arguments?.get("postId") as Int
-
+        binding.orderByBestBtn.isSelected = true // default 베스트 순
         binding.orderByBestBtn.setOnClickListener(this)
         binding.orderByRecentBtn.setOnClickListener(this)
 
+        //profile space 케밥 버튼
         val lookBookRvAdapter = LookBookRvAdapter { userId->
             val dialog = PostBottomSheetFragment(userId = userId)
             dialog.show(parentFragmentManager, "bottom_sheet")
-
         }
 
-        viewModel.getTopLook(postId, "All")
-        viewModel.getLookBook(postId, "All")
+        //카테고리가 변할 때마다 새로 요청
+        selectedCategory.observe(viewLifecycleOwner){category ->
+            viewModel.getTopLook(postId, category)
+            viewModel.getLookBook(postId, category)
+        }
 
         viewModel.topLook.observe(viewLifecycleOwner) { resources ->
             when (resources) {
@@ -61,8 +68,8 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment), V
 
                 }
             }
-
         }
+
         viewModel.lookBook.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
@@ -82,7 +89,6 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment), V
             }
         }
 
-        spinnerSetting()
         clothesRegButtonOnclick()
 
     }
@@ -111,12 +117,13 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment), V
         val singleClickableList = listOf(binding.orderByRecentBtn, binding.orderByBestBtn)
         singleClickableList.forEach { button ->
             button.isSelected = button == view
+            orderByMode = if(button.text.toString() == "최신순") "Recent" else "Best"
         }
-
     }
 
     //spinner listener
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+        selectedCategory.value = parent.getItemAtPosition(position).toString()
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
