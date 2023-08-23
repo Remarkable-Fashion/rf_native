@@ -4,11 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.lf.fashion.data.common.Event
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.CommunicateRepository
 import com.lf.fashion.data.repository.HomeRepository
+import com.lf.fashion.data.repository.OtherUserInfoRepository
 import com.lf.fashion.data.response.MsgResponse
+import com.lf.fashion.data.response.OtherUserInfo
 import com.lf.fashion.data.response.RandomPostResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PhotoZipViewModel @Inject constructor(
-    private val homeRepository: HomeRepository,
+    private val otherUserInfoRepository: OtherUserInfoRepository,
     private val communicateRepository: CommunicateRepository
 ) :ViewModel(){
     private val _posts = MutableLiveData<Resource<RandomPostResponse>>()
@@ -33,12 +34,22 @@ class PhotoZipViewModel @Inject constructor(
 
     private val _scrapResponse = MutableLiveData<Resource<MsgResponse>>()
     val scrapResponse = _scrapResponse
-    fun getUserInfoAndStyle(userId: Int) {
-        viewModelScope.launch {
-            _posts.value = homeRepository.getPostByUserId(userId)
 
+    private var _profileInfo = MutableLiveData<Resource<OtherUserInfo>>()
+    val profileInfo: LiveData<Resource<OtherUserInfo>> = _profileInfo
+    fun getPostByUserId(userId: Int) {
+        viewModelScope.launch {
+            _posts.value = otherUserInfoRepository.getPostByUserId(userId)
         }
     }
+
+    fun getProfileInfoByUserId(userId : Int) {
+        viewModelScope.launch {
+            _profileInfo.value =
+                otherUserInfoRepository.getUserProfileInfo(userId)
+        }
+    }
+
     fun changeFollowingState(create : Boolean, userId : Int){
         viewModelScope.launch {
             if(create){

@@ -120,9 +120,10 @@
 
                 <ImageView
                     android:id="@+id/kebab_btn"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:src="@drawable/ic_dot_menu"
+                    android:padding="5dp"
                     app:layout_constraintEnd_toEndOf="@id/profile_space"
                     app:layout_constraintTop_toTopOf="@id/profile_space"
                     app:layout_constraintBottom_toBottomOf="@id/profile_space"

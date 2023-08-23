@@ -17,6 +17,7 @@ import com.lf.fashion.databinding.HomeBPhotoZipFragmentBinding
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener
 import com.lf.fashion.ui.GridPostAdapter
+import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
 
@@ -26,10 +27,10 @@ import kotlin.properties.Delegates
 @AndroidEntryPoint
 class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhotoClickListener {
     lateinit var binding: HomeBPhotoZipFragmentBinding
-    private val viewModel : PhotoZipViewModel by hiltNavGraphViewModels(R.id.navigation_home)
+    private val viewModel: PhotoZipViewModel by hiltNavGraphViewModels(R.id.navigation_home)
     private var userId by Delegates.notNull<Int>()
     private lateinit var userInfoPost: Posts
-   // private var postList = mutableListOf<Posts>()
+    // private var postList = mutableListOf<Posts>()
 
     // private var followState by Delegates.notNull<Boolean>()
 
@@ -43,22 +44,33 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
         val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_home)
         homeMenu.isChecked = true
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = HomeBPhotoZipFragmentBinding.bind(view)
         userPref = PreferenceManager(requireContext().applicationContext)
 
         val post = arguments?.get("post") as Posts
-        userInfoPost = post // photoZip 엔드포인트 response 에는 post 내부에 user 정보가 없어서 vertical Fragment 로 이동시 같이 보낸다
-        binding.userInfo = post.user
-
+        userInfoPost =
+            post // photoZip 엔드포인트 response 에는 post 내부에 user 정보가 없어서 vertical Fragment 로 이동시 같이 보낸다
+        if (post.user == null) return
+       // binding.userInfo = post.user
 
         followStateBinding(post)
         followBtnOnclick()
         // 팔로우 응답 success -> ui update
         updateFollowingState()
-        viewModel.getUserInfoAndStyle(post.user!!.id)
 
+        viewModel.getPostByUserId(post.user!!.id)
+        viewModel.getProfileInfoByUserId(post.user!!.id)
+        viewModel.profileInfo.observe(viewLifecycleOwner){
+            if (it is Resource.Success) {
+                val profile = it.value
+                binding.userInfo = UserInfo(profile.id,profile.name,profile.profile,null)
+                //binding.userInfo = it.value
+
+            }
+        }
         with(binding.gridRv) { //grid layout
             adapter = GridPostAdapter(3, this@PhotoZipFragment, null).apply {
                 viewModel.posts.observe(viewLifecycleOwner) { resource ->
@@ -86,18 +98,21 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
             }
         }
 
+        profileKebabBtnOnClick()
 
     }
-    private fun followStateBinding(post: Posts){
+
+    private fun followStateBinding(post: Posts) {
         //나의 사진 모아보기일 경우 팔로우 버튼을 숨김 (post.user.id == me.id)
         val myUniqueId = userPref.getMyUniqueId()
         val followBtn = binding.followBtn
         followBtn.isVisible = myUniqueId != post.user?.id
         followBtn.isSelected =
             post.isFollow ?: false
-        followBtn.text = if(followBtn.isSelected) "팔로잉" else "+ 팔로우"
+        followBtn.text = if (followBtn.isSelected) "팔로잉" else "+ 팔로우"
         userId = post.user!!.id
     }
+
     private fun followBtnOnclick() {
         binding.followBtn.setOnClickListener {
             val followBtn = binding.followBtn
@@ -107,6 +122,7 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
             }
         }
     }
+
     private fun updateFollowingState() {
         viewModel.followResponse.observe(viewLifecycleOwner) { resources ->
             if (resources is Resource.Success && resources.value.success) {
@@ -116,21 +132,30 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
                 followBtn.isSelected =
                     !followBtn.isSelected
 
-                if(followBtn.isSelected){
+                if (followBtn.isSelected) {
                     followBtn.text = "팔로잉"
-                }else{
+                } else {
                     followBtn.text = "+ 팔로우"
                 }
             }
         }
     }
+
     override fun gridPhotoClicked(postIndex: Int) {
         //grid 포토 클릭시!!
         viewModel.editClickedPostIndex(postIndex)
         //,
         //            bundleOf("postList" to postList)
         findNavController().navigate(
-            R.id.action_photoZipFragment_to_photoZipVerticalFragment, bundleOf("userInfoPost" to userInfoPost)
+            R.id.action_photoZipFragment_to_photoZipVerticalFragment,
+            bundleOf("userInfoPost" to userInfoPost)
         )
+    }
+
+    private fun profileKebabBtnOnClick() {
+        binding.kebabBtn.setOnClickListener {
+            val dialog = PostBottomSheetFragment(userId = userInfoPost.user?.id)
+            dialog.show(parentFragmentManager, "bottom_sheet")
+        }
     }
 }

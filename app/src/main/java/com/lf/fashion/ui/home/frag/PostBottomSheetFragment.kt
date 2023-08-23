@@ -25,7 +25,8 @@ import kotlin.properties.Delegates
  * 공유 버튼 클릭시 노출되는 바텀 다이얼로그 시트입니다
  */
 @AndroidEntryPoint
-class PostBottomSheetFragment(private val post: Posts) : BottomSheetDialogFragment(R.layout.home_bottom_dialog_item),
+class PostBottomSheetFragment(private val post: Posts? = null, private val userId: Int? = null) :
+    BottomSheetDialogFragment(R.layout.home_bottom_dialog_item),
     View.OnClickListener {
     private lateinit var binding: HomeBottomDialogItemBinding
     private lateinit var userPref: PreferenceManager
@@ -33,50 +34,76 @@ class PostBottomSheetFragment(private val post: Posts) : BottomSheetDialogFragme
     private var blocked: Boolean = false // 최초값 차단 false 로 ..
     private var scrapState by Delegates.notNull<Boolean>()
     private var followState by Delegates.notNull<Boolean>()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding= HomeBottomDialogItemBinding.bind(view)
+        binding = HomeBottomDialogItemBinding.bind(view)
 
         userPref = PreferenceManager(requireContext().applicationContext)
 
-        //로그인 유저에게 차단/팔로우 취소 버튼 노출
-        loginUserUi()
+
 
         binding.bottomLayout.children.forEach { it.setOnClickListener(this) }
         binding.bottomLinear.children.forEach { it.setOnClickListener(this) }
+        if (post != null) {
+            //로그인 유저에게 차단/팔로우 취소 버튼 노출
+            loginUserUi()
+            //나의 게시물일 경우 게시물 관련 버튼 노출
+            myPostBottomUi()
 
-        viewModel.getPostByPostId(post.id)
-        viewModel.postInfo.observe(viewLifecycleOwner){resources->
-            if (resources is Resource.Success) {
-                val response = resources.value
+            viewModel.getPostByPostId(post.id)
+            viewModel.postInfo.observe(viewLifecycleOwner) { resources ->
+                if (resources is Resource.Success) {
+                    val response = resources.value
 
-                scrapState = response.isScrap?:false
-                followState = response.isFollow?:false
+                    scrapState = response.isScrap ?: false
+                    followState = response.isFollow ?: false
 
-                btnTextUpdate("scrap", scrapState)
-                btnTextUpdate("follow", followState)
-                btnTextUpdate("block", blocked)
+                    btnTextUpdate("scrap", scrapState)
+                    btnTextUpdate("follow", followState)
+                    btnTextUpdate("block", blocked)
+                }
             }
-        }
-        observeAllMsgResponse()
+            observeAllMsgResponse()
+        } else {
+            //TODO 게시물 바텀 시트가 아니라, 프로필 옆 바텀 시트일 경우 신고하기 제외 모든 버튼 invisible
+            binding.declareBtn.isVisible = userPref.getMyUniqueId() != userId
+            binding.bottomSheetFollowBtn.isVisible = false
+            binding.blockBtn.isVisible = false
+            binding.privateSettingBtn.isVisible = false
+            binding.postEditBtn.isVisible = false
+            binding.deleteBtn.isVisible = false
+            binding.bottomSheetScrapBtn.isVisible = false
 
+        }
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        post.isScrap = scrapState
-      //  post.isFollow = followState follow는 바꿀필요 없을 것 같 ui 에서 바로 노출 x
-        (parentFragment as? MyBottomDialogListener)?.onBottomSheetDismissed(post)
+        post?.let {
+            it.isScrap = scrapState
+            //  post.isFollow = followState follow는 바꿀필요 없을 것 같 ui 에서 바로 노출 x
+            (parentFragment as? MyBottomDialogListener)?.onBottomSheetDismissed(it)
+        }
         super.onDismiss(dialog)
     }
+
     private fun loginUserUi() {
-        if (userPref.loginCheck()) {
-            binding.bottomSheetFollowBtn.isVisible = true
-            binding.blockBtn.isVisible = true
-        } else {
-            binding.bottomSheetFollowBtn.isVisible = false
-            binding.blockBtn.isVisible = false
-        }
+        val loggedIn = userPref.loginCheck()
+        binding.bottomSheetFollowBtn.isVisible = loggedIn
+        binding.blockBtn.isVisible = loggedIn
+
+    }
+
+    private fun myPostBottomUi() {
+        //나의 게시물일 경우 myPost 는 true
+        val myPost = userPref.getMyUniqueId() == post!!.user?.id
+
+        binding.declareBtn.isVisible = !myPost
+        binding.bottomSheetFollowBtn.isVisible = !myPost
+        binding.blockBtn.isVisible = !myPost
+        binding.privateSettingBtn.isVisible = myPost
+        binding.postEditBtn.isVisible = myPost
+        binding.deleteBtn.isVisible = myPost
+
     }
 
     override fun onClick(view: View?) {
@@ -84,24 +111,29 @@ class PostBottomSheetFragment(private val post: Posts) : BottomSheetDialogFragme
             binding.bottomSheetLinkCopyBtn -> {
 
             }
+
             binding.bottomSheetShareBtn -> {
 
             }
+
             binding.bottomSheetScrapBtn -> {
-                viewModel.changeScrapState(!scrapState, post.id)
+                viewModel.changeScrapState(!scrapState, post!!.id)
             }
-           /* binding.noInterestBtn -> {
-                // 이 후 동작 알 수 없음 , 엔드포인트 없음
-            }*/
+            /* binding.noInterestBtn -> {
+                 // 이 후 동작 알 수 없음 , 엔드포인트 없음
+             }*/
             binding.bottomSheetFollowBtn -> {
-                viewModel.changeFollowingState(!followState, post.user!!.id)
+                viewModel.changeFollowingState(!followState, post!!.user!!.id)
             }
+
             binding.blockBtn -> {
-                viewModel.changeBlockUserState(!blocked, post.user!!.id)
+                viewModel.changeBlockUserState(!blocked, post!!.user!!.id)
             }
+
             binding.declareBtn -> {
 
             }
+
         }
     }
 
@@ -133,9 +165,11 @@ class PostBottomSheetFragment(private val post: Posts) : BottomSheetDialogFragme
             "scrap" -> {
                 binding.bottomSheetScrapBtn.text = if (state) "스크랩취소" else "스크랩하기"
             }
+
             "follow" -> {
                 binding.bottomSheetFollowBtn.text = if (state) "팔로우 취소" else "팔로잉하기"
             }
+
             "block" -> {
                 binding.blockBtn.text = if (state) "차단 취소" else "차단하기"
 

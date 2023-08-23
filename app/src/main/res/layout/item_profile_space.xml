@@ -47,12 +47,13 @@
             android:textColor="@drawable/selector_purple_text_color"
             android:fontFamily="@font/spoqahansansneo_bold"
             android:textSize="12sp"
-            android:layout_marginEnd="20dp"/>
+            android:layout_marginEnd="15dp"/>
 
         <ImageView
             android:id="@+id/kebab_btn"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
             android:src="@drawable/ic_dot_menu" />
     </LinearLayout>
 </layout>

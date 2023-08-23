@@ -16,6 +16,7 @@ import com.lf.fashion.databinding.HomeBRecommendFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.home.userInfo.UserInfoViewModel
 import com.lf.fashion.ui.home.adapter.LookBookRvAdapter
+import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -27,32 +28,35 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment), V
     private lateinit var binding: HomeBRecommendFragmentBinding
     private val viewModel: UserInfoViewModel by viewModels()
     private val topList = mutableListOf<ClothPost>()
-  /*  private lateinit var userPref: PreferenceManager
-    private lateinit var prefCheckService: PrefCheckService*/
-    private val lookBookRvAdapter = LookBookRvAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = HomeBRecommendFragmentBinding.bind(view)
-        /*  userPref = PreferenceManager(requireContext().applicationContext)
-        prefCheckService = PrefCheckService(userPref)*/
+
         cancelBtnBackStack(binding.cancelBtn)
-//        lookBookRvAdapter = LookBookRvAdapter(requireContext().applicationContext)
+
         val postId = arguments?.get("postId") as Int
 
         binding.orderByBestBtn.setOnClickListener(this)
         binding.orderByRecentBtn.setOnClickListener(this)
 
-        viewModel.getTopLook(postId,"All")
+        val lookBookRvAdapter = LookBookRvAdapter { userId->
+            val dialog = PostBottomSheetFragment(userId = userId)
+            dialog.show(parentFragmentManager, "bottom_sheet")
+
+        }
+
+        viewModel.getTopLook(postId, "All")
         viewModel.getLookBook(postId, "All")
 
-        viewModel.topLook.observe(viewLifecycleOwner){resources->
+        viewModel.topLook.observe(viewLifecycleOwner) { resources ->
             when (resources) {
                 is Resource.Success -> {
                     Log.d(TAG, "RecommendLooBookFragment - onViewCreated: ${resources.value}");
                     topList.removeAll(topList)
                     topList.addAll(resources.value.clothes)
                 }
+
                 else -> {
 
                 }
@@ -71,6 +75,7 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment), V
 
                     }
                 }
+
                 else -> {
 
                 }

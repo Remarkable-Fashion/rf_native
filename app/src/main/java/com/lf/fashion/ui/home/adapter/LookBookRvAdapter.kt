@@ -1,9 +1,7 @@
 package com.lf.fashion.ui.home.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -12,7 +10,7 @@ import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.response.ClothPost
 import com.lf.fashion.databinding.ItemRecommendStyleCardBinding
 
-class LookBookRvAdapter : ListAdapter<ClothPost, LookBookRvAdapter.LookBookViewHolder>(LookBookDiff()) {
+class LookBookRvAdapter(private val kebabOnClick :(Int)-> Unit) : ListAdapter<ClothPost, LookBookRvAdapter.LookBookViewHolder>(LookBookDiff()) {
     private lateinit var userPref: PreferenceManager
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LookBookViewHolder {
@@ -43,6 +41,9 @@ class LookBookRvAdapter : ListAdapter<ClothPost, LookBookRvAdapter.LookBookViewH
             binding.clothesSpace.cloth = lookBook.clothesInfo
             binding.likeBtn.setOnClickListener {
                 binding.likeBtn.isSelected = !binding.likeBtn.isSelected
+            }
+            binding.profileSpace.kebabBtn.setOnClickListener {
+              kebabOnClick(lookBook.user.id)
             }
         }
     }

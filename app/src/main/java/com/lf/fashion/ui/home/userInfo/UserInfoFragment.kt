@@ -15,6 +15,7 @@ import com.lf.fashion.databinding.HomeBUserInfoFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.childChip
 import com.lf.fashion.ui.home.adapter.ClothesRvAdapter
+import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
 
@@ -61,8 +62,9 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
         followBtnOnclick()
         // 팔로우 응답 success -> ui update
         updateFollowingState()
-    }
 
+        profileKebabBtnOnClick()
+    }
     private fun followBtnOnclick() {
         binding.profileSpace.followBtn.setOnClickListener {
             val followBtn = binding.profileSpace.followBtn
@@ -129,6 +131,12 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
                     followBtn.text = "+ 팔로우"
                 }
             }
+        }
+    }
+    private fun profileKebabBtnOnClick(){
+        binding.profileSpace.kebabBtn.setOnClickListener {
+            val dialog = PostBottomSheetFragment(userId = userId)
+            dialog.show(parentFragmentManager, "bottom_sheet")
         }
     }
 }

@@ -68,7 +68,6 @@
             android:paddingTop="27dp"
             android:paddingBottom="27dp"
             android:textColor="@color/default_text"
-            android:layout_marginEnd="10dp"
             />
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bottom_sheet_scrap_btn"
@@ -83,6 +82,7 @@
             android:paddingEnd="10dp"
             android:paddingTop="27dp"
             android:paddingBottom="27dp"
+            android:layout_marginStart="10dp"
             />
     </LinearLayout>
   <!--  <androidx.appcompat.widget.AppCompatButton
@@ -121,6 +121,7 @@
         app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
         android:visibility="gone"
         />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/declare_btn"
         android:layout_width="0dp"
@@ -132,5 +133,44 @@
         app:layout_constraintStart_toStartOf="@id/guideline_vertical"
         app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
         android:textColor="@color/lf_orange"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/private_setting_btn"
+        android:layout_width="0dp"
+        android:layout_height="51dp"
+        android:background="@drawable/selector_btn_whitegrey"
+        android:layout_marginTop="10dp"
+        android:text="이미지 게시 해지하기"
+        app:layout_constraintTop_toBottomOf="@id/declare_btn"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+        android:visibility="gone"
+
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/post_edit_btn"
+        android:layout_width="0dp"
+        android:layout_height="51dp"
+        android:background="@drawable/selector_btn_whitegrey"
+        android:layout_marginTop="10dp"
+        android:text="수정하기"
+        app:layout_constraintTop_toBottomOf="@id/private_setting_btn"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+        android:visibility="gone"
+
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/delete_btn"
+        android:layout_width="0dp"
+        android:layout_height="51dp"
+        android:background="@drawable/selector_btn_whitegrey"
+        android:layout_marginTop="10dp"
+        android:text="삭제하기"
+        app:layout_constraintTop_toBottomOf="@id/post_edit_btn"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+        android:visibility="gone"
+
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
