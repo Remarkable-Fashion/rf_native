@@ -6,7 +6,7 @@
     <data>
         <variable
             name="clothe"
-            type="com.lf.fashion.data.response.RegClothes" />
+            type="com.lf.fashion.data.response.UploadCloth" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -218,6 +218,6 @@
             app:layout_constraintBaseline_toBaselineOf="@id/brand_label"
             android:textColor="@color/default_text"
             style="@style/spoqa_12sp_label"
-            android:background="@android:color/transparent" />
+            android:background="@android:color/transparent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

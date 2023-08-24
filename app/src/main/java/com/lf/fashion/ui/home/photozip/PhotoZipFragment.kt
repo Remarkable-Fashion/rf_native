@@ -36,17 +36,15 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
 
     private lateinit var userPref: PreferenceManager
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         //생성 후 다른 바텀 메뉴 이동시 다시 home menu 클릭시 selected 아이콘으로 변경 안되는 오류 해결하기위해 수동 메뉴 checked 코드 추가
         val bottomNavigationView =
             requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
         val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_home)
         homeMenu.isChecked = true
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         binding = HomeBPhotoZipFragmentBinding.bind(view)
         userPref = PreferenceManager(requireContext().applicationContext)
 

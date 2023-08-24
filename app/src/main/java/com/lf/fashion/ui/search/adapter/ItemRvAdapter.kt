@@ -2,11 +2,9 @@ package com.lf.fashion.ui.search.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.data.response.Cloth
-import com.lf.fashion.data.response.ClothesInfo
 import com.lf.fashion.databinding.ItemClothesListBinding
 import com.lf.fashion.ui.home.adapter.ClothDiff
 

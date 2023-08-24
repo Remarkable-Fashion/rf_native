@@ -46,3 +46,15 @@ data class ClothPost(
     val user: UserInfo,
     val clothesInfo : Cloth
 )
+
+data class UploadCloth(
+    val name : String,
+    val category: String,
+    val imageUrl: String,
+    val price : String,
+    val color : String,
+    val size: String,
+    val brand: String,
+    val reason : String?,
+   // val siteUrl: String
+)

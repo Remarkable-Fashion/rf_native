@@ -8,7 +8,6 @@ import com.lf.fashion.data.common.Event
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.CommunicateRepository
 import com.lf.fashion.data.repository.HomeRepository
-import com.lf.fashion.data.response.LookBook
 import com.lf.fashion.data.response.MsgResponse
 import com.lf.fashion.data.response.PostInfo
 import com.lf.fashion.data.response.RecommendCloth

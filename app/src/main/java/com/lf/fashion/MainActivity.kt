@@ -24,6 +24,15 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    companion object {
+        private lateinit var binding: ActivityMainBinding
+        fun hideNavi(state: Boolean) {
+            if(::binding.isInitialized) {
+                if (state) binding.bottomNavBar.visibility =
+                    View.GONE else binding.bottomNavBar.visibility = View.VISIBLE
+            }
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -56,10 +65,6 @@ class MainActivity : AppCompatActivity() {
             }
             .addOnFailureListener(this) { e -> Log.e(TAG, "onCreate: 다이나믹 링크 $e") }
     }
-    companion object{
-        private lateinit var binding : ActivityMainBinding
-        fun hideNavi(state:Boolean){
-            if(state) binding.bottomNavBar.visibility = View.GONE else binding.bottomNavBar.visibility = View.VISIBLE
-        }
-    }
+
+
 }

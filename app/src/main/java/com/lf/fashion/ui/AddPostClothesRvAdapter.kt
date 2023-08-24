@@ -6,12 +6,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.lf.fashion.data.response.RegClothes
+import com.lf.fashion.data.response.UploadCloth
 import com.lf.fashion.databinding.ItemRegistFormBinding
 
 //PhotoStep2Fragment , RegistClothFragment 에서 사용.
 class AddPostClothesRvAdapter :
-    ListAdapter<RegClothes, AddPostClothesRvAdapter.ClothesRvViewHolder>(ClothesCategoryDiff()) {
+    ListAdapter<UploadCloth, AddPostClothesRvAdapter.ClothesRvViewHolder>(ClothesCategoryDiff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothesRvViewHolder {
         val binding =
@@ -25,18 +25,18 @@ class AddPostClothesRvAdapter :
 
     inner class ClothesRvViewHolder(private val binding: ItemRegistFormBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(regClothes: RegClothes) {
-            binding.clothe = regClothes
+        fun bind(item: UploadCloth) {
+            binding.clothe = item
 
-            regClothes.image?.let {
+            item.imageUrl.let {
                 Glide.with(binding.root)
-                    .load(regClothes.image)
+                    .load(item.imageUrl)
                     .into(binding.productImage)
             }
 
             binding.deleteBtn.setOnClickListener {
                 val newList = currentList.toMutableList()
-                newList.remove(regClothes)
+                newList.remove(item)
                 submitList(newList)
             }
 
@@ -44,13 +44,13 @@ class AddPostClothesRvAdapter :
         }
     }
 }
-class ClothesCategoryDiff : DiffUtil.ItemCallback<RegClothes>(){
-    override fun areItemsTheSame(oldItem: RegClothes, newItem: RegClothes): Boolean {
+class ClothesCategoryDiff : DiffUtil.ItemCallback<UploadCloth>(){
+    override fun areItemsTheSame(oldItem: UploadCloth, newItem: UploadCloth): Boolean {
         return oldItem.name == newItem.name
     }
 
-    override fun areContentsTheSame(oldItem: RegClothes, newItem: RegClothes): Boolean {
-        return oldItem.name == newItem.name
+    override fun areContentsTheSame(oldItem: UploadCloth, newItem: UploadCloth): Boolean {
+        return oldItem == newItem
     }
 
 }

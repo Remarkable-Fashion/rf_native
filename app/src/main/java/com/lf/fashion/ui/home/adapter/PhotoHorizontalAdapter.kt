@@ -1,14 +1,11 @@
 package com.lf.fashion.ui.home.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.lf.fashion.TAG
 import com.lf.fashion.data.response.ImageUrl
-import com.lf.fashion.data.response.Photo
 import com.lf.fashion.databinding.HomeANestedHorizontalItemBinding
 import com.lf.fashion.ui.home.PhotoClickListener
 

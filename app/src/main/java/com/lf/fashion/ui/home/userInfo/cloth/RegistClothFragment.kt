@@ -1,6 +1,7 @@
 package com.lf.fashion.ui.home.userInfo.cloth
 
 import android.Manifest
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,32 +11,47 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.children
+import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.lf.fashion.MainActivity
 import com.lf.fashion.R
 import com.lf.fashion.TAG
-import com.lf.fashion.data.response.RegClothes
+import com.lf.fashion.data.network.Resource
+import com.lf.fashion.data.response.UploadCloth
 import com.lf.fashion.databinding.HomeBRegistClothFragmentBinding
 import com.lf.fashion.ui.AddPostClothesRvAdapter
+import com.lf.fashion.ui.absolutelyPath
 import com.lf.fashion.ui.addPost.ImagePickerFragment
 import com.lf.fashion.ui.addTextLengthCounter
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.showPermissionDialog
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlin.properties.Delegates
 
 /**
  * 이 의상은 어때? 내부 + 버튼 클릭시 노출되는 의상 등록 fragment 입니다
  * **/
 //TODO: 업데이트 안내 코드 추가 , 의상등록 이미지 클릭 -> 이미지피커프래그먼트 연결
-class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), View.OnClickListener {
-    private lateinit var binding: HomeBRegistClothFragmentBinding
-    private val regClothesList = mutableListOf<RegClothes>()
-    private var selectedCategory: String? = null
-    private val addClothesAdapter = AddPostClothesRvAdapter()
-    private var selectedImageUri :String? = null
-    //복수의 권한이 필요한 경우 RequestMultiplePermissions() 후 launch(배열) 로 전달
 
+@AndroidEntryPoint
+class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), View.OnClickListener {
+
+    private lateinit var binding: HomeBRegistClothFragmentBinding
+    private val regClothesList = mutableListOf<UploadCloth>()
+
+    // private var selectedCategory: String? = null
+    private val addClothesAdapter = AddPostClothesRvAdapter()
+    private var selectedImageUri: String? = null
+    private val viewModel: UploadClothesViewModel by hiltNavGraphViewModels(R.id.registClothFragment)
+    private var clothesPostId by Delegates.notNull<Int>()
+
+    //복수의 권한이 필요한 경우 RequestMultiplePermissions() 후 launch(배열) 로 전달
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             val allPermissionsGranted = permissions.all { it.value }
@@ -52,19 +68,40 @@ class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), Vie
                 Log.d(TAG, "PhotoFragment - : granted fail")
             }
         }
+
     private val permissions = arrayOf(
         Manifest.permission.CAMERA,
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE
     )
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        MainActivity.hideNavi(true)
+    }
+
+    override fun onResume() {
+        viewModel.selectedCategory?.let {
+            val cloth = binding.clothRegistForm
+            when (it) {
+                "Outer" -> cloth.outerBtn.isSelected = true
+                "Top" -> cloth.topBtn.isSelected = true
+                "Bottom" -> cloth.bottomBtn.isSelected = true
+                "Shoes" -> cloth.shoesBtn.isSelected = true
+                else -> cloth.accBtn.isSelected = true
+            }
+        }
+        super.onResume()
+
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = HomeBRegistClothFragmentBinding.bind(view)
+        clothesPostId = arguments?.getInt("clothesPostId") ?: return
 
-        //이미지 등록에서 받아온 이미지들 ..
-        setFragmentResultListener(ImagePickerFragment.REQUEST_KEY){ _, bundle ->
-          //  Log.d(TAG, "PhotoStep2Fragment - onViewCreated: ${bundle.get("imageURI")}");
+        //이미지 선택해서 받아온 이미지들 ..
+        setFragmentResultListener(ImagePickerFragment.REQUEST_KEY) { _, bundle ->
             val imageUris = bundle.get("imageURI") as Array<*>
             imageUris[0]?.let {
                 selectedImageUri = imageUris[0].toString()
@@ -77,9 +114,10 @@ class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), Vie
 
         binding.clothesDetailRv.adapter = addClothesAdapter
         registerCloth()
-        addTextLengthCounter(binding.detailValue,binding.textCounter,50)
+        addTextLengthCounter(binding.detailValue, binding.textCounter, 50)
         imageOnclickPermissionCheck() // 이미지 부분 눌리면 permission 체크 -> 허용시엔 imagePickerFragment 로 이동
         cancelBtnBackStack(binding.cancelBtn)
+        submitClothes() // 이미지 등록 버튼 클릭
     }
 
     private fun imageOnclickPermissionCheck() {
@@ -107,19 +145,23 @@ class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), Vie
             val priceValue = binding.clothRegistForm.priceValue.text.toString()
             val colorValue = binding.clothRegistForm.colorValue.text.toString()
             val sizeValue = binding.clothRegistForm.sizeValue.text.toString()
-            val urlValue = binding.clothRegistForm.brandValue.text.toString()
+            val brandValue = binding.clothRegistForm.brandValue.text.toString()
 
-            if (nameValue.isNotEmpty() && priceValue.isNotEmpty() && colorValue.isNotEmpty() && sizeValue.isNotEmpty() && selectedCategory != null) {
+            if (nameValue.isNotEmpty() && priceValue.isNotEmpty() &&
+                colorValue.isNotEmpty() && sizeValue.isNotEmpty() &&
+                viewModel.selectedCategory != null && selectedImageUri != null
+            ) {
 
                 regClothesList.add(
-                    RegClothes(
-                        selectedImageUri,
-                        selectedCategory!!,
+                    UploadCloth(
                         nameValue,
+                        viewModel.selectedCategory!!,
+                        selectedImageUri!!,
                         priceValue,
                         colorValue,
                         sizeValue,
-                        urlValue
+                        brandValue,
+                        binding.detailValue.text.toString()
                     )
                 )
                 addClothesAdapter.apply {
@@ -128,14 +170,20 @@ class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), Vie
                 }
 
                 // 요소들의 텍스트를 빈 값으로 설정
-                binding.clothRegistForm.productImage.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_add_item_mini))
+                binding.clothRegistForm.productImage.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_add_item_mini
+                    )
+                )
                 binding.clothRegistForm.nameValue.text.clear()
                 binding.clothRegistForm.priceValue.text.clear()
                 binding.clothRegistForm.colorValue.text.clear()
                 binding.clothRegistForm.sizeValue.text.clear()
                 binding.clothRegistForm.brandValue.text.clear()
+                binding.detailValue.text.clear()
 
-            } else if (selectedCategory == null) {
+            } else if (viewModel.selectedCategory == null) {
                 Toast.makeText(requireContext(), "의상 카테고리를 선택해주세요!", Toast.LENGTH_SHORT).show()
 
             } else {
@@ -156,12 +204,36 @@ class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), Vie
         categoryButtons.forEach { button ->
             button.isSelected = button == v
             if (button.isSelected) {
-                selectedCategory = button.text.toString()
+                viewModel.selectedCategory = button.text.toString()
             }
         }
     }
 
+    private fun submitClothes() {
+        binding.submitBtn.setOnClickListener {
+            val currentList = addClothesAdapter.currentList
+            currentList.forEach {
+                runBlocking {
+                    launch {
+                        val infoResponse = viewModel.uploadClothesInfo(clothesPostId, it)
+                        val imagePath = absolutelyPath(Uri.parse(it.imageUrl), requireContext())
+                        Log.e(TAG, "submitClothes: ImagePath  $imagePath")
+                        if(infoResponse.success) {
+                            val imageResponse = viewModel.uploadClothesImage(imagePath!!)
+                            if (imageResponse.success){
+                                Toast.makeText(requireContext(),"의상 등록이 완료되었습니다.",Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        MainActivity.hideNavi(false)
+    }
 
 
 }

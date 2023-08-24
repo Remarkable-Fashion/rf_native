@@ -5,7 +5,7 @@
 
         <variable
             name="photo"
-            type="com.lf.fashion.data.response.Photo" />
+            type="String" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

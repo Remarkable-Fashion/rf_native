@@ -7,6 +7,7 @@ import com.lf.fashion.data.network.SafeApiCall
 import com.lf.fashion.data.network.api.JWTApi
 import com.lf.fashion.data.network.api.MyPageApi
 import com.lf.fashion.data.response.MyInfo
+import com.lf.fashion.ui.getMimeType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -74,10 +75,5 @@ class MyPageRepository @Inject constructor(
             weightRequestBody,
             introductionRequestBody
         )
-    }
-    // 파일 확장자로부터 MIME 타입을 추론하는 함수
-    private fun getMimeType(file: File): String? {
-        val extension = MimeTypeMap.getFileExtensionFromUrl(file.absolutePath)
-        return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
     }
 }

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
@@ -26,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.runBlocking
+import kotlin.properties.Delegates
 
 /**
  * 메인 홈에서 유저 정보보기 -> 이 의상은 어때 버튼 클릭시 노출되는 프래그먼트입니다.
@@ -42,7 +44,7 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
     private var orderByMode: String = "Best"
     private lateinit var userPref: PreferenceManager
     private lateinit var lookBookRvAdapter: LookBookRvAdapter
-
+    private var postId by Delegates.notNull<Int>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = HomeBRecommendFragmentBinding.bind(view)
@@ -51,7 +53,7 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
         cancelBtnBackStack(binding.cancelBtn)
         spinnerSetting()
 
-        val postId = arguments?.get("postId") as Int
+        postId = arguments?.get("postId") as Int
         binding.orderByBestBtn.isSelected = true // default 베스트 순
         binding.orderByBestBtn.setOnClickListener(this)
         binding.orderByRecentBtn.setOnClickListener(this)
@@ -120,8 +122,13 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
 
     private fun clothesRegButtonOnclick() {
         binding.registBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_recommendFragment_to_registClothFragment)
-
+            if(userPref.loginCheck()) {
+                findNavController().navigate(R.id.action_recommendFragment_to_registClothFragment,
+                    bundleOf("clothesPostId" to postId)
+                )
+            }else{
+                showRequireLoginDialog()
+            }
         }
     }
 

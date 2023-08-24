@@ -1,7 +1,6 @@
 package com.lf.fashion.ui
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.database.Cursor
@@ -13,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.webkit.MimeTypeMap
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -22,13 +22,10 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.google.firebase.dynamiclinks.DynamicLink
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.response.ChipInfo
-import com.lf.fashion.data.response.MyInfo
 import java.io.File
 import kotlin.math.roundToInt
 
@@ -41,10 +38,6 @@ fun Fragment.cancelBtnBackStack(view: ImageView) {
 @SuppressLint("InflateParams")
 fun Fragment.childChip(chipList: List<ChipInfo>, chipGroup: ChipGroup, style: String) {
     for (j in chipList.indices) {
-        /* val chip =
-             if (style == "default") LayoutInflater.from(context)
-                 .inflate(R.layout.chip_item, null) as Chip
-             else LayoutInflater.from(context).inflate(R.layout.chip_purple_item, null) as Chip*/
         val chip = when (style) {
             "default" -> {
                 LayoutInflater.from(context).inflate(R.layout.chip_item, null) as Chip
@@ -257,4 +250,12 @@ fun Fragment.handleApiError(
         //requireView().snackbar(error)
         }
     }
+}
+
+
+
+// 파일 확장자로부터 MIME 타입을 추론하는 함수
+ fun getMimeType(file: File): String? {
+    val extension = MimeTypeMap.getFileExtensionFromUrl(file.absolutePath)
+    return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
 }

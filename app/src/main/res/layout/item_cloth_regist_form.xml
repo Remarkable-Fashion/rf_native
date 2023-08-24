@@ -162,8 +162,10 @@
             android:textColor="@color/default_text"
             style="@style/spoqa_12sp_label"
             android:background="@drawable/bg_radi3_filled_no_line"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"/>
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            tools:text="ddd"
+            />
 
         <EditText
             android:id="@+id/price_value"
@@ -180,9 +182,11 @@
             app:layout_constraintBottom_toBottomOf="@id/price_label"
             android:textColor="@color/default_text"
             style="@style/spoqa_12sp_label"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:background="@drawable/bg_radi3_filled_no_line" />
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:background="@drawable/bg_radi3_filled_no_line"
+            tools:text="ddd"
+            />
 
         <EditText
             android:id="@+id/color_value"
@@ -199,8 +203,9 @@
             android:textColor="@color/default_text"
             style="@style/spoqa_12sp_label"
             android:background="@drawable/bg_radi3_filled_no_line"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            tools:text="ddd"
             />
 
         <EditText
@@ -216,10 +221,11 @@
             app:layout_constraintTop_toTopOf="@id/size_label"
             app:layout_constraintBottom_toBottomOf="@id/size_label"
             android:textColor="@color/default_text"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
             style="@style/spoqa_12sp_label"
             android:background="@drawable/bg_radi3_filled_no_line"
+            tools:text="ddd"
             />
 
         <TextView
@@ -247,8 +253,9 @@
             android:textColor="@color/default_text"
             style="@style/spoqa_12sp_label"
             android:background="@drawable/bg_radi3_filled_no_line"
-            android:text=""
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"/>
+            tools:text="ddd"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -35,16 +35,14 @@ class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_frag
 
     private lateinit var likeClickedPosts: Posts
     private lateinit var scrapClickedPosts: Posts
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val bottomNavigationView =
             requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
         val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_home)
         homeMenu.isChecked = true
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         binding = HomeBPhotozipVerticalFragmentBinding.bind(view)
         cancelBtnBackStack(binding.backBtn)
         userPref = PreferenceManager(requireContext().applicationContext)

@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.lf.fashion.R
 import com.lf.fashion.TAG
-import com.lf.fashion.data.response.RegClothes
+import com.lf.fashion.data.response.UploadCloth
 import com.lf.fashion.databinding.PhotoStep2FragmentBinding
 import com.lf.fashion.ui.*
 import com.lf.fashion.ui.home.frag.FilterViewModel
@@ -24,7 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class PhotoStep2Fragment : Fragment(), View.OnClickListener {
     private lateinit var binding: PhotoStep2FragmentBinding
     private val viewModel: FilterViewModel by viewModels()
-    private val regClothesList = mutableListOf<RegClothes>()
+    private val regClothesList = mutableListOf<UploadCloth>()
     private val addClothesAdapter = AddPostClothesRvAdapter()
     private var selectedCategory: String? = null
     private var selectedImageUri :String? = null
@@ -102,14 +102,15 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
             if (nameValue.isNotEmpty() && priceValue.isNotEmpty() && colorValue.isNotEmpty() && sizeValue.isNotEmpty() && selectedCategory != null) {
 
                 regClothesList.add(
-                    RegClothes(
-                        selectedImageUri,
-                        selectedCategory!!,
+                    UploadCloth(
                         nameValue,
+                        selectedCategory!!,//viewModel.selectedCategory!!,
+                        selectedImageUri!!,
                         priceValue,
                         colorValue,
                         sizeValue,
-                        brandValue
+                        brandValue,
+                        null
                     )
                 )
                 addClothesAdapter.apply {

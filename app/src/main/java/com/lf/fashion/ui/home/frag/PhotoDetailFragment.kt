@@ -1,15 +1,12 @@
 package com.lf.fashion.ui.home.frag
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lf.fashion.R
 import com.lf.fashion.data.response.ImageUrl
-import com.lf.fashion.data.response.Photo
 import com.lf.fashion.databinding.HomeBPhotoDetailFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.home.adapter.PhotoHorizontalAdapter
