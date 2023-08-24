@@ -1,6 +1,5 @@
 package com.lf.fashion.ui.addPost.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -9,8 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lf.fashion.R
-import com.lf.fashion.TAG
-import com.lf.fashion.data.response.ImageItem
+import com.lf.fashion.data.model.ImageItem
 import com.lf.fashion.databinding.ItemCameraBinding
 import com.lf.fashion.databinding.ItemImageBinding
 import com.lf.fashion.ui.addPost.GalleryRvListener

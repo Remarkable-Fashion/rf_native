@@ -8,8 +8,8 @@ import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.CommunicateRepository
 import com.lf.fashion.data.repository.HomeRepository
-import com.lf.fashion.data.response.MsgResponse
-import com.lf.fashion.data.response.RandomPostResponse
+import com.lf.fashion.data.model.MsgResponse
+import com.lf.fashion.data.model.RandomPostResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first

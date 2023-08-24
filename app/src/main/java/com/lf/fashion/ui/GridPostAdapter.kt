@@ -8,7 +8,7 @@ import android.widget.ImageView
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.lf.fashion.data.response.Posts
+import com.lf.fashion.data.model.Posts
 import com.lf.fashion.databinding.HomeGridItemBinding
 import com.lf.fashion.databinding.ItemSearchResultItemListBinding
 import com.lf.fashion.ui.home.adapter.DefaultPostDiff

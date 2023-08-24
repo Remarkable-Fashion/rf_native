@@ -6,10 +6,10 @@
     <data>
         <variable
             name="userInfo"
-            type="com.lf.fashion.data.response.Profile" />
+            type="com.lf.fashion.data.model.Profile" />
         <variable
             name="postInfo"
-            type="com.lf.fashion.data.response.PostInfo" />
+            type="com.lf.fashion.data.model.PostInfo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

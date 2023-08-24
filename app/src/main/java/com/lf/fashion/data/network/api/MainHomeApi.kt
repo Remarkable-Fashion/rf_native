@@ -1,9 +1,8 @@
 package com.lf.fashion.data.network.api
 
-import com.lf.fashion.data.response.MsgResponse
-import com.lf.fashion.data.response.PostInfo
-import com.lf.fashion.data.response.RandomPostResponse
-import com.lf.fashion.data.response.RecommendCloth
+import com.lf.fashion.data.model.PostInfo
+import com.lf.fashion.data.model.RandomPostResponse
+import com.lf.fashion.data.model.RecommendCloth
 import retrofit2.http.*
 
 interface MainHomeApi {

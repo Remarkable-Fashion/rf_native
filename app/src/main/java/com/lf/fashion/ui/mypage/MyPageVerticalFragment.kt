@@ -19,15 +19,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.TAG
-import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
-import com.lf.fashion.data.response.ImageUrl
-import com.lf.fashion.data.response.MyInfo
-import com.lf.fashion.data.response.Posts
-import com.lf.fashion.data.response.UserInfo
+import com.lf.fashion.data.model.ImageUrl
+import com.lf.fashion.data.model.Posts
+import com.lf.fashion.data.model.UserInfo
 import com.lf.fashion.databinding.MyVerticalFragmentBinding
 import com.lf.fashion.ui.MyBottomDialogListener
-import com.lf.fashion.ui.navigateToMyPage
 import dagger.hilt.android.AndroidEntryPoint
 
 

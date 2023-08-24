@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.lf.fashion.data.response.UploadCloth
+import com.lf.fashion.data.model.UploadCloth
 import com.lf.fashion.databinding.ItemRegistFormBinding
 
 //PhotoStep2Fragment , RegistClothFragment 에서 사용.

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lf.fashion.TAG
-import com.lf.fashion.data.response.Posts
+import com.lf.fashion.data.model.Posts
 import com.lf.fashion.databinding.HomeAVerticalItemBinding
 import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.VerticalViewPagerClickListener

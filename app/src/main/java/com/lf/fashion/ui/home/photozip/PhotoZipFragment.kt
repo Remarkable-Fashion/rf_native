@@ -11,8 +11,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
-import com.lf.fashion.data.response.Posts
-import com.lf.fashion.data.response.UserInfo
+import com.lf.fashion.data.model.Posts
+import com.lf.fashion.data.model.UserInfo
 import com.lf.fashion.databinding.HomeBPhotoZipFragmentBinding
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener

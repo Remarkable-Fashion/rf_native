@@ -5,7 +5,7 @@
     <data>
         <variable
             name="cloth"
-            type="com.lf.fashion.data.response.Cloth" />
+            type="com.lf.fashion.data.model.Cloth" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

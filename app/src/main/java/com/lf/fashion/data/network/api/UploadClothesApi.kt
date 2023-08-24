@@ -1,7 +1,7 @@
 package com.lf.fashion.data.network.api
 
-import com.lf.fashion.data.response.MsgResponse
-import com.lf.fashion.data.response.UploadCloth
+import com.lf.fashion.data.model.MsgResponse
+import com.lf.fashion.data.model.UploadCloth
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.Multipart

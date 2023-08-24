@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.data.network.Resource
-import com.lf.fashion.data.response.OtherUser
+import com.lf.fashion.data.model.OtherUser
 import com.lf.fashion.databinding.ItemFollowerBinding
 import com.lf.fashion.ui.mypage.MyPageViewModel
 import kotlinx.coroutines.launch

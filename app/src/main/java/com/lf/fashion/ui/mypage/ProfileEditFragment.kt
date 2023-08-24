@@ -3,9 +3,7 @@ package com.lf.fashion.ui.mypage
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -18,7 +16,7 @@ import com.lf.fashion.MainActivity
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
-import com.lf.fashion.data.response.MyInfo
+import com.lf.fashion.data.model.MyInfo
 import com.lf.fashion.databinding.MypageProfileFragmentBinding
 import com.lf.fashion.ui.*
 import com.lf.fashion.ui.addPost.ImagePickerFragment

@@ -2,9 +2,7 @@ package com.lf.fashion.ui.scrap
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
@@ -13,8 +11,8 @@ import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
-import com.lf.fashion.data.response.Posts
-import com.lf.fashion.data.response.RandomPostResponse
+import com.lf.fashion.data.model.Posts
+import com.lf.fashion.data.model.RandomPostResponse
 import com.lf.fashion.databinding.ScrapFragmentBinding
 import com.lf.fashion.ui.*
 import com.lf.fashion.ui.home.GridSpaceItemDecoration

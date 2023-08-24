@@ -11,7 +11,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.children
-import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
@@ -20,8 +19,7 @@ import com.bumptech.glide.Glide
 import com.lf.fashion.MainActivity
 import com.lf.fashion.R
 import com.lf.fashion.TAG
-import com.lf.fashion.data.network.Resource
-import com.lf.fashion.data.response.UploadCloth
+import com.lf.fashion.data.model.UploadCloth
 import com.lf.fashion.databinding.HomeBRegistClothFragmentBinding
 import com.lf.fashion.ui.AddPostClothesRvAdapter
 import com.lf.fashion.ui.absolutelyPath

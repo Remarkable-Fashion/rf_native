@@ -1,6 +1,6 @@
 package com.lf.fashion.data.network.api
 
-import com.lf.fashion.data.response.TokenResponse
+import com.lf.fashion.data.model.TokenResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST

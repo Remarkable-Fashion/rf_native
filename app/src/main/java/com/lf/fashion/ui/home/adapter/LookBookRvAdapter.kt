@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.data.common.PreferenceManager
-import com.lf.fashion.data.response.ClothPost
+import com.lf.fashion.data.model.ClothPost
 import com.lf.fashion.databinding.ItemRecommendStyleCardBinding
 import com.lf.fashion.ui.home.ClothLikeClickListener
 

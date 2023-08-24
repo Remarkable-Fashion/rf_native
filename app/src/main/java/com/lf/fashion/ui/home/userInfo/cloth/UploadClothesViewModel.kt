@@ -3,8 +3,8 @@ package com.lf.fashion.ui.home.userInfo.cloth
 import androidx.lifecycle.ViewModel
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.UploadClothesRepository
-import com.lf.fashion.data.response.MsgResponse
-import com.lf.fashion.data.response.UploadCloth
+import com.lf.fashion.data.model.MsgResponse
+import com.lf.fashion.data.model.UploadCloth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

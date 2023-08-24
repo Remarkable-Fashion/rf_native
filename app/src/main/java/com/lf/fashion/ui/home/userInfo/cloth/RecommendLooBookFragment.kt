@@ -8,14 +8,13 @@ import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
-import com.lf.fashion.data.response.ClothPost
+import com.lf.fashion.data.model.ClothPost
 import com.lf.fashion.databinding.HomeBRecommendFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.home.ClothLikeClickListener
@@ -25,7 +24,6 @@ import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
 import com.lf.fashion.ui.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
 import kotlinx.coroutines.runBlocking
 import kotlin.properties.Delegates
 

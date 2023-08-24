@@ -9,10 +9,9 @@ import com.lf.fashion.TAG
 import com.lf.fashion.data.common.Event
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.CommunicateRepository
-import com.lf.fashion.data.repository.HomeRepository
 import com.lf.fashion.data.repository.ScrapRepository
-import com.lf.fashion.data.response.MsgResponse
-import com.lf.fashion.data.response.RandomPostResponse
+import com.lf.fashion.data.model.MsgResponse
+import com.lf.fashion.data.model.RandomPostResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

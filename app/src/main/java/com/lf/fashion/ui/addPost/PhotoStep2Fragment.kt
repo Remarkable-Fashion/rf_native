@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.lf.fashion.R
 import com.lf.fashion.TAG
-import com.lf.fashion.data.response.UploadCloth
+import com.lf.fashion.data.model.UploadCloth
 import com.lf.fashion.databinding.PhotoStep2FragmentBinding
 import com.lf.fashion.ui.*
 import com.lf.fashion.ui.home.frag.FilterViewModel

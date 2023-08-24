@@ -12,7 +12,7 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
-import com.lf.fashion.data.response.OtherUser
+import com.lf.fashion.data.model.OtherUser
 import com.lf.fashion.databinding.MypageFollowViewpagerBinding
 import com.lf.fashion.ui.mypage.MyPageViewModel
 import dagger.hilt.android.AndroidEntryPoint

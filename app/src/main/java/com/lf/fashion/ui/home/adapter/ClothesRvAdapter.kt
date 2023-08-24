@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.lf.fashion.data.response.Cloth
+import com.lf.fashion.data.model.Cloth
 import com.lf.fashion.databinding.ItemClothesRecommendBinding
 
 class ClothesRvAdapter : ListAdapter<Cloth, ClothesRvAdapter.ClothesViewHolder>(ClothDiff()) {

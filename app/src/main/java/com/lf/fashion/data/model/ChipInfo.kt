@@ -1,4 +1,4 @@
-package com.lf.fashion.data.response
+package com.lf.fashion.data.model
 
 data class ChipInfo(
     val id: Int,

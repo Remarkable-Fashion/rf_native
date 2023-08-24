@@ -1,7 +1,7 @@
 package com.lf.fashion.data.network.api
 
-import com.lf.fashion.data.response.RandomPostResponse
-import com.lf.fashion.data.response.SearchTerm
+import com.lf.fashion.data.model.RandomPostResponse
+import com.lf.fashion.data.model.SearchTerm
 import retrofit2.http.GET
 import retrofit2.http.Query
 

@@ -2,7 +2,7 @@ package com.lf.fashion.data.repository
 
 import com.lf.fashion.data.network.SafeApiCall
 import com.lf.fashion.data.network.api.ChipApi
-import com.lf.fashion.data.response.ChipInfo
+import com.lf.fashion.data.model.ChipInfo
 import javax.inject.Inject
 
 class FilterRepository  @Inject constructor(

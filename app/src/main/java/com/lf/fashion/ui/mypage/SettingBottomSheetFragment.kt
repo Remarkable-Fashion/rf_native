@@ -9,7 +9,7 @@ import androidx.core.view.children
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.lf.fashion.R
-import com.lf.fashion.data.response.MyInfo
+import com.lf.fashion.data.model.MyInfo
 import com.lf.fashion.databinding.MypageSettingBottomDialogBinding
 
 /**

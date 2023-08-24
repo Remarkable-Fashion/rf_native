@@ -1,6 +1,6 @@
 package com.lf.fashion.ui.home
 
-import com.lf.fashion.data.response.Posts
+import com.lf.fashion.data.model.Posts
 
 interface VerticalViewPagerClickListener {
     fun likeBtnClicked(likeState: Boolean, post: Posts)

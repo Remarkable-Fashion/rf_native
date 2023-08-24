@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.lf.fashion.data.response.ImageUrl
+import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.databinding.HomeANestedHorizontalItemBinding
 import com.lf.fashion.ui.home.PhotoClickListener
 

@@ -25,7 +25,7 @@ import com.google.android.material.chip.ChipGroup
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
-import com.lf.fashion.data.response.ChipInfo
+import com.lf.fashion.data.model.ChipInfo
 import java.io.File
 import kotlin.math.roundToInt
 

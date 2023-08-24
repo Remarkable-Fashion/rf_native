@@ -1,10 +1,10 @@
 package com.lf.fashion.data.network.api
 
-import com.lf.fashion.data.response.FollowerUserList
-import com.lf.fashion.data.response.FollowingUserList
-import com.lf.fashion.data.response.MyBlockUserList
-import com.lf.fashion.data.response.OtherUserInfo
-import com.lf.fashion.data.response.RandomPostResponse
+import com.lf.fashion.data.model.FollowerUserList
+import com.lf.fashion.data.model.FollowingUserList
+import com.lf.fashion.data.model.MyBlockUserList
+import com.lf.fashion.data.model.OtherUserInfo
+import com.lf.fashion.data.model.RandomPostResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

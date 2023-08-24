@@ -24,11 +24,10 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
 import com.lf.fashion.TAG
-import com.lf.fashion.data.response.ImageItem
+import com.lf.fashion.data.model.ImageItem
 import com.lf.fashion.databinding.PhotoImagePickerFragmentBinding
 import com.lf.fashion.ui.addPost.adapter.CheckedImageAdapter
 import com.lf.fashion.ui.addPost.adapter.ImageAdapter

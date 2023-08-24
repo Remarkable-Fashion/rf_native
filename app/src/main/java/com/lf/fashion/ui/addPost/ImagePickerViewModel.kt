@@ -1,19 +1,13 @@
 package com.lf.fashion.ui.addPost
 
-import android.annotation.SuppressLint
 import android.content.ContentUris
 import android.content.Context
-import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import android.text.TextUtils.indexOf
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.lf.fashion.TAG
-import com.lf.fashion.data.response.ImageItem
-import java.io.File
+import com.lf.fashion.data.model.ImageItem
 
 private const val INDEX_MEDIA_ID = MediaStore.MediaColumns._ID
 private const val INDEX_MEDIA_URI = MediaStore.MediaColumns.DATA

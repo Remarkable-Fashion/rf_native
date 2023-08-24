@@ -5,8 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lf.fashion.data.repository.FilterRepository
-import com.lf.fashion.data.repository.HomeRepository
-import com.lf.fashion.data.response.ChipInfo
+import com.lf.fashion.data.model.ChipInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -9,8 +9,8 @@ import com.lf.fashion.TAG
 import com.lf.fashion.data.common.Event
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.SearchRepository
-import com.lf.fashion.data.response.RandomPostResponse
-import com.lf.fashion.data.response.SearchTerm
+import com.lf.fashion.data.model.RandomPostResponse
+import com.lf.fashion.data.model.SearchTerm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

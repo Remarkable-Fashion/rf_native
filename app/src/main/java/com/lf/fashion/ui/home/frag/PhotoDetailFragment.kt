@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lf.fashion.R
-import com.lf.fashion.data.response.ImageUrl
+import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.databinding.HomeBPhotoDetailFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.home.adapter.PhotoHorizontalAdapter

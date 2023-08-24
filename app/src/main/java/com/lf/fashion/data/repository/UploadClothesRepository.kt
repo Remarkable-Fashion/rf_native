@@ -4,7 +4,7 @@ import android.util.Log
 import com.lf.fashion.TAG
 import com.lf.fashion.data.network.SafeApiCall
 import com.lf.fashion.data.network.api.UploadClothesApi
-import com.lf.fashion.data.response.UploadCloth
+import com.lf.fashion.data.model.UploadCloth
 import com.lf.fashion.ui.getMimeType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody

@@ -1,6 +1,6 @@
 package com.lf.fashion.data.network.api
 
-import com.lf.fashion.data.response.ChipInfo
+import com.lf.fashion.data.model.ChipInfo
 import retrofit2.http.GET
 
 interface ChipApi {

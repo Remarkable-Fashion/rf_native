@@ -9,7 +9,7 @@
         <argument
             android:name="photos"
             android:defaultValue="@null"
-            app:argType="com.lf.fashion.data.response.ImageUrl[]"
+            app:argType="com.lf.fashion.data.model.ImageUrl[]"
             app:nullable="true" />
     </action>
     <action

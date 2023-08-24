@@ -1,12 +1,11 @@
 package com.lf.fashion.data.repository
 
 import android.util.Log
-import android.webkit.MimeTypeMap
 import com.lf.fashion.TAG
 import com.lf.fashion.data.network.SafeApiCall
 import com.lf.fashion.data.network.api.JWTApi
 import com.lf.fashion.data.network.api.MyPageApi
-import com.lf.fashion.data.response.MyInfo
+import com.lf.fashion.data.model.MyInfo
 import com.lf.fashion.ui.getMimeType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody

@@ -1,6 +1,6 @@
 package com.lf.fashion.data.network.api
 
-import com.lf.fashion.data.response.MsgResponse
+import com.lf.fashion.data.model.MsgResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

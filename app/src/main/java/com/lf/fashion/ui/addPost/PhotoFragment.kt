@@ -19,7 +19,8 @@ import com.lf.fashion.databinding.PhotoFragmentBinding
 import com.lf.fashion.ui.showPermissionDialog
 import dagger.hilt.android.AndroidEntryPoint
 
-//permissioncheck 의 역할을 하는 fragment ..
+/**permissioncheck 의 역할을 하는 fragment ..
+**/
 @AndroidEntryPoint
 class PhotoFragment : Fragment() {
     private lateinit var binding : PhotoFragmentBinding

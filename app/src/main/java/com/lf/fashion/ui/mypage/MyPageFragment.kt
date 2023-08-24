@@ -14,9 +14,9 @@ import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
-import com.lf.fashion.data.response.MyInfo
-import com.lf.fashion.data.response.Posts
-import com.lf.fashion.data.response.RandomPostResponse
+import com.lf.fashion.data.model.MyInfo
+import com.lf.fashion.data.model.Posts
+import com.lf.fashion.data.model.RandomPostResponse
 import com.lf.fashion.databinding.MypageFragmentBinding
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener

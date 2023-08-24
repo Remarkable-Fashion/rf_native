@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.lf.fashion.R
-import com.lf.fashion.data.response.Cloth
-import com.lf.fashion.data.response.Profile
+import com.lf.fashion.data.model.Cloth
+import com.lf.fashion.data.model.Profile
 
 import java.text.DecimalFormat
 

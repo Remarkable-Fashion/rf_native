@@ -1,7 +1,6 @@
 package com.lf.fashion.ui.home.photozip
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -13,8 +12,8 @@ import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
-import com.lf.fashion.data.response.ImageUrl
-import com.lf.fashion.data.response.Posts
+import com.lf.fashion.data.model.ImageUrl
+import com.lf.fashion.data.model.Posts
 import com.lf.fashion.databinding.HomeBPhotozipVerticalFragmentBinding
 import com.lf.fashion.ui.MyBottomDialogListener
 import com.lf.fashion.ui.cancelBtnBackStack

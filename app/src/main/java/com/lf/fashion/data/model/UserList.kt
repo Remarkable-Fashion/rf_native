@@ -1,4 +1,4 @@
-package com.lf.fashion.data.response
+package com.lf.fashion.data.model
 
 data class FollowingUserList (
     val hasNext : Boolean,

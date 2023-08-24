@@ -10,7 +10,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.lf.fashion.R
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
-import com.lf.fashion.data.response.Posts
+import com.lf.fashion.data.model.Posts
 import com.lf.fashion.databinding.HomeBottomDialogItemBinding
 import com.lf.fashion.ui.MyBottomDialogListener
 import dagger.hilt.android.AndroidEntryPoint
