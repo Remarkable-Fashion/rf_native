@@ -155,7 +155,7 @@ class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), Vie
                         nameValue,
                         viewModel.selectedCategory!!,
                         selectedImageUri!!,
-                        priceValue,
+                        priceValue.toInt(),
                         colorValue,
                         sizeValue,
                         brandValue,
@@ -210,18 +210,28 @@ class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), Vie
     private fun submitClothes() {
         binding.submitBtn.setOnClickListener {
             val currentList = addClothesAdapter.currentList
+            //list 에서 1개씩 등록.
             currentList.forEach {
                 runBlocking {
                     launch {
-                        val infoResponse = viewModel.uploadClothesInfo(clothesPostId, it)
+                        //TODO 의상등록 image url 응답받고 적용하는건지 check
                         val imagePath = absolutelyPath(Uri.parse(it.imageUrl), requireContext())
                         Log.e(TAG, "submitClothes: ImagePath  $imagePath")
-                        if(infoResponse.success) {
-                            val imageResponse = viewModel.uploadClothesImage(imagePath!!)
-                            if (imageResponse.success){
+                        val imageResponse = viewModel.uploadClothesImage(imagePath!!)
+                        if(imageResponse.success){
+                            val uploadedImageUrl = imageResponse.imgUrls!![0]
+                            it.imageUrl = uploadedImageUrl
+                            val infoResponse = viewModel.uploadClothesInfo(clothesPostId, it)
+                            if(infoResponse.success){
                                 Toast.makeText(requireContext(),"의상 등록이 완료되었습니다.",Toast.LENGTH_SHORT).show()
                             }
                         }
+                        /*    if(infoResponse.success) {
+                                val imageResponse = viewModel.uploadClothesImage(imagePath!!)
+                                if (imageResponse.success){
+                                    Toast.makeText(requireContext(),"의상 등록이 완료되었습니다.",Toast.LENGTH_SHORT).show()
+                                }
+                            }*/
                     }
                 }
             }

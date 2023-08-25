@@ -18,7 +18,7 @@ interface UploadPostApi {
     @Multipart
     @POST("post/image")
     suspend fun uploadPostImages(
-        @Part posts: MultipartBody.Part
+        @Part posts: MutableList<MultipartBody.Part>
     ): MsgResponse
 
 }

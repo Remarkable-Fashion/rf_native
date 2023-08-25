@@ -185,7 +185,8 @@
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
             android:background="@drawable/bg_radi3_filled_no_line"
-            tools:text="ddd"
+            tools:text="1000"
+            android:inputType="number"
             />
 
         <EditText

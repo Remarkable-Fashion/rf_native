@@ -26,6 +26,7 @@ import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ChipInfo
+import com.lf.fashion.ui.addPost.UploadPostViewModel
 import java.io.File
 import kotlin.math.roundToInt
 
@@ -36,15 +37,21 @@ fun Fragment.cancelBtnBackStack(view: ImageView) {
 }
 
 @SuppressLint("InflateParams")
-fun Fragment.childChip(chipList: List<ChipInfo>, chipGroup: ChipGroup, style: String) {
+fun Fragment.childChip(
+    chipList: List<ChipInfo>, chipGroup: ChipGroup, style: String,
+    viewModel: UploadPostViewModel? = null,
+    chipOnclick: ((Int, String, Boolean) -> Unit)? = null
+) {
     for (j in chipList.indices) {
         val chip = when (style) {
             "default" -> {
                 LayoutInflater.from(context).inflate(R.layout.chip_item, null) as Chip
             }
+
             "purple" -> {
                 LayoutInflater.from(context).inflate(R.layout.chip_purple_item, null) as Chip
             }
+
             else -> {
                 LayoutInflater.from(context).inflate(R.layout.chip_grey_item, null) as Chip
 
@@ -54,10 +61,34 @@ fun Fragment.childChip(chipList: List<ChipInfo>, chipGroup: ChipGroup, style: St
         var content = chipList[j].text
 
         chipList[j].emoji?.let {
-              content += " $it"
+            content += " $it"
         }
 
         chip.text = content
+        /* chip.setOnClickListener{
+             if (chipOnclick != null) {
+                 chipOnclick(chipList[j].id,chip.id)
+             }
+         }*/
+        chip.setOnCheckedChangeListener { _, isChecked ->
+            if (chipOnclick != null) {
+                chipOnclick(chipList[j].id, chipList[j].text, isChecked)
+            }
+        }
+
+        //다른 Fragment 갔다가 돌아왔을때 chip 을 새로 생성하는데,
+        // 이때 text 값이 같으면 다시 checked를 주기 위한 작업
+        viewModel?.let { it ->
+            if (it.tposTexts.isNotEmpty()) {
+                val text = chipList[j].text
+                if (it.tposTexts.contains(text) ||
+                    it.seasonsTexts.contains(text) ||
+                    it.stylesTexts.contains(text)
+                ) {
+                    chip.isChecked = true
+                }
+            }
+        }
         chipGroup.addView(chip)
     }
 }
@@ -109,7 +140,7 @@ fun Fragment.showRequireLoginDialog(alreadyHome: Boolean? = null) {
     loginDialog.show()
 }
 
-fun Fragment.navigateToMyPage(){
+fun Fragment.navigateToMyPage() {
     val bottomNavigationView =
         requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
     val loginMenuItem = bottomNavigationView.menu.findItem(R.id.navigation_mypage)
@@ -117,6 +148,7 @@ fun Fragment.navigateToMyPage(){
     bottomNavigationView.selectedItemId = R.id.navigation_mypage
     findNavController().navigate(R.id.action_global_to_myPageFragment)
 }
+
 fun addTextLengthCounter(editText: EditText, counterTextView: TextView, maxLength: Int) {
     editText.addTextChangedListener(object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -166,6 +198,7 @@ fun addTextChangeListener(
         editTextChangeListeners[editText] = textWatcher
     }
 }
+
 @SuppressLint("SetTextI18n")
 fun addUnitTextListener(editText: EditText, height: Boolean) {
     val endText = if (height) "cm" else "kg"
@@ -175,11 +208,11 @@ fun addUnitTextListener(editText: EditText, height: Boolean) {
             if (!text.endsWith(endText)) {
                 editText.setText("$text $endText")
             }
-            if(editText.text.toString()==" $endText"){
+            if (editText.text.toString() == " $endText") {
                 val replace = editText.text.toString().replace(" $endText", "")
                 editText.setText(replace)
             }
-        }else{
+        } else {
             val replace = editText.text.toString().replace(" $endText", "")
             editText.setText(replace)
         }
@@ -187,7 +220,7 @@ fun addUnitTextListener(editText: EditText, height: Boolean) {
     editText.addTextLengthLimit(endText)
 }
 
-fun EditText.addTextLengthLimit(endText:String) {
+fun EditText.addTextLengthLimit(endText: String) {
     this@addTextLengthLimit.addTextChangedListener(object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
         }
@@ -204,7 +237,7 @@ fun EditText.addTextLengthLimit(endText:String) {
                     this@addTextLengthLimit.setText(truncatedText)
                     this@addTextLengthLimit.setSelection(truncatedText.length) // Move cursor to the end
                     this@addTextLengthLimit.addTextChangedListener(this)
-            }
+                }
             }
         }
 
@@ -228,34 +261,36 @@ fun Fragment.handleApiError(
 ) {
     when {
         failure.isNetworkError -> {
-          /*  try {
-                val findViewById = requireActivity().findViewById<View>(R.id.abb_bar_layout)
-                findViewById.snackbar(
-                    R.string.network_message,
-                    retry
-                )
-            }catch (e:NullPointerException){
-                Toast.makeText(context, R.string.network_message, Toast.LENGTH_SHORT).show()
-            }*/
+            /*  try {
+                  val findViewById = requireActivity().findViewById<View>(R.id.abb_bar_layout)
+                  findViewById.snackbar(
+                      R.string.network_message,
+                      retry
+                  )
+              }catch (e:NullPointerException){
+                  Toast.makeText(context, R.string.network_message, Toast.LENGTH_SHORT).show()
+              }*/
         }
+
         failure.errorCode == 401 -> {
-          //  Toast.makeText(context, R.string.login_over, Toast.LENGTH_SHORT).show()
+            //  Toast.makeText(context, R.string.login_over, Toast.LENGTH_SHORT).show()
 
             //logout()
         }
+
         else -> {
 
             val error = failure.errorBody?.string().toString()
             Log.e(TAG, "handleApiError: $error")
-        //requireView().snackbar(error)
+            //requireView().snackbar(error)
         }
     }
 }
 
 
-
 // 파일 확장자로부터 MIME 타입을 추론하는 함수
- fun getMimeType(file: File): String? {
+fun getMimeType(file: File): String? {
     val extension = MimeTypeMap.getFileExtensionFromUrl(file.absolutePath)
     return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
 }
+

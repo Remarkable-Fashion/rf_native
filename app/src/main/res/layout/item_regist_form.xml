@@ -153,7 +153,7 @@
             android:maxLines="1"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="@{clothe.price}"
+            android:text="@{String.valueOf(clothe.price)}"
             android:scrollHorizontally="true"
             app:layout_constraintStart_toStartOf="@id/name_value"
             app:layout_constraintEnd_toEndOf="@id/name_value"

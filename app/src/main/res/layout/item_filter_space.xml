@@ -37,7 +37,7 @@
         android:background="@drawable/bg_spinner"
         android:theme="@style/spoqa_12sp_lf_grey"
         android:visibility="gone"/>
-    <CheckBox
+<!--    <CheckBox
         android:id="@+id/height_check_box"
         style="@style/spoqa_12sp_label"
         android:layout_width="21dp"
@@ -58,7 +58,7 @@
         android:button="@null"
         android:gravity="center"
         app:layout_constraintBaseline_toBaselineOf="@id/weight_label"
-        app:layout_constraintEnd_toStartOf="@id/checkbox_label2" />
+        app:layout_constraintEnd_toStartOf="@id/checkbox_label2" />-->
 
     <EditText
         android:id="@+id/height_value"
@@ -103,6 +103,7 @@
         android:text="@string/height_label"
         app:layout_constraintStart_toStartOf="@id/guideline_vertical"
         app:layout_constraintTop_toBottomOf="@id/gender_man_btn" />
+<!--
 
     <TextView
         android:id="@+id/checkbox_label"
@@ -112,6 +113,7 @@
         android:text="@string/profile_checkbox_label"
         app:layout_constraintBaseline_toBaselineOf="@id/height_check_box"
         app:layout_constraintEnd_toEndOf="@id/guideline_vertical2" />
+-->
 
     <TextView
         android:id="@+id/weight_label"
@@ -123,7 +125,7 @@
         app:layout_constraintStart_toStartOf="@id/guideline_vertical"
         app:layout_constraintTop_toBottomOf="@id/height_value" />
 
-    <TextView
+   <!-- <TextView
         android:id="@+id/checkbox_label2"
         style="@style/spoqa_12sp_label"
         android:layout_width="wrap_content"
@@ -131,7 +133,7 @@
         android:text="@string/profile_checkbox_label"
         app:layout_constraintBaseline_toBaselineOf="@id/weight_check_box"
         app:layout_constraintEnd_toEndOf="@id/guideline_vertical2" />
-
+-->
     <View
         android:id="@+id/cloth_topline"
         android:layout_width="match_parent"

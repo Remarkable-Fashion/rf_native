@@ -22,12 +22,12 @@ class HomeRepository @Inject constructor(
     }
 
     suspend fun getRecommendClothesTop3(postId: Int, category: String) = safeApiCall {
-        postApi.getRecommendTopClothes(1,category)
+        postApi.getRecommendTopClothes(postId,category)
 
     }
 
     suspend fun getRecommendClothesInfo(postId: Int, category: String) = safeApiCall {
-        postApi.getRecommendClothesInfo(1,category)
+        postApi.getRecommendClothesInfo(postId,category)
     }
     suspend fun getPostByUserId(userId : Int) = safeApiCall {
         postApi.getPostByUserId(userId)
