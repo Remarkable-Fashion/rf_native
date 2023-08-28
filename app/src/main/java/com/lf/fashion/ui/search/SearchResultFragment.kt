@@ -6,132 +6,172 @@ import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.SearchResultViewpagerBinding
-import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener
-import com.lf.fashion.ui.GridPostAdapter
+import com.lf.fashion.ui.home.GridSpaceItemDecoration
+import com.lf.fashion.ui.search.adapter.ItemGridAdapter
+import com.lf.fashion.ui.search.adapter.ItemVerticalAdapter
+import com.lf.fashion.ui.search.adapter.LookPostGridAdapter
 import com.lf.fashion.ui.search.adapter.LookVerticalAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchResultFragment(resultCategory: String?) : Fragment(R.layout.search_result_viewpager),
-    GridPhotoClickListener {
+class SearchResultFragment(private val resultCategory: String) :
+    Fragment(R.layout.search_result_viewpager), GridPhotoClickListener {
     private lateinit var binding: SearchResultViewpagerBinding
 
     //TODO : 이부분 해결해야합니당
     constructor() : this("look") // 외부 메뉴 이동후 재진입할 경우 기본 생성자 필요!
-
-    /**중요@ parentFragment 의 viewModel 데이터 변동 사항을 인지할 수 있도록 requireParentFragment()를 넣어줘야한다 (GRID 모드 조정 버튼이 PARENT FRAG 에 위치 )**/
-    private val viewModel: SearchViewModel by viewModels({ requireParentFragment() })
-    private val gridAdapter = GridPostAdapter(3, this, resultCategory)
-    private val verticalAdapter = LookVerticalAdapter(resultCategory)
+    private val viewModel: SearchViewModel by hiltNavGraphViewModels(R.id.navigation_search)
+    private val itemGridAdapter = ItemGridAdapter(3, this)
+    private val lookPostGridAdapter = LookPostGridAdapter(3, this)
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = SearchResultViewpagerBinding.bind(view)
 
-        /** 메인 홈 post 구조와 동일하게, viewPager , staggerGrid RecyclerView 를 동시에 활용하고 visibility 로 노출을 조정
-         * 특히 staggerGridAdapter 는 메인 홈과 동일하기 때문에 같은 어뎁터를 사용함 (GridPostAdapter)**/
-        binding.gridRv.adapter = gridAdapter
+        //   binding.gridRv.adapter = gridAdapter
 
         val searchTerm = arguments?.get("searchTerm").toString()
         Log.d(TAG, "SearchResultFragment - onViewCreated: $searchTerm");
-        viewModel.getSearchResult(searchTerm)
-        viewModel.getItemSearchResult(searchTerm)
+        when (resultCategory) {
+            "look" -> {
+                viewModel.getSearchResult(searchTerm)
+                lookResultUiBinding()
+            }
 
-        with(binding.gridRv) {
-
-
-            viewModel.postResponse.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let { resource ->
-                    when (resource) {
-                        is Resource.Success -> {
-                            val response = resource.value
-
-                            if (response.posts.isEmpty()) {
-                                binding.arrayEmptyText.isVisible = true
-                            } else {
-                                binding.arrayEmptyText.isVisible = false
-
-                                layoutManager =
-                                    StaggeredGridLayoutManager(
-                                        3,
-                                        StaggeredGridLayoutManager.VERTICAL
-                                    )
-                                gridAdapter.apply {
-
-                                    while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
-                                        removeItemDecorationAt(0)
-                                    }
-                                    addItemDecoration(GridSpaceItemDecoration(3, 6))
-                                    submitList(response.posts)
-                                }
-                            }
-                        }
-                        is Resource.Loading -> {
-
-                        }
-                        else -> {
-
-                        }
-                    }
-                }
-
+            else -> { // item
+                viewModel.getItemSearchResult(searchTerm)
+                itemResultUiBinding()
             }
         }
-        with(binding.verticalViewpager) {
-            viewModel.itemList.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let { resource ->
-                    when (resource) {
-                        is Resource.Success -> {
-                            val response = resource.value
-                            if (response.posts.isEmpty()) {
-                                binding.arrayEmptyText.isVisible = true
-                            } else {
-                                binding.arrayEmptyText.isVisible = false
-                                adapter = verticalAdapter.apply {
-                                    submitList(response.posts)
-                                }
-                                getChildAt(0).overScrollMode =
-                                    RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
-                            }
-                        }
-                        is Resource.Loading -> {
 
-                        }
-                        else -> {
-
-                        }
-                    }
-                }
-            }
-        }
 
         viewModel.gridMode.observe(viewLifecycleOwner) { gridMode ->
             when (gridMode) {
                 1 -> {
                     layoutVisibilityUpdate(false)
                 }
+
                 2 -> {
                     editGridSpanCount(2)
                     layoutVisibilityUpdate(true)
                 }
+
                 3 -> {
                     editGridSpanCount(3)
                     layoutVisibilityUpdate(true)
                 }
 
             }
-            gridAdapter.notifyDataSetChanged()
+            if (resultCategory == "look") lookPostGridAdapter.notifyDataSetChanged() else itemGridAdapter.notifyDataSetChanged()
         }
 
+    }
+
+    private fun itemResultUiBinding() {
+
+        viewModel.itemList.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    val response = resource.value
+                    if (response.clothes == null) {
+                        binding.arrayEmptyText.isVisible = true
+                    } else {
+                        binding.arrayEmptyText.isVisible = false
+                        with(binding.verticalViewpager) {
+
+                            adapter = ItemVerticalAdapter().apply {
+                                submitList(response.clothes)
+                            }
+                            getChildAt(0).overScrollMode =
+                                RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
+                        }
+                        with(binding.gridRv) {
+                            layoutManager =
+                                StaggeredGridLayoutManager(
+                                    3,
+                                    StaggeredGridLayoutManager.VERTICAL
+                                )
+                            adapter = itemGridAdapter.apply {
+
+                                while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
+                                    removeItemDecorationAt(0)
+                                }
+                                addItemDecoration(GridSpaceItemDecoration(3, 6))
+                                submitList(response.clothes)
+                            }
+                        }
+
+
+                    }
+                }
+
+                is Resource.Loading -> {
+
+                }
+
+                else -> {
+
+                }
+            }
+
+        }
+    }
+
+    private fun lookResultUiBinding() {
+        viewModel.lookList.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    val response = resource.value
+                    Log.e(TAG, "lookResultUiBinding: $response")
+                    if (response.posts == null) {
+                        binding.arrayEmptyText.isVisible = true
+                    } else {
+                        binding.arrayEmptyText.isVisible = false
+                        binding.gridRv.apply {
+                            layoutManager =
+                                StaggeredGridLayoutManager(
+                                    3,
+                                    StaggeredGridLayoutManager.VERTICAL
+                                )
+                            adapter = lookPostGridAdapter.apply {
+
+                                while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
+                                    removeItemDecorationAt(0)
+                                }
+                                addItemDecoration(GridSpaceItemDecoration(3, 6))
+                                submitList(response.posts)
+                            }
+                        }
+                        binding.verticalViewpager.apply {
+                            adapter = LookVerticalAdapter().apply {
+                                submitList(response.posts)
+                            }
+                            getChildAt(0).overScrollMode =
+                                RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
+                        }
+
+                    }
+                }
+
+                is Resource.Loading -> {
+
+                }
+
+                else -> {
+
+                }
+            }
+
+        }
     }
 
     private fun layoutVisibilityUpdate(default: Boolean) {
@@ -148,9 +188,17 @@ class SearchResultFragment(resultCategory: String?) : Fragment(R.layout.search_r
             while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
                 removeItemDecorationAt(0)
             }
-            gridAdapter.apply {
-                addItemDecoration(GridSpaceItemDecoration(spanCount, 6))
-                editSpanCountBtnClicked(spanCount)
+
+            if (resultCategory == "look") {
+                lookPostGridAdapter.apply {
+                    addItemDecoration(GridSpaceItemDecoration(spanCount, 6))
+                    editSpanCountBtnClicked(spanCount)
+                }
+            } else {
+                itemGridAdapter.apply {
+                    addItemDecoration(GridSpaceItemDecoration(spanCount, 6))
+                    editSpanCountBtnClicked(spanCount)
+                }
             }
         }
     }

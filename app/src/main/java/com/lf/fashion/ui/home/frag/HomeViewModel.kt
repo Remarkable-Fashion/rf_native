@@ -22,6 +22,7 @@ class HomeViewModel @Inject constructor(
     private val communicateRepository: CommunicateRepository,
     @ApplicationContext context: Context
 ) : ViewModel() {
+    var postMode = MutableLiveData<String>()
 
     private val _response = MutableLiveData<Resource<RandomPostResponse>>()
     var response: LiveData<Resource<RandomPostResponse>> = _response
@@ -35,11 +36,12 @@ class HomeViewModel @Inject constructor(
 
     private val userPreferences = PreferenceManager(context)
 
-      init {
-          viewModelScope.launch {
-          getPostList("Male",21)
-          }
-      }
+    init {
+        postMode.value = "random"
+        viewModelScope.launch {
+            getPostList("Male", 21)
+        }
+    }
 
     private fun getPostList(sex: String, take: Int) {
         Log.d(TAG, "suspend getPostList 호출 ")
@@ -56,21 +58,21 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun changeLikesState(create : Boolean, postId : Int){
+    fun changeLikesState(create: Boolean, postId: Int) {
         viewModelScope.launch {
-            if(create){
-                _likeResponse.value =  communicateRepository.createLike(postId)
-            }else{
+            if (create) {
+                _likeResponse.value = communicateRepository.createLike(postId)
+            } else {
                 _likeResponse.value = communicateRepository.deleteLike(postId)
             }
         }
     }
 
-    fun changeScrapState(create : Boolean, postId : Int){
+    fun changeScrapState(create: Boolean, postId: Int) {
         viewModelScope.launch {
-            if(create){
-                _scrapResponse.value =  communicateRepository.createScrap(postId)
-            }else{
+            if (create) {
+                _scrapResponse.value = communicateRepository.createScrap(postId)
+            } else {
                 _scrapResponse.value = communicateRepository.deleteScrap(postId)
             }
         }

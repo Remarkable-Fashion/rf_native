@@ -216,14 +216,16 @@ class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), Vie
                     launch {
                         //TODO 의상등록 image url 응답받고 적용하는건지 check
                         val imagePath = absolutelyPath(Uri.parse(it.imageUrl), requireContext())
-                        Log.e(TAG, "submitClothes: ImagePath  $imagePath")
                         val imageResponse = viewModel.uploadClothesImage(imagePath!!)
+
                         if(imageResponse.success){
                             val uploadedImageUrl = imageResponse.imgUrls!![0]
                             it.imageUrl = uploadedImageUrl
+
                             val infoResponse = viewModel.uploadClothesInfo(clothesPostId, it)
                             if(infoResponse.success){
                                 Toast.makeText(requireContext(),"의상 등록이 완료되었습니다.",Toast.LENGTH_SHORT).show()
+                                findNavController().navigateUp()
                             }
                         }
                         /*    if(infoResponse.success) {

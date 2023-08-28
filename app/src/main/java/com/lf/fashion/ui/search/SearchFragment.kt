@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
@@ -30,7 +31,7 @@ import kotlinx.coroutines.runBlocking
 class SearchFragment : Fragment(R.layout.search_fragment){
     private lateinit var binding: SearchFragmentBinding
     private lateinit var userPreferences: PreferenceManager
-    private val viewModel: SearchViewModel by viewModels()
+    private val viewModel: SearchViewModel by hiltNavGraphViewModels(R.id.navigation_search)
 
     private val tabTitleArray = arrayOf("LOOK", "ITEM")
     private val historyList = MutableLiveData<MutableList<String>>()

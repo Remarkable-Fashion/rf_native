@@ -16,6 +16,7 @@ class UploadClothesRepository @Inject constructor(private val uploadClothesApi: 
     SafeApiCall {
 
     suspend fun uploadClothesInfo(pageClothesId: Int, clothesInfo: UploadCloth) =safeApiCall{
+        Log.e(TAG, "uploadClothesInfo:${clothesInfo.imageUrl} ")
         uploadClothesApi.uploadClothes(pageClothesId, clothesInfo)
     }
 
@@ -27,9 +28,9 @@ class UploadClothesRepository @Inject constructor(private val uploadClothesApi: 
         val requestFile = file.asRequestBody(mimeType?.toMediaTypeOrNull())
         partBody = MultipartBody.Part.createFormData("clothes" , file.name , requestFile)
 
-        Log.d(TAG, "uploadClothesImageRepo - mimeType $mimeType ");
-        Log.d(TAG, "uploadClothesImageRepo - updateMyProfile: ${file.name}");
-        Log.d(TAG, "uploadClothesImageRepo - file ?? : ${requestFile.contentType()}")
+        Log.e(TAG, "uploadClothesImageRepo - mimeType $mimeType ");
+        Log.e(TAG, "uploadClothesImageRepo - updateMyProfile: ${file.name}");
+        Log.e(TAG, "uploadClothesImageRepo - file ?? : ${requestFile.contentType()}")
 
         uploadClothesApi.uploadClothesImages(partBody)
     }

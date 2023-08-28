@@ -47,14 +47,11 @@ class HomeFragment :
     private lateinit var binding: HomeAFragmentBinding
     private val viewModel: HomeViewModel by viewModels()
 
-    // private val postList = MutableLiveData<List<Posts>>()
     private val gridAdapter = GridPostAdapter(gridPhotoClickListener = this)
     private val defaultAdapter = DefaultPostAdapter(this@HomeFragment, this@HomeFragment)
     private lateinit var userPref: PreferenceManager
     private lateinit var likeClickedPosts: Posts
     private lateinit var scrapClickedPosts: Posts
-
-    //private lateinit var layoutMode : String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -88,6 +85,9 @@ class HomeFragment :
 
         //스크랩 상태 변화 관찰&업데이트
         updateScrapState()
+
+        binding.homeMainViewpager.adapter = defaultAdapter
+        binding.gridRecyclerView.adapter = gridAdapter
     }
 
 
@@ -95,6 +95,20 @@ class HomeFragment :
         /*response 로 post 를 받아서 중첩 viewPager 와 recyclerView 모두에게 adapter 연결/submitList 후 visibility 로 노출을 관리한다
         (전환 속도 감소, 메모리에 무리가 가지않는다면 ok)*/
         photoLayoutVisibilityMode(true) // default ui visibility
+        viewModel.postMode.observe(viewLifecycleOwner) {
+            when (it) {
+                "following" -> {
+                    //TODO 엔드포인트 생성시 반영
+                }
+
+                "random" -> {
+                    requestRandomPost()
+                }
+            }
+        }
+    }
+
+    private fun requestRandomPost() {
         viewModel.response.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
@@ -163,11 +177,13 @@ class HomeFragment :
             binding.topFollowingMenuLayer -> { //팔로잉 버튼 클릭
                 binding.appBarFollowing.isSelected = true
                 binding.appBarRandom.isSelected = false
+                viewModel.postMode.value = "following"
             }
 
             binding.appBarRandom -> { //랜덤 버튼 클릭
                 binding.appBarFollowing.isSelected = false
                 binding.appBarRandom.isSelected = true
+                viewModel.postMode.value = "random"
             }
 
             //상단 바의 2,3장씩 보기 버튼 클릭
@@ -198,6 +214,7 @@ class HomeFragment :
                 findNavController().navigate(R.id.action_global_to_filterFragment)
             }
         }
+
     }
 
 
