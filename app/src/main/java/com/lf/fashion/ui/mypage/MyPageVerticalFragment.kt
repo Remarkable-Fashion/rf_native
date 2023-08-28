@@ -168,7 +168,7 @@ class MyPageVerticalFragment : Fragment(),
     }
 
     override fun kebabBtnClicked(post: Posts) {
-        val dialog = PostBottomSheetFragment(post)
+        val dialog = PostBottomSheetFragment(post, userId = userInfo.id)
         dialog.show(parentFragmentManager, "bottom_sheet")
     }
 

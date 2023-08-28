@@ -87,7 +87,8 @@ class PostBottomSheetFragment(private val post: Posts? = null, private val userI
 
     private fun myPostBottomUi() {
         //나의 게시물일 경우 myPost 는 true
-        val myPost = userPref.getMyUniqueId() == post!!.user?.id
+        val postUserId = post?.user?.id ?: userId
+        val myPost = userPref.getMyUniqueId() == postUserId
 
         binding.declareBtn.isVisible = !myPost
         binding.bottomSheetFollowBtn.isVisible = !myPost
