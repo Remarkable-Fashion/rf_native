@@ -13,6 +13,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.model.UploadCloth
@@ -70,6 +71,11 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //생성 후 다른 바텀 메뉴 이동시 다시 home menu 클릭시 selected 아이콘으로 변경 안되는 오류 해결하기위해 수동 메뉴 checked 코드 추가
+        val bottomNavigationView =
+            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
+        val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_photo)
+        homeMenu.isChecked = true
 
         name = binding.clothRegistForm.nameValue.text
         price = binding.clothRegistForm.priceValue.text
@@ -111,7 +117,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         viewModel.tpoChipList.observe(viewLifecycleOwner) {
             it?.let {
                 val tpoChipGroup = binding.filterSpace.filterInclude.tpoChipGroup
-                childChip(it, tpoChipGroup, chipStyle , viewModel) { chipId ,text, isChecked ->
+                childChip(it, tpoChipGroup, chipStyle , uploadPostViewModel =  viewModel) { chipId ,text, isChecked ->
                     if(isChecked){
                         viewModel.selectedTpos.add(chipId)
                         viewModel.tposTexts.add(text)
@@ -128,7 +134,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         viewModel.seasonChipList.observe(viewLifecycleOwner) {
             it?.let {
                 val seasonChipGroup = binding.filterSpace.filterInclude.seasonChipGroup
-                childChip(it, seasonChipGroup, chipStyle,viewModel) { chipId,text,isChecked ->
+                childChip(it, seasonChipGroup, chipStyle, uploadPostViewModel = viewModel) { chipId,text,isChecked ->
                     if(isChecked){
                         viewModel.selectedSeasons.add(chipId)
                         viewModel.seasonsTexts.add(text)
@@ -144,7 +150,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         viewModel.styleChipList.observe(viewLifecycleOwner) {
             it?.let {
                 val styleChipGroup = binding.filterSpace.filterInclude.styleChipGroup
-                childChip(it, styleChipGroup, chipStyle,viewModel) { chipId,text,isChecked ->
+                childChip(it, styleChipGroup, chipStyle, uploadPostViewModel = viewModel) { chipId,text,isChecked ->
                     if(isChecked){
                         viewModel.selectedStyles.add(chipId)
                         viewModel.stylesTexts.add(text)

@@ -68,7 +68,7 @@ class SearchFragment : Fragment(R.layout.search_fragment){
         searchResultSpanCountBtnOnClick() // 결과 레이아웃 사진 모아보기 갯수 버튼 클릭
 
         binding.searchResult.filter.setOnClickListener {
-            findNavController().navigate(R.id.action_global_to_filterFragment, bundleOf("searchResult" to true))
+            findNavController().navigate(R.id.action_navigation_search_to_searchFilterFragment, bundleOf("searchResult" to true))
         }
 
     }

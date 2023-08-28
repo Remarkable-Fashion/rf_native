@@ -21,6 +21,15 @@ class FilterViewModel @Inject constructor(private val repository: FilterReposito
     private val _styleChipList = MutableLiveData<List<ChipInfo>>()
     var styleChipList: LiveData<List<ChipInfo>> = _styleChipList
 
+    var selectedGender :String?=null
+
+    val selectedTpos: MutableList<Int> = mutableListOf()
+    val selectedSeasons : MutableList<Int> = mutableListOf()
+    val selectedStyles : MutableList<Int> = mutableListOf()
+    var tposTexts: MutableList<String> = mutableListOf()
+    var seasonsTexts : MutableList<String> = mutableListOf()
+    var stylesTexts : MutableList<String> = mutableListOf()
+
     init {
         getTPOChipsInfo()
         getSeasonChipsInfo()

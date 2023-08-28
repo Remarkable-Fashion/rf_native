@@ -63,7 +63,13 @@
     <fragment
         android:id="@+id/navigation_search"
         android:name="com.lf.fashion.ui.search.SearchFragment"
-        android:label="SearchFragment" />
+        android:label="SearchFragment" >
+
+        <action
+            android:id="@+id/action_navigation_search_to_searchFilterFragment"
+            app:destination="@id/searchFilterFragment" />
+
+    </fragment>
     <fragment
         android:id="@+id/navigation_scrap"
         android:name="com.lf.fashion.ui.scrap.ScrapFragment"
@@ -199,4 +205,8 @@
         android:id="@+id/otherUserVerticalPostFragment"
         android:name="com.lf.fashion.ui.home.profile.OtherUserVerticalPostFragment"
         android:label="OtherUserVerticalPostFragment" />
+    <fragment
+        android:id="@+id/searchFilterFragment"
+        android:name="com.lf.fashion.ui.search.SearchFilterFragment"
+        android:label="SearchFilterFragment" />
 </navigation>

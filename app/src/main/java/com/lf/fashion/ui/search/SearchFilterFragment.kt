@@ -1,4 +1,4 @@
-package com.lf.fashion.ui.home.frag
+package com.lf.fashion.ui.search
 
 import android.os.Bundle
 import android.util.Log
@@ -12,13 +12,14 @@ import com.lf.fashion.databinding.HomeBPhotoFilterFragmentBinding
 import com.lf.fashion.ui.addUnitTextListener
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.childChip
+import com.lf.fashion.ui.home.frag.FilterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * 홈 메인 상단의 필터 아이콘을 클릭시 노출되는 프래그먼트입니다.
  */
 @AndroidEntryPoint
-class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment),View.OnClickListener {
+class SearchFilterFragment : Fragment(R.layout.search_filter_fragment),View.OnClickListener {
     private lateinit var binding: HomeBPhotoFilterFragmentBinding
     private val viewModel: FilterViewModel by viewModels()
     private val chipStyle = "default"
@@ -37,9 +38,14 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment),View.OnCl
         //생성 후 다른 바텀 메뉴 이동시 다시 home menu 클릭시 selected 아이콘으로 변경 안되는 오류 해결하기위해 수동 메뉴 checked 코드 추가
         val bottomNavigationView =
             requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-        val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_home)
+        val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_search)
         homeMenu.isChecked = true
 
+        arguments?.get("searchResult")?.let {
+            if (it as Boolean) {
+                //searchResult 일 경우 스피너 visible
+            }
+        }
         binding.filterSpace.genderManBtn.setOnClickListener(this)
         binding.filterSpace.genderWomanBtn.setOnClickListener(this)
 

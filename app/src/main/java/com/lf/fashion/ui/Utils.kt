@@ -27,6 +27,7 @@ import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ChipInfo
 import com.lf.fashion.ui.addPost.UploadPostViewModel
+import com.lf.fashion.ui.home.frag.FilterViewModel
 import java.io.File
 import kotlin.math.roundToInt
 
@@ -39,7 +40,8 @@ fun Fragment.cancelBtnBackStack(view: ImageView) {
 @SuppressLint("InflateParams")
 fun Fragment.childChip(
     chipList: List<ChipInfo>, chipGroup: ChipGroup, style: String,
-    viewModel: UploadPostViewModel? = null,
+    uploadPostViewModel: UploadPostViewModel? = null,
+    filterViewModel: FilterViewModel?=null,
     chipOnclick: ((Int, String, Boolean) -> Unit)? = null
 ) {
     for (j in chipList.indices) {
@@ -65,20 +67,27 @@ fun Fragment.childChip(
         }
 
         chip.text = content
-        /* chip.setOnClickListener{
-             if (chipOnclick != null) {
-                 chipOnclick(chipList[j].id,chip.id)
-             }
-         }*/
         chip.setOnCheckedChangeListener { _, isChecked ->
             if (chipOnclick != null) {
                 chipOnclick(chipList[j].id, chipList[j].text, isChecked)
             }
         }
 
-        //다른 Fragment 갔다가 돌아왔을때 chip 을 새로 생성하는데,
+        //다른 Fragment 갔다가 돌아왔을 때 chip 을 새로 생성하는데,
         // 이때 text 값이 같으면 다시 checked를 주기 위한 작업
-        viewModel?.let { it ->
+        //val viewModel = uploadPostViewModel ?: filterViewModel
+        uploadPostViewModel?.let { it ->
+            if (it.tposTexts.isNotEmpty()) {
+                val text = chipList[j].text
+                if (it.tposTexts.contains(text) ||
+                    it.seasonsTexts.contains(text) ||
+                    it.stylesTexts.contains(text)
+                ) {
+                    chip.isChecked = true
+                }
+            }
+        }
+        filterViewModel?.let { it ->
             if (it.tposTexts.isNotEmpty()) {
                 val text = chipList[j].text
                 if (it.tposTexts.contains(text) ||
