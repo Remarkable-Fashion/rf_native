@@ -1,4 +1,4 @@
-package com.lf.fashion.ui.home.photozip
+package com.lf.fashion.ui.mypage
 
 import android.os.Bundle
 import android.view.View
@@ -14,10 +14,12 @@ import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.data.model.UserInfo
 import com.lf.fashion.databinding.HomeBPhotoZipFragmentBinding
+import com.lf.fashion.databinding.MypagePhotoZipFragmentBinding
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener
 import com.lf.fashion.ui.GridPostAdapter
 import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
+import com.lf.fashion.ui.home.photozip.PhotoZipViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
 
@@ -25,23 +27,27 @@ import kotlin.properties.Delegates
  * 메인 홈에서 유저 클릭시 노출되는 특정 유저 사진 모아보기 프래그먼트입니다.
  */
 @AndroidEntryPoint
-class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhotoClickListener {
-    lateinit var binding: HomeBPhotoZipFragmentBinding
-    private val viewModel: PhotoZipViewModel by hiltNavGraphViewModels(R.id.navigation_home)
+class MyPhotoZipFragment : Fragment(R.layout.mypage_photo_zip_fragment), GridPhotoClickListener {
+    lateinit var binding: MypagePhotoZipFragmentBinding
+    private val viewModel: PhotoZipViewModel by hiltNavGraphViewModels(R.id.navigation_mypage)
     private var userId by Delegates.notNull<Int>()
     private lateinit var userInfoPost: Posts
+    // private var postList = mutableListOf<Posts>()
+
+    // private var followState by Delegates.notNull<Boolean>()
+
     private lateinit var userPref: PreferenceManager
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //생성 후 다른 바텀 메뉴 이동시 다시 home menu 클릭시 selected 아이콘으로 변경 안되는 오류 해결하기위해 수동 메뉴 checked 코드 추가
+        //마이페이지 내부로 설정
         val bottomNavigationView =
             requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-        val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_home)
-        homeMenu.isChecked = true
+        val myPage = bottomNavigationView.menu.findItem(R.id.navigation_mypage)
+        myPage.isChecked = true
 
-        binding = HomeBPhotoZipFragmentBinding.bind(view)
+        binding = MypagePhotoZipFragmentBinding.bind(view)
         userPref = PreferenceManager(requireContext().applicationContext)
 
         val post = arguments?.get("post") as Posts
@@ -66,7 +72,7 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
             }
         }
         with(binding.gridRv) { //grid layout
-            adapter = GridPostAdapter(3, this@PhotoZipFragment, null).apply {
+            adapter = GridPostAdapter(3, this@MyPhotoZipFragment, null).apply {
                 viewModel.posts.observe(viewLifecycleOwner) { resource ->
                     when (resource) {
                         is Resource.Success -> {
@@ -141,7 +147,7 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
         //,
         //            bundleOf("postList" to postList)
         findNavController().navigate(
-            R.id.action_photoZipFragment_to_photoZipVerticalFragment,
+            R.id.action_myPhotoZipFragment_to_myPhotoZipVerticalFragment,
             bundleOf("userInfoPost" to userInfoPost)
         )
     }

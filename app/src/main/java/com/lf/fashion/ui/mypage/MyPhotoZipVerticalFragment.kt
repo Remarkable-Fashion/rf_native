@@ -1,69 +1,68 @@
 package com.lf.fashion.ui.mypage
 
-import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.lf.fashion.MainActivity
+import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
+import com.lf.fashion.TAG
+import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.network.Resource
+import com.lf.fashion.data.model.ImageUrl
+import com.lf.fashion.data.model.Posts
+import com.lf.fashion.databinding.HomeBPhotozipVerticalFragmentBinding
+import com.lf.fashion.databinding.MypagePhotozipVerticalFragmentBinding
+import com.lf.fashion.ui.MyBottomDialogListener
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.VerticalViewPagerClickListener
 import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
-import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.lf.fashion.MainNaviDirections
-import com.lf.fashion.TAG
-import com.lf.fashion.data.network.Resource
-import com.lf.fashion.data.model.ImageUrl
-import com.lf.fashion.data.model.Posts
-import com.lf.fashion.data.model.UserInfo
-import com.lf.fashion.databinding.MyVerticalFragmentBinding
-import com.lf.fashion.ui.MyBottomDialogListener
+import com.lf.fashion.ui.home.photozip.PhotoZipViewModel
+import com.lf.fashion.ui.navigateToMyPage
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
-class MyPageVerticalFragment : Fragment(),
-    PhotoClickListener, VerticalViewPagerClickListener,
-    MyBottomDialogListener {
-    private lateinit var binding: MyVerticalFragmentBinding
-    private val viewModel: MyPageViewModel by hiltNavGraphViewModels(R.id.navigation_mypage) // hilt navi 함께 사용할때 viewModel 공유
-    private val defaultAdapter = DefaultPostAdapter(
-        this@MyPageVerticalFragment,
-        this@MyPageVerticalFragment
-    )
+class MyPhotoZipVerticalFragment : Fragment(R.layout.mypage_photozip_vertical_fragment),
+    PhotoClickListener, VerticalViewPagerClickListener, MyBottomDialogListener {
+    private lateinit var binding: MypagePhotozipVerticalFragmentBinding
+    private val viewModel: PhotoZipViewModel by hiltNavGraphViewModels(R.id.navigation_mypage)
+    private lateinit var defaultAdapter: DefaultPostAdapter
+    private lateinit var userPref: PreferenceManager
+
     private lateinit var likeClickedPosts: Posts
     private lateinit var scrapClickedPosts: Posts
-    private lateinit var userInfo: UserInfo
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-        val loginMenuItem = bottomNavigationView.menu.findItem(R.id.navigation_mypage)
-        loginMenuItem.isChecked = true
-        bottomNavigationView.selectedItemId = R.id.navigation_mypage
-
-        binding = MyVerticalFragmentBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun onCreate(savedInstanceState: Bundle?) {
+        MainActivity.hideNavi(true)
+        super.onCreate(savedInstanceState)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val bottomNavigationView =
+            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
+        val myPage = bottomNavigationView.menu.findItem(R.id.navigation_mypage)
+        myPage.isChecked = true
+        Log.e(TAG, " onviewCreated : My vertical fragment !! ")
+
+        binding = MypagePhotozipVerticalFragmentBinding.bind(view)
         cancelBtnBackStack(binding.backBtn)
-        viewModel.myInfo.observe(viewLifecycleOwner) {
-            userInfo = UserInfo(it.id, it.name, it.profile, null)
-        }
-        // val postList = arguments?.get("postList") as List<Posts>
-        viewModel.postResponse.observe(viewLifecycleOwner) { resource ->
+        userPref = PreferenceManager(requireContext().applicationContext)
+
+        val userInfoPost = arguments?.get("userInfoPost") as Posts
+        defaultAdapter = DefaultPostAdapter(
+            this@MyPhotoZipVerticalFragment,
+            this@MyPhotoZipVerticalFragment,
+            userInfoPost,true
+        )
+
+        viewModel.posts.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
                     val response = resource.value
@@ -72,10 +71,6 @@ class MyPageVerticalFragment : Fragment(),
                         (adapter as? DefaultPostAdapter)?.apply {
                             submitList(response.posts)
                             //scrapFragment 에서 선택한 item 의 index 를 시작 index 로 지정 , animation false 처리
-                            Log.d(
-                                TAG,
-                                "MyPageVerticalFragment - onViewCreated: ${viewModel.startIndex.value}"
-                            );
                             setCurrentItem(viewModel.startIndex.value ?: 0, false)
                         }
                         getChildAt(0).overScrollMode =
@@ -91,11 +86,12 @@ class MyPageVerticalFragment : Fragment(),
 
                 }
             }
-        }
 
+        }
         //좋아요 상태 변화 관찰&업데이트
         updateLikeState()
         updateScrapState()
+
     }
 
     private fun updateLikeState() {
@@ -168,31 +164,33 @@ class MyPageVerticalFragment : Fragment(),
     }
 
     override fun kebabBtnClicked(post: Posts) {
-        val dialog = PostBottomSheetFragment(post, userId = userInfo.id)
-        dialog.show(parentFragmentManager, "bottom_sheet")
+        val dialog = PostBottomSheetFragment(post)
+        dialog.show(childFragmentManager, "bottom_sheet")
     }
 
     override fun photoZipBtnClicked(post: Posts) {
-        post.user = userInfo
-     /*   findNavController().navigate(
-            R.id.action_global_to_photoZipFragment, bundleOf("post" to post)
-        )*/
         findNavController().navigate(
-            R.id.action_myPageVerticalFragment_to_myPhotoZipFragment,
-            bundleOf("post" to post)
+            R.id.action_global_to_photoZipFragment, bundleOf("post" to post)
         )
     }
 
     override fun infoBtnClicked(postId: Int) {
-        findNavController().navigate(
+      /*  findNavController().navigate(
             R.id.action_global_to_userInfoFragment,
             bundleOf("postId" to postId)
-        )
-
+        )*/
     }
 
     override fun profileSpaceClicked(userId: Int) {
-        //mypage Vertical 에서는 profile space 가 invisible !
+        val myUniqueId = userPref.getMyUniqueId()
+        if (userId == myUniqueId) {
+            navigateToMyPage()
+            return
+        }
+        findNavController().navigate(
+            R.id.action_global_to_otherUSerFragment,
+            bundleOf("userId" to userId)
+        )
     }
 
     override fun onBottomSheetDismissed(post: Posts) {
@@ -205,5 +203,10 @@ class MyPageVerticalFragment : Fragment(),
             }
             defaultAdapter.notifyItemChanged(position, "SCRAP_STATE")
         }
+    }
+
+    override fun onDestroy() {
+        MainActivity.hideNavi(false)
+        super.onDestroy()
     }
 }

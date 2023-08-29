@@ -1,7 +1,7 @@
 package com.lf.fashion.ui.addPost
 
+import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
 import android.view.*
 import android.widget.Toast
@@ -10,7 +10,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -23,27 +23,25 @@ import com.lf.fashion.ui.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlin.math.log
 
 @AndroidEntryPoint
 class PhotoStep2Fragment : Fragment(), View.OnClickListener {
     private lateinit var binding: PhotoStep2FragmentBinding
-    private val viewModel: UploadPostViewModel by viewModels()
+    private val viewModel: UploadPostViewModel by hiltNavGraphViewModels(R.id.navigation_photo)
     private val regClothesList = mutableListOf<UploadCloth>()
     private val addClothesAdapter = AddPostClothesRvAdapter()
 
+    //selectedClothImageUri 는 adpater 에 보내서 띄워주는 역할을 한다
     private var selectedClothImageUri: String? = null
     private val chipStyle = "default"
-    private lateinit var name: Editable
-    private lateinit var price: Editable
-    private lateinit var color: Editable
-    private lateinit var size: Editable
-    private lateinit var brand: Editable
 
     override fun onResume() {
         viewModel.selectedGender?.let {
-            if (it == "Male") { binding.filterSpace.genderManBtn.isSelected = true }
-            else{ binding.filterSpace.genderWomanBtn.isSelected = true }
+            if (it == "Male") {
+                binding.filterSpace.genderManBtn.isSelected = true
+            } else {
+                binding.filterSpace.genderWomanBtn.isSelected = true
+            }
         }
 
         viewModel.selectedClothCategory?.let {
@@ -77,11 +75,6 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_photo)
         homeMenu.isChecked = true
 
-        name = binding.clothRegistForm.nameValue.text
-        price = binding.clothRegistForm.priceValue.text
-        color = binding.clothRegistForm.colorValue.text
-        size = binding.clothRegistForm.sizeValue.text
-        brand = binding.clothRegistForm.brandValue.text
 
         //photoFragment -> ImagePicker -> PHtoStep2Fragment 로 받아온 이미지들 ..
         val imageUris = arguments?.get("image_uri") as Array<String>
@@ -107,8 +100,19 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         addUnitTextListener(binding.filterSpace.heightValue, height = true) //
         addUnitTextListener(binding.filterSpace.weightValue, height = false)
         imagePickerOpen()
-        cancelBtnBackStack(binding.backBtn)
         submitBtnOnclick()
+        binding.backBtn.setOnClickListener {
+            val loginDialog = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setMessage(
+                    "이전 화면으로 이동하겠습니까?\n" +
+                            "등록 중인 내용은 초기화됩니다.\n"
+                )
+                .setPositiveButton("네") { _, _ ->
+                    findNavController().popBackStack()
+                }
+                .setNegativeButton("닫기") { _, _ -> }
+            loginDialog.show()
+        }
 
     }
 
@@ -117,12 +121,18 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         viewModel.tpoChipList.observe(viewLifecycleOwner) {
             it?.let {
                 val tpoChipGroup = binding.filterSpace.filterInclude.tpoChipGroup
-                childChip(it, tpoChipGroup, chipStyle , uploadPostViewModel =  viewModel) { chipId ,text, isChecked ->
-                    if(isChecked){
-                        viewModel.selectedTpos.add(chipId)
-                        viewModel.tposTexts.add(text)
-
-                    }else {
+                childChip(
+                    it,
+                    tpoChipGroup,
+                    chipStyle,
+                    uploadPostViewModel = viewModel
+                ) { chipId, text, isChecked ->
+                    if (isChecked) {
+                        if (!viewModel.selectedTpos.contains(chipId)) {
+                            viewModel.selectedTpos.add(chipId)
+                            viewModel.tposTexts.add(text)
+                        }
+                    } else {
                         viewModel.selectedTpos.remove(chipId)
                         viewModel.tposTexts.remove(text)
 
@@ -134,11 +144,18 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         viewModel.seasonChipList.observe(viewLifecycleOwner) {
             it?.let {
                 val seasonChipGroup = binding.filterSpace.filterInclude.seasonChipGroup
-                childChip(it, seasonChipGroup, chipStyle, uploadPostViewModel = viewModel) { chipId,text,isChecked ->
-                    if(isChecked){
-                        viewModel.selectedSeasons.add(chipId)
-                        viewModel.seasonsTexts.add(text)
-                    }else {
+                childChip(
+                    it,
+                    seasonChipGroup,
+                    chipStyle,
+                    uploadPostViewModel = viewModel
+                ) { chipId, text, isChecked ->
+                    if (isChecked) {
+                        if (!viewModel.selectedSeasons.contains(chipId)) {
+                            viewModel.selectedSeasons.add(chipId)
+                            viewModel.seasonsTexts.add(text)
+                        }
+                    } else {
                         viewModel.selectedSeasons.remove(chipId)
                         viewModel.seasonsTexts.remove(text)
 
@@ -150,12 +167,18 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         viewModel.styleChipList.observe(viewLifecycleOwner) {
             it?.let {
                 val styleChipGroup = binding.filterSpace.filterInclude.styleChipGroup
-                childChip(it, styleChipGroup, chipStyle, uploadPostViewModel = viewModel) { chipId,text,isChecked ->
-                    if(isChecked){
-                        viewModel.selectedStyles.add(chipId)
-                        viewModel.stylesTexts.add(text)
-
-                    }else {
+                childChip(
+                    it,
+                    styleChipGroup,
+                    chipStyle,
+                    uploadPostViewModel = viewModel
+                ) { chipId, text, isChecked ->
+                    if (isChecked) {
+                        if (!viewModel.selectedStyles.contains(chipId)) {
+                            viewModel.selectedStyles.add(chipId)
+                            viewModel.stylesTexts.add(text)
+                        }
+                    } else {
                         viewModel.selectedStyles.remove(chipId)
                         viewModel.stylesTexts.remove(text)
 
@@ -166,9 +189,15 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         }
     }
 
-    //Chip checked id 불일치 , 선ㅇ택해제 반영안됨
+    //Chip 재생성 후 checked 반영이 text를 기준으로 하기 때문에 etc를 한번 클릭시 모든 etc chip이 다눌림
+    //TODO runblock 핸들러로 대체하기 , 등록 다이얼로그 띄우기 , 이미지피커 사진갯수제한 확인
     private fun registerCloth() {
         binding.regClothBtn.setOnClickListener {
+            val name = binding.clothRegistForm.nameValue.text
+            val price = binding.clothRegistForm.priceValue.text
+            val color = binding.clothRegistForm.colorValue.text
+            val size = binding.clothRegistForm.sizeValue.text
+            val brand = binding.clothRegistForm.brandValue.text
 
             if (name.toString().isNotEmpty() && price.toString().isNotEmpty() && color.toString()
                     .isNotEmpty() && size.toString()
@@ -209,6 +238,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                 Toast.makeText(requireContext(), "의상 카테고리를 선택해주세요!", Toast.LENGTH_SHORT).show()
 
             } else {
+                Log.e(TAG, "registerCloth: ${viewModel.selectedClothCategory} , binding.name.")
                 Toast.makeText(requireContext(), "의상에 관한 정보를 모두 입력해주세요!", Toast.LENGTH_SHORT).show()
             }
         }
@@ -263,38 +293,92 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
 
     private fun submitBtnOnclick() {
         binding.submitBtn.setOnClickListener {
+
             //비어있는 값 없고, cloth 등록하다만 기록 없을 때
             if (valueValidation()) {
                 //의상 & 게시물 등록
-                //TODO 수정 필요 : 우선 image upload하고 url 받은걸 post imageUrl에 추가해서 ... 하는듯 .. !?
                 runBlocking {
                     launch {
-                        val uploadPost = UploadPost(
-                            viewModel.selectedPostImages,
-                            "추후 삭제 예정",
-                            binding.introduceValue.text.toString(),
-                            viewModel.selectedGender!!,
-                            viewModel.selectedTpos,
-                            viewModel.selectedSeasons,
-                            viewModel.selectedStyles,
-                            clothes = addClothesAdapter.currentList
-                        )
-                        val postUpload = viewModel.uploadPostInfo(uploadPost)
-                        val imageUpload = viewModel.uploadPostImages(viewModel.selectedPostImages)
-                        if (postUpload.success && imageUpload.success) {
+                        //의상 이미지 업로드부터 진행 , response 받은 url 을 새로운 list 로 담아 viewModel 에 보관.
+                        //mapNotNull -> 요소가 null 이면 건너뜀
+                        val clothesImages = addClothesAdapter.currentList.mapNotNull {
+                            absolutelyPath(
+                                Uri.parse(it.imageUrl),
+                                requireContext()
+                            )
+                        }
+                        val clothesImageResponse = viewModel.uploadClothImages(clothesImages)
+                        if (clothesImageResponse.success && clothesImageResponse.imgUrls != null) {
+                            val newList = addClothesAdapter.currentList.mapIndexed { index, cloth ->
+                                cloth.copy(imageUrl = clothesImageResponse.imgUrls[index])
+                            }
+                            Log.e(TAG, "submitBtnOnclick: ImageList $clothesImages")
+                            Log.e(TAG, "submitBtnOnclick: newList $newList")
 
+                            viewModel.uploadedClothes = newList.toMutableList()
+                        }
+                        Log.e(
+                            TAG,
+                            "submitBtnOnclick: VIEWMODEL>업로드된 옷 ${viewModel.uploadedClothes}"
+                        )
+
+
+                        //post 이미지 업로드 진행 -> 성공시 post 객체에 의상 list 담아서 전달
+                        val selectedPostImages = viewModel.selectedPostImages
+                        val postImagePathList = mutableListOf<String>()
+                        selectedPostImages.forEach {
+                            absolutelyPath(Uri.parse(it), requireContext())?.let { path ->
+                                postImagePathList.add(path)
+                            }
+                        }
+                        val imageUploadResponse = viewModel.uploadPostImages(postImagePathList)
+                        if (imageUploadResponse.success) {
+                            val tpos = viewModel.selectedTpos.distinct()
+                            val seasons = viewModel.selectedSeasons.distinct()
+                            val styles = viewModel.selectedStyles.distinct()
+
+                            val uploadPost = UploadPost(
+                                imageUploadResponse.imgUrls!!,
+                                "추후 삭제 예정",
+                                binding.introduceValue.text.toString(),
+                                viewModel.selectedGender!!,
+                                tpos,
+                                seasons,
+                                styles,
+                                clothes = viewModel.uploadedClothes
+                            )
+                            Log.e(TAG, "submitBtnOnclick: $uploadPost")
+                            val postUploadResponse = viewModel.uploadPostInfo(uploadPost)
+                            if (postUploadResponse.success) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "게시물이 등록되었습니다.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+
+                                //findNavController 로 mypage 프래그먼트 이동시 backStack 문제로 photo menu 접근이 불가,
+                                //메뉴탭 수동으로 이동시키고 backStack 제거하여 viewModel 과 edittext data clear
+                                findNavController().popBackStack(R.id.navigation_photo, true)
+                                val bottomNavigationView =
+                                    requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
+                                val loginMenuItem =
+                                    bottomNavigationView.menu.findItem(R.id.navigation_mypage)
+                                loginMenuItem.isChecked = true
+                                bottomNavigationView.selectedItemId = R.id.navigation_mypage
+                            }
                         }
                     }
                 }
-
-
-                val clothList = addClothesAdapter.currentList
-
             }
         }
     }
 
     private fun valueValidation(): Boolean {
+        val name = binding.clothRegistForm.nameValue.text
+        val price = binding.clothRegistForm.priceValue.text
+        val color = binding.clothRegistForm.colorValue.text
+        val size = binding.clothRegistForm.sizeValue.text
+        val brand = binding.clothRegistForm.brandValue.text
         var clothClear = true
         if (name.toString().isNotEmpty() || price.toString().isNotEmpty() || color.toString()
                 .isNotEmpty() || size.toString().isNotEmpty() || brand.toString().isNotEmpty()
@@ -311,6 +395,10 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
 
         }
 
+        if (!clothClear) {
+            return false
+        }
+
         val gender = viewModel.selectedGender
         val tpos = viewModel.selectedTpos
         val seasons = viewModel.selectedSeasons
@@ -320,18 +408,22 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         val introduce = binding.introduceValue.text.toString()
 
         //비어있는 값 없고, cloth 등록하다만 기록 없을 때
-        if (gender != null &&
-            tpos.isNotEmpty() &&
-            seasons.isNotEmpty() &&
-            styles.isNotEmpty() &&
-            height.isNotEmpty() &&
-            weight.isNotEmpty() &&
-            introduce.isNotEmpty() &&
-            clothClear
-        ) {
-            Log.e(TAG, "valueValidation: ${!gender.isNullOrEmpty()}")
-            return true
+        if (gender.isNullOrEmpty()) {
+            Toast.makeText(requireContext(), "성별을 선택해주세요.", Toast.LENGTH_SHORT).show()
+            return false
         }
-        return false
+
+        if (tpos.isEmpty() &&
+            seasons.isEmpty() &&
+            styles.isEmpty() &&
+            height.isEmpty() &&
+            weight.isEmpty() &&
+            introduce.isEmpty()
+        ) {
+            Toast.makeText(requireContext(), "값을 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        return true
     }
 }

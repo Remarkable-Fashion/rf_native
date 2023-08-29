@@ -21,4 +21,9 @@ interface UploadPostApi {
         @Part posts: MutableList<MultipartBody.Part>
     ): MsgResponse
 
+    @Multipart
+    @POST("clothes/image")
+    suspend fun uploadClothImages(
+        @Part clothesImage :MutableList<MultipartBody.Part>
+    ):MsgResponse
 }

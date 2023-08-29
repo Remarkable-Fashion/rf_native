@@ -17,7 +17,8 @@ import com.lf.fashion.ui.home.VerticalViewPagerClickListener
 class DefaultPostAdapter(
     private val photoClickListener: PhotoClickListener,
     private val verticalViewPagerClickListener: VerticalViewPagerClickListener,
-    private val userInfoPost : Posts?=null
+    private val userInfoPost : Posts?=null,
+    private val myPhotozip : Boolean?=null
 ) :
     ListAdapter<Posts, DefaultPostAdapter.DefaultPostViewHolder>(DefaultPostDiff()) {
 
@@ -100,15 +101,12 @@ class DefaultPostAdapter(
             if (userInfoPost == null && post.user == null) {
                 binding.profileImage.isVisible = false
                 binding.profileName.isVisible = false
-                binding.infoBtn.isVisible = false
-                binding.infoBtnText.isVisible = false
             } else {
-
                 binding.profileImage.isVisible = true
                 binding.profileName.isVisible = true
-                binding.infoBtn.isVisible = true
-                binding.infoBtnText.isVisible = true
             }
+            //mypage 사진 모아보기 vertical 버전 내부에는 사진 모아보기 아이콘 없앰 , 무한루프/백스택 쌓임 방지
+            binding.postDetailMenu.photoZipBtn.isVisible = myPhotozip != true
         }
     }
     fun startChangeByGridClicked(){

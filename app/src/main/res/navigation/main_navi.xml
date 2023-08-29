@@ -50,6 +50,7 @@
         <action
             android:id="@+id/action_navigation_mypage_to_myPageFollowDetailFragment"
             app:destination="@id/myPageFollowDetailFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/navigation_photo"
@@ -184,7 +185,11 @@
     <fragment
         android:id="@+id/myPageVerticalFragment"
         android:name="com.lf.fashion.ui.mypage.MyPageVerticalFragment"
-        android:label="MyPageVerticalFragment" />
+        android:label="MyPageVerticalFragment" >
+        <action
+            android:id="@+id/action_myPageVerticalFragment_to_myPhotoZipFragment"
+            app:destination="@id/myPhotoZipFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myPageFollowDetailFragment"
         android:name="com.lf.fashion.ui.mypage.followDetail.MyPageFollowDetailFragment"
@@ -209,4 +214,16 @@
         android:id="@+id/searchFilterFragment"
         android:name="com.lf.fashion.ui.search.SearchFilterFragment"
         android:label="SearchFilterFragment" />
+    <fragment
+        android:id="@+id/myPhotoZipFragment"
+        android:name="com.lf.fashion.ui.mypage.MyPhotoZipFragment"
+        android:label="MyPhotoZipFragment" >
+        <action
+            android:id="@+id/action_myPhotoZipFragment_to_myPhotoZipVerticalFragment"
+            app:destination="@id/myPhotoZipVerticalFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myPhotoZipVerticalFragment"
+        android:name="com.lf.fashion.ui.mypage.MyPhotoZipVerticalFragment"
+        android:label="MyPhotoZipVerticalFragment" />
 </navigation>

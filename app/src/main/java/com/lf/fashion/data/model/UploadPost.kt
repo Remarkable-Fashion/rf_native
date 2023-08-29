@@ -8,9 +8,9 @@ data class UploadPost(
     val description: String,
     @SerializedName("sex")
     val gender: String,
-    val tops : List<Int>,
+    val tpos : List<Int>,
     val seasons : List<Int>,
-    val style : List<Int>,
+    val styles : List<Int>,
     val clothes : List <UploadCloth>
     //val height : String ,
     //val weight : String ,

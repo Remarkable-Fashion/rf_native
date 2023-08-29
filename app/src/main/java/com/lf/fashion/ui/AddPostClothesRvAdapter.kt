@@ -1,11 +1,13 @@
 package com.lf.fashion.ui
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.lf.fashion.TAG
 import com.lf.fashion.data.model.UploadCloth
 import com.lf.fashion.databinding.ItemRegistFormBinding
 
@@ -37,6 +39,7 @@ class AddPostClothesRvAdapter :
             binding.deleteBtn.setOnClickListener {
                 val newList = currentList.toMutableList()
                 newList.remove(item)
+                Log.e(TAG, "bind: ${newList}")
                 submitList(newList)
             }
 

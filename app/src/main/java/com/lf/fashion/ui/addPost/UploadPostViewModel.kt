@@ -5,10 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lf.fashion.data.model.ChipInfo
+import com.lf.fashion.data.model.Cloth
 import com.lf.fashion.data.model.MsgResponse
+import com.lf.fashion.data.model.UploadCloth
 import com.lf.fashion.data.model.UploadPost
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.FilterRepository
+import com.lf.fashion.data.repository.UploadClothesRepository
 import com.lf.fashion.data.repository.UploadPostRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -39,6 +42,7 @@ class UploadPostViewModel @Inject constructor(
 
     var selectedClothCategory : String? =null
     var selectedPostImages : MutableList<String > = mutableListOf()
+    var uploadedClothes : MutableList<UploadCloth> = mutableListOf()
 
 
     init {
@@ -74,4 +78,9 @@ class UploadPostViewModel @Inject constructor(
         else MsgResponse(false ,"Resource Fail")
     }
 
+    suspend fun uploadClothImages(images : List<String>):MsgResponse{
+        val response = uploadPostRepository.uploadClothesImages(images)
+        return if(response is Resource.Success) response.value
+        else MsgResponse(false,"Resource Fail")
+    }
 }

@@ -34,4 +34,22 @@ class UploadPostRepository @Inject constructor(private val uploadPostApi: Upload
         uploadPostApi.uploadPostImages(partBody)
 
     }
+
+    suspend fun uploadClothesImages(clothImages : List<String>) =safeApiCall {
+        val partBody : MutableList<MultipartBody.Part> = mutableListOf()
+
+        for(image in clothImages) {
+            val file = File(image)
+            val mimeType = getMimeType(file)
+            val requestFile = file.asRequestBody(mimeType?.toMediaTypeOrNull())
+            val part = MultipartBody.Part.createFormData("clothes", file.name, requestFile)
+            partBody.add(part)
+            Log.d(TAG, "uploadClothesImageRepo - mimeType $mimeType ");
+            Log.d(TAG, "uploadClothesImageRepo - updateMyProfile: ${file.name}");
+            Log.d(TAG, "uploadClothesImageRepo - file ?? : ${requestFile.contentType()}")
+        }
+        uploadPostApi.uploadClothImages(partBody)
+    }
+
+
 }
