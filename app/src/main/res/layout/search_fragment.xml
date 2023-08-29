@@ -24,13 +24,16 @@
         style="@style/spoqa_14sp_default_color"
         />
     <ImageView
-        android:layout_width="14dp"
-        android:layout_height="15dp"
-        android:background="@drawable/ic_search_unselected"
+        android:id="@+id/search_icon"
+        android:layout_width="34dp"
+        android:layout_height="35dp"
+        android:src="@drawable/ic_search_unselected"
         app:layout_constraintEnd_toEndOf="@id/search_et"
         app:layout_constraintTop_toTopOf="@id/search_et"
         app:layout_constraintBottom_toBottomOf="@id/search_et"
-        android:layout_marginEnd="12dp"/>
+        android:padding="10dp"
+        android:layout_marginEnd="2dp"
+        />
 
     <include
         android:id="@+id/search_term"
