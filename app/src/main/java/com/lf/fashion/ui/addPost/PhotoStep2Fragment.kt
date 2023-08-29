@@ -1,5 +1,6 @@
 package com.lf.fashion.ui.addPost
 
+import android.app.AlertDialog
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -21,8 +22,10 @@ import com.lf.fashion.data.model.UploadPost
 import com.lf.fashion.databinding.PhotoStep2FragmentBinding
 import com.lf.fashion.ui.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class PhotoStep2Fragment : Fragment(), View.OnClickListener {
@@ -190,7 +193,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
     }
 
     //Chip 재생성 후 checked 반영이 text를 기준으로 하기 때문에 etc를 한번 클릭시 모든 etc chip이 다눌림
-    //TODO runblock 핸들러로 대체하기 , 등록 다이얼로그 띄우기 , 이미지피커 사진갯수제한 확인
+    //TODO runblock 핸들러로 대체하기 , 이미지피커 사진갯수제한 확인
     private fun registerCloth() {
         binding.regClothBtn.setOnClickListener {
             val name = binding.clothRegistForm.nameValue.text
@@ -228,6 +231,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                         R.drawable.ic_add_item_mini
                     )
                 )
+
                 name.clear()
                 price.clear()
                 color.clear()
@@ -301,6 +305,8 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                     launch {
                         //의상 이미지 업로드부터 진행 , response 받은 url 을 새로운 list 로 담아 viewModel 에 보관.
                         //mapNotNull -> 요소가 null 이면 건너뜀
+                        Log.e(TAG, "submitBtnOnclick: runblock")
+
                         val clothesImages = addClothesAdapter.currentList.mapNotNull {
                             absolutelyPath(
                                 Uri.parse(it.imageUrl),
@@ -309,9 +315,10 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                         }
                         val clothesImageResponse = viewModel.uploadClothImages(clothesImages)
                         if (clothesImageResponse.success && clothesImageResponse.imgUrls != null) {
-                            val newList = addClothesAdapter.currentList.mapIndexed { index, cloth ->
-                                cloth.copy(imageUrl = clothesImageResponse.imgUrls[index])
-                            }
+                            val newList =
+                                addClothesAdapter.currentList.mapIndexed { index, cloth ->
+                                    cloth.copy(imageUrl = clothesImageResponse.imgUrls[index])
+                                }
                             Log.e(TAG, "submitBtnOnclick: ImageList $clothesImages")
                             Log.e(TAG, "submitBtnOnclick: newList $newList")
 
@@ -319,7 +326,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                         }
                         Log.e(
                             TAG,
-                            "submitBtnOnclick: VIEWMODEL>업로드된 옷 ${viewModel.uploadedClothes}"
+                            "submitBtnOnclick: viewModel.uploadClothes ${viewModel.uploadedClothes}"
                         )
 
 
@@ -347,9 +354,12 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                                 styles,
                                 clothes = viewModel.uploadedClothes
                             )
-                            Log.e(TAG, "submitBtnOnclick: $uploadPost")
+                            Log.e(TAG, "uploadPost: $uploadPost")
                             val postUploadResponse = viewModel.uploadPostInfo(uploadPost)
+
+                            Log.e(TAG, "postUploadResponse :  $postUploadResponse")
                             if (postUploadResponse.success) {
+                                //      withContext(Dispatchers.Main) {
                                 Toast.makeText(
                                     requireContext(),
                                     "게시물이 등록되었습니다.",
@@ -366,6 +376,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                                 loginMenuItem.isChecked = true
                                 bottomNavigationView.selectedItemId = R.id.navigation_mypage
                             }
+                            //        }
                         }
                     }
                 }
@@ -425,5 +436,18 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         }
 
         return true
+       /* var agree: Boolean? = null
+        val loginDialog = AlertDialog.Builder(requireContext())
+            .setMessage("사진 등록을 완료하시겠습니까?")
+            .setPositiveButton("네") { _, _ ->
+                agree = true
+            }
+            .setNegativeButton("아니요") { _, _ ->
+                agree = false
+            }
+        loginDialog.show()
+        Log.e(TAG, "submitBtnOnclick: ${agree}")
+
+        return agree == true*/
     }
 }
