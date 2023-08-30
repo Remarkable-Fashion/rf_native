@@ -130,7 +130,7 @@ fun Fragment.showPermissionDialog(
 }
 
 fun Fragment.showRequireLoginDialog(alreadyHome: Boolean? = null) {
-    val loginDialog = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+    val loginDialog = AlertDialog.Builder(requireContext())
         .setMessage("로그인 후 이용가능합니다.")
         .setPositiveButton("로그인하러 가기") { _, _ ->
             //그냥 navigate to 로 보낼 경우 바텀 메뉴 이동에 오류가 생길 때가 있어서 bottomNavigationView 를 통해 이동, checked 조정

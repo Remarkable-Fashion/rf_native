@@ -78,5 +78,17 @@
         <item> Acc</item>
     </string-array>
 
+    <string-array name="declare_array">
+        <item>나체 사진 또는 성적 행위</item>
+        <item>혐오 발언 또는 상징</item>
+        <item>폭력 또는 위험한 단체</item>
+        <item>사기 또는 거짓 정보</item>
+        <item>따돌림 또는 괴롭힘</item>
+        <item>지적재산권 침해</item>
+        <item>자살 또는 자해</item>
+        <item>불법 또는 규제 상품 판매</item>
+        <item>기타 문제</item>
+    </string-array>
+
 
 </resources>

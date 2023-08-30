@@ -1,13 +1,18 @@
 package com.lf.fashion.ui.home.frag
 
+import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.EditText
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.lf.fashion.R
+import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.Posts
@@ -125,7 +130,7 @@ class PostBottomSheetFragment(private val post: Posts? = null, private val userI
             }
 
             binding.declareBtn -> {
-
+                showDeclareDialog()
             }
 
         }
@@ -169,5 +174,36 @@ class PostBottomSheetFragment(private val post: Posts? = null, private val userI
 
             }
         }
+    }
+
+    private fun showDeclareDialog(){
+        val declareArray = resources.getStringArray(R.array.declare_array)
+        Log.e(TAG, "showDeclareDialog: $declareArray")
+        val dialog = AlertDialog.Builder(context)
+            .setTitle("신고")
+            .setItems(R.array.declare_array){ _,p1->
+                getDetailInfo(declareArray[p1])
+            }
+            .setNegativeButton("닫기") { _, _ ->
+            }
+        dialog.show()
+    }
+
+    //TODO 신고하기 api 연결
+    private fun getDetailInfo(p1 : String){
+        Log.e(TAG, "getDetailInfo: $p1")
+        val layoutinflater = LayoutInflater.from(context)
+        val dialogView = layoutinflater.inflate(R.layout.item_dialog_declare, null)
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setPositiveButton("등록") { dialog, id ->
+                Log.e(TAG, "getDetailInfo: $p1 의 ${dialogView.findViewById<EditText>(R.id.declare_value).text.toString()}", )
+            }
+            .setNegativeButton("닫기") { _, _ ->
+
+            }
+        dialog.show()
+
     }
 }
