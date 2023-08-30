@@ -100,17 +100,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
             // Pass Uri list to fragment outside
             Log.d(TAG, "ImagePickerFragment - onCreateView: ${viewModel.getCheckedImageUriList()}");
             val imageUriArray = viewModel.getCheckedImageUriList().toTypedArray()
-            // TODO : PhotoFragment 에서 넘어오는 경우만 from 다르게 처리해둠 , 테스트하기 ..
             when (backStackFragment) {
-              /*  "RegistClothFragment" -> {
-                    setFragmentResult(REQUEST_KEY, bundleOf("imageURI" to imageUriArray ))
-                    findNavController().navigateUp()
-                }
-                "PhotoStep2Fragment" -> {
-                    setFragmentResult(REQUEST_KEY, bundleOf("imageURI" to imageUriArray))
-                    findNavController().navigateUp()
-
-                }*/
                 "PhotoFragment" ->{ //PhotoFragment -> ImagePicker 일땐 backstack 이 아니라 PhotoStep2로 가야하기 때문에 분리..
                     val action =  ImagePickerFragmentDirections.actionImagePickerFragmentToPhotoStep2Fragment(imageUriArray)
                     findNavController().navigate(action)

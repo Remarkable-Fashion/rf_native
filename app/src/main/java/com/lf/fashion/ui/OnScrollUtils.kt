@@ -13,7 +13,7 @@ class OnScrollUtils(private val loadMoreCallback: () -> Unit) :
     ) {
         if (v.getChildAt(v.childCount - 1) != null) {
             if ((scrollY >= (v.getChildAt(v.childCount - 1).measuredHeight - v.measuredHeight)) &&
-                scrollY > oldScrollY
+                scrollY > oldScrollY // Scroll Down
             ) {
                 // 스크롤이 끝까지 진행되면 -> 새로운 post 를 request
                 loadMoreCallback()

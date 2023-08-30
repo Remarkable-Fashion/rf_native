@@ -10,6 +10,9 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
@@ -43,11 +46,8 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        runBlocking {
-            launch {
-                viewModel.getSavedLoginToken()
-            }
-        }
+
+        viewModel.getSavedLoginToken()
         viewModel.savedLoginToken.observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) {
                 findNavController().navigate(R.id.action_navigation_mypage_to_loginFragment)
@@ -121,10 +121,8 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                     if (response.posts.isNotEmpty()) {
                         binding.arrayEmptyText.visibility = View.GONE
                         binding.gridRv.visibility = View.VISIBLE
-                        Log.d(TAG, "MyPageFragment - onViewCreated FIRST RESPONSE: $response")
-
                         recentResponse = response
-                        postList.addAll(response.posts)
+                        postList = response.posts.toMutableList()
 
                         with(binding.gridRv) {
                             //grid layout
@@ -165,11 +163,15 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                             postList.addAll(more.posts)
                             recentResponse = more // new nextCursor , hasNext check 를 위해 값 재초기화
 
-                            Log.d(
+                            Log.e(
                                 TAG,
                                 "MyPageFragment - onScrolled LOAD MORE RECENT: $recentResponse"
                             )
-
+                            Log.e(
+                                TAG,
+                                "MyPageFragment - onScrolled LOAD MORE RECENT: ${more.posts}"
+                            )
+                            Log.e(TAG, "Post List loadMorePost: $postList")
                             gridAdapter.apply {
                                 submitList(postList)
                                 notifyDataSetChanged()
@@ -191,10 +193,6 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
 
     override fun gridPhotoClicked(postIndex: Int) {
         //grid 포토 클릭시!!
-        Log.d(
-            TAG, "MyPageFragment - gridPhotoClicked: 마이페이지 grid"
-                    + "클릭된 인덱스 : ${postIndex}"
-        );
         viewModel.editClickedPostIndex(postIndex)
         findNavController().navigate(
             R.id.action_navigation_mypage_to_myPageVerticalFragment

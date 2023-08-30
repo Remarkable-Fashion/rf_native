@@ -76,10 +76,10 @@ class MyPageViewModel @Inject constructor(
         return myPageRepository.getJWT(loginAccessToken)
     }
 
-    suspend fun getSavedLoginToken() {
+     fun getSavedLoginToken() {
         viewModelScope.launch {
             _savedLoginToken.value = userPreferences.accessToken.first()
-            Log.d(TAG, "MyPageViewModel - getSavedLoginToken: ${savedLoginToken.value}");
+           // Log.d(TAG, "MyPageViewModel - getSavedLoginToken: ${savedLoginToken.value}");
         }
     }
 
@@ -88,7 +88,7 @@ class MyPageViewModel @Inject constructor(
             userPreferences.clearAccessTokenAndId()
             _savedLoginToken.value = null
         }
-        Log.d(TAG, "MyPageViewModel - clearSavedLoginToken: ${savedLoginToken.value}");
+        //Log.d(TAG, "MyPageViewModel - clearSavedLoginToken: ${savedLoginToken.value}");
     }
 
     fun getMyInfo() {
@@ -98,7 +98,6 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun getPostList() {
-        Log.d(TAG, "suspend getPostList 호출 ")
         viewModelScope.launch {
             _postResponse.value = myPageRepository.getMyPost()
         }
@@ -173,8 +172,6 @@ class MyPageViewModel @Inject constructor(
     }
 
     suspend fun changeFollowingState(create: Boolean, userId: Int): Resource<MsgResponse> {
-
-        Log.d(TAG, "PostBottomViewModel - changeFollowingState: CREATE $create");
         val result = if (create) {
          communicateRepository.createFollowing(userId)
         } else {
