@@ -214,7 +214,6 @@ class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), Vie
             currentList.forEach {
                 runBlocking {
                     launch {
-                        //TODO 의상등록 image url 응답받고 적용하는건지 check
                         val imagePath = absolutelyPath(Uri.parse(it.imageUrl), requireContext())
                         val imageResponse = viewModel.uploadClothesImage(imagePath!!)
 

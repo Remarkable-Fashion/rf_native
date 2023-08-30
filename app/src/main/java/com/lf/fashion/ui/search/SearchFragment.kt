@@ -98,7 +98,6 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
 
     }
 
-    //검색 결과 히스토리 , 레이아웃 관련 TODO 중복제거
     private fun searchAction(searchTerm: String) {
         runBlocking {
             launch {
@@ -139,7 +138,6 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
         binding.searchTerm.nest.setOnClickListener { hideKeyboard() }
     }
 
-    //검색어 전달 (실질적 검색 액션) --> TODO 업데이트가 안됨 , viewModel에 저장하는 방식으로 변경할것
     private fun searchResultViewSetting(searchTerm: String) {
         val tabViewpager = binding.searchResult.tabViewpager
         val tabLayout = binding.searchResult.tab

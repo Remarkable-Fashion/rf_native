@@ -15,8 +15,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
 import com.lf.fashion.TAG
+import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.databinding.PhotoFragmentBinding
 import com.lf.fashion.ui.showPermissionDialog
+import com.lf.fashion.ui.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 /**permissioncheck 의 역할을 하는 fragment ..
@@ -24,7 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PhotoFragment : Fragment() {
     private lateinit var binding : PhotoFragmentBinding
-
+    private lateinit var userPref : PreferenceManager
     //복수의 권한이 필요한 경우 RequestMultiplePermissions() 후 launch(배열) 로 전달
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -59,6 +61,8 @@ class PhotoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        userPref = PreferenceManager(requireContext())
+        if(userPref.loginCheck()){
         when{
             ActivityCompat.shouldShowRequestPermissionRationale(
                 requireActivity(),
@@ -71,6 +75,9 @@ class PhotoFragment : Fragment() {
             else -> {
                 requestPermissionLauncher.launch(permissions)
             }
+        }
+        }else{
+            showRequireLoginDialog()
         }
     }
     /*private fun showPermissionInfoDialog() {

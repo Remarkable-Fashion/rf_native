@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.*
@@ -22,7 +23,11 @@ import com.lf.fashion.data.model.UploadPost
 import com.lf.fashion.databinding.PhotoStep2FragmentBinding
 import com.lf.fashion.ui.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -193,7 +198,6 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
     }
 
     //Chip 재생성 후 checked 반영이 text를 기준으로 하기 때문에 etc를 한번 클릭시 모든 etc chip이 다눌림
-    //TODO runblock 핸들러로 대체하기 , 이미지피커 사진갯수제한 확인
     private fun registerCloth() {
         binding.regClothBtn.setOnClickListener {
             val name = binding.clothRegistForm.nameValue.text
@@ -300,85 +304,95 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
 
             //비어있는 값 없고, cloth 등록하다만 기록 없을 때
             if (valueValidation()) {
-                //의상 & 게시물 등록
-                runBlocking {
-                    launch {
-                        //의상 이미지 업로드부터 진행 , response 받은 url 을 새로운 list 로 담아 viewModel 에 보관.
-                        //mapNotNull -> 요소가 null 이면 건너뜀
-                        Log.e(TAG, "submitBtnOnclick: runblock")
-
-                        val clothesImages = addClothesAdapter.currentList.mapNotNull {
-                            absolutelyPath(
-                                Uri.parse(it.imageUrl),
-                                requireContext()
-                            )
-                        }
-                        val clothesImageResponse = viewModel.uploadClothImages(clothesImages)
-                        if (clothesImageResponse.success && clothesImageResponse.imgUrls != null) {
-                            val newList =
-                                addClothesAdapter.currentList.mapIndexed { index, cloth ->
-                                    cloth.copy(imageUrl = clothesImageResponse.imgUrls[index])
-                                }
-                            Log.e(TAG, "submitBtnOnclick: ImageList $clothesImages")
-                            Log.e(TAG, "submitBtnOnclick: newList $newList")
-
-                            viewModel.uploadedClothes = newList.toMutableList()
-                        }
-                        Log.e(
-                            TAG,
-                            "submitBtnOnclick: viewModel.uploadClothes ${viewModel.uploadedClothes}"
-                        )
-
-
-                        //post 이미지 업로드 진행 -> 성공시 post 객체에 의상 list 담아서 전달
-                        val selectedPostImages = viewModel.selectedPostImages
-                        val postImagePathList = mutableListOf<String>()
-                        selectedPostImages.forEach {
-                            absolutelyPath(Uri.parse(it), requireContext())?.let { path ->
-                                postImagePathList.add(path)
-                            }
-                        }
-                        val imageUploadResponse = viewModel.uploadPostImages(postImagePathList)
-                        if (imageUploadResponse.success) {
-                            val tpos = viewModel.selectedTpos.distinct()
-                            val seasons = viewModel.selectedSeasons.distinct()
-                            val styles = viewModel.selectedStyles.distinct()
-
-                            val uploadPost = UploadPost(
-                                imageUploadResponse.imgUrls!!,
-                                "추후 삭제 예정",
-                                binding.introduceValue.text.toString(),
-                                viewModel.selectedGender!!,
-                                tpos,
-                                seasons,
-                                styles,
-                                clothes = viewModel.uploadedClothes
-                            )
-                            Log.e(TAG, "uploadPost: $uploadPost")
-                            val postUploadResponse = viewModel.uploadPostInfo(uploadPost)
-
-                            Log.e(TAG, "postUploadResponse :  $postUploadResponse")
-                            if (postUploadResponse.success) {
-                                //      withContext(Dispatchers.Main) {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "게시물이 등록되었습니다.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-
-                                //findNavController 로 mypage 프래그먼트 이동시 backStack 문제로 photo menu 접근이 불가,
-                                //메뉴탭 수동으로 이동시키고 backStack 제거하여 viewModel 과 edittext data clear
-                                findNavController().popBackStack(R.id.navigation_photo, true)
-                                val bottomNavigationView =
-                                    requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-                                val loginMenuItem =
-                                    bottomNavigationView.menu.findItem(R.id.navigation_mypage)
-                                loginMenuItem.isChecked = true
-                                bottomNavigationView.selectedItemId = R.id.navigation_mypage
-                            }
-                            //        }
-                        }
+                val loginDialog = AlertDialog.Builder(requireContext())
+                    .setMessage("사진 등록을 완료하시겠습니까?")
+                    .setPositiveButton("네") { _, _ ->
+                        //의상 & 게시물 등록
+                        binding.progressBar.visibility = View.VISIBLE
+                        uploadPostAndClothes()
                     }
+                    .setNegativeButton("아니요") { _, _ ->
+                    }
+                loginDialog.show()
+            }
+        }
+    }
+
+    private fun uploadPostAndClothes() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val requestUpload: Deferred<Boolean> = CoroutineScope(Dispatchers.IO).async {
+                //의상 이미지 업로드부터 진행 , response 받은 url 을 새로운 list 로 담아 viewModel 에 보관.
+                //mapNotNull -> 요소가 null 이면 건너뜀
+                val clothesImages = addClothesAdapter.currentList.mapNotNull {
+                    absolutelyPath(
+                        Uri.parse(it.imageUrl),
+                        requireContext()
+                    )
+                }
+                val clothesImageResponse = viewModel.uploadClothImages(clothesImages)
+                if (clothesImageResponse.success && clothesImageResponse.imgUrls != null) {
+                    val newList =
+                        addClothesAdapter.currentList.mapIndexed { index, cloth ->
+                            cloth.copy(imageUrl = clothesImageResponse.imgUrls[index])
+                        }
+                   // Log.e(TAG, "submitBtnOnclick: ImageList $clothesImages")
+                  // Log.e(TAG, "submitBtnOnclick: newList $newList")
+
+                    viewModel.uploadedClothes = newList.toMutableList()
+                }
+
+                //post 이미지 업로드 진행 -> 성공시 post 객체에 의상 list 담아서 전달
+                val selectedPostImages = viewModel.selectedPostImages
+                val postImagePathList = mutableListOf<String>()
+                selectedPostImages.forEach {
+                    absolutelyPath(Uri.parse(it), requireContext())?.let { path ->
+                        postImagePathList.add(path)
+                    }
+                }
+                val imageUploadResponse = viewModel.uploadPostImages(postImagePathList)
+                if (imageUploadResponse.success) {
+                    val tpos = viewModel.selectedTpos.distinct()
+                    val seasons = viewModel.selectedSeasons.distinct()
+                    val styles = viewModel.selectedStyles.distinct()
+
+                    val uploadPost = UploadPost(
+                        imageUploadResponse.imgUrls!!,
+                        "추후 삭제 예정",
+                        binding.introduceValue.text.toString(),
+                        viewModel.selectedGender!!,
+                        tpos,
+                        seasons,
+                        styles,
+                        clothes = viewModel.uploadedClothes
+                    )
+                    Log.e(TAG, "uploadPost: $uploadPost")
+                    val postUploadResponse = viewModel.uploadPostInfo(uploadPost)
+
+                    return@async postUploadResponse.success
+                }
+                return@async false
+            }
+            withContext(Dispatchers.Main) {
+                val uploadResponse = runBlocking { requestUpload.await() }
+                binding.progressBar.visibility = View.GONE
+                if (uploadResponse) {
+                    Toast.makeText(
+                        requireContext(),
+                        "게시물이 등록되었습니다.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    //findNavController 로 mypage 프래그먼트 이동시 backStack 문제로 photo menu 접근이 불가,
+                    //메뉴탭 수동으로 이동시키고 backStack 제거하여 viewModel 과 edittext data clear
+                    findNavController().popBackStack(R.id.navigation_photo, true)
+                    val bottomNavigationView =
+                        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
+                    val loginMenuItem =
+                        bottomNavigationView.menu.findItem(R.id.navigation_mypage)
+                    loginMenuItem.isChecked = true
+                    bottomNavigationView.selectedItemId = R.id.navigation_mypage
+                } else {
+                    Toast.makeText(requireContext(), "사진의 용량이 허용 크기를 초과하였습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -436,18 +450,5 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         }
 
         return true
-       /* var agree: Boolean? = null
-        val loginDialog = AlertDialog.Builder(requireContext())
-            .setMessage("사진 등록을 완료하시겠습니까?")
-            .setPositiveButton("네") { _, _ ->
-                agree = true
-            }
-            .setNegativeButton("아니요") { _, _ ->
-                agree = false
-            }
-        loginDialog.show()
-        Log.e(TAG, "submitBtnOnclick: ${agree}")
-
-        return agree == true*/
     }
 }
