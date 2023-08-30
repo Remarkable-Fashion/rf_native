@@ -13,6 +13,6 @@ data class PostInfo(
     val count: Count,
     val styles : List<ChipInfo>,
     val description: String?,
-    val place : String?,
+   // val place : String?,
     val clothes: List<Cloth>
     )
