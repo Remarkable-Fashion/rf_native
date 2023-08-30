@@ -21,7 +21,8 @@
             imageUrl="@{profile.profile.profileImage}"
             android:scaleType="centerCrop"
             app:shapeAppearance="@style/radi13"
-            android:background="@drawable/bg_profile" />
+            android:src="@drawable/ic_my_profile"
+            />
 
         <TextView
             android:id="@+id/profile_name"

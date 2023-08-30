@@ -35,7 +35,7 @@
             android:layout_height="35dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/horizontal_view_pager"
-            android:background="@drawable/bg_profile"
+            android:src="@drawable/ic_my_profile"
             android:layout_marginTop="13dp"
             android:layout_marginStart="20dp"
             android:scaleType="centerCrop"
