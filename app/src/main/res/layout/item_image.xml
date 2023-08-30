@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="126dp"
@@ -29,6 +30,13 @@
             android:textColor="@color/white"
             />
 
+        <androidx.constraintlayout.helper.widget.Layer
+            android:id="@+id/image_layer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="checkbox,image"
+            tools:ignore="MissingConstraints"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

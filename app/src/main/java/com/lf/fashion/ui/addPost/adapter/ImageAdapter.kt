@@ -1,5 +1,6 @@
 package com.lf.fashion.ui.addPost.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lf.fashion.R
+import com.lf.fashion.TAG
 import com.lf.fashion.data.model.ImageItem
 import com.lf.fashion.databinding.ItemCameraBinding
 import com.lf.fashion.databinding.ItemImageBinding
@@ -29,7 +31,6 @@ class ImageAdapter(
         private const val VIEW_TYPE_DEFAULT_ITEM = 2
     }
 
-    private var checkedImageCounter = 0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             VIEW_TYPE_FIRST_ITEM -> { // 첫번째 아이템은 카메라 실행 ui 로 !
@@ -56,11 +57,13 @@ class ImageAdapter(
     }
 
     private fun subscribeUi(binding: ItemImageBinding, holder: ImageViewHolder) {
-        binding.image.setOnClickListener {
-            parentViewModel.imageItemList.value?.let { it ->
-                if (checkedImageCounter in 0 until imageLimit) {
-                    checkBoxConverse(holder, binding, it)
-                    checkedImageCounter += 1 // 사진 선택 갯수 제한에 쓰임
+        binding.imageLayer.setOnClickListener {
+            parentViewModel.imageItemList.value?.let { item->
+                val checkedItemList = parentViewModel.checkedItemList.value ?: mutableListOf()
+              //  Log.e(TAG, "subscribeUi: ${checkedItemList!!.size}")
+
+                if (checkedItemList.size in 0 until imageLimit || binding.checkbox.isSelected) {
+                    checkBoxConverse(holder, binding, item)
                 } else {
                     galleryRvListener.checkedCountOver(imageLimit)
                 }
