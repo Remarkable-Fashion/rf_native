@@ -50,6 +50,9 @@
         <action
             android:id="@+id/action_navigation_mypage_to_myPageFollowDetailFragment"
             app:destination="@id/myPageFollowDetailFragment" />
+        <action
+            android:id="@+id/action_navigation_mypage_to_userAlertSettingFragment"
+            app:destination="@id/userAlertSettingFragment" />
 
     </fragment>
     <fragment
@@ -226,4 +229,8 @@
         android:id="@+id/myPhotoZipVerticalFragment"
         android:name="com.lf.fashion.ui.mypage.MyPhotoZipVerticalFragment"
         android:label="MyPhotoZipVerticalFragment" />
+    <fragment
+        android:id="@+id/userAlertSettingFragment"
+        android:name="com.lf.fashion.ui.mypage.UserAlertSettingFragment"
+        android:label="UserAlertSettingFragment" />
 </navigation>

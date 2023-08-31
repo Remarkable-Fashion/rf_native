@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/cancel_btn"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_cancel"
+        android:padding="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/app_bar_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="알림 설정"
+        android:layout_marginStart="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cancel_btn" />
+
+    <View
+        android:id="@+id/title_underline"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/line_grey"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <TextView
+        android:id="@+id/device_setting_label"
+        style="@style/app_bar_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="42dp"
+        android:text="디바이스 설정"
+        app:layout_constraintTop_toBottomOf="@id/title_underline"
+        app:layout_constraintStart_toStartOf="@id/title"
+        />
+
+    <TextView
+        android:id="@+id/feedback_label"
+        style="@style/subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="진동 피드백"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/default_text"
+        app:layout_constraintTop_toBottomOf="@id/device_setting_label"
+        app:layout_constraintStart_toStartOf="@id/device_setting_label"
+        />
+
+    <Switch
+        android:id="@+id/feedback_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/feedback_label"
+        app:layout_constraintBottom_toBottomOf="@id/feedback_label"
+        android:thumb="@drawable/selector_switch_thumb"
+        android:track="@drawable/selector_switch"
+        android:switchMinWidth="42dp"
+        android:padding="15dp"
+        android:layout_marginEnd="5dp"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <TextView
+        android:id="@+id/alert_setting_label"
+        style="@style/app_bar_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="알림 설정"
+        app:layout_constraintTop_toBottomOf="@id/feedback_label"
+        app:layout_constraintStart_toStartOf="@id/feedback_label"
+        />
+
+    <TextView
+        android:id="@+id/scrap_alert_label"
+        style="@style/subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="스크랩 알림"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/default_text"
+        app:layout_constraintTop_toBottomOf="@id/alert_setting_label"
+        app:layout_constraintStart_toStartOf="@id/alert_setting_label"
+        />
+    <Switch
+        android:id="@+id/scrap_alert_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/scrap_alert_label"
+        app:layout_constraintBottom_toBottomOf="@id/scrap_alert_label"
+        android:thumb="@drawable/selector_switch_thumb"
+        android:track="@drawable/selector_switch"
+        android:switchMinWidth="42dp"
+        android:padding="15dp"
+        android:layout_marginEnd="5dp"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <View
+        android:id="@+id/line2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/line_grey_tran50"
+        app:layout_constraintTop_toBottomOf="@id/scrap_alert_label" />
+
+
+    <TextView
+        android:id="@+id/like_alert_label"
+        style="@style/subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="좋아요 알림"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/default_text"
+        app:layout_constraintTop_toBottomOf="@id/line2"
+        app:layout_constraintStart_toStartOf="@id/scrap_alert_label"
+        />
+    <Switch
+        android:id="@+id/like_alert_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/like_alert_label"
+        app:layout_constraintBottom_toBottomOf="@id/like_alert_label"
+        android:thumb="@drawable/selector_switch_thumb"
+        android:track="@drawable/selector_switch"
+        android:switchMinWidth="42dp"
+        android:padding="15dp"
+        android:layout_marginEnd="5dp"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+    <View
+        android:id="@+id/line3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/line_grey_tran50"
+        app:layout_constraintTop_toBottomOf="@id/like_alert_label" />
+
+    <TextView
+        android:id="@+id/follow_alert_label"
+        style="@style/subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="팔로잉 및 팔로워 알림"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/default_text"
+        app:layout_constraintTop_toBottomOf="@id/line3"
+        app:layout_constraintStart_toStartOf="@id/like_alert_label"
+        />
+    <Switch
+        android:id="@+id/follow_alert_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/follow_alert_label"
+        app:layout_constraintBottom_toBottomOf="@id/follow_alert_label"
+        android:thumb="@drawable/selector_switch_thumb"
+        android:track="@drawable/selector_switch"
+        android:switchMinWidth="42dp"
+        android:padding="15dp"
+        android:layout_marginEnd="5dp"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+    <View
+        android:id="@+id/line4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/line_grey_tran50"
+        app:layout_constraintTop_toBottomOf="@id/follow_alert_label" />
+
+    <TextView
+        android:id="@+id/event_alert_label"
+        style="@style/subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="공지, 이벤트 알림"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/default_text"
+        app:layout_constraintTop_toBottomOf="@id/line4"
+        app:layout_constraintStart_toStartOf="@id/follow_alert_label"
+        />
+    <Switch
+        android:id="@+id/event_alert_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/event_alert_label"
+        app:layout_constraintBottom_toBottomOf="@id/event_alert_label"
+        android:thumb="@drawable/selector_switch_thumb"
+        android:track="@drawable/selector_switch"
+        android:switchMinWidth="42dp"
+        android:padding="15dp"
+        android:layout_marginEnd="5dp"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+</androidx.constraintlayout.widget.ConstraintLayout>

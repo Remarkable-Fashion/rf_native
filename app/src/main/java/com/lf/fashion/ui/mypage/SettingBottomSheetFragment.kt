@@ -53,7 +53,10 @@ class SettingBottomSheetFragment(private val viewModel: MyPageViewModel) :
             }
 
             binding.alertSettingBtn -> {
-
+                findNavController().navigate(
+                    R.id.action_navigation_mypage_to_userAlertSettingFragment
+                )
+                this@SettingBottomSheetFragment.dismiss()
             }
 
             binding.service -> {
