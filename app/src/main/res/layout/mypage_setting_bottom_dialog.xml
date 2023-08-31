@@ -36,7 +36,7 @@
         android:layout_marginTop="10dp"
         />
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/service"
+        android:id="@+id/terms_of_service"
         android:layout_width="match_parent"
         android:layout_height="51dp"
         android:layout_weight="1"
@@ -45,7 +45,7 @@
         android:layout_marginTop="10dp"
         />
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/personal_info"
+        android:id="@+id/privacy_policy"
         android:layout_width="match_parent"
         android:layout_height="51dp"
         android:layout_weight="1"

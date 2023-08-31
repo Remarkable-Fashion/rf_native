@@ -1,4 +1,4 @@
-package com.lf.fashion.ui.mypage
+package com.lf.fashion.ui.mypage.setting
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.lf.fashion.R
 import com.lf.fashion.data.model.MyInfo
 import com.lf.fashion.databinding.MypageSettingBottomDialogBinding
+import com.lf.fashion.ui.mypage.MyPageViewModel
 
 /**
  * 마이페이지 설정 버튼 클릭시 노출되는 바텀 다이얼로그 시트입니다
@@ -59,12 +60,16 @@ class SettingBottomSheetFragment(private val viewModel: MyPageViewModel) :
                 this@SettingBottomSheetFragment.dismiss()
             }
 
-            binding.service -> {
-
+            binding.termsOfService -> {
+                findNavController().navigate(R.id.action_navigation_mypage_to_serviceTermFragment)
+                this@SettingBottomSheetFragment.dismiss()
             }
 
-            binding.personalInfo -> {
-
+            binding.privacyPolicy -> {
+                findNavController().navigate(
+                    R.id.action_navigation_mypage_to_privacyPolicyFragment
+                )
+                this@SettingBottomSheetFragment.dismiss()
             }
 
             binding.logoutBtn -> {

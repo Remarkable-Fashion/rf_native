@@ -28,7 +28,10 @@ import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ChipInfo
 import com.lf.fashion.ui.addPost.UploadPostViewModel
 import com.lf.fashion.ui.home.frag.FilterViewModel
+import java.io.BufferedReader
 import java.io.File
+import java.io.IOException
+import java.io.InputStreamReader
 import kotlin.math.roundToInt
 
 fun Fragment.cancelBtnBackStack(view: ImageView) {
@@ -301,5 +304,28 @@ fun Fragment.handleApiError(
 fun getMimeType(file: File): String? {
     val extension = MimeTypeMap.getFileExtensionFromUrl(file.absolutePath)
     return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+}
+
+fun getAssetsTextString(mContext: Context, fileName: String): String{
+    val termsString = StringBuilder()
+    val reader: BufferedReader
+
+    try {
+        reader = BufferedReader(
+            InputStreamReader(mContext.resources.assets.open("$fileName.txt"))
+        )
+
+        var str: String?
+        while (reader.readLine().also { str = it } != null) {
+            termsString.append(str)
+            termsString.append('\n') //줄 변경
+        }
+        reader.close()
+        return termsString.toString()
+
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+    return "fail"
 }
 
