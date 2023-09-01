@@ -78,6 +78,9 @@
         <action
             android:id="@+id/action_navigation_search_to_searchFilterFragment"
             app:destination="@id/searchFilterFragment" />
+        <action
+            android:id="@+id/action_navigation_search_to_itemFilterFragment"
+            app:destination="@id/itemFilterFragment" />
 
     </fragment>
     <fragment
@@ -247,4 +250,8 @@
         android:id="@+id/serviceTermFragment"
         android:name="com.lf.fashion.ui.mypage.setting.ServiceTermFragment"
         android:label="ServiceTermFragment" />
+    <fragment
+        android:id="@+id/itemFilterFragment"
+        android:name="com.lf.fashion.ui.search.ItemFilterFragment"
+        android:label="ItemFilterFragment" />
 </navigation>

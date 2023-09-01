@@ -8,7 +8,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
 import com.lf.fashion.TAG
-import com.lf.fashion.databinding.HomeBPhotoFilterFragmentBinding
+import com.lf.fashion.databinding.SearchFilterFragmentBinding
 import com.lf.fashion.ui.addUnitTextListener
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.childChip
@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class SearchFilterFragment : Fragment(R.layout.search_filter_fragment),View.OnClickListener {
-    private lateinit var binding: HomeBPhotoFilterFragmentBinding
+    private lateinit var binding: SearchFilterFragmentBinding
     private val viewModel: FilterViewModel by viewModels()
     private val chipStyle = "default"
 
@@ -34,7 +34,7 @@ class SearchFilterFragment : Fragment(R.layout.search_filter_fragment),View.OnCl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = HomeBPhotoFilterFragmentBinding.bind(view)
+        binding = SearchFilterFragmentBinding.bind(view)
         //생성 후 다른 바텀 메뉴 이동시 다시 home menu 클릭시 selected 아이콘으로 변경 안되는 오류 해결하기위해 수동 메뉴 checked 코드 추가
         val bottomNavigationView =
             requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)

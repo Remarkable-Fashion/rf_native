@@ -72,6 +72,12 @@ class MyPageViewModel @Inject constructor(
     private val _blockResponse = MutableLiveData<Resource<MsgResponse>>()
     val blockResponse = _blockResponse*/
 
+    init {
+        if(savedLoginToken.value.isNullOrEmpty()){
+            getPostList()
+            getMyInfo()
+        }
+    }
     suspend fun getJWT(loginAccessToken: String): Resource<MsgResponse> {
         return myPageRepository.getJWT(loginAccessToken)
     }

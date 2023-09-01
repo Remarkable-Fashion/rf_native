@@ -10,6 +10,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
@@ -50,9 +51,6 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
             if (it.isNullOrEmpty()) {
                 findNavController().navigate(R.id.action_navigation_mypage_to_loginFragment)
                 return@observe
-            } else {
-                viewModel.getPostList()
-                viewModel.getMyInfo()
             }
         }
         binding = MypageFragmentBinding.inflate(inflater, container, false)
@@ -191,6 +189,10 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
 
     override fun gridPhotoClicked(postIndex: Int) {
         //grid 포토 클릭시!!
+        Log.e(TAG, "gridPhotoClicked: GRID CLICKED")
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
+        bottomNavigationView.setOnItemReselectedListener(null)
+        //binding.myNestedScrollView.setOnTouchListener{_,_ -> true}
         viewModel.editClickedPostIndex(postIndex)
         findNavController().navigate(
             R.id.action_navigation_mypage_to_myPageVerticalFragment

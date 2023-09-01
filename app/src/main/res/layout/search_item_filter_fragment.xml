@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:custom="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/cancel_btn"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_cancel"
+        android:padding="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cancel_btn"
+        android:overScrollMode="never">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="55dp">
+
+            <TextView
+                android:id="@+id/gender_label"
+                style="@style/montserrat_bold_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/gender_label"
+                app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/gender_man_btn"
+                style="@style/montserrat_medium_text"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/selector_btn_greyblack"
+                android:stateListAnimator="@null"
+                android:text="@string/man"
+                android:textColor="@drawable/selector_text_color"
+                app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                app:layout_constraintTop_toBottomOf="@id/gender_label"
+                app:layout_constraintWidth_percent="0.44" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/gender_woman_btn"
+                style="@style/montserrat_medium_text"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/selector_btn_greyblack"
+                android:stateListAnimator="@null"
+                android:text="@string/woman"
+                android:textColor="@drawable/selector_text_color"
+                app:layout_constraintBaseline_toBaselineOf="@id/gender_man_btn"
+                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                app:layout_constraintStart_toEndOf="@id/gender_man_btn"
+                app:layout_constraintWidth_percent="0.44" />
+
+            <TextView
+                android:id="@+id/price_label"
+                style="@style/montserrat_bold_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/price"
+                app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                app:layout_constraintTop_toBottomOf="@id/gender_man_btn"/>
+
+            <TextView
+                android:id="@+id/price_range"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/price_label"
+                app:layout_constraintStart_toStartOf="@id/price_label"
+                android:text="17,000원 ~ 35,000원"
+                android:layout_marginTop="15dp"
+                style="@style/spoqa_14sp_blod_default"
+                />
+            <com.jaygoo.widget.RangeSeekBar
+                android:id="@+id/sb_range_8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:rsb_gravity="bottom"
+                app:rsb_mode="range"
+                app:rsb_thumb_drawable="@drawable/ic_seekbar_thumb"
+                app:rsb_progress_color="@color/lf_purple"
+                app:layout_constraintTop_toBottomOf="@id/price_range"
+                app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                app:rsb_min_interval="10"
+                app:rsb_thumb_width="21dp"
+                app:rsb_thumb_height="22dp"
+                app:rsb_progress_height="2dp"
+                app:rsb_indicator_height="0dp"
+                android:layout_marginTop="10dp"
+                app:rsb_progress_default_color="@color/line_grey"
+                />
+<!--            <com.github.guilhe.views.SeekBarRangedView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                custom:currentMin="10"-->
+<!--                custom:backgroundColor="@color/line_grey"-->
+<!--                custom:progressColor="@color/lf_purple"-->
+<!--                custom:backgroundHeight="1dp"-->
+<!--                custom:progressHeight="2dp"-->
+<!--                custom:rounded="true"-->
+<!--                custom:thumbsResource="@drawable/ic_seekbar_thumb"-->
+<!--                custom:thumbPressedResource="@drawable/ic_seekbar_thumb"-->
+<!--                custom:thumbNormalResource="@drawable/ic_seekbar_thumb"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/price_range"-->
+<!--                app:layout_constraintStart_toStartOf="@id/guideline_vertical"-->
+<!--                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                />-->
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.05" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,15 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.DynamicLink.*
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData
-import com.google.firebase.dynamiclinks.ShortDynamicLink
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 import com.lf.fashion.databinding.ActivityMainBinding
@@ -27,12 +24,51 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private lateinit var binding: ActivityMainBinding
         fun hideNavi(state: Boolean) {
-            if(::binding.isInitialized) {
+            if (::binding.isInitialized) {
                 if (state) binding.bottomNavBar.visibility =
                     View.GONE else binding.bottomNavBar.visibility = View.VISIBLE
             }
         }
+
+        fun bottomNaviReselectedListener(
+            navController: NavController?
+        ) {
+            binding.bottomNavBar.setOnItemReselectedListener { item ->
+                // 현재 선택된 메뉴 아이디
+                val currentMenuItemId = binding.bottomNavBar.selectedItemId
+
+                // 클릭된 메뉴 아이템이 현재 선택된 메뉴와 동일한 경우
+                if (item.itemId == currentMenuItemId) {
+                    Log.e(TAG, "onCreate: setOnItemReselectedListener")
+                    when (item.itemId) {
+                        R.id.navigation_search -> {
+                            navController?.apply {
+                                popBackStack(R.id.navigation_search, false)
+                            }
+                        }
+
+                        R.id.navigation_mypage -> {
+                            navController?.apply {
+                                popBackStack(R.id.navigation_mypage, false)
+                            }
+                        }
+
+                        R.id.navigation_photo -> {
+
+                        }
+
+                        R.id.navigation_home -> {
+                            navController?.apply {
+                                popBackStack(R.id.navigation_home, false)
+                            }
+                        }
+                    }
+                }
+                true
+            }
+        }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -46,6 +82,10 @@ class MainActivity : AppCompatActivity() {
             bottomNavigationView.setupWithNavController(it)
         }
 
+        //bottomNavigationView.selectedItemId = selectedMenuItemId
+
+        // BottomNavigationView의 메뉴 아이템 클릭 리스너 설정
+        bottomNaviReselectedListener(navController)
 
         //딥링크 부분 .. 구현하다가 말았..
         Firebase.dynamicLinks.getDynamicLink(intent)
@@ -65,6 +105,8 @@ class MainActivity : AppCompatActivity() {
             }
             .addOnFailureListener(this) { e -> Log.e(TAG, "onCreate: 다이나믹 링크 $e") }
     }
+
+
 
 
 }

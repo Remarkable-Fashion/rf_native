@@ -68,10 +68,21 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
         searchResultSpanCountBtnOnClick() // 결과 레이아웃 사진 모아보기 갯수 버튼 클릭
 
         binding.searchResult.filter.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_navigation_search_to_searchFilterFragment,
-                bundleOf("searchResult" to true)
-            )
+            when(binding.searchResult.tabViewpager.currentItem){
+                0 ->{ //look
+                    findNavController().navigate(
+                        R.id.action_navigation_search_to_searchFilterFragment,
+                        bundleOf("searchResult" to true)
+                    )
+                }
+                1 ->{ //item
+                    findNavController().navigate(
+                        R.id.action_navigation_search_to_itemFilterFragment,
+                        bundleOf("searchResult" to true)
+                    )
+                }
+            }
+
         }
 
         binding.searchIcon.setOnClickListener {
@@ -227,4 +238,3 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
         }
     }
 }
-

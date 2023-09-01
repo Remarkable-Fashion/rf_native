@@ -16,6 +16,7 @@ class OnScrollUtils(private val loadMoreCallback: () -> Unit) :
                 scrollY > oldScrollY // Scroll Down
             ) {
                 // 스크롤이 끝까지 진행되면 -> 새로운 post 를 request
+
                 loadMoreCallback()
             }
         }

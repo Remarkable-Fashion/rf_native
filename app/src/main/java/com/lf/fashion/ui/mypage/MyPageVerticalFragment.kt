@@ -17,6 +17,7 @@ import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.lf.fashion.MainActivity
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
@@ -58,6 +59,7 @@ class MyPageVerticalFragment : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        MainActivity.bottomNaviReselectedListener(findNavController())
         cancelBtnBackStack(binding.backBtn)
         viewModel.myInfo.observe(viewLifecycleOwner) {
             userInfo = UserInfo(it.id, it.name, it.profile, null)
