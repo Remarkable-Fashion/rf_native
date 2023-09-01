@@ -154,6 +154,7 @@
                     app:layout_constraintStart_toStartOf="@id/guideline_vertical"
                     app:layout_constraintTop_toBottomOf="@id/price_seekbar" />
                 <include
+                    android:id="@+id/palette_space"
                     layout="@layout/item_palette"
                     android:layout_marginTop="17dp"
                     android:layout_width="match_parent"

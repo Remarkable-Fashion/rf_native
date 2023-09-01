@@ -1,15 +1,16 @@
 package com.lf.fashion.ui.search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.TableRow
+import android.widget.TextView
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.lf.fashion.R
-import com.lf.fashion.TAG
 import com.lf.fashion.databinding.SearchItemFilterFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.home.frag.FilterViewModel
@@ -49,6 +50,17 @@ class ItemFilterFragment : Fragment(R.layout.search_item_filter_fragment),View.O
         }
         binding.genderManBtn.setOnClickListener(this)
         binding.genderWomanBtn.setOnClickListener(this)
+
+        val tableLayout = binding.paletteSpace.table
+        for (i in 0 until tableLayout.childCount) {
+            val tableRow = tableLayout.getChildAt(i) as TableRow
+            for (j in 0 until tableRow.childCount) {
+                val textView = tableRow.getChildAt(j) as TextView
+                textView.setOnClickListener {
+                    textView.isSelected = !textView.isSelected
+                }
+            }
+        }
 
 
         cancelBtnBackStack(binding.cancelBtn)
