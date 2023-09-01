@@ -30,4 +30,16 @@
     <color name="light_purple">#E8E6FC</color>
     <color name="lf_orange">#FF4436</color>
     <color name="trans20_orange">#33FF4436</color>
+
+    <color name="palette_beige">#F1EED8</color>
+    <color name="palette_silver">#E3E3E3</color>
+    <color name="palette_red">#FF764A</color>
+    <color name="palette_blue">#6AAFD6</color>
+    <color name="palette_green">#B9D66A</color>
+    <color name="palette_yellow">#FFEC7C</color>
+    <color name="palette_pink">#F9C5C7</color>
+    <color name="palette_purple">#AFAEEE</color>
+    <color name="palette_wine">#B2565A</color>
+    <color name="palette_khaki">#647E54</color>
+
 </resources>
