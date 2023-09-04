@@ -25,7 +25,8 @@ class ItemFilterFragment : Fragment(R.layout.search_item_filter_fragment),View.O
     private val viewModel: FilterViewModel by viewModels()
     private val chipStyle = "default"
     private val priceMaxLimit = 500000
-
+    private var minPrice = 0
+    private var maxPrice = 50000
     override fun onResume() {
         viewModel.selectedGender?.let {
             if (it == "Male") { binding.genderManBtn.isSelected = true }
@@ -42,6 +43,8 @@ class ItemFilterFragment : Fragment(R.layout.search_item_filter_fragment),View.O
             requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
         val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_search)
         homeMenu.isChecked = true
+
+        binding.priceMax = maxPrice // 초기값 5만원
 
         arguments?.get("searchResult")?.let {
             if (it as Boolean) {
@@ -79,6 +82,8 @@ class ItemFilterFragment : Fragment(R.layout.search_item_filter_fragment),View.O
                 val rightPrice = (priceMaxLimit / 100) * (rightValue.toInt())
                 binding.priceMin = leftPrice
                 binding.priceMax = rightPrice
+                minPrice = leftPrice
+                maxPrice = rightPrice
             }
 
             override fun onStartTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {

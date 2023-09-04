@@ -1,9 +1,11 @@
 package com.lf.fashion.ui
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.lf.fashion.R
+import com.lf.fashion.TAG
 import com.lf.fashion.data.model.Cloth
 import com.lf.fashion.data.model.Profile
 
@@ -13,6 +15,7 @@ import java.text.DecimalFormat
 fun applyMonthsSales(view: TextView, price: Int) {
     val decimalFormat = DecimalFormat("#,###")
     val formatted = view.context.getString(R.string.price_format, decimalFormat.format(price))
+    Log.e(TAG, "applyMonthsSales: $formatted", )
     view.text = formatted
 }
 
