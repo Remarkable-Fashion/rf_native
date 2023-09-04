@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
@@ -27,10 +29,13 @@ import kotlinx.coroutines.runBlocking
 
 
 @AndroidEntryPoint
-class SearchFragment : Fragment(R.layout.search_fragment) {
+class SearchFragment : Fragment(R.layout.search_fragment),
+    AdapterView.OnItemSelectedListener{
     private lateinit var binding: SearchFragmentBinding
     private lateinit var userPreferences: PreferenceManager
     private val viewModel: SearchViewModel by hiltNavGraphViewModels(R.id.navigation_search)
+    private var orderByMode: String = "Best"
+    private var selectedOrderBy: MutableLiveData<String> = MutableLiveData()
 
     private val tabTitleArray = arrayOf("LOOK", "ITEM")
     private val historyList = MutableLiveData<MutableList<String>>()
@@ -41,6 +46,7 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
 
         userPreferences = PreferenceManager(requireContext().applicationContext)
 
+        searchOrderBySpinnerOnclick()
 
         // 바로 datastore 에서 history 꺼내와서 liveData 객체에 담아주기
         runBlocking {
@@ -68,14 +74,15 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
         searchResultSpanCountBtnOnClick() // 결과 레이아웃 사진 모아보기 갯수 버튼 클릭
 
         binding.searchResult.filter.setOnClickListener {
-            when(binding.searchResult.tabViewpager.currentItem){
-                0 ->{ //look
+            when (binding.searchResult.tabViewpager.currentItem) {
+                0 -> { //look
                     findNavController().navigate(
                         R.id.action_navigation_search_to_searchFilterFragment,
                         bundleOf("searchResult" to true)
                     )
                 }
-                1 ->{ //item
+
+                1 -> { //item
                     findNavController().navigate(
                         R.id.action_navigation_search_to_itemFilterFragment,
                         bundleOf("searchResult" to true)
@@ -218,23 +225,43 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
 
 
     private fun searchResultSpanCountBtnOnClick() {
-        binding.searchResult.appBarPhotoGridModeBtn.setOnClickListener {
-            when (binding.searchResult.appBarPhotoGridModeBtn.text) {
+        binding.searchResult.gridModeBtn.setOnClickListener {
+            when (binding.searchResult.gridText.text) {
                 "1" -> {
-                    binding.searchResult.appBarPhotoGridModeBtn.text = "3"
+                    binding.searchResult.gridText.text = "3"
                     viewModel.setGridMode(3)
                 }
 
                 "2" -> {
-                    binding.searchResult.appBarPhotoGridModeBtn.text = "1"
+                    binding.searchResult.gridText.text = "1"
                     viewModel.setGridMode(1)
                 }
 
                 "3" -> {
-                    binding.searchResult.appBarPhotoGridModeBtn.text = "2"
+                    binding.searchResult.gridText.text = "2"
                     viewModel.setGridMode(2)
                 }
             }
         }
+    }
+
+    private fun searchOrderBySpinnerOnclick() {
+        val orderBySpinner = binding.searchResult.orderBySpinner
+        orderBySpinner.onItemSelectedListener = this
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.spinner_order,
+            R.layout.spinner_text_view
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            orderBySpinner.adapter = adapter
+        }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+        selectedOrderBy.value = parent.getItemAtPosition(position).toString()
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
     }
 }

@@ -187,22 +187,22 @@ class HomeFragment :
             }
 
             //상단 바의 2,3장씩 보기 버튼 클릭
-            binding.appBarPhotoGridModeBtn -> {
-                when (binding.appBarPhotoGridModeBtn.text) {
+            binding.gridModeBtn -> {
+                when (binding.gridText.text) {
                     "1" -> {
-                        binding.appBarPhotoGridModeBtn.text = "2"
+                        binding.gridText.text = "2"
                         photoLayoutVisibilityMode(false) // grid visibility
                         editGridSpanCount(2)
                     }
 
                     "2" -> {
-                        binding.appBarPhotoGridModeBtn.text = "3"
+                        binding.gridText.text = "3"
                         photoLayoutVisibilityMode(false) // grid visibility
                         editGridSpanCount(3)
                     }
 
                     "3" -> {
-                        binding.appBarPhotoGridModeBtn.text = "1"
+                        binding.gridText.text = "1"
                         photoLayoutVisibilityMode(true) // default visibility
                     }
                 }
@@ -210,7 +210,7 @@ class HomeFragment :
             }
 
             //상단 바의 필터 버튼 클릭
-            binding.appBarPhotoFilterBtn -> {
+            binding.filter -> {
                 findNavController().navigate(R.id.action_global_to_filterFragment)
             }
         }
@@ -335,7 +335,7 @@ class HomeFragment :
         binding.homeMainViewpager.apply {
             setCurrentItem(postIndex, false)
         }
-        binding.appBarPhotoGridModeBtn.text = "1"
+        binding.gridText.text = "1"
         photoLayoutVisibilityMode(true)
 
     }

@@ -14,8 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/white"
-      >
+        android:background="@color/white">
         <include layout="@layout/item_top_tool_bar"/>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/top_menu"
@@ -33,6 +32,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+                android:id="@+id/filter_dot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="17dp"
@@ -85,21 +85,44 @@
                 android:textSize="8sp"
                 app:layout_constraintStart_toEndOf="@id/app_bar_following"
                 app:layout_constraintTop_toTopOf="@id/app_bar_following" />
-
-            <androidx.appcompat.widget.AppCompatButton
+            <ImageView
                 android:id="@+id/app_bar_photo_grid_mode_btn"
-                android:layout_width="23dp"
-                android:layout_height="23dp"
-                android:layout_marginEnd="15dp"
-                android:background="@drawable/bg_black_radi2"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:src="@drawable/bg_black_radi2"
+                android:padding="10dp"
+                android:layout_marginEnd="5dp"
+                app:layout_constraintEnd_toStartOf="@id/app_bar_photo_filter_btn"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+            <TextView
+                android:id="@+id/grid_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_bold"
                 android:text="@string/_1"
                 android:textColor="@color/white"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/app_bar_photo_filter_btn"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@id/app_bar_photo_grid_mode_btn"
+                app:layout_constraintBottom_toBottomOf="@id/app_bar_photo_grid_mode_btn"
+                app:layout_constraintStart_toStartOf="@id/app_bar_photo_grid_mode_btn"
+                app:layout_constraintEnd_toEndOf="@id/app_bar_photo_grid_mode_btn"
+                />
 
+            <androidx.constraintlayout.helper.widget.Layer
+                android:id="@+id/grid_mode_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="grid_text,app_bar_photo_grid_mode_btn"
+                tools:ignore="MissingConstraints" />
+            <androidx.constraintlayout.helper.widget.Layer
+                android:id="@+id/filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                app:constraint_referenced_ids="filter_dot,app_bar_photo_filter_btn"
+                tools:ignore="MissingConstraints" />
             <androidx.constraintlayout.helper.widget.Layer
                 android:id="@+id/top_following_menu_layer"
                 android:layout_width="wrap_content"

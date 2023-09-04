@@ -89,4 +89,11 @@
         <item>불법 또는 규제 상품 판매</item>
         <item>기타 문제</item>
     </string-array>
+
+    <string-array name="spinner_order">
+        <item>인기순</item>
+        <item>최신순</item>
+        <item>고가순</item>
+        <item>저가순</item>
+    </string-array>
 </resources>
