@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.data.model.SearchTerm
 import com.lf.fashion.databinding.ItemSearchTermRankBinding
 
-class TermRankAdapter :
+class TermRankAdapter(private val searchRankRowClickListener: SearchRankRowClickListener) :
     ListAdapter<SearchTerm, TermRankAdapter.TermRankViewHolder>(RankTermDiff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TermRankViewHolder {
@@ -39,6 +39,10 @@ class TermRankAdapter :
                     }
                 }
             }
+
+            binding.row.setOnClickListener {
+                searchRankRowClickListener.searchRankOnclick(item.term)
+            }
         }
 
         private fun updateChangeIndicator(notChanged: Boolean, up: Boolean, down: Boolean) {
@@ -61,4 +65,8 @@ class RankTermDiff : DiffUtil.ItemCallback<SearchTerm>() {
         return oldItem == newItem
     }
 
+}
+
+interface SearchRankRowClickListener{
+    fun searchRankOnclick(term : String)
 }

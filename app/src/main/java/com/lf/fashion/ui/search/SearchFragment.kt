@@ -20,6 +20,7 @@ import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.databinding.SearchFragmentBinding
 import com.lf.fashion.ui.hideKeyboard
+import com.lf.fashion.ui.search.adapter.SearchRankRowClickListener
 import com.lf.fashion.ui.search.adapter.SearchResultViewPagerAdapter
 import com.lf.fashion.ui.search.adapter.TermRankAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +31,8 @@ import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
 class SearchFragment : Fragment(R.layout.search_fragment),
-    AdapterView.OnItemSelectedListener{
+    AdapterView.OnItemSelectedListener,
+SearchRankRowClickListener{
     private lateinit var binding: SearchFragmentBinding
     private lateinit var userPreferences: PreferenceManager
     private val viewModel: SearchViewModel by hiltNavGraphViewModels(R.id.navigation_search)
@@ -39,7 +41,7 @@ class SearchFragment : Fragment(R.layout.search_fragment),
 
     private val tabTitleArray = arrayOf("LOOK", "ITEM")
     private val historyList = MutableLiveData<MutableList<String>>()
-    private val termRankAdapter = TermRankAdapter()
+    private val termRankAdapter = TermRankAdapter(this)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = SearchFragmentBinding.bind(view)
@@ -116,19 +118,20 @@ class SearchFragment : Fragment(R.layout.search_fragment),
 
     }
 
+
+    //chip 에 추가 ,
     private fun searchAction(searchTerm: String) {
         runBlocking {
             launch {
-                var history = historyList.value
-                if (history != null) {
-                    history.add(searchTerm)
-                    val orderByRecent = history.reversed()
-                    history = orderByRecent.distinct().toMutableList()
-                    Log.e(TAG, "searchAction HISTORY: $history")
+                var newHistory = historyList.value
+                if (newHistory != null) {
+                   newHistory.add(0,searchTerm)
+                    newHistory = newHistory.distinct().toMutableList()
+                    Log.e(TAG, "searchAction HISTORY: $newHistory")
                 } else {
-                    history = mutableListOf(searchTerm)
+                    newHistory = mutableListOf(searchTerm)
                 }
-                historyList.value = history!!  // liveData 객체 업데이트 , datastore 정보 업데이트
+                historyList.value = newHistory!!  // liveData 객체 업데이트 , datastore 정보 업데이트
                 userPreferences.storeSearchHistoryList(historyList.value!!)
 
                 searchResultViewSetting(searchTerm)  //결과 레이아웃 내부 세팅 (tab,viewpager)
@@ -137,7 +140,6 @@ class SearchFragment : Fragment(R.layout.search_fragment),
                 binding.searchEt.isCursorVisible = false // 검색 실행시 edittext 커서 focus 제거
                 binding.searchTerm.root.visibility = View.GONE
                 binding.searchResult.root.visibility = View.VISIBLE
-                Log.e(TAG, "searchAction: $searchTerm")
             }
         }
     }
@@ -145,7 +147,6 @@ class SearchFragment : Fragment(R.layout.search_fragment),
     private fun keyBoardUIControl() {
         //editText 활성화,키보드 올라오면 최신 검색어 노출 view visible 하게
         binding.searchEt.setOnClickListener {
-            Log.e(TAG, "keyBoardUIControl: editText 클릭 ")
             if (binding.searchEt.hasFocus()) {
                 binding.searchEt.isCursorVisible = true // cursor focus true
                 binding.searchTerm.root.visibility = View.VISIBLE
@@ -263,5 +264,11 @@ class SearchFragment : Fragment(R.layout.search_fragment),
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
+    }
+
+    override fun searchRankOnclick(term: String) {
+        //val term = chip.text.toString()
+        binding.searchEt.setText(term)
+        searchAction(term)
     }
 }
