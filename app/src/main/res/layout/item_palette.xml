@@ -1,180 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
+
     <TableLayout
         android:id="@+id/table"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        >
-        <TableRow android:padding="11dp"
-            android:gravity="center">
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:gravity="center"
+            android:padding="11dp">
+
             <TextView
                 android:id="@+id/white_color"
-                android:layout_width="wrap_content"
+                style="@style/palette_attr"
+                android:layout_width="95dp"
                 android:layout_height="wrap_content"
-                app:drawableStartCompat="@drawable/rectangle_white"
+                android:background="@drawable/selector_palette2"
                 android:drawablePadding="5dp"
                 android:text="화이트"
-                android:background="@drawable/selector_palette"
-                android:paddingEnd="15dp"
-                android:paddingStart="15dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                />
+                app:drawableStartCompat="@drawable/rectangle_white" />
+
             <TextView
                 android:id="@+id/black_color"
-                android:layout_width="wrap_content"
+                style="@style/palette_attr"
+                android:layout_width="95dp"
                 android:layout_height="wrap_content"
-                app:drawableStartCompat="@drawable/rectangle_black"
                 android:background="@drawable/selector_palette"
                 android:drawablePadding="5dp"
-                android:paddingEnd="15dp"
-                android:paddingStart="15dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-
                 android:text="블랙"
-                />
+                app:drawableStartCompat="@drawable/rectangle_black" />
+
             <TextView
                 android:id="@+id/beige_color"
-                android:layout_width="wrap_content"
+                style="@style/palette_attr"
+                android:layout_width="95dp"
                 android:layout_height="wrap_content"
-                app:drawableStartCompat="@drawable/rectangle_beige"
-                android:background="@drawable/selector_palette"
+                android:background="@drawable/selector_palette2"
                 android:drawablePadding="5dp"
-                android:paddingEnd="15dp"
-                android:paddingStart="15dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
                 android:text="베이지"
+                app:drawableStartCompat="@drawable/rectangle_beige"
+
                 />
+
             <TextView
                 android:id="@+id/silver_color"
-                android:layout_width="wrap_content"
+                style="@style/palette_attr"
+                android:layout_width="95dp"
                 android:layout_height="wrap_content"
-                app:drawableStartCompat="@drawable/rectangle_silver"
                 android:background="@drawable/selector_palette"
                 android:drawablePadding="5dp"
-                android:paddingEnd="15dp"
-                android:paddingStart="15dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
                 android:text="실버"
+                app:drawableStartCompat="@drawable/rectangle_silver"
+
                 />
 
         </TableRow>
-        <TableRow android:padding="11dp"
-            android:gravity="center">
+
+        <TableRow
+            android:gravity="center"
+            android:padding="11dp">
+
             <TextView
                 android:id="@+id/red_color"
-                android:layout_width="wrap_content"
+                style="@style/palette_attr"
+                android:layout_width="95dp"
                 android:layout_height="wrap_content"
-                app:drawableStartCompat="@drawable/rectangle_red"
                 android:background="@drawable/selector_palette"
                 android:drawablePadding="5dp"
-                android:paddingEnd="15dp"
-                android:paddingStart="15dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
                 android:text="레드"
+                app:drawableStartCompat="@drawable/rectangle_red"
+
                 />
+
             <TextView
                 android:id="@+id/blue_color"
-                android:layout_width="wrap_content"
+                style="@style/palette_attr"
+                android:layout_width="95dp"
                 android:layout_height="wrap_content"
-                app:drawableStartCompat="@drawable/rectangle_blue"
                 android:background="@drawable/selector_palette"
                 android:drawablePadding="5dp"
-                android:paddingEnd="15dp"
-                android:paddingStart="15dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
                 android:text="블루"
+                app:drawableStartCompat="@drawable/rectangle_blue"
+
                 />
+
             <TextView
                 android:id="@+id/green_color"
-                android:layout_width="wrap_content"
+                style="@style/palette_attr"
+                android:layout_width="95dp"
                 android:layout_height="wrap_content"
-                app:drawableStartCompat="@drawable/rectangle_green"
                 android:background="@drawable/selector_palette"
                 android:drawablePadding="5dp"
                 android:text="그린"
-                android:paddingEnd="15dp"
-                android:paddingStart="15dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                app:drawableStartCompat="@drawable/rectangle_green"
+
                 />
+
             <TextView
                 android:id="@+id/yellow_color"
-                android:layout_width="wrap_content"
+                style="@style/palette_attr"
+                android:layout_width="95dp"
                 android:layout_height="wrap_content"
-                app:drawableStartCompat="@drawable/rectangle_yellow"
-                android:background="@drawable/selector_palette"
+                android:background="@drawable/selector_palette2"
                 android:drawablePadding="5dp"
                 android:text="옐로우"
-                android:paddingEnd="15dp"
-                android:paddingStart="15dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                app:drawableStartCompat="@drawable/rectangle_yellow"
+
                 />
 
         </TableRow>
-        <TableRow android:padding="11dp"
-            android:gravity="center">
+
+        <TableRow
+            android:gravity="center"
+            android:padding="11dp">
+
             <TextView
                 android:id="@+id/pink_color"
-                android:layout_width="wrap_content"
+                style="@style/palette_attr"
+                android:layout_width="95dp"
                 android:layout_height="wrap_content"
-                app:drawableStartCompat="@drawable/rectangle_pink"
                 android:background="@drawable/selector_palette"
                 android:drawablePadding="5dp"
                 android:text="핑크"
-                android:paddingEnd="15dp"
-                android:paddingStart="15dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                app:drawableStartCompat="@drawable/rectangle_pink"
+
                 />
+
             <TextView
                 android:id="@+id/purple_color"
-                android:layout_width="wrap_content"
+                style="@style/palette_attr"
+                android:layout_width="95dp"
                 android:layout_height="wrap_content"
-                app:drawableStartCompat="@drawable/rectangle_purple"
                 android:background="@drawable/selector_palette"
                 android:drawablePadding="5dp"
                 android:text="퍼플"
-                android:paddingEnd="15dp"
-                android:paddingStart="15dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                app:drawableStartCompat="@drawable/rectangle_purple"
+
                 />
+
             <TextView
                 android:id="@+id/wine_color"
-                android:layout_width="wrap_content"
+                style="@style/palette_attr"
+                android:layout_width="95dp"
                 android:layout_height="wrap_content"
-                app:drawableStartCompat="@drawable/rectangle_wine"
                 android:background="@drawable/selector_palette"
                 android:drawablePadding="5dp"
                 android:text="와인"
-                android:paddingEnd="15dp"
-                android:paddingStart="15dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                app:drawableStartCompat="@drawable/rectangle_wine"
+
                 />
+
             <TextView
                 android:id="@+id/khaki_color"
-                android:layout_width="wrap_content"
+                style="@style/palette_attr"
+                android:layout_width="95dp"
                 android:layout_height="wrap_content"
-                app:drawableStartCompat="@drawable/rectangle_khaki"
                 android:background="@drawable/selector_palette"
                 android:drawablePadding="5dp"
                 android:text="카키"
-                android:paddingEnd="15dp"
-                android:paddingStart="15dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                app:drawableStartCompat="@drawable/rectangle_khaki"
+
                 />
 
         </TableRow>

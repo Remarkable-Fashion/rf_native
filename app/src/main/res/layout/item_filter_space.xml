@@ -90,7 +90,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/gender_man_btn"
-        style="@style/montserrat_medium_text"
+        style="@style/montserrat_bold_14"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginTop="15dp"
@@ -104,7 +104,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/gender_woman_btn"
-        style="@style/montserrat_medium_text"
+        style="@style/montserrat_bold_14"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="10dp"
