@@ -358,5 +358,9 @@ class HomeFragment :
         }
     }
 
+    override fun deleteMyPost(post: Posts) {
+        //TODO
+    }
+
 
 }

@@ -75,4 +75,8 @@ class MyPageRepository @Inject constructor(
             introductionRequestBody
         )
     }
+
+    suspend fun deletePost(postId : Int) = safeApiCall {
+        myPageApi.deletePost(postId)
+    }
 }

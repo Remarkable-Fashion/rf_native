@@ -17,6 +17,7 @@ import com.lf.fashion.data.model.FollowingUserList
 import com.lf.fashion.data.model.MsgResponse
 import com.lf.fashion.data.model.MyBlockUserList
 import com.lf.fashion.data.model.MyInfo
+import com.lf.fashion.data.model.Posts
 import com.lf.fashion.data.model.RandomPostResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -66,11 +67,7 @@ class MyPageViewModel @Inject constructor(
     private val _myBlockUsers = MutableLiveData<Resource<MyBlockUserList>>()
     val myBlockUsers = _myBlockUsers
 
-/*    private val _followResponse = MutableLiveData<Resource<MsgResponse>>()
-    val followResponse = _followResponse
-
-    private val _blockResponse = MutableLiveData<Resource<MsgResponse>>()
-    val blockResponse = _blockResponse*/
+    var deletePostInCurrentList = MutableLiveData<Posts>()
 
     init {
         if(savedLoginToken.value.isNullOrEmpty()){
@@ -196,5 +193,11 @@ class MyPageViewModel @Inject constructor(
         }
 
         return result
+    }
+
+    suspend fun deletePost(postId : Int) : MsgResponse{
+         val response =  myPageRepository.deletePost(postId)
+         return if(response is Resource.Success) return response.value
+        else MsgResponse(false,"Resource Fail")
     }
 }

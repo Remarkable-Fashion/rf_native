@@ -140,6 +140,7 @@ class DefaultPostDiff : DiffUtil.ItemCallback<Posts>() {
         if (oldItem.isScrap != newItem.isScrap) {
             payload.add("SCRAP_STATE")
         }
+
         return if (payload.isEmpty()) null else payload
     }
 

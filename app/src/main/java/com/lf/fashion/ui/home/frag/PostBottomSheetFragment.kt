@@ -25,7 +25,11 @@ import kotlin.properties.Delegates
  * 공유 버튼 클릭시 노출되는 바텀 다이얼로그 시트입니다
  */
 @AndroidEntryPoint
-class PostBottomSheetFragment(private val post: Posts? = null, private val userId: Int? = null) :
+class PostBottomSheetFragment(
+    private val post: Posts? = null,
+    private val userId: Int? = null,
+    private val myBottomDialogListener: MyBottomDialogListener? = null
+) :
     BottomSheetDialogFragment(R.layout.home_bottom_dialog_item),
     View.OnClickListener {
     private lateinit var binding: HomeBottomDialogItemBinding
@@ -78,7 +82,7 @@ class PostBottomSheetFragment(private val post: Posts? = null, private val userI
         post?.let {
             it.isScrap = scrapState
             //  post.isFollow = followState follow는 바꿀필요 없을 것 같 ui 에서 바로 노출 x
-            (parentFragment as? MyBottomDialogListener)?.onBottomSheetDismissed(it)
+            myBottomDialogListener?.onBottomSheetDismissed(it)
         }
         super.onDismiss(dialog)
     }
@@ -133,6 +137,12 @@ class PostBottomSheetFragment(private val post: Posts? = null, private val userI
                 showDeclareDialog()
             }
 
+            binding.deleteBtn -> {
+                post?.let {
+                    myBottomDialogListener?.deleteMyPost(it)
+                }
+            }
+
         }
     }
 
@@ -176,12 +186,12 @@ class PostBottomSheetFragment(private val post: Posts? = null, private val userI
         }
     }
 
-    private fun showDeclareDialog(){
+    private fun showDeclareDialog() {
         val declareArray = resources.getStringArray(R.array.declare_array)
         Log.e(TAG, "showDeclareDialog: $declareArray")
         val dialog = AlertDialog.Builder(context)
             .setTitle("신고")
-            .setItems(R.array.declare_array){ _,p1->
+            .setItems(R.array.declare_array) { _, p1 ->
                 getDetailInfo(declareArray[p1])
             }
             .setNegativeButton("닫기") { _, _ ->
@@ -190,7 +200,7 @@ class PostBottomSheetFragment(private val post: Posts? = null, private val userI
     }
 
     //TODO 신고하기 api 연결
-    private fun getDetailInfo(p1 : String){
+    private fun getDetailInfo(p1: String) {
         Log.e(TAG, "getDetailInfo: $p1")
         val layoutinflater = LayoutInflater.from(context)
         val dialogView = layoutinflater.inflate(R.layout.item_dialog_declare, null)
@@ -198,7 +208,10 @@ class PostBottomSheetFragment(private val post: Posts? = null, private val userI
         val dialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)
             .setPositiveButton("등록") { dialog, id ->
-                Log.e(TAG, "getDetailInfo: $p1 의 ${dialogView.findViewById<EditText>(R.id.declare_value).text.toString()}", )
+                Log.e(
+                    TAG,
+                    "getDetailInfo: $p1 의 ${dialogView.findViewById<EditText>(R.id.declare_value).text.toString()}",
+                )
             }
             .setNegativeButton("닫기") { _, _ ->
 

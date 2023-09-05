@@ -196,4 +196,8 @@ class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_frag
         }
     }
 
+    override fun deleteMyPost(post: Posts) {
+        //TODO
+    }
+
 }

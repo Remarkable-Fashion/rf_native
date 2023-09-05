@@ -39,5 +39,5 @@ interface MyPageApi {
 
     //TODO 연결
     @DELETE("post/{id}")
-    suspend fun deletePost()
+    suspend fun deletePost(@Path("id") postId : Int) : MsgResponse
 }

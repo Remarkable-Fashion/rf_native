@@ -98,6 +98,10 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
         }
     }
 
+    override fun deleteMyPost(post: Posts) {
+        //TODO
+    }
+
     override fun photoClicked(bool: Boolean, photo: List<ImageUrl>) {
         if (bool) {
             val action =

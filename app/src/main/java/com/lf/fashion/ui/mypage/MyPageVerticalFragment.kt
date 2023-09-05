@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
@@ -27,6 +28,10 @@ import com.lf.fashion.data.model.UserInfo
 import com.lf.fashion.databinding.MyVerticalFragmentBinding
 import com.lf.fashion.ui.MyBottomDialogListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 @AndroidEntryPoint
@@ -170,15 +175,15 @@ class MyPageVerticalFragment : Fragment(),
     }
 
     override fun kebabBtnClicked(post: Posts) {
-        val dialog = PostBottomSheetFragment(post, userId = userInfo.id)
+        val dialog = PostBottomSheetFragment(post, userId = userInfo.id, this)
         dialog.show(parentFragmentManager, "bottom_sheet")
     }
 
     override fun photoZipBtnClicked(post: Posts) {
         post.user = userInfo
-     /*   findNavController().navigate(
-            R.id.action_global_to_photoZipFragment, bundleOf("post" to post)
-        )*/
+        /*   findNavController().navigate(
+               R.id.action_global_to_photoZipFragment, bundleOf("post" to post)
+           )*/
         findNavController().navigate(
             R.id.action_myPageVerticalFragment_to_myPhotoZipFragment,
             bundleOf("post" to post)
@@ -206,6 +211,25 @@ class MyPageVerticalFragment : Fragment(),
                 isScrap = post.isScrap
             }
             defaultAdapter.notifyItemChanged(position, "SCRAP_STATE")
+        }
+    }
+
+    override fun deleteMyPost(post: Posts) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val msg = viewModel.deletePost(postId = post.id)
+            if (msg.success) {
+                withContext(Dispatchers.Main) {
+                    val currentList = defaultAdapter.currentList.toMutableList()
+                    val position = currentList.indexOfFirst { it.id == post.id }
+
+                    if (position != -1) {
+                        currentList.removeAt(position)
+                        defaultAdapter.submitList(currentList)
+                        viewModel.deletePostInCurrentList.value = post
+                        Toast.makeText(requireContext(), "게시물이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
     }
 }
