@@ -40,12 +40,11 @@ class HomeViewModel @Inject constructor(
 
     init {
         postMode.value = "random"
-        viewModelScope.launch {
-            getPostList("Male", 21)
-        }
+        getPostList("Male", 21)
+
     }
 
-    private fun getPostList(sex: String, take: Int) {
+    fun getPostList(sex: String, take: Int) {
         Log.d(TAG, "suspend getPostList 호출 ")
         viewModelScope.launch {
             val savedToken = userPreferences.accessToken.first()

@@ -46,7 +46,6 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
         savedInstanceState: Bundle?
     ): View {
 
-        viewModel.getSavedLoginToken()
         viewModel.savedLoginToken.observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) {
                 findNavController().navigate(R.id.action_navigation_mypage_to_loginFragment)
@@ -98,18 +97,17 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
         }
 
         navigateFollowDetailFrag()
-        //TODO Test
-        //vertical 뷰에서 포스트를 삭제한 경우 grid 에서도 삭제해주는 코드
+
+        //vertical 뷰에서 포스트를 삭제한 경우 refresh 하는 코드!
         viewModel.havetoRefresh.observe(viewLifecycleOwner){ postList->
             viewModel.getPostList()
-        /*   postList.forEach {  post ->
-                val currentList = gridAdapter.currentList.toMutableList()
-                val position = currentList.indexOfFirst { listItem -> listItem.id == post.id }
-                if(position != -1){
-                    currentList.removeAt(position)
-                    gridAdapter.submitList(currentList)
-                }
-            }*/
+        }
+        binding.layoutSwipeRefreah.setOnRefreshListener {
+            if(!viewModel.savedLoginToken.value.isNullOrEmpty()){
+                viewModel.getPostList()
+                viewModel.getMyInfo()
+            }
+            return@setOnRefreshListener
         }
     }
 
@@ -124,6 +122,7 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
 
     private fun loadMyPost() {
         viewModel.postResponse.observe(viewLifecycleOwner) { resource ->
+            binding.layoutSwipeRefreah.isRefreshing = false
             when (resource) {
                 is Resource.Success -> {
                     val response = resource.value

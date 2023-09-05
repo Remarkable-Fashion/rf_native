@@ -70,7 +70,8 @@ class MyPageViewModel @Inject constructor(
     var havetoRefresh = MutableLiveData<Boolean>()
 
     init {
-        if(savedLoginToken.value.isNullOrEmpty()){
+      getSavedLoginToken()
+        if(!savedLoginToken.value.isNullOrEmpty()){
             getPostList()
             getMyInfo()
         }

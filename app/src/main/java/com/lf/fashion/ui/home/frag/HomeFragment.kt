@@ -89,6 +89,12 @@ class HomeFragment :
 
         binding.homeMainViewpager.adapter = defaultAdapter
         binding.gridRecyclerView.adapter = gridAdapter
+
+        //당겨서 새로고침
+        binding.layoutSwipeRefreah.setOnRefreshListener {
+            viewModel.getPostList("Male", 21)
+            return@setOnRefreshListener
+        }
     }
 
 
@@ -111,9 +117,14 @@ class HomeFragment :
 
     private fun requestRandomPost() {
         viewModel.response.observe(viewLifecycleOwner) { resource ->
+            binding.layoutSwipeRefreah.isRefreshing = false
             when (resource) {
                 is Resource.Success -> {
                     val response = resource.value
+
+                    val currentGridCount = binding.gridText.text.toString().toInt()
+                    val spanCount = if(currentGridCount ==1) 2 else 3
+                    photoLayoutVisibilityMode(currentGridCount == 1)
 
                     //1개씩 보기 뷰페이저 세팅
                     with(binding.homeMainViewpager) {
@@ -125,17 +136,24 @@ class HomeFragment :
                     }
 
                     //postList.value = response.posts
-
                     // 2-3개 씩 모아보기 리사이클러뷰 세팅
                     with(binding.gridRecyclerView) {
+                        //3개로 보고있다가 refresh하는 경우를 감안해서 view에서 grid count를 받아오기
+                        Log.e(
+                            TAG, "requestRandomPost: $spanCount" +
+                                    "${binding.homeMainViewpager.isVisible}" +
+                                    "        ${binding.gridRecyclerView.isVisible} 그리드 !" +
+                                    "" +
+                                    ""
+                        )
                         //staggeredGrid layoutManager 연결
                         layoutManager =
-                            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                            StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL)
                         adapter = gridAdapter.apply {
-                            addItemDecoration(GridSpaceItemDecoration(2, 6))
+                            addItemDecoration(GridSpaceItemDecoration(spanCount, 6))
                             submitList(response.posts)
                         }
-                        visibility = View.INVISIBLE // 기본 설정 invisible
+
                     }
                 }
 
@@ -189,24 +207,7 @@ class HomeFragment :
 
             //상단 바의 2,3장씩 보기 버튼 클릭
             binding.gridModeBtn -> {
-                when (binding.gridText.text) {
-                    "1" -> {
-                        binding.gridText.text = "2"
-                        photoLayoutVisibilityMode(false) // grid visibility
-                        editGridSpanCount(2)
-                    }
-
-                    "2" -> {
-                        binding.gridText.text = "3"
-                        photoLayoutVisibilityMode(false) // grid visibility
-                        editGridSpanCount(3)
-                    }
-
-                    "3" -> {
-                        binding.gridText.text = "1"
-                        photoLayoutVisibilityMode(true) // default visibility
-                    }
-                }
+                uiVisibilityUpdate(binding.gridText.text.toString())
                 gridAdapter.notifyDataSetChanged()
             }
 
@@ -216,6 +217,27 @@ class HomeFragment :
             }
         }
 
+    }
+
+    private fun uiVisibilityUpdate(currentGrid: String) {
+        when (currentGrid) {
+            "1" -> {
+                binding.gridText.text = "2"
+                photoLayoutVisibilityMode(false) // grid visibility
+                editGridSpanCount(2)
+            }
+
+            "2" -> {
+                binding.gridText.text = "3"
+                photoLayoutVisibilityMode(false) // grid visibility
+                editGridSpanCount(3)
+            }
+
+            "3" -> {
+                binding.gridText.text = "1"
+                photoLayoutVisibilityMode(true) // default visibility
+            }
+        }
     }
 
 
@@ -299,7 +321,7 @@ class HomeFragment :
 
     override fun kebabBtnClicked(post: Posts) {
         Log.d(TAG, "HomeFragment - kebabBtnClicked postId : ${post.id}");
-        val dialog = PostBottomSheetFragment(post)
+        val dialog = PostBottomSheetFragment(post, myBottomDialogListener = this)
         dialog.show(childFragmentManager, "bottom_sheet")
     }
 
