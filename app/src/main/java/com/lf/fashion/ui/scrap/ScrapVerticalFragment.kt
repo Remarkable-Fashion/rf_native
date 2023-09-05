@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -22,11 +23,17 @@ import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.data.model.Posts
+import com.lf.fashion.ui.MyBottomDialogListener
 import com.lf.fashion.ui.navigateToMyPage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class ScrapVerticalFragment : Fragment(),
-    PhotoClickListener, VerticalViewPagerClickListener {
+    PhotoClickListener, VerticalViewPagerClickListener,
+    MyBottomDialogListener {
     private lateinit var binding: ScrapVerticalFragmentBinding
     private val viewModel: ScrapViewModel by hiltNavGraphViewModels(R.id.navigation_scrap) // hilt navi 함께 사용할때 viewModel 공유
     private val defaultAdapter = DefaultPostAdapter(
@@ -163,7 +170,7 @@ class ScrapVerticalFragment : Fragment(),
     }
 
     override fun kebabBtnClicked(post: Posts) {
-        val dialog = PostBottomSheetFragment(post)
+        val dialog = PostBottomSheetFragment(post, myBottomDialogListener = this)
         dialog.show(parentFragmentManager, "bottom_sheet")
     }
 
@@ -188,4 +195,26 @@ class ScrapVerticalFragment : Fragment(),
             bundleOf("userId" to userId)
         )
     }
+
+    override fun onBottomSheetDismissed(post: Posts) {
+    }
+
+    //todo 게시물 삭제했는데도 scrap grid 페이지에 뜨는 현상 백엔드에 질문해야함
+    override fun deleteMyPost(post: Posts) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val msg = viewModel.deletePost(postId = post.id)
+            if (msg.success) {
+                withContext(Dispatchers.Main) {
+                    val currentList = defaultAdapter.currentList.toMutableList()
+                    val position = currentList.indexOfFirst { it.id == post.id }
+
+                    if (position != -1) {
+                        currentList.removeAt(position)
+                        defaultAdapter.submitList(currentList)
+                        //     viewModel.havetoRefresh.value = true//currentList
+                        Toast.makeText(requireContext(), "게시물이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }    }
 }

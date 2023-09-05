@@ -98,8 +98,8 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
         }
     }
 
+    //내 게시물일때만 수정가능하기 때문에 해당 페이지에선 사용 x
     override fun deleteMyPost(post: Posts) {
-        //TODO
     }
 
     override fun photoClicked(bool: Boolean, photo: List<ImageUrl>) {
@@ -178,7 +178,7 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
     }
 
     override fun kebabBtnClicked(post: Posts) {
-        val dialog = PostBottomSheetFragment(post)
+        val dialog = PostBottomSheetFragment(post, myBottomDialogListener = this)
         dialog.show(parentFragmentManager, "bottom_sheet")
     }
 

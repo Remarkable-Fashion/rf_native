@@ -68,6 +68,7 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
         with(binding.gridRv) { //grid layout
             adapter = GridPostAdapter(3, this@PhotoZipFragment, null).apply {
                 viewModel.posts.observe(viewLifecycleOwner) { resource ->
+                    binding.layoutSwipeRefreah.isRefreshing = false
                     when (resource) {
                         is Resource.Success -> {
                             val response = resource.value
@@ -92,8 +93,23 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
             }
         }
 
+    /*    //vertical 뷰에서 포스트를 삭제한 경우 refresh 하는 코드!
+        viewModel.havetoRefresh.observe(viewLifecycleOwner){ it->
+            if(it) {
+                viewModel.getPostByUserId(post.user!!.id)
+                viewModel.getProfileInfoByUserId(post.user!!.id)
+                viewModel.havetoRefresh.value = false
+            }
+        }*/
+
         profileKebabBtnOnClick()
 
+        binding.layoutSwipeRefreah.setOnRefreshListener {
+            post.user?.let {
+                viewModel.getPostByUserId(it.id)
+                viewModel.getProfileInfoByUserId(it.id)
+            }
+        }
     }
 
     private fun followStateBinding(post: Posts) {

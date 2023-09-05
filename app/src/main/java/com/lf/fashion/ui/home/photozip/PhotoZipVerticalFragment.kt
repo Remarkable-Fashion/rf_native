@@ -2,6 +2,7 @@ package com.lf.fashion.ui.home.photozip
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
@@ -23,6 +24,10 @@ import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
 import com.lf.fashion.ui.navigateToMyPage
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_fragment),
@@ -155,7 +160,7 @@ class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_frag
     }
 
     override fun kebabBtnClicked(post: Posts) {
-        val dialog = PostBottomSheetFragment(post)
+        val dialog = PostBottomSheetFragment(post, myBottomDialogListener = this)
         dialog.show(childFragmentManager, "bottom_sheet")
     }
 
@@ -197,7 +202,22 @@ class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_frag
     }
 
     override fun deleteMyPost(post: Posts) {
-        //TODO
+        CoroutineScope(Dispatchers.IO).launch {
+            val msg = viewModel.deletePost(postId = post.id)
+            if (msg.success) {
+                withContext(Dispatchers.Main) {
+                    val currentList = defaultAdapter.currentList.toMutableList()
+                    val position = currentList.indexOfFirst { it.id == post.id }
+
+                    if (position != -1) {
+                        currentList.removeAt(position)
+                        defaultAdapter.submitList(currentList)
+                   //     viewModel.havetoRefresh.value = true//currentList
+                        Toast.makeText(requireContext(), "게시물이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
     }
 
 }

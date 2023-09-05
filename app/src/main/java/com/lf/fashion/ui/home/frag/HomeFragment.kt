@@ -35,7 +35,6 @@ import kotlinx.coroutines.flow.first
 /**
  * 메인 포스트 스크롤 페이지 프래그먼트입니다.
  */
-//TODO swipe refresh 추가
 @AndroidEntryPoint
 class HomeFragment :
     Fragment(R.layout.home_a_fragment),
@@ -381,7 +380,6 @@ class HomeFragment :
         }
     }
 
-    //TODO TEST
     override fun deleteMyPost(post: Posts) {
         CoroutineScope(Dispatchers.IO).launch {
             val msg = viewModel.deletePost(postId = post.id)

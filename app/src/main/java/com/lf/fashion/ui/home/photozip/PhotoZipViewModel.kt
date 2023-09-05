@@ -10,6 +10,7 @@ import com.lf.fashion.data.repository.OtherUserInfoRepository
 import com.lf.fashion.data.model.MsgResponse
 import com.lf.fashion.data.model.OtherUserInfo
 import com.lf.fashion.data.model.RandomPostResponse
+import com.lf.fashion.data.repository.MyPageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class PhotoZipViewModel @Inject constructor(
     private val otherUserInfoRepository: OtherUserInfoRepository,
-    private val communicateRepository: CommunicateRepository
+    private val communicateRepository: CommunicateRepository,
+    private val myPageRepository: MyPageRepository
 ) :ViewModel(){
     private val _posts = MutableLiveData<Resource<RandomPostResponse>>()
     var posts: LiveData<Resource<RandomPostResponse>> = _posts
@@ -36,6 +38,9 @@ class PhotoZipViewModel @Inject constructor(
 
     private var _profileInfo = MutableLiveData<Resource<OtherUserInfo>>()
     val profileInfo: LiveData<Resource<OtherUserInfo>> = _profileInfo
+
+    var havetoRefresh = MutableLiveData<Boolean>()
+
     fun getPostByUserId(userId: Int) {
         viewModelScope.launch {
             _posts.value = otherUserInfoRepository.getPostByUserId(userId)
@@ -81,5 +86,10 @@ class PhotoZipViewModel @Inject constructor(
                 _scrapResponse.value = communicateRepository.deleteScrap(postId)
             }
         }
+    }
+    suspend fun deletePost(postId : Int) : MsgResponse{
+        val response =  myPageRepository.deletePost(postId)
+        return if(response is Resource.Success) return response.value
+        else MsgResponse(false,"Resource Fail")
     }
 }

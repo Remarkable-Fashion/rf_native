@@ -36,8 +36,6 @@ interface MyPageApi {
     @GET("user/block/me")
     suspend fun getMyBlockUser() : MyBlockUserList
 
-
-    //TODO 연결
     @DELETE("post/{id}")
     suspend fun deletePost(@Path("id") postId : Int) : MsgResponse
 }

@@ -20,7 +20,6 @@ import com.lf.fashion.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 
-//TODO : splash 이미지
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

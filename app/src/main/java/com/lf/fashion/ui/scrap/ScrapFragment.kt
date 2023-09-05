@@ -17,7 +17,7 @@ import com.lf.fashion.databinding.ScrapFragmentBinding
 import com.lf.fashion.ui.*
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
-//TODO swipe refresh 추가
+
 
 @AndroidEntryPoint
 class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener {
@@ -27,7 +27,7 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
     private lateinit var gridPostAdapter: GridPostAdapter
     private lateinit var recentResponse: RandomPostResponse
     private lateinit var onScrollListener: NestedScrollView.OnScrollChangeListener
-    private lateinit var userPref : PreferenceManager
+    private lateinit var userPref: PreferenceManager
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,6 +43,8 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
 
             viewModel.getPostList()
             viewModel.postResponse.observe(viewLifecycleOwner) { resources ->
+                binding.layoutSwipeRefreah.isRefreshing = false
+
                 when (resources) {
                     is Resource.Success -> {
                         val response = resources.value
@@ -68,6 +70,7 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
                             binding.arrayEmptyText.visibility = View.VISIBLE
                         }
                     }
+
                     is Resource.Failure -> {
                         if (resources.errorCode == 401) {
                             showRequireLoginDialog()
@@ -76,6 +79,7 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
                         }
 
                     }
+
                     is Resource.Loading -> {
 
                     }
@@ -84,6 +88,10 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
         } else {
             showRequireLoginDialog()
 
+        }
+
+        binding.layoutSwipeRefreah.setOnRefreshListener {
+            viewModel.getPostList()
         }
 
     }
@@ -104,9 +112,11 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
                                 notifyDataSetChanged()
                             }
                         }
+
                         is Resource.Loading -> {
 
                         }
+
                         else -> {
 
 

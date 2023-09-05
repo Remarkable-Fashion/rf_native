@@ -3,6 +3,7 @@ package com.lf.fashion.ui.mypage
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
@@ -28,6 +29,10 @@ import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
 import com.lf.fashion.ui.home.photozip.PhotoZipViewModel
 import com.lf.fashion.ui.navigateToMyPage
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class MyPhotoZipVerticalFragment : Fragment(R.layout.mypage_photozip_vertical_fragment),
@@ -164,7 +169,7 @@ class MyPhotoZipVerticalFragment : Fragment(R.layout.mypage_photozip_vertical_fr
     }
 
     override fun kebabBtnClicked(post: Posts) {
-        val dialog = PostBottomSheetFragment(post)
+        val dialog = PostBottomSheetFragment(post, myBottomDialogListener = this)
         dialog.show(childFragmentManager, "bottom_sheet")
     }
 
@@ -206,8 +211,21 @@ class MyPhotoZipVerticalFragment : Fragment(R.layout.mypage_photozip_vertical_fr
     }
 
     override fun deleteMyPost(post: Posts) {
-        //TODO
-    }
+        CoroutineScope(Dispatchers.IO).launch {
+            val msg = viewModel.deletePost(postId = post.id)
+            if (msg.success) {
+                withContext(Dispatchers.Main) {
+                    val currentList = defaultAdapter.currentList.toMutableList()
+                    val position = currentList.indexOfFirst { it.id == post.id }
+
+                    if (position != -1) {
+                        currentList.removeAt(position)
+                        defaultAdapter.submitList(currentList)
+                        Toast.makeText(requireContext(), "게시물이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }    }
 
     override fun onDestroy() {
         MainActivity.hideNavi(false)

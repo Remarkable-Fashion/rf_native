@@ -99,8 +99,11 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
         navigateFollowDetailFrag()
 
         //vertical 뷰에서 포스트를 삭제한 경우 refresh 하는 코드!
-        viewModel.havetoRefresh.observe(viewLifecycleOwner){ postList->
-            viewModel.getPostList()
+        viewModel.havetoRefresh.observe(viewLifecycleOwner){ it->
+            if(it) {
+                viewModel.getPostList()
+                viewModel.havetoRefresh.value = false
+            }
         }
         binding.layoutSwipeRefreah.setOnRefreshListener {
             if(!viewModel.savedLoginToken.value.isNullOrEmpty()){
