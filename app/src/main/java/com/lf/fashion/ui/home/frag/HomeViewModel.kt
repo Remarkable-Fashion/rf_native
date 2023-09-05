@@ -10,6 +10,7 @@ import com.lf.fashion.data.repository.CommunicateRepository
 import com.lf.fashion.data.repository.HomeRepository
 import com.lf.fashion.data.model.MsgResponse
 import com.lf.fashion.data.model.RandomPostResponse
+import com.lf.fashion.data.repository.MyPageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val homeRepository: HomeRepository,
     private val communicateRepository: CommunicateRepository,
+    private val myPageRepository: MyPageRepository,
     @ApplicationContext context: Context
 ) : ViewModel() {
     var postMode = MutableLiveData<String>()
@@ -76,5 +78,11 @@ class HomeViewModel @Inject constructor(
                 _scrapResponse.value = communicateRepository.deleteScrap(postId)
             }
         }
+    }
+
+    suspend fun deletePost(postId : Int) : MsgResponse{
+        val response =  myPageRepository.deletePost(postId)
+        return if(response is Resource.Success) return response.value
+        else MsgResponse(false,"Resource Fail")
     }
 }

@@ -98,17 +98,18 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
         }
 
         navigateFollowDetailFrag()
-
+        //TODO Test
         //vertical 뷰에서 포스트를 삭제한 경우 grid 에서도 삭제해주는 코드
-        viewModel.deletePostInCurrentList.observe(viewLifecycleOwner){ post->
-            post?.let{
+        viewModel.havetoRefresh.observe(viewLifecycleOwner){ postList->
+            viewModel.getPostList()
+        /*   postList.forEach {  post ->
                 val currentList = gridAdapter.currentList.toMutableList()
                 val position = currentList.indexOfFirst { listItem -> listItem.id == post.id }
                 if(position != -1){
                     currentList.removeAt(position)
                     gridAdapter.submitList(currentList)
                 }
-            }
+            }*/
         }
     }
 

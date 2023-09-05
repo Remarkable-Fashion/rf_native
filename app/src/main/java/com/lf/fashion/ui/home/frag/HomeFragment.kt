@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.children
 import androidx.core.view.isVisible
@@ -358,8 +359,24 @@ class HomeFragment :
         }
     }
 
+    //TODO TEST
     override fun deleteMyPost(post: Posts) {
-        //TODO
+        CoroutineScope(Dispatchers.IO).launch {
+            val msg = viewModel.deletePost(postId = post.id)
+            if (msg.success) {
+                withContext(Dispatchers.Main) {
+                    val currentList = defaultAdapter.currentList.toMutableList()
+                    val position = currentList.indexOfFirst { it.id == post.id }
+
+                    if (position != -1) {
+                        currentList.removeAt(position)
+                        gridAdapter.submitList(currentList)
+                        defaultAdapter.submitList(currentList)
+                        Toast.makeText(requireContext(), "게시물이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
     }
 
 

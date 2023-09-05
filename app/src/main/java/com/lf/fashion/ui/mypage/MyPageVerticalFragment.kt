@@ -225,9 +225,15 @@ class MyPageVerticalFragment : Fragment(),
                     if (position != -1) {
                         currentList.removeAt(position)
                         defaultAdapter.submitList(currentList)
-                        viewModel.deletePostInCurrentList.value = post
+                      /*  val deletedPostList = viewModel.deletePostInCurrentList.value?.add(post)
+                        viewModel.deletePostInCurrentList.value = deletedPostList*/
+                        viewModel.havetoRefresh.value = true//currentList
+                            /*val updatedList = viewModel.deletePostInCurrentList.value ?: mutableListOf()
+                            updatedList.add(post)
+                            viewModel.deletePostInCurrentList.value = updatedList*/
+                        }
                         Toast.makeText(requireContext(), "게시물이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
-                    }
+
                 }
             }
         }

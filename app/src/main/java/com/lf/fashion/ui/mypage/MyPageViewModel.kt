@@ -67,7 +67,7 @@ class MyPageViewModel @Inject constructor(
     private val _myBlockUsers = MutableLiveData<Resource<MyBlockUserList>>()
     val myBlockUsers = _myBlockUsers
 
-    var deletePostInCurrentList = MutableLiveData<Posts>()
+    var havetoRefresh = MutableLiveData<Boolean>()
 
     init {
         if(savedLoginToken.value.isNullOrEmpty()){
