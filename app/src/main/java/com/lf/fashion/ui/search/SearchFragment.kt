@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.MutableLiveData
@@ -62,7 +63,13 @@ SearchRankRowClickListener{
             }
         }
 
+        Log.e(TAG, "onViewCreated: ${viewModel.savedSearchTerm}", )
+        //검색어 et에 있을시 인기 검색어 gone
+        if (viewModel.savedSearchTerm.isNotEmpty()){
+            searchTermRankUiVisible(default = false)
 
+            Log.e(TAG, "onViewCreated: ${binding.searchTerm.root.isVisible}")
+        }
         //검색 동작
         searchEtSetActionListener() // 검색 동작시 ui visibility 로 결과 레이아웃 노출 조정
         keyBoardUIControl() // edittext 외부 클릭시 hide keyboard
@@ -100,6 +107,8 @@ SearchRankRowClickListener{
                 searchAction(term)
             }
         }
+        searchResultViewSetting()  //결과 레이아웃 내부 세팅 (tab,viewpager)
+
     }
 
     private fun searchEtSetActionListener() {
@@ -107,8 +116,6 @@ SearchRankRowClickListener{
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val searchTerm = textView.text.toString()
                 searchAction(searchTerm)
-
-
 
                 true
             } else {
@@ -123,6 +130,7 @@ SearchRankRowClickListener{
     private fun searchAction(searchTerm: String) {
         runBlocking {
             launch {
+                viewModel.savedSearchTerm = searchTerm
                 var newHistory = historyList.value
                 if (newHistory != null) {
                    newHistory.add(0,searchTerm)
@@ -134,14 +142,16 @@ SearchRankRowClickListener{
                 historyList.value = newHistory!!  // liveData 객체 업데이트 , datastore 정보 업데이트
                 userPreferences.storeSearchHistoryList(historyList.value!!)
 
-                searchResultViewSetting(searchTerm)  //결과 레이아웃 내부 세팅 (tab,viewpager)
-
                 hideKeyboard()
                 binding.searchEt.isCursorVisible = false // 검색 실행시 edittext 커서 focus 제거
-                binding.searchTerm.root.visibility = View.GONE
-                binding.searchResult.root.visibility = View.VISIBLE
+                searchTermRankUiVisible(false)
             }
         }
+    }
+
+    private fun searchTermRankUiVisible(default : Boolean) {
+        binding.searchTerm.root.isVisible = default
+        binding.searchResult.root.isVisible = !default
     }
 
     private fun keyBoardUIControl() {
@@ -149,19 +159,18 @@ SearchRankRowClickListener{
         binding.searchEt.setOnClickListener {
             if (binding.searchEt.hasFocus()) {
                 binding.searchEt.isCursorVisible = true // cursor focus true
-                binding.searchTerm.root.visibility = View.VISIBLE
-                binding.searchResult.root.visibility = View.GONE
+                searchTermRankUiVisible(true)
             }
         }
         binding.root.setOnClickListener { hideKeyboard() }
         binding.searchTerm.nest.setOnClickListener { hideKeyboard() }
     }
 
-    private fun searchResultViewSetting(searchTerm: String) {
+    private fun searchResultViewSetting() {
         val tabViewpager = binding.searchResult.tabViewpager
         val tabLayout = binding.searchResult.tab
 
-        tabViewpager.adapter = SearchResultViewPagerAdapter(this, searchTerm)
+        tabViewpager.adapter = SearchResultViewPagerAdapter(this, )
         TabLayoutMediator(tabLayout, tabViewpager) { tab, position ->
             tab.text = tabTitleArray[position]
         }.attach()

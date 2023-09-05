@@ -37,10 +37,9 @@ class SearchResultFragment(private val resultCategory: String) :
         super.onViewCreated(view, savedInstanceState)
         binding = SearchResultViewpagerBinding.bind(view)
 
-        //   binding.gridRv.adapter = gridAdapter
+        val searchTerm = viewModel.savedSearchTerm
+        Log.d(TAG, "SearchResultFragment - onViewCreated: ${viewModel.savedSearchTerm}")
 
-        val searchTerm = arguments?.get("searchTerm").toString()
-        Log.d(TAG, "SearchResultFragment - onViewCreated: $searchTerm");
         when (resultCategory) {
             "look" -> {
                 viewModel.getSearchResult(searchTerm)
@@ -82,7 +81,7 @@ class SearchResultFragment(private val resultCategory: String) :
             when (resource) {
                 is Resource.Success -> {
                     val response = resource.value
-                    if (response.clothes == null) {
+                    if (response.clothes.isNullOrEmpty()) {
                         binding.arrayEmptyText.isVisible = true
                     } else {
                         binding.arrayEmptyText.isVisible = false
@@ -132,7 +131,7 @@ class SearchResultFragment(private val resultCategory: String) :
                 is Resource.Success -> {
                     val response = resource.value
                     Log.e(TAG, "lookResultUiBinding: $response")
-                    if (response.posts == null) {
+                    if (response.posts.isNullOrEmpty()) {
                         binding.arrayEmptyText.isVisible = true
                     } else {
                         binding.arrayEmptyText.isVisible = false

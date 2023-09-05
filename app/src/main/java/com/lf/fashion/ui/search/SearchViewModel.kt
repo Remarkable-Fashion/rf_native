@@ -35,6 +35,7 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
     private val _searchTermRank = MutableLiveData<List<SearchTerm>>()
     var searchTermRank: LiveData<List<SearchTerm>> = _searchTermRank
 
+    var savedSearchTerm =""
     init {
         getSearchTermRank()
     }

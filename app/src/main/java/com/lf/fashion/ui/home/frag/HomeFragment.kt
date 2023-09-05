@@ -138,13 +138,6 @@ class HomeFragment :
                     // 2-3개 씩 모아보기 리사이클러뷰 세팅
                     with(binding.gridRecyclerView) {
                         //3개로 보고있다가 refresh하는 경우를 감안해서 view에서 grid count를 받아오기
-                        Log.e(
-                            TAG, "requestRandomPost: $spanCount" +
-                                    "${binding.homeMainViewpager.isVisible}" +
-                                    "        ${binding.gridRecyclerView.isVisible} 그리드 !" +
-                                    "" +
-                                    ""
-                        )
                         //staggeredGrid layoutManager 연결
                         layoutManager =
                             StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL)
