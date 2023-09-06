@@ -193,6 +193,9 @@
         <action
             android:id="@+id/action_registClothFragment_to_imagePickerFragment"
             app:destination="@id/imagePickerFragment" />
+        <action
+            android:id="@+id/action_registClothFragment_to_recommendFragment"
+            app:destination="@id/recommendFragment" />
     </fragment>
     <fragment
         android:id="@+id/myPageVerticalFragment"

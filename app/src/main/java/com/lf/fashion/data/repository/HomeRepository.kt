@@ -21,13 +21,13 @@ class HomeRepository @Inject constructor(
         postApi.getPostInfoById(postId)
     }
 
-    suspend fun getRecommendClothesTop3(postId: Int, category: String) = safeApiCall {
+   /* suspend fun getRecommendClothesTop3(postId: Int, category: String) = safeApiCall {
         postApi.getRecommendTopClothes(postId,category)
 
-    }
+    }*/
 
-    suspend fun getRecommendClothesInfo(postId: Int, category: String) = safeApiCall {
-        postApi.getRecommendClothesInfo(postId,category)
+    suspend fun getRecommendClothesInfo(postId: Int, category: String , orderMode : String) = safeApiCall {
+        postApi.getRecommendClothesInfo(postId,category,orderMode)
     }
     suspend fun getPostByUserId(userId : Int) = safeApiCall {
         postApi.getPostByUserId(userId)

@@ -17,8 +17,11 @@ import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.LoginFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 
 @AndroidEntryPoint
@@ -37,7 +40,7 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
                     Log.d(TAG, "MyPageFragment - onViewCreated: 카카오톡 간편 로그인 실패 : $error");
                     if (error.message == "KakaoTalk not installed") {
                         kakaoLoginWithAccount()
-                    }else{
+                    } else {
                         binding.progressBar.visibility = View.GONE
                         //TODO alert 으로 오류 띄우는데, 나중에 배포시에는 오류코드로 바꾸거나 지워야합니다 ~!
                         AlertDialog.Builder(requireContext()).apply {
@@ -60,30 +63,33 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
             }
         }
     }
-/* 응답이 느려짐.. 이유 모름 ,., */
+
+    /* 응답이 느려짐.. 이유 모름 ,., */
     private fun requestJWTToken(token: OAuthToken) {
-        runBlocking {
-            launch {
-                val response = viewModel.getJWT(token.accessToken)
-                response.let { resource ->
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = viewModel.getJWT(token.accessToken)
+            response.let { resource ->
+                withContext(Dispatchers.Main) {
                     when (resource) {
                         is Resource.Success -> {
                             if (resource.value.success) {
-                          //      showLoading(requireActivity(),false)
+                                //      showLoading(requireActivity(),false)
                                 Log.d(TAG, "LoginFragment - requestJWTToken: ");
                                 findNavController().navigate(R.id.action_loginFragment_to_navigation_mypage)
                             }
                             binding.progressBar.visibility = View.GONE
                         }
+
                         is Resource.Loading -> {
 
                         }
+
                         is Resource.Failure -> {
                             binding.progressBar.visibility = View.GONE
                         }
                     }
-
                 }
+
             }
         }
     }

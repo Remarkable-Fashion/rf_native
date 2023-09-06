@@ -9,5 +9,4 @@ data class UploadCloth(
     val size: String,
     val brand: String,
     val reason : String?,
-    val siteUrl: String ="추후 삭제"
 )

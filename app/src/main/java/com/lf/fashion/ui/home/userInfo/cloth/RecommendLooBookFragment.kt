@@ -6,9 +6,9 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
@@ -24,8 +24,9 @@ import com.lf.fashion.ui.home.adapter.LookBookRvAdapter
 import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
 import com.lf.fashion.ui.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlin.properties.Delegates
 
 /**
@@ -38,12 +39,12 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
     ClothLikeClickListener {
     private lateinit var binding: HomeBRecommendFragmentBinding
     private val viewModel: UserInfoViewModel by viewModels()
-    private val topList = mutableListOf<ClothPost>()
-    private var selectedCategory: MutableLiveData<String> = MutableLiveData()
-    private var orderByMode: String = "Best"
     private lateinit var userPref: PreferenceManager
     private lateinit var lookBookRvAdapter: LookBookRvAdapter
     private var postId by Delegates.notNull<Int>()
+    private var isOrderByInit by Delegates.notNull<Boolean>()
+    private var isSpinnerInit by Delegates.notNull<Boolean>()
+    private var isCategoryInit by Delegates.notNull<Boolean>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = HomeBRecommendFragmentBinding.bind(view)
@@ -52,12 +53,22 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
             requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
         val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_home)
         homeMenu.isChecked = true
-
         userPref = PreferenceManager(requireContext().applicationContext)
 
+        isSpinnerInit = false // 옵션 값 초기화할때 observe 되어서 중복 다수 요청됨을 방지
+        isOrderByInit = false
+        isCategoryInit = false
         cancelBtnBackStack(binding.cancelBtn)
         spinnerSetting()
 
+        arguments?.getBoolean("backStackClear")?.let {
+            if (it) {
+                findNavController().popBackStack(
+                    R.id.registClothFragment,
+                    true
+                ) // RegistFragment를 back stack에서 제거
+            }
+        }
         postId = arguments?.get("postId") as Int
         binding.orderByBestBtn.isSelected = true // default 베스트 순
         binding.orderByBestBtn.setOnClickListener(this)
@@ -70,33 +81,50 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
         }, this)
 
         //카테고리가 변할 때마다 새로 요청
-        selectedCategory.observe(viewLifecycleOwner) { category ->
-            viewModel.getTopLook(postId, category)
-            viewModel.getLookBook(postId, category)
-        }
-
-        viewModel.topLook.observe(viewLifecycleOwner) { resources ->
-            when (resources) {
-                is Resource.Success -> {
-                    Log.d(TAG, "RecommendLooBookFragment - onViewCreated: ${resources.value}");
-                    topList.removeAll(topList)
-                    topList.addAll(resources.value.clothes)
-                }
-
-                else -> {
-
-                }
+        viewModel.selectedCategory.observe(viewLifecycleOwner) { category ->
+            if (isCategoryInit) {
+                Log.e(TAG, "onViewCreated: category observe")
+                requestLookBook()
             }
+            isCategoryInit = true
         }
 
+        //베스트순 / 최신순 변할 때마다 새로 요청
+        viewModel.orderByMode.observe(viewLifecycleOwner) { orderBy ->
+            if (isOrderByInit) {
+                Log.e(TAG, "onViewCreated: order observe")
+                requestLookBook()
+            }
+            isOrderByInit = true
+        }
+        requestLookBook()
+
+        observeLookBookResponse()
+        clothesRegButtonOnclick()
+    }
+
+    private fun requestLookBook() {
+        viewModel.getLookBook(
+            postId,
+            viewModel.selectedCategory.value ?: "All",
+            viewModel.orderByMode.value ?: "Best"
+        )
+    }
+
+    private fun observeLookBookResponse() {
         viewModel.lookBook.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
                     val response = resource.value
+                    Log.e(TAG, "observeLookBookResponse: $response")
+
                     binding.styleRecommendRv.apply {
                         adapter = lookBookRvAdapter.apply {
-                            topList.addAll(response.clothes)
-                            submitList(topList)
+                            val nullOrEmpty = response.clothes.isNullOrEmpty()
+                            binding.arrayEmptyText.isVisible = nullOrEmpty
+                            binding.styleRecommendRv.isVisible = !nullOrEmpty
+                            //topList.addAll(response.clothes)
+                            submitList(response.clothes)
                         }
 
                     }
@@ -107,9 +135,6 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
                 }
             }
         }
-
-        clothesRegButtonOnclick()
-
     }
 
     private fun spinnerSetting() {
@@ -127,11 +152,12 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
 
     private fun clothesRegButtonOnclick() {
         binding.registBtn.setOnClickListener {
-            if(userPref.loginCheck()) {
-                findNavController().navigate(R.id.action_recommendFragment_to_registClothFragment,
+            if (userPref.loginCheck()) {
+                findNavController().navigate(
+                    R.id.action_recommendFragment_to_registClothFragment,
                     bundleOf("clothesPostId" to postId)
                 )
-            }else{
+            } else {
                 showRequireLoginDialog()
             }
         }
@@ -141,13 +167,22 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
         val singleClickableList = listOf(binding.orderByRecentBtn, binding.orderByBestBtn)
         singleClickableList.forEach { button ->
             button.isSelected = button == view
-            orderByMode = if (button.text.toString() == "최신순") "Recent" else "Best"
+            if (button.isSelected) {
+                viewModel.orderByMode.value =
+                    if (button.text.toString() == "최신순") "Recent" else "Best"
+                lookBookRvAdapter.updateUI(viewModel.orderByMode.value!!)
+
+            }
         }
     }
 
     //spinner listener
     override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-        selectedCategory.value = parent.getItemAtPosition(position).toString()
+        if (isSpinnerInit) {
+            Log.e(TAG, "onItemSelected: spinner")
+            viewModel.selectedCategory.value = parent.getItemAtPosition(position).toString()
+        }
+        isSpinnerInit = true
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -155,26 +190,26 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
 
     override fun clothLikeBtnClicked(likeState: Boolean, clothes: ClothPost) {
         if (userPref.loginCheck()) {
-            runBlocking {
-                launch {
-                    val response =
-                        viewModel.changeClotheLikeState(create = !likeState, clothes.clothesInfo.id)
-                    if (response is Resource.Success && response.value.success) {
-                        val currentList = lookBookRvAdapter.currentList
-                        val position = currentList.indexOf(clothes)
+            CoroutineScope(Dispatchers.IO).launch {
+                val response =
+                    viewModel.changeClotheLikeState(create = !likeState, clothes.clothesInfo.id)
+                if (response is Resource.Success && response.value.success) {
+                    val currentList = lookBookRvAdapter.currentList
+                    val position = currentList.indexOf(clothes)
 
-                        if (position != -1) {
-                            lookBookRvAdapter.currentList[position].apply {
-                                this.isFavorite = !(clothes.isFavorite ?: false)
-                                val count = clothesInfo.count!!.favorites // 반전 및 카운트 업데이트
-                                this.clothesInfo.count.favorites = if(likeState) count!!.minus(1) else count!!.plus(1)
-                            }
-                            lookBookRvAdapter.notifyItemChanged(position, "FAVORITES_COUNT")
+                    if (position != -1) {
+                        lookBookRvAdapter.currentList[position].apply {
+                            this.isFavorite = !(clothes.isFavorite ?: false)
+                            val count = clothesInfo.count!!.favorites // 반전 및 카운트 업데이트
+                            this.clothesInfo.count.favorites =
+                                if (likeState) count!!.minus(1) else count!!.plus(1)
                         }
+                        lookBookRvAdapter.notifyItemChanged(position, "FAVORITES_COUNT")
                     }
                 }
+
             }
-        }else{
+        } else {
             showRequireLoginDialog()
         }
     }

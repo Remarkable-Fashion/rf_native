@@ -64,6 +64,7 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
 
         profileKebabBtnOnClick()
     }
+
     private fun followBtnOnclick() {
         binding.profileSpace.followBtn.setOnClickListener {
             val followBtn = binding.profileSpace.followBtn
@@ -86,7 +87,11 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
                         binding.profileSpace.profile = response.user
                         binding.clothesRv.apply {
                             adapter = ClothesRvAdapter().apply {
-                                submitList(response.clothes)
+                                val nullOrEmpty = response.clothes.isNullOrEmpty()
+                                binding.arrayEmptyText.isVisible = nullOrEmpty
+                                binding.clothesRv.isVisible = !nullOrEmpty
+
+                                if(!nullOrEmpty) { submitList(response.clothes) }
                             }
                         }
 
@@ -96,16 +101,18 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
                         followBtn.isVisible = me != response.user.id
                         followBtn.isSelected =
                             response.isFollow ?: false
-                        followBtn.text = if(followBtn.isSelected) "팔로잉" else "+ 팔로우"
+                        followBtn.text = if (followBtn.isSelected) "팔로잉" else "+ 팔로우"
                         userId = response.user.id
 
                         //스타일 칩
                         val styleChipGroup = binding.infoSpace.styleChipGroup
                         childChip(response.styles, styleChipGroup, "purple")
                     }
+
                     is Resource.Loading -> {
 
                     }
+
                     else -> {
 
                     }
@@ -124,15 +131,16 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
                 followBtn.isSelected =
                     !followBtn.isSelected
 
-                if(followBtn.isSelected){
+                if (followBtn.isSelected) {
                     followBtn.text = "팔로잉"
-                }else{
+                } else {
                     followBtn.text = "+ 팔로우"
                 }
             }
         }
     }
-    private fun profileKebabBtnOnClick(){
+
+    private fun profileKebabBtnOnClick() {
         binding.profileSpace.kebabBtn.setOnClickListener {
             val dialog = PostBottomSheetFragment(userId = userId)
             dialog.show(parentFragmentManager, "bottom_sheet")

@@ -1,9 +1,11 @@
 package com.lf.fashion.ui.home.userInfo
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lf.fashion.TAG
 import com.lf.fashion.data.common.Event
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.CommunicateRepository
@@ -26,8 +28,8 @@ class UserInfoViewModel @Inject constructor(
     private val _lookBook = MutableLiveData<Resource<RecommendCloth>>()
     var lookBook: LiveData<Resource<RecommendCloth>> = _lookBook
 
-    private val _topLook = MutableLiveData<Resource<RecommendCloth>>()
-    var topLook: LiveData<Resource<RecommendCloth>> = _topLook
+  /*  private val _topLook = MutableLiveData<Resource<RecommendCloth>>()
+    var topLook: LiveData<Resource<RecommendCloth>> = _topLook*/
 
     private val _likeResponse = MutableLiveData<Resource<MsgResponse>>()
     val likeResponse = _likeResponse
@@ -35,7 +37,11 @@ class UserInfoViewModel @Inject constructor(
     private val _followResponse = MutableLiveData<Resource<MsgResponse>>()
     val followResponse = _followResponse
 
+     var orderByMode = MutableLiveData<String>("Best")
+    var selectedCategory = MutableLiveData<String>("All")
+    init {
 
+    }
     fun getUserInfoAndStyle(postId: Int) {
         viewModelScope.launch {
             _userInfo.value = Event(repository.getPostInfoByPostId(postId))
@@ -43,17 +49,17 @@ class UserInfoViewModel @Inject constructor(
         }
     }
 
-    fun getLookBook(postId: Int, category: String) {
+    fun getLookBook(postId: Int, category: String, orderMode: String) {
         viewModelScope.launch {
-            _lookBook.value = repository.getRecommendClothesInfo(postId, category)
+            _lookBook.value = repository.getRecommendClothesInfo(postId, category ,orderMode)
         }
     }
 
-    fun getTopLook(postId: Int, category: String) {
-        viewModelScope.launch {
-            _topLook.value = repository.getRecommendClothesTop3(postId, category)
-        }
-    }
+    /*   fun getTopLook(postId: Int, category: String) {
+           viewModelScope.launch {
+               _topLook.value = repository.getRecommendClothesTop3(postId, category)
+           }
+       }*/
 
     fun changeFollowingState(create: Boolean, userId: Int) {
         viewModelScope.launch {

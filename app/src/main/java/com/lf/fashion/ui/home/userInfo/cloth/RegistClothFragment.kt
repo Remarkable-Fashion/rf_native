@@ -28,8 +28,11 @@ import com.lf.fashion.ui.addTextLengthCounter
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.showPermissionDialog
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import kotlin.properties.Delegates
 
 /**
@@ -111,7 +114,7 @@ class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), Vie
 
 
         binding.clothesDetailRv.adapter = addClothesAdapter
-        registerCloth()
+        registerBtnValidation()
         addTextLengthCounter(binding.detailValue, binding.textCounter, 50)
         imageOnclickPermissionCheck() // 이미지 부분 눌리면 permission 체크 -> 허용시엔 imagePickerFragment 로 이동
         cancelBtnBackStack(binding.cancelBtn)
@@ -136,7 +139,7 @@ class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), Vie
         }
     }
 
-    private fun registerCloth() {
+    private fun registerBtnValidation() {
         binding.clothRegistForm.topLinear.children.forEach { it.setOnClickListener(this) }
         binding.regClothBtn.setOnClickListener {
             val nameValue = binding.clothRegistForm.nameValue.text.toString()
@@ -209,32 +212,51 @@ class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), Vie
 
     private fun submitClothes() {
         binding.submitBtn.setOnClickListener {
+            binding.progressBar.visibility = View.VISIBLE
             val currentList = addClothesAdapter.currentList
             //list 에서 1개씩 등록.
             currentList.forEach {
-                runBlocking {
-                    launch {
-                        val imagePath = absolutelyPath(Uri.parse(it.imageUrl), requireContext())
-                        val imageResponse = viewModel.uploadClothesImage(imagePath!!)
+                CoroutineScope(Dispatchers.IO).launch {
 
-                        if(imageResponse.success){
-                            val uploadedImageUrl = imageResponse.imgUrls!![0]
-                            it.imageUrl = uploadedImageUrl
+                    val imagePath = absolutelyPath(Uri.parse(it.imageUrl), requireContext())
+                    Log.e(TAG, "submitClothes: ${it.imageUrl}")
+                    val imageResponse = viewModel.uploadClothesImage(imagePath!!)
 
-                            val infoResponse = viewModel.uploadClothesInfo(clothesPostId, it)
-                            if(infoResponse.success){
-                                Toast.makeText(requireContext(),"의상 등록이 완료되었습니다.",Toast.LENGTH_SHORT).show()
-                                findNavController().navigateUp()
+                    if (imageResponse.success) {
+                        val uploadedImageUrl = imageResponse.imgUrls!![0]
+                        it.imageUrl = uploadedImageUrl
+
+                        val infoResponse = viewModel.uploadClothesInfo(clothesPostId, it)
+                        if (infoResponse.success) {
+                            withContext(Dispatchers.Main) {
+                                binding.progressBar.visibility = View.GONE
+                                Toast.makeText(
+                                    requireContext(),
+                                    "의상 등록이 완료되었습니다.",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                                findNavController().apply {
+                                    navigate(R.id.action_registClothFragment_to_recommendFragment,
+                                        bundleOf("postId" to clothesPostId,"backStackClear" to true)
+                                    )
+                                }
+                            }
+                        }else{
+                            withContext(Dispatchers.Main) {
+                                binding.progressBar.visibility = View.GONE
+                                Toast.makeText(
+                                    requireContext(),
+                                    "의상 등록 오류",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+
                             }
                         }
-                        /*    if(infoResponse.success) {
-                                val imageResponse = viewModel.uploadClothesImage(imagePath!!)
-                                if (imageResponse.success){
-                                    Toast.makeText(requireContext(),"의상 등록이 완료되었습니다.",Toast.LENGTH_SHORT).show()
-                                }
-                            }*/
                     }
                 }
+
             }
         }
     }

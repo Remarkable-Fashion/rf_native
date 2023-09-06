@@ -25,7 +25,7 @@ data class RecommendCloth(
 )
 
 data class ClothPost(
-    val id: Int,
+  //  val id: Int,
     var isFavorite: Boolean?,
     val isScrap: Boolean?,
     val isFollowing: Boolean?,
