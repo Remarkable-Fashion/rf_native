@@ -1,11 +1,13 @@
 package com.lf.fashion.ui.addPost
 
 import android.app.AlertDialog
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -110,18 +112,22 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         imagePickerOpen()
         submitBtnOnclick()
         binding.backBtn.setOnClickListener {
-            val loginDialog = androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setMessage(
-                    "이전 화면으로 이동하겠습니까?\n" +
-                            "등록 중인 내용은 초기화됩니다.\n"
-                )
-                .setPositiveButton("네") { _, _ ->
-                    findNavController().popBackStack()
-                }
-                .setNegativeButton("닫기") { _, _ -> }
-            loginDialog.show()
+            backSatckDialogShow()
         }
 
+    }
+
+    private fun backSatckDialogShow() {
+        val loginDialog = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setMessage(
+                "이전 화면으로 이동하겠습니까?\n" +
+                        "등록 중인 내용은 초기화됩니다.\n"
+            )
+            .setPositiveButton("네") { _, _ ->
+                findNavController().popBackStack()
+            }
+            .setNegativeButton("닫기") { _, _ -> }
+        loginDialog.show()
     }
 
 
@@ -354,16 +360,19 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                     val tpos = viewModel.selectedTpos.distinct()
                     val seasons = viewModel.selectedSeasons.distinct()
                     val styles = viewModel.selectedStyles.distinct()
-
+                    val height = binding.filterSpace.heightValue.text.toString().replace(" cm","").toInt()
+                    val weight = binding.filterSpace.weightValue.text.toString().replace(" kg","").toInt()
+                    //todo test
                     val uploadPost = UploadPost(
                         imageUploadResponse.imgUrls!!,
-                        "추후 삭제 예정",
                         binding.introduceValue.text.toString(),
                         viewModel.selectedGender!!,
                         tpos,
                         seasons,
                         styles,
-                        clothes = viewModel.uploadedClothes
+                        clothes = viewModel.uploadedClothes,
+                        height,
+                        weight
                     )
                     Log.e(TAG, "uploadPost: $uploadPost")
                     val postUploadResponse = viewModel.uploadPostInfo(uploadPost)
@@ -385,6 +394,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                     //findNavController 로 mypage 프래그먼트 이동시 backStack 문제로 photo menu 접근이 불가,
                     //메뉴탭 수동으로 이동시키고 backStack 제거하여 viewModel 과 edittext data clear
                     findNavController().popBackStack(R.id.navigation_photo, true)
+                    findNavController().navigate(R.id.action_global_to_myPageFragment)
                     val bottomNavigationView =
                         requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
                     val loginMenuItem =
@@ -451,4 +461,18 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
 
         return true
     }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback);
+
+    }
+
+    private val onBackPressedCallback: OnBackPressedCallback =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+               backSatckDialogShow()
+            }
+        }
+
+
 }

@@ -1,10 +1,12 @@
 package com.lf.fashion.ui.mypage
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -14,15 +16,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PreferenceManager
-import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.MyInfo
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.data.model.RandomPostResponse
+import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.MypageFragmentBinding
-import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener
 import com.lf.fashion.ui.GridPostAdapter
 import com.lf.fashion.ui.OnScrollUtils
+import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.mypage.setting.SettingBottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -220,4 +222,6 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
         // Fragment가 소멸될 때 OnScrollChangeListener를 제거합니다.
         binding.myNestedScrollView.setOnScrollChangeListener(null as NestedScrollView.OnScrollChangeListener?)
     }
+
+
 }
