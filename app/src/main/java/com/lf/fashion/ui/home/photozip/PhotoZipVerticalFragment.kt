@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
-import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.data.model.Posts
@@ -35,7 +35,7 @@ class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_frag
     private lateinit var binding: HomeBPhotozipVerticalFragmentBinding
     private val viewModel: PhotoZipViewModel by hiltNavGraphViewModels(R.id.navigation_home)
     private lateinit var defaultAdapter: DefaultPostAdapter
-    private lateinit var userPref: PreferenceManager
+    private lateinit var userPref: UserDataStorePref
 
     private lateinit var likeClickedPosts: Posts
     private lateinit var scrapClickedPosts: Posts
@@ -49,7 +49,7 @@ class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_frag
 
         binding = HomeBPhotozipVerticalFragmentBinding.bind(view)
         cancelBtnBackStack(binding.backBtn)
-        userPref = PreferenceManager(requireContext().applicationContext)
+        userPref = UserDataStorePref(requireContext().applicationContext)
 
         val userInfoPost = arguments?.get("userInfoPost") as Posts
         defaultAdapter = DefaultPostAdapter(

@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
-import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.HomeBUserInfoFragmentBinding
 import com.lf.fashion.ui.cancelBtnBackStack
@@ -26,7 +26,7 @@ import kotlin.properties.Delegates
 class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
     private lateinit var binding: HomeBUserInfoFragmentBinding
     private val viewModel: UserInfoViewModel by viewModels()
-    private lateinit var userPref: PreferenceManager
+    private lateinit var userPref: UserDataStorePref
     private var userId by Delegates.notNull<Int>()
 
 
@@ -40,7 +40,7 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
         homeMenu.isChecked = true
 
         binding = HomeBUserInfoFragmentBinding.bind(view)
-        userPref = PreferenceManager(requireContext().applicationContext)
+        userPref = UserDataStorePref(requireContext().applicationContext)
 
 
         cancelBtnBackStack(binding.cancelBtn)

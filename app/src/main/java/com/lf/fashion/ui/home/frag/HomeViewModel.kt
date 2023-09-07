@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
 import com.lf.fashion.TAG
-import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.CommunicateRepository
 import com.lf.fashion.data.repository.HomeRepository
@@ -36,7 +36,7 @@ class HomeViewModel @Inject constructor(
     val scrapResponse = _scrapResponse
 
 
-    private val userPreferences = PreferenceManager(context)
+    private val userPreferences = UserDataStorePref(context)
 
     init {
         postMode.value = "random"

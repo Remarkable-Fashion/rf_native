@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.BASE_WEB_URL
-import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.api.TokenRefreshApi
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class RemoteDataSource @Inject constructor(@ApplicationContext private val context: Context) {
 
     private fun providesHostingWebUrl() = BASE_WEB_URL
-    private val userPref: PreferenceManager = PreferenceManager(context)
+    private val userPref: UserDataStorePref = UserDataStorePref(context)
 
     private fun provideOkHttpClient(authenticator: Authenticator? = null): OkHttpClient {
         val client = OkHttpClient.Builder()

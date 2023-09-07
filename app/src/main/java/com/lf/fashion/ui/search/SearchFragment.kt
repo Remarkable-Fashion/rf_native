@@ -18,7 +18,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import com.lf.fashion.R
 import com.lf.fashion.TAG
-import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.databinding.SearchFragmentBinding
 import com.lf.fashion.ui.hideKeyboard
 import com.lf.fashion.ui.search.adapter.SearchRankRowClickListener
@@ -35,7 +35,7 @@ class SearchFragment : Fragment(R.layout.search_fragment),
     AdapterView.OnItemSelectedListener,
 SearchRankRowClickListener{
     private lateinit var binding: SearchFragmentBinding
-    private lateinit var userPreferences: PreferenceManager
+    private lateinit var userPreferences: UserDataStorePref
     private val viewModel: SearchViewModel by hiltNavGraphViewModels(R.id.navigation_search)
     private var orderByMode: String = "Best"
     private var selectedOrderBy: MutableLiveData<String> = MutableLiveData()
@@ -47,7 +47,7 @@ SearchRankRowClickListener{
         super.onViewCreated(view, savedInstanceState)
         binding = SearchFragmentBinding.bind(view)
 
-        userPreferences = PreferenceManager(requireContext().applicationContext)
+        userPreferences = UserDataStorePref(requireContext().applicationContext)
 
         searchOrderBySpinnerOnclick()
 

@@ -9,7 +9,7 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
-import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.data.model.UserInfo
@@ -30,7 +30,7 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
     private val viewModel: PhotoZipViewModel by hiltNavGraphViewModels(R.id.navigation_home)
     private var userId by Delegates.notNull<Int>()
     private lateinit var userInfoPost: Posts
-    private lateinit var userPref: PreferenceManager
+    private lateinit var userPref: UserDataStorePref
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,7 +42,7 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
         homeMenu.isChecked = true
 
         binding = HomeBPhotoZipFragmentBinding.bind(view)
-        userPref = PreferenceManager(requireContext().applicationContext)
+        userPref = UserDataStorePref(requireContext().applicationContext)
 
         val post = arguments?.get("post") as Posts
         userInfoPost =

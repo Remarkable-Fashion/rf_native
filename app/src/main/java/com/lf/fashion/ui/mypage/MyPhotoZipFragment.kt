@@ -9,11 +9,10 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
-import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.data.model.UserInfo
-import com.lf.fashion.databinding.HomeBPhotoZipFragmentBinding
 import com.lf.fashion.databinding.MypagePhotoZipFragmentBinding
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener
@@ -36,7 +35,7 @@ class MyPhotoZipFragment : Fragment(R.layout.mypage_photo_zip_fragment), GridPho
 
     // private var followState by Delegates.notNull<Boolean>()
 
-    private lateinit var userPref: PreferenceManager
+    private lateinit var userPref: UserDataStorePref
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,7 +47,7 @@ class MyPhotoZipFragment : Fragment(R.layout.mypage_photo_zip_fragment), GridPho
         myPage.isChecked = true
 
         binding = MypagePhotoZipFragmentBinding.bind(view)
-        userPref = PreferenceManager(requireContext().applicationContext)
+        userPref = UserDataStorePref(requireContext().applicationContext)
 
         val post = arguments?.get("post") as Posts
         userInfoPost =

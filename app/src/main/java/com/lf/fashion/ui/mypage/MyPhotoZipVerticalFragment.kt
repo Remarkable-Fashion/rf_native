@@ -14,11 +14,10 @@ import com.lf.fashion.MainActivity
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
 import com.lf.fashion.TAG
-import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.data.model.Posts
-import com.lf.fashion.databinding.HomeBPhotozipVerticalFragmentBinding
 import com.lf.fashion.databinding.MypagePhotozipVerticalFragmentBinding
 import com.lf.fashion.ui.MyBottomDialogListener
 import com.lf.fashion.ui.cancelBtnBackStack
@@ -40,7 +39,7 @@ class MyPhotoZipVerticalFragment : Fragment(R.layout.mypage_photozip_vertical_fr
     private lateinit var binding: MypagePhotozipVerticalFragmentBinding
     private val viewModel: PhotoZipViewModel by hiltNavGraphViewModels(R.id.navigation_mypage)
     private lateinit var defaultAdapter: DefaultPostAdapter
-    private lateinit var userPref: PreferenceManager
+    private lateinit var userPref: UserDataStorePref
 
     private lateinit var likeClickedPosts: Posts
     private lateinit var scrapClickedPosts: Posts
@@ -58,7 +57,7 @@ class MyPhotoZipVerticalFragment : Fragment(R.layout.mypage_photozip_vertical_fr
 
         binding = MypagePhotozipVerticalFragmentBinding.bind(view)
         cancelBtnBackStack(binding.backBtn)
-        userPref = PreferenceManager(requireContext().applicationContext)
+        userPref = UserDataStorePref(requireContext().applicationContext)
 
         val userInfoPost = arguments?.get("userInfoPost") as Posts
         defaultAdapter = DefaultPostAdapter(

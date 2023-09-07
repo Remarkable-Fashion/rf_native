@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
 import com.lf.fashion.TAG
-import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.*
 import com.lf.fashion.databinding.HomeAFragmentBinding
@@ -49,7 +49,7 @@ class HomeFragment :
 
     private val gridAdapter = GridPostAdapter(gridPhotoClickListener = this)
     private val defaultAdapter = DefaultPostAdapter(this@HomeFragment, this@HomeFragment)
-    private lateinit var userPref: PreferenceManager
+    private lateinit var userPref: UserDataStorePref
     private lateinit var likeClickedPosts: Posts
     private lateinit var scrapClickedPosts: Posts
 
@@ -58,7 +58,7 @@ class HomeFragment :
         binding = HomeAFragmentBinding.bind(view)
 
         //앱 최초 실행시 gender 선택 다이얼로그 띄우기
-        userPref = PreferenceManager(requireContext().applicationContext)
+        userPref = UserDataStorePref(requireContext().applicationContext)
 
         runBlocking {
             launch {

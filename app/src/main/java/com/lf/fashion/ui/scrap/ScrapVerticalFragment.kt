@@ -19,7 +19,7 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.MainNaviDirections
-import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.data.model.Posts
@@ -40,7 +40,7 @@ class ScrapVerticalFragment : Fragment(),
         this@ScrapVerticalFragment,
         this@ScrapVerticalFragment
     )
-    private lateinit var userPref: PreferenceManager
+    private lateinit var userPref: UserDataStorePref
 
     private lateinit var likeClickedPosts: Posts
     private lateinit var scrapClickedPosts: Posts
@@ -63,7 +63,7 @@ class ScrapVerticalFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         cancelBtnBackStack(binding.backBtn)
-        userPref = PreferenceManager(requireContext().applicationContext)
+        userPref = UserDataStorePref(requireContext().applicationContext)
 
 
         viewModel.postResponse.observe(viewLifecycleOwner) { /*event ->

@@ -13,11 +13,10 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.lf.fashion.R
 import com.lf.fashion.TAG
-import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.databinding.HomeBottomDialogItemBinding
-import com.lf.fashion.ui.AppCustomDialog
 import com.lf.fashion.ui.MyBottomDialogListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
@@ -34,7 +33,7 @@ class PostBottomSheetFragment(
     BottomSheetDialogFragment(R.layout.home_bottom_dialog_item),
     View.OnClickListener {
     private lateinit var binding: HomeBottomDialogItemBinding
-    private lateinit var userPref: PreferenceManager
+    private lateinit var userPref: UserDataStorePref
     private val viewModel: PostBottomViewModel by viewModels()
     private var blocked: Boolean = false // 최초값 차단 false 로 ..
     private var scrapState by Delegates.notNull<Boolean>()
@@ -43,7 +42,7 @@ class PostBottomSheetFragment(
         super.onViewCreated(view, savedInstanceState)
         binding = HomeBottomDialogItemBinding.bind(view)
 
-        userPref = PreferenceManager(requireContext().applicationContext)
+        userPref = UserDataStorePref(requireContext().applicationContext)
 
         binding.bottomLayout.children.forEach { it.setOnClickListener(this) }
         binding.bottomLinear.children.forEach { it.setOnClickListener(this) }

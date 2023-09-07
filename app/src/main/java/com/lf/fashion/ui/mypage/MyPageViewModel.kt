@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.Event
-import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.CommunicateRepository
 import com.lf.fashion.data.repository.MyPageRepository
@@ -17,7 +17,6 @@ import com.lf.fashion.data.model.FollowingUserList
 import com.lf.fashion.data.model.MsgResponse
 import com.lf.fashion.data.model.MyBlockUserList
 import com.lf.fashion.data.model.MyInfo
-import com.lf.fashion.data.model.Posts
 import com.lf.fashion.data.model.RandomPostResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -34,7 +33,7 @@ class MyPageViewModel @Inject constructor(
 
     private var _savedLoginToken: MutableLiveData<String?> = MutableLiveData()
     val savedLoginToken: LiveData<String?> = _savedLoginToken
-    private val userPreferences = PreferenceManager(context)
+    private val userPreferences = UserDataStorePref(context)
 
     private val _postResponse = MutableLiveData<Resource<RandomPostResponse>>()
     var postResponse: LiveData<Resource<RandomPostResponse>> = _postResponse

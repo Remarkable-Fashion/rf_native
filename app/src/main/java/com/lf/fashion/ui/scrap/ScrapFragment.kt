@@ -9,7 +9,7 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
 import com.lf.fashion.TAG
-import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.data.model.RandomPostResponse
@@ -27,12 +27,12 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
     private lateinit var gridPostAdapter: GridPostAdapter
     private lateinit var recentResponse: RandomPostResponse
     private lateinit var onScrollListener: NestedScrollView.OnScrollChangeListener
-    private lateinit var userPref: PreferenceManager
+    private lateinit var userPref: UserDataStorePref
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = ScrapFragmentBinding.bind(view)
-        userPref = PreferenceManager(requireContext())
+        userPref = UserDataStorePref(requireContext())
 
         if (userPref.loginCheck()) {
             gridPostAdapter = GridPostAdapter(3, this@ScrapFragment, scrapPage = true)

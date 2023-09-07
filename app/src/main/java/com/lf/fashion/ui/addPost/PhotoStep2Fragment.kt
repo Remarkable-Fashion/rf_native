@@ -301,6 +301,79 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
     }
 
 
+
+
+    private fun submitBtnOnclick() {
+        binding.submitBtn.setOnClickListener {
+            //value validation start
+            clothValueValidation()
+        }
+    }
+    private fun clothValueValidation(){
+        val name = binding.clothRegistForm.nameValue.text
+        val price = binding.clothRegistForm.priceValue.text
+        val color = binding.clothRegistForm.colorValue.text
+        val size = binding.clothRegistForm.sizeValue.text
+        val brand = binding.clothRegistForm.brandValue.text
+
+        if (name.toString().isNotEmpty() || price.toString().isNotEmpty() || color.toString()
+                .isNotEmpty() || size.toString().isNotEmpty() || brand.toString().isNotEmpty()
+        ) {
+            //의상 등록 부분에 작성하다가만 텍스트가 존재할 경우
+            AppCustomDialog(
+                "등록 중이신 의상이 있습니다.\n삭제하고 등록하시겠습니까?"
+            ){
+                val isPostValid = postValueValidation()
+                Log.e(TAG, "clothValueValidation: $isPostValid")
+                if(isPostValid){
+                    //의상 & 게시물 등록
+                    binding.progressBar.visibility = View.VISIBLE
+                    uploadPostAndClothes()
+                }
+            }.show(parentFragmentManager,"alert_info_clear")
+
+        }else{ //작성하다만 텍스트는 없지만 post 검증을 해야함
+            if(postValueValidation()) {
+                AppCustomDialog(
+                    "사진 등록을 완료하시겠습니까?"
+                ) {
+                    //의상 & 게시물 등록
+                    binding.progressBar.visibility = View.VISIBLE
+                    uploadPostAndClothes()
+                }.show(parentFragmentManager, "submit_confirm_dialog")
+            }
+        }
+    }
+
+    private fun postValueValidation(): Boolean {
+        val gender = viewModel.selectedGender
+        val tpos = viewModel.selectedTpos
+        val seasons = viewModel.selectedSeasons
+        val styles = viewModel.selectedStyles
+        val height = binding.filterSpace.heightValue.text.toString()
+        val weight = binding.filterSpace.weightValue.text.toString()
+        val introduce = binding.introduceValue.text.toString()
+
+        //비어있는 값 없고, cloth 등록하다만 기록 없을 때
+        if (gender.isNullOrEmpty()) {
+            Toast.makeText(requireContext(), "성별을 선택해주세요.", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        if (tpos.isEmpty() ||
+            seasons.isEmpty() ||
+            styles.isEmpty() ||
+            height.isEmpty() ||
+            weight.isEmpty() ||
+            introduce.isEmpty()
+        ) {
+            Toast.makeText(requireContext(), "값을 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        return true
+    }
+
     private fun uploadPostAndClothes() {
         CoroutineScope(Dispatchers.IO).launch {
             val requestUpload: Deferred<Boolean> = CoroutineScope(Dispatchers.IO).async {
@@ -381,78 +454,6 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
             }
         }
     }
-
-    private fun submitBtnOnclick() {
-        binding.submitBtn.setOnClickListener {
-            //value validation start
-            clothValueValidation()
-        }
-    }
-    private fun clothValueValidation(){
-        val name = binding.clothRegistForm.nameValue.text
-        val price = binding.clothRegistForm.priceValue.text
-        val color = binding.clothRegistForm.colorValue.text
-        val size = binding.clothRegistForm.sizeValue.text
-        val brand = binding.clothRegistForm.brandValue.text
-
-        if (name.toString().isNotEmpty() || price.toString().isNotEmpty() || color.toString()
-                .isNotEmpty() || size.toString().isNotEmpty() || brand.toString().isNotEmpty()
-        ) {
-            //의상 등록 부분에 작성하다가만 텍스트가 존재할 경우
-            AppCustomDialog(
-                "등록 중이신 의상이 있습니다.\n삭제하고 등록하시겠습니까?"
-            ){
-                val isPostValid = postValueValidation()
-                Log.e(TAG, "clothValueValidation: $isPostValid")
-                if(isPostValid){
-                    //의상 & 게시물 등록
-                    binding.progressBar.visibility = View.VISIBLE
-                    uploadPostAndClothes()
-                }
-            }.show(parentFragmentManager,"alert_info_clear")
-
-        }else{ //작성하다만 텍스트는 없지만 post 검증을 해야함
-            if(postValueValidation()) {
-                AppCustomDialog(
-                    "사진 등록을 완료하시겠습니까?"
-                ) {
-                    //의상 & 게시물 등록
-                    binding.progressBar.visibility = View.VISIBLE
-                    uploadPostAndClothes()
-                }.show(parentFragmentManager, "submit_confirm_dialog")
-            }
-        }
-    }
-
-    private fun postValueValidation(): Boolean {
-        val gender = viewModel.selectedGender
-        val tpos = viewModel.selectedTpos
-        val seasons = viewModel.selectedSeasons
-        val styles = viewModel.selectedStyles
-        val height = binding.filterSpace.heightValue.text.toString()
-        val weight = binding.filterSpace.weightValue.text.toString()
-        val introduce = binding.introduceValue.text.toString()
-
-        //비어있는 값 없고, cloth 등록하다만 기록 없을 때
-        if (gender.isNullOrEmpty()) {
-            Toast.makeText(requireContext(), "성별을 선택해주세요.", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        if (tpos.isEmpty() ||
-            seasons.isEmpty() ||
-            styles.isEmpty() ||
-            height.isEmpty() ||
-            weight.isEmpty() ||
-            introduce.isEmpty()
-        ) {
-            Toast.makeText(requireContext(), "값을 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        return true
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback);

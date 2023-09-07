@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
 import com.lf.fashion.TAG
-import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ClothPost
 import com.lf.fashion.databinding.HomeBRecommendFragmentBinding
@@ -39,7 +39,7 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
     ClothLikeClickListener {
     private lateinit var binding: HomeBRecommendFragmentBinding
     private val viewModel: UserInfoViewModel by viewModels()
-    private lateinit var userPref: PreferenceManager
+    private lateinit var userPref: UserDataStorePref
     private lateinit var lookBookRvAdapter: LookBookRvAdapter
     private var postId by Delegates.notNull<Int>()
     private var isOrderByInit by Delegates.notNull<Boolean>()
@@ -53,7 +53,7 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
             requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
         val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_home)
         homeMenu.isChecked = true
-        userPref = PreferenceManager(requireContext().applicationContext)
+        userPref = UserDataStorePref(requireContext().applicationContext)
 
         isSpinnerInit = false // 옵션 값 초기화할때 observe 되어서 중복 다수 요청됨을 방지
         isOrderByInit = false

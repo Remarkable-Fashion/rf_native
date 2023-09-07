@@ -1,12 +1,10 @@
 package com.lf.fashion.ui.mypage
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -15,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
 import com.lf.fashion.TAG
-import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.model.MyInfo
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.data.model.RandomPostResponse
@@ -40,7 +38,7 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
     private lateinit var recentResponse: RandomPostResponse
     private lateinit var onScrollListener: NestedScrollView.OnScrollChangeListener
     private lateinit var globalMyInfo: MyInfo
-    private lateinit var userPref: PreferenceManager
+    private lateinit var userPref: UserDataStorePref
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,7 +58,7 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userPref = PreferenceManager(requireContext().applicationContext)
+        userPref = UserDataStorePref(requireContext().applicationContext)
 
         gridAdapter = GridPostAdapter(3, this@MyPageFragment, null)
 

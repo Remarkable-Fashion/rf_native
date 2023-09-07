@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
-import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.data.model.Posts
@@ -36,7 +36,7 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
         this@OtherUserVerticalPostFragment,
         this@OtherUserVerticalPostFragment
     )
-    private lateinit var userPref: PreferenceManager
+    private lateinit var userPref: UserDataStorePref
 
     private lateinit var likeClickedPosts: Posts
     private lateinit var scrapClickedPosts: Posts
@@ -46,7 +46,7 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
         super.onViewCreated(view, savedInstanceState)
         binding = UserVerticalFragmentBinding.bind(view)
         cancelBtnBackStack(binding.backBtn)
-        userPref = PreferenceManager(requireContext().applicationContext)
+        userPref = UserDataStorePref(requireContext().applicationContext)
 
         viewModel.profileInfo.observe(viewLifecycleOwner){ resources->
             if(resources is Resource.Success ) {

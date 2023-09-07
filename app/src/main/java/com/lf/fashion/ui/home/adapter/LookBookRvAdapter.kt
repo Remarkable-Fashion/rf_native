@@ -7,7 +7,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.lf.fashion.data.common.PreferenceManager
+import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.model.ClothPost
 import com.lf.fashion.databinding.ItemRecommendStyleCardBinding
 import com.lf.fashion.ui.home.ClothLikeClickListener
@@ -16,7 +16,7 @@ class LookBookRvAdapter(
     private val kebabOnClick: (Int) -> Unit,
     private val clothLikeClickListener: ClothLikeClickListener
 ) : ListAdapter<ClothPost, LookBookRvAdapter.LookBookViewHolder>(LookBookDiff()) {
-    private lateinit var userPref: PreferenceManager
+    private lateinit var userPref: UserDataStorePref
     private var orderByMode: String = "Best" // 초기 상태는 Default로 설정
     private lateinit var binding :ItemRecommendStyleCardBinding
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LookBookViewHolder {
@@ -25,7 +25,7 @@ class LookBookRvAdapter(
             parent,
             false
         )
-        userPref = PreferenceManager(parent.context.applicationContext)
+        userPref = UserDataStorePref(parent.context.applicationContext)
 
         return LookBookViewHolder(binding)
     }
