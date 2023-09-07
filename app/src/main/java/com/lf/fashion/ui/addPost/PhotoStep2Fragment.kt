@@ -1,6 +1,5 @@
 package com.lf.fashion.ui.addPost
 
-import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -8,7 +7,6 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.*
@@ -28,7 +26,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -112,22 +109,20 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         imagePickerOpen()
         submitBtnOnclick()
         binding.backBtn.setOnClickListener {
-            backSatckDialogShow()
+            backStackDialogShow()
         }
 
     }
 
-    private fun backSatckDialogShow() {
-        val loginDialog = androidx.appcompat.app.AlertDialog.Builder(requireContext())
-            .setMessage(
-                "이전 화면으로 이동하겠습니까?\n" +
-                        "등록 중인 내용은 초기화됩니다.\n"
-            )
-            .setPositiveButton("네") { _, _ ->
-                findNavController().popBackStack()
-            }
-            .setNegativeButton("닫기") { _, _ -> }
-        loginDialog.show()
+    private fun backStackDialogShow() {
+        AppCustomDialog(
+            "이전 화면으로 이동하겠습니까?\n" +
+                    "등록 중인 내용은 초기화됩니다.",
+            "확인",
+            "닫기", null
+        ) {
+            findNavController().popBackStack()
+        }.show(parentFragmentManager, "photoStep2_dialog")
     }
 
 
@@ -305,24 +300,6 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun submitBtnOnclick() {
-        binding.submitBtn.setOnClickListener {
-
-            //비어있는 값 없고, cloth 등록하다만 기록 없을 때
-            if (valueValidation()) {
-                val loginDialog = AlertDialog.Builder(requireContext())
-                    .setMessage("사진 등록을 완료하시겠습니까?")
-                    .setPositiveButton("네") { _, _ ->
-                        //의상 & 게시물 등록
-                        binding.progressBar.visibility = View.VISIBLE
-                        uploadPostAndClothes()
-                    }
-                    .setNegativeButton("아니요") { _, _ ->
-                    }
-                loginDialog.show()
-            }
-        }
-    }
 
     private fun uploadPostAndClothes() {
         CoroutineScope(Dispatchers.IO).launch {
@@ -341,8 +318,8 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                         addClothesAdapter.currentList.mapIndexed { index, cloth ->
                             cloth.copy(imageUrl = clothesImageResponse.imgUrls[index])
                         }
-                   // Log.e(TAG, "submitBtnOnclick: ImageList $clothesImages")
-                  // Log.e(TAG, "submitBtnOnclick: newList $newList")
+                    // Log.e(TAG, "submitBtnOnclick: ImageList $clothesImages")
+                    // Log.e(TAG, "submitBtnOnclick: newList $newList")
 
                     viewModel.uploadedClothes = newList.toMutableList()
                 }
@@ -360,8 +337,10 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                     val tpos = viewModel.selectedTpos.distinct()
                     val seasons = viewModel.selectedSeasons.distinct()
                     val styles = viewModel.selectedStyles.distinct()
-                    val height = binding.filterSpace.heightValue.text.toString().replace(" cm","").toInt()
-                    val weight = binding.filterSpace.weightValue.text.toString().replace(" kg","").toInt()
+                    val height =
+                        binding.filterSpace.heightValue.text.toString().replace(" cm", "").toInt()
+                    val weight =
+                        binding.filterSpace.weightValue.text.toString().replace(" kg", "").toInt()
                     //todo test
                     val uploadPost = UploadPost(
                         imageUploadResponse.imgUrls!!,
@@ -394,46 +373,58 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                     //findNavController 로 mypage 프래그먼트 이동시 backStack 문제로 photo menu 접근이 불가,
                     //메뉴탭 수동으로 이동시키고 backStack 제거하여 viewModel 과 edittext data clear
                     findNavController().popBackStack(R.id.navigation_photo, true)
-                    findNavController().navigate(R.id.action_global_to_myPageFragment)
-                    val bottomNavigationView =
-                        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-                    val loginMenuItem =
-                        bottomNavigationView.menu.findItem(R.id.navigation_mypage)
-                    loginMenuItem.isChecked = true
-                    bottomNavigationView.selectedItemId = R.id.navigation_mypage
+                    navigateToMyPage()
                 } else {
-                    Toast.makeText(requireContext(), "사진의 용량이 허용 크기를 초과하였습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "사진의 용량이 허용 크기를 초과하였습니다.", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
     }
 
-    private fun valueValidation(): Boolean {
+    private fun submitBtnOnclick() {
+        binding.submitBtn.setOnClickListener {
+            //value validation start
+            clothValueValidation()
+        }
+    }
+    private fun clothValueValidation(){
         val name = binding.clothRegistForm.nameValue.text
         val price = binding.clothRegistForm.priceValue.text
         val color = binding.clothRegistForm.colorValue.text
         val size = binding.clothRegistForm.sizeValue.text
         val brand = binding.clothRegistForm.brandValue.text
-        var clothClear = true
+
         if (name.toString().isNotEmpty() || price.toString().isNotEmpty() || color.toString()
                 .isNotEmpty() || size.toString().isNotEmpty() || brand.toString().isNotEmpty()
         ) {
-            val loginDialog = androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setMessage("등록 중이신 의상이 있습니다. 삭제하고 등록하시겠습니까?")
-                .setPositiveButton("네") { _, _ ->
-                    clothClear = true
+            //의상 등록 부분에 작성하다가만 텍스트가 존재할 경우
+            AppCustomDialog(
+                "등록 중이신 의상이 있습니다.\n삭제하고 등록하시겠습니까?"
+            ){
+                val isPostValid = postValueValidation()
+                Log.e(TAG, "clothValueValidation: $isPostValid")
+                if(isPostValid){
+                    //의상 & 게시물 등록
+                    binding.progressBar.visibility = View.VISIBLE
+                    uploadPostAndClothes()
                 }
-                .setNegativeButton("닫기") { _, _ ->
-                    clothClear = false
-                }
-            loginDialog.show()
+            }.show(parentFragmentManager,"alert_info_clear")
 
+        }else{ //작성하다만 텍스트는 없지만 post 검증을 해야함
+            if(postValueValidation()) {
+                AppCustomDialog(
+                    "사진 등록을 완료하시겠습니까?"
+                ) {
+                    //의상 & 게시물 등록
+                    binding.progressBar.visibility = View.VISIBLE
+                    uploadPostAndClothes()
+                }.show(parentFragmentManager, "submit_confirm_dialog")
+            }
         }
+    }
 
-        if (!clothClear) {
-            return false
-        }
-
+    private fun postValueValidation(): Boolean {
         val gender = viewModel.selectedGender
         val tpos = viewModel.selectedTpos
         val seasons = viewModel.selectedSeasons
@@ -448,11 +439,11 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
             return false
         }
 
-        if (tpos.isEmpty() &&
-            seasons.isEmpty() &&
-            styles.isEmpty() &&
-            height.isEmpty() &&
-            weight.isEmpty() &&
+        if (tpos.isEmpty() ||
+            seasons.isEmpty() ||
+            styles.isEmpty() ||
+            height.isEmpty() ||
+            weight.isEmpty() ||
             introduce.isEmpty()
         ) {
             Toast.makeText(requireContext(), "값을 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
@@ -461,6 +452,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
 
         return true
     }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback);
@@ -470,7 +462,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
     private val onBackPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-               backSatckDialogShow()
+                backStackDialogShow()
             }
         }
 

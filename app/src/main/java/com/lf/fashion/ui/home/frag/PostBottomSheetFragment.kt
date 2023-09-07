@@ -17,6 +17,7 @@ import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.databinding.HomeBottomDialogItemBinding
+import com.lf.fashion.ui.AppCustomDialog
 import com.lf.fashion.ui.MyBottomDialogListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
@@ -140,6 +141,7 @@ class PostBottomSheetFragment(
             binding.deleteBtn -> {
                 post?.let {
                     myBottomDialogListener?.deleteMyPost(it)
+                    dismiss()
                 }
             }
 
@@ -204,7 +206,6 @@ class PostBottomSheetFragment(
         Log.e(TAG, "getDetailInfo: $p1")
         val layoutinflater = LayoutInflater.from(context)
         val dialogView = layoutinflater.inflate(R.layout.item_dialog_declare, null)
-
         val dialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)
             .setPositiveButton("등록") { dialog, id ->

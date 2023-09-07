@@ -1,7 +1,6 @@
 package com.lf.fashion.ui.addPost
 
 import android.Manifest
-import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -29,6 +28,7 @@ import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.model.ImageItem
 import com.lf.fashion.databinding.PhotoImagePickerFragmentBinding
+import com.lf.fashion.ui.AppCustomDialog
 import com.lf.fashion.ui.addPost.adapter.CheckedImageAdapter
 import com.lf.fashion.ui.addPost.adapter.ImageAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -215,7 +215,17 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
     }
 
     private fun applicationSettingIntent() {
-        AlertDialog.Builder(requireContext()).apply {
+        AppCustomDialog(
+            "이미지를 촬영하기 위해서, 카메라 접근 권한이 필요합니다.\n 설정창으로 이동하시겠습니까?",
+            "동의"
+        ){
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val packageName = requireContext().packageName
+            val uri = Uri.fromParts("package", packageName, null)
+            intent.data = uri
+            startActivity(intent)
+        }.show(parentFragmentManager,"move_to_app_setting_alert")
+      /*  AlertDialog.Builder(requireContext()).apply {
             setMessage("이미지를 촬영하기 위해서, 카메라 접근 권한이 필요합니다.\n 설정창으로 이동하시겠습니까?")
             setNegativeButton("취소", null)
             setPositiveButton("동의") { _, _ ->
@@ -225,7 +235,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
                 intent.data = uri
                 startActivity(intent)
             }
-        }.show()
+        }.show()*/
     }
 
     override fun checkedCountOver(limit : Int) {

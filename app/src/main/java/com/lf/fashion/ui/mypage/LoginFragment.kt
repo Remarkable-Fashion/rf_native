@@ -2,10 +2,7 @@ package com.lf.fashion.ui.mypage
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,14 +10,13 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import com.lf.fashion.R
 import com.lf.fashion.TAG
-import com.lf.fashion.data.common.PreferenceManager
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.LoginFragmentBinding
+import com.lf.fashion.ui.AppCustomDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 
@@ -43,9 +39,10 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
                     } else {
                         binding.progressBar.visibility = View.GONE
                         //TODO alert 으로 오류 띄우는데, 나중에 배포시에는 오류코드로 바꾸거나 지워야합니다 ~!
-                        AlertDialog.Builder(requireContext()).apply {
+                        AppCustomDialog("로그인 오류\n${error.message}").show(parentFragmentManager,"login_error")
+                      /*  AlertDialog.Builder(requireContext()).apply {
                             setMessage("${error.message}")
-                        }.show()
+                        }.show()*/
                     }
                 } else if (token != null) {
                     Log.d(TAG, "MyPageFragment - onViewCreated: 카카오톡 간편 로그인 성공 토큰 : $token")

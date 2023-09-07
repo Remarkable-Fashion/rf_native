@@ -1,7 +1,6 @@
 package com.lf.fashion.ui
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
@@ -125,31 +124,29 @@ fun Fragment.showPermissionDialog(
     requestPermissionLauncher: ActivityResultLauncher<Array<String>>,
     permissions: Array<String>
 ) {
-    AlertDialog.Builder(requireContext()).apply {
+    AppCustomDialog("이미지를 가져오기 위해서, 외부 저장소 읽기 권한이 필요합니다.","동의"){
+        requestPermissionLauncher.launch(permissions)
+    }.show(parentFragmentManager,"image_permission_alert")
+ /*   AlertDialog.Builder(requireContext()).apply {
         setMessage("이미지를 가져오기 위해서, 외부 저장소 읽기 권한이 필요합니다.")
         setNegativeButton("취소", null)
         setPositiveButton("동의") { _, _ -> requestPermissionLauncher.launch(permissions) }
-    }.show()
+    }.show()*/
 }
 
 fun Fragment.showRequireLoginDialog(alreadyHome: Boolean? = null) {
-    val loginDialog = AlertDialog.Builder(requireContext())
-        .setMessage("로그인 후 이용가능합니다.")
-        .setPositiveButton("로그인하러 가기") { _, _ ->
-            //그냥 navigate to 로 보낼 경우 바텀 메뉴 이동에 오류가 생길 때가 있어서 bottomNavigationView 를 통해 이동, checked 조정
-            val bottomNavigationView =
-                requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-            val loginMenuItem = bottomNavigationView.menu.findItem(R.id.navigation_mypage)
-            loginMenuItem.isChecked = true
-            bottomNavigationView.selectedItemId = R.id.navigation_mypage
-        }
-        .setNegativeButton("닫기") { _, _ ->
-            if (alreadyHome != true) {
-                findNavController().navigateUp()
-            }
-        }
 
-    loginDialog.show()
+    AppCustomDialog(
+        "로그인 후 이용가능합니다.",
+        "로그인하러 가기",
+        "닫기",
+        onClickNegative = { if (alreadyHome != true) {
+            findNavController().navigateUp()
+        }}
+    ){
+        //그냥 navigate to 로 보낼 경우 바텀 메뉴 이동에 오류가 생길 때가 있어서 bottomNavigationView 를 통해 이동, checked 조정
+      navigateToMyPage()
+    }.show(parentFragmentManager,"login_alert_dialog")
 }
 
 fun Fragment.navigateToMyPage() {
@@ -301,9 +298,15 @@ fun Fragment.handleApiError(
 
 
 // 파일 확장자로부터 MIME 타입을 추론하는 함수
-fun getMimeType(file: File): String? {
-    val extension = MimeTypeMap.getFileExtensionFromUrl(file.absolutePath)
-    return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+fun getMimeType(file: File): String {
+    Log.e(TAG, "Util getMimeType: ${file.absoluteFile}")
+    val split = file.absoluteFile.toString().split(".")
+    val mime = split[1]
+
+    //val extension = MimeTypeMap.getFileExtensionFromUrl(file.absolutePath)
+    //return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+    Log.e(TAG, "getMimeType: image/${mime}")
+    return "image/${mime}"
 }
 
 fun getAssetsTextString(mContext: Context, fileName: String): String{
