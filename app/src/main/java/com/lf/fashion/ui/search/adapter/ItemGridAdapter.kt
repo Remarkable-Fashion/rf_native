@@ -57,6 +57,10 @@ class ItemGridAdapter(
 
             binding.includedClothSpace.gridImage.scaleType = ImageView.ScaleType.CENTER_CROP
             binding.executePendingBindings()
+
+            binding.root.setOnClickListener {
+                gridPhotoClickListener.gridPhotoClicked(currentList.indexOf(item))
+            }
         }
     }
 

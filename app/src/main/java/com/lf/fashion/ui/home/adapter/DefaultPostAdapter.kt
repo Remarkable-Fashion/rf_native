@@ -109,9 +109,9 @@ class DefaultPostAdapter(
             binding.postDetailMenu.photoZipBtn.isVisible = myPhotozip != true
         }
     }
-    fun startChangeByGridClicked(){
-
-    }
+//    fun startChangeByGridClicked(){
+//
+//    }
 }
 
 class DefaultPostDiff : DiffUtil.ItemCallback<Posts>() {

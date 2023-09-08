@@ -109,6 +109,13 @@ SearchRankRowClickListener{
         }
         searchResultViewSetting()  //결과 레이아웃 내부 세팅 (tab,viewpager)
 
+        //todo test
+        //검색 결과 화면에서 grid 모드로 보다가 사진을 클릭해서 1개씩 보기 모드로 바뀔 경우
+        viewModel.gridMode.observe(viewLifecycleOwner){
+            if(it ==1){
+                binding.searchResult.gridText.text = "1"
+            }
+        }
     }
 
     private fun searchEtSetActionListener() {

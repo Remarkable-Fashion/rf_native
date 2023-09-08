@@ -347,7 +347,7 @@ class HomeFragment :
 
     override fun gridPhotoClicked(postIndex: Int) {
         //grid 각 포토 클릭시 !!
-        defaultAdapter.startChangeByGridClicked()
+        //defaultAdapter.startChangeByGridClicked()
         binding.homeMainViewpager.apply {
             setCurrentItem(postIndex, false)
         }
