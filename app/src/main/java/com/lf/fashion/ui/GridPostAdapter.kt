@@ -50,11 +50,7 @@ class GridPostAdapter(
             binding.scrapIcon.isSelected = post.isScrap ?: false
 
             //spanCount 갯수에 따라 이미지뷰 (정확히는 이미지뷰를 감싸는 ConstraintLayout 높이를 조정
-            layoutParams.height = when (spanCount ?: 2) {
-                2 -> convertDPtoPX(context, 228)
-                3 -> convertDPtoPX(context, 150)
-                else -> layoutParams.height
-            }
+            itemViewRatioSetting(context, itemView, spanCount)
 
             //스크랩 페이지 grid 모아보기에서 스크랩 아이콘을 숨긴다
             scrapPage?.let {

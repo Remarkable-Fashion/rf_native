@@ -10,6 +10,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.webkit.MimeTypeMap
 import android.widget.EditText
@@ -253,7 +254,17 @@ fun EditText.addTextLengthLimit(endText: String) {
     })
 }
 
+fun itemViewRatioSetting(context : Context,itemView : View,spanCount:Int?) {
+    val aspectRatio = 4f / 3f // 3:4 비율
 
+    // 현재 spanCount에 따라 너비와 높이를 조정
+    val layoutParams = itemView.layoutParams as ViewGroup.MarginLayoutParams
+    val screenWidth = context.resources.displayMetrics.widthPixels
+    val itemWidth = screenWidth /  (spanCount ?: 2)
+
+    layoutParams.width = itemWidth
+    layoutParams.height = (itemWidth * aspectRatio).toInt()
+}
 fun Fragment.absolutelyPath(path: Uri?, context: Context): String? {
     val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
     val c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)

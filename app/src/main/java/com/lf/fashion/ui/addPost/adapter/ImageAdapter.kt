@@ -1,7 +1,8 @@
 package com.lf.fashion.ui.addPost.adapter
 
-import android.util.Log
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
@@ -9,12 +10,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lf.fashion.R
-import com.lf.fashion.TAG
 import com.lf.fashion.data.model.ImageItem
 import com.lf.fashion.databinding.ItemCameraBinding
 import com.lf.fashion.databinding.ItemImageBinding
 import com.lf.fashion.ui.addPost.GalleryRvListener
 import com.lf.fashion.ui.addPost.ImagePickerViewModel
+import com.lf.fashion.ui.itemViewRatioSetting
 
 /**
  * @param parentViewModel The ImagePicker's ViewModel which holds each ImageItem
@@ -30,8 +31,10 @@ class ImageAdapter(
         private const val VIEW_TYPE_FIRST_ITEM = 1
         private const val VIEW_TYPE_DEFAULT_ITEM = 2
     }
+    private lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        context = parent.context
         return when (viewType) {
             VIEW_TYPE_FIRST_ITEM -> { // 첫번째 아이템은 카메라 실행 ui 로 !
                 val binding =
@@ -110,7 +113,7 @@ class ImageAdapter(
     }
 
     //이미지 로드&바인딩 로직
-    class ImageViewHolder(
+    inner class ImageViewHolder(
         private val binding: ItemImageBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(imageItem: ImageItem) {
@@ -120,13 +123,17 @@ class ImageAdapter(
 
             binding.checkbox.isSelected = imageItem.isChecked
             binding.checkbox.text = imageItem.checkCount.ifEmpty { "" }
+
+            itemViewRatioSetting(context,itemView,3)
+
         }
     }
-
-    class FirstImageViewHolder(
+    inner class FirstImageViewHolder(
         private val binding: ItemCameraBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind() {}
+        fun bind() {
+            itemViewRatioSetting(context,itemView,3)
+        }
     }
 
     override fun getItemViewType(position: Int): Int {

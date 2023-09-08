@@ -2,6 +2,7 @@ package com.lf.fashion.ui.search.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
@@ -12,6 +13,7 @@ import com.lf.fashion.databinding.ItemSearchResultItemListBinding
 import com.lf.fashion.ui.GridPhotoClickListener
 import com.lf.fashion.ui.SpanCountEditBtnListener
 import com.lf.fashion.ui.convertDPtoPX
+import com.lf.fashion.ui.itemViewRatioSetting
 
 class ItemGridAdapter(
     private var spanCount: Int? = null,
@@ -51,13 +53,10 @@ class ItemGridAdapter(
 
         fun bind(item: Cloth) {
 
-            binding.includedClothSpace.photoUrl = item.imageUrl
-            layoutParams.height = when (spanCount ?: 2) {
-                2 -> convertDPtoPX(context, 300)
-                3 -> convertDPtoPX(context, 250)
-                else -> layoutParams.height
+          binding.includedClothSpace.photoUrl = item.imageUrl
+            // 현재 spanCount에 따라 너비와 높이를 조정
+            itemViewRatioSetting(context, itemView, spanCount)
 
-            }
             binding.includedClothSpace.gridImage.scaleType = ImageView.ScaleType.CENTER_CROP
             binding.executePendingBindings()
         }

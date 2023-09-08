@@ -11,6 +11,7 @@ import com.lf.fashion.ui.GridPhotoClickListener
 import com.lf.fashion.ui.SpanCountEditBtnListener
 import com.lf.fashion.ui.convertDPtoPX
 import com.lf.fashion.ui.home.adapter.DefaultPostDiff
+import com.lf.fashion.ui.itemViewRatioSetting
 
 class LookPostGridAdapter(
     private var spanCount: Int? = null,
@@ -33,8 +34,6 @@ class LookPostGridAdapter(
 
     inner class LookPostGridViewHolder(private val binding: HomeGridItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private val layoutParams = itemView.layoutParams as ViewGroup.MarginLayoutParams
-
         fun bind(post: Posts) {
             //post 내부 첫번째 사진을 grid 로 노출
             binding.photoUrl = post.images[0].url
@@ -44,15 +43,9 @@ class LookPostGridAdapter(
             binding.scrapIcon.isSelected = post.isScrap ?: false
 
             //spanCount 갯수에 따라 이미지뷰 (정확히는 이미지뷰를 감싸는 ConstraintLayout 높이를 조정
-            layoutParams.height = when (spanCount ?: 2) {
-                2 -> convertDPtoPX(context, 228)
-                3 -> convertDPtoPX(context, 150)
-                else -> layoutParams.height
-            }
+            itemViewRatioSetting(context, itemView, spanCount)
 
             //스크랩 페이지 grid 모아보기에서 스크랩 아이콘을 숨긴다
-
-
             binding.executePendingBindings()
         }
     }
