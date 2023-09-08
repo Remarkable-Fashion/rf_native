@@ -7,6 +7,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.R
@@ -27,7 +28,7 @@ class SearchResultFragment(private val resultCategory: String) :
     private lateinit var binding: SearchResultViewpagerBinding
 
     //TODO : 이부분 해결해야합니당
-    constructor() : this("look") // 외부 메뉴 이동후 재진입할 경우 기본 생성자 필요!
+    constructor() : this("back") // 외부 메뉴 이동후 재진입할 경우 기본 생성자 필요!
     private val viewModel: SearchViewModel by hiltNavGraphViewModels(R.id.navigation_search)
     private val itemGridAdapter = ItemGridAdapter(3, this)
     private val lookPostGridAdapter = LookPostGridAdapter(3, this)
@@ -46,9 +47,12 @@ class SearchResultFragment(private val resultCategory: String) :
                 lookResultUiBinding()
             }
 
-            else -> { // item
+            "item" -> { // item
                 viewModel.getItemSearchResult(searchTerm)
                 itemResultUiBinding()
+            }
+            else->{
+                findNavController().navigate(R.id.action_global_to_searchFragment)
             }
         }
 

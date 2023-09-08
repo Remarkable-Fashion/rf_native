@@ -27,7 +27,9 @@
     <action
         android:id="@+id/action_global_to_myPageFragment"
         app:destination="@id/navigation_mypage" />
-
+    <action
+        android:id="@+id/action_global_to_searchFragment"
+        app:destination="@id/navigation_search" />
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.lf.fashion.ui.home.frag.HomeFragment"
