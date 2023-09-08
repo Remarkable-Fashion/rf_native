@@ -122,8 +122,9 @@ class HomeFragment :
                     val response = resource.value
 
                     val currentGridCount = binding.gridText.text.toString().toInt()
-                    val spanCount = if(currentGridCount ==1) 2 else 3
-                    photoLayoutVisibilityMode(currentGridCount == 1)
+                    val spanCount = if(currentGridCount ==1 || currentGridCount ==2) 2 else 3
+
+                    photoLayoutVisibilityMode(default = currentGridCount == 1)
 
                     //1개씩 보기 뷰페이저 세팅
                     with(binding.homeMainViewpager) {

@@ -1,11 +1,13 @@
 package com.lf.fashion.ui
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.lf.fashion.TAG
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.databinding.HomeGridItemBinding
 import com.lf.fashion.ui.home.adapter.DefaultPostDiff
@@ -26,8 +28,6 @@ class GridPostAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GridPostViewHolder {
         val binding =
             HomeGridItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-
-
         context = parent.context
         return GridPostViewHolder(binding)
     }
