@@ -58,6 +58,7 @@
     <string name="upload_photo_sub_title">업로드한 사진의 상세정보를 등록해주세요.</string>
     <string name="upload_photo_title">사진 등록하기</string>
     <string name="_3">3</string>
+    <string name="empty_string" />
 
 
     <string name="mypage_title">%1$s 님의 룩북</string>
@@ -96,4 +97,5 @@
         <item>고가순</item>
         <item>저가순</item>
     </string-array>
+
 </resources>
