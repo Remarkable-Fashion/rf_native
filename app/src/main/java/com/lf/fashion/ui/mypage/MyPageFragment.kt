@@ -60,7 +60,7 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
         super.onViewCreated(view, savedInstanceState)
         userPref = UserDataStorePref(requireContext().applicationContext)
 
-        gridAdapter = GridPostAdapter(3, this@MyPageFragment, null)
+        gridAdapter = GridPostAdapter(3, this@MyPageFragment, reduceViewWidth = true)
 
         //스크롤 리스너 설정
         onScrollListener = OnScrollUtils { loadMorePost() }

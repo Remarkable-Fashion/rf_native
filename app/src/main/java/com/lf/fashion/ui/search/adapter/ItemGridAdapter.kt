@@ -49,13 +49,11 @@ class ItemGridAdapter(
 
     inner class ItemGridViewHolder(private val binding: ItemSearchResultItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private val layoutParams = itemView.layoutParams as ViewGroup.MarginLayoutParams
-
         fun bind(item: Cloth) {
 
           binding.includedClothSpace.photoUrl = item.imageUrl
             // 현재 spanCount에 따라 너비와 높이를 조정
-            itemViewRatioSetting(context, itemView, spanCount)
+            itemViewRatioSetting(context, itemView, spanCount, reduceViewWidth = true)
 
             binding.includedClothSpace.gridImage.scaleType = ImageView.ScaleType.CENTER_CROP
             binding.executePendingBindings()

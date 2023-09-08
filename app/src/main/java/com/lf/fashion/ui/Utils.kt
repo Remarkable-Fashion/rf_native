@@ -254,12 +254,15 @@ fun EditText.addTextLengthLimit(endText: String) {
     })
 }
 
-fun itemViewRatioSetting(context : Context,itemView : View,spanCount:Int?) {
+fun itemViewRatioSetting(context : Context,itemView : View,spanCount:Int?,reduceViewWidth :Boolean?=null) {
     val aspectRatio = 4f / 3f // 3:4 비율
 
     // 현재 spanCount에 따라 너비와 높이를 조정
     val layoutParams = itemView.layoutParams as ViewGroup.MarginLayoutParams
-    val screenWidth = context.resources.displayMetrics.widthPixels
+    var screenWidth = context.resources.displayMetrics.widthPixels
+    if(reduceViewWidth==true){
+        screenWidth -= (0.1 * screenWidth).toInt()
+    }
     val itemWidth = screenWidth /  (spanCount ?: 2)
 
     layoutParams.width = itemWidth
