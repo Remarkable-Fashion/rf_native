@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.model.ImageItem
@@ -31,6 +32,7 @@ import com.lf.fashion.databinding.PhotoImagePickerFragmentBinding
 import com.lf.fashion.ui.AppCustomDialog
 import com.lf.fashion.ui.addPost.adapter.CheckedImageAdapter
 import com.lf.fashion.ui.addPost.adapter.ImageAdapter
+import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -123,11 +125,20 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
 
     private fun galleryImageRvSetting(imageLimit : Int) {
         val galleryImageAdapter = ImageAdapter(viewModel, this@ImagePickerFragment, imageLimit)
-        binding.recyclerviewImage.adapter = galleryImageAdapter
+        //binding.recyclerviewImage.adapter = galleryImageAdapter
+        with(binding.recyclerviewImage){
+            layoutManager = StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL)
+            adapter = galleryImageAdapter.apply {
+                while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
+                    removeItemDecorationAt(0)
+                }
+                addItemDecoration(GridSpaceItemDecoration(3, 6)) }
+        }
         viewModel.imageItemList.observe(viewLifecycleOwner) { imageItemList ->
             Log.d(TAG, "ImagePickerFragment - galleryImageRvSetting:  view model response");
             galleryImageAdapter.submitList(imageItemList)
             galleryImageAdapter.notifyDataSetChanged()
+
         }
     }
 

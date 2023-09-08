@@ -10,6 +10,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
 import com.lf.fashion.TAG
@@ -61,6 +62,14 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
         userPref = UserDataStorePref(requireContext().applicationContext)
 
         gridAdapter = GridPostAdapter(3, this@MyPageFragment, reduceViewWidth = true)
+        with(binding.gridRv){
+            layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
+            adapter = gridAdapter.apply {
+                while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
+                    removeItemDecorationAt(0)
+                }
+                addItemDecoration(GridSpaceItemDecoration(3, 6)) }
+        }
 
         //스크롤 리스너 설정
         onScrollListener = OnScrollUtils { loadMorePost() }
@@ -134,18 +143,7 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                         binding.gridRv.visibility = View.VISIBLE
                         recentResponse = response
                         postList = response.posts.toMutableList()
-
-                        with(binding.gridRv) {
-                            //grid layout
-                            adapter = gridAdapter.apply {
-
-                                while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
-                                    removeItemDecorationAt(0)
-                                }
-                                addItemDecoration(GridSpaceItemDecoration(3, 6))
-                                submitList(response.posts)
-                            }
-                        }
+                        gridAdapter.submitList(response.posts)
                     } else {
                         binding.arrayEmptyText.visibility = View.VISIBLE
                         binding.gridRv.visibility = View.GONE
