@@ -158,7 +158,7 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
                     bundleOf("clothesPostId" to postId)
                 )
             } else {
-                showRequireLoginDialog()
+                showRequireLoginDialog(presentFragId = R.id.recommendFragment)
             }
         }
     }
@@ -210,7 +210,7 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
 
             }
         } else {
-            showRequireLoginDialog()
+            showRequireLoginDialog(presentFragId = R.id.recommendFragment)
         }
     }
 }

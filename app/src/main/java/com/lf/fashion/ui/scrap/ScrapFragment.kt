@@ -73,7 +73,7 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
 
                     is Resource.Failure -> {
                         if (resources.errorCode == 401) {
-                            showRequireLoginDialog()
+                            showRequireLoginDialog(presentFragId = R.id.navigation_scrap)
                         } else {
                             Log.e(TAG, "onViewCreated postList response Error: $resources ")
                         }
@@ -86,7 +86,7 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
                 }
             }
         } else {
-            showRequireLoginDialog()
+            showRequireLoginDialog(presentFragId = R.id.navigation_scrap)
 
         }
 

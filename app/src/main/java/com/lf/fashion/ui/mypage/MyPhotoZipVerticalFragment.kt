@@ -188,7 +188,7 @@ class MyPhotoZipVerticalFragment : Fragment(R.layout.mypage_photozip_vertical_fr
     override fun profileSpaceClicked(userId: Int) {
         val myUniqueId = userPref.getMyUniqueId()
         if (userId == myUniqueId) {
-            navigateToMyPage()
+            navigateToMyPage(R.id.myPhotoZipVerticalFragment)
             return
         }
         findNavController().navigate(

@@ -113,13 +113,14 @@ class MyPhotoZipFragment : Fragment(R.layout.mypage_photo_zip_fragment), GridPho
     }
 
     private fun followBtnOnclick() {
-        binding.followBtn.setOnClickListener {
+    // 내 페이지 내부 팔로우 버튼 노출 x
+    /*  binding.followBtn.setOnClickListener {
             val followBtn = binding.followBtn
             if (userPref.loginCheck()) {
                 //팔로우 create / delete
                 viewModel.changeFollowingState(!followBtn.isSelected, userId)
             }
-        }
+        }*/
     }
 
     private fun updateFollowingState() {

@@ -28,6 +28,7 @@ import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener
 import com.lf.fashion.ui.MyBottomDialogListener
 import com.lf.fashion.ui.navigateToMyPage
+import com.lf.fashion.ui.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
@@ -294,6 +295,8 @@ class HomeFragment :
             }
             post.isFavorite = !post.isFavorite!!  // 좋아요 상태 반전
             likeClickedPosts = post
+        }else{
+            showRequireLoginDialog(presentFragId = R.id.navigation_home)
         }
     }
 
@@ -303,6 +306,8 @@ class HomeFragment :
             viewModel.changeScrapState(create = !scrapState, post.id)
             post.isScrap = !post.isScrap!!
             scrapClickedPosts = post
+        }else{
+            showRequireLoginDialog(presentFragId = R.id.navigation_home)
         }
 
     }
@@ -336,7 +341,7 @@ class HomeFragment :
     override fun profileSpaceClicked(userId: Int) {
         val myUniqueId = userPref.getMyUniqueId()
         if (userId == myUniqueId) {
-            navigateToMyPage()
+            navigateToMyPage(presentFragId = R.id.navigation_home)
             return
         }
         findNavController().navigate(

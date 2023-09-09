@@ -445,8 +445,8 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
 
                     //findNavController 로 mypage 프래그먼트 이동시 backStack 문제로 photo menu 접근이 불가,
                     //메뉴탭 수동으로 이동시키고 backStack 제거하여 viewModel 과 edittext data clear
-                    findNavController().popBackStack(R.id.navigation_photo, true)
-                    navigateToMyPage()
+                    //findNavController().popBackStack(R.id.navigation_photo, true)
+                    navigateToMyPage(R.id.navigation_photo)
                 } else {
                     Toast.makeText(requireContext(), "사진의 용량이 허용 크기를 초과하였습니다.", Toast.LENGTH_SHORT)
                         .show()

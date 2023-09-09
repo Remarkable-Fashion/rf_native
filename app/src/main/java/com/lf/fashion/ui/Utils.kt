@@ -44,7 +44,7 @@ fun Fragment.cancelBtnBackStack(view: ImageView) {
 fun Fragment.childChip(
     chipList: List<ChipInfo>, chipGroup: ChipGroup, style: String,
     uploadPostViewModel: UploadPostViewModel? = null,
-    filterViewModel: FilterViewModel?=null,
+    filterViewModel: FilterViewModel? = null,
     chipOnclick: ((Int, String, Boolean) -> Unit)? = null
 ) {
     for (j in chipList.indices) {
@@ -125,37 +125,40 @@ fun Fragment.showPermissionDialog(
     requestPermissionLauncher: ActivityResultLauncher<Array<String>>,
     permissions: Array<String>
 ) {
-    AppCustomDialog("이미지를 가져오기 위해서, 외부 저장소 읽기 권한이 필요합니다.","동의"){
+    AppCustomDialog("이미지를 가져오기 위해서, 외부 저장소 읽기 권한이 필요합니다.", "동의") {
         requestPermissionLauncher.launch(permissions)
-    }.show(parentFragmentManager,"image_permission_alert")
- /*   AlertDialog.Builder(requireContext()).apply {
-        setMessage("이미지를 가져오기 위해서, 외부 저장소 읽기 권한이 필요합니다.")
-        setNegativeButton("취소", null)
-        setPositiveButton("동의") { _, _ -> requestPermissionLauncher.launch(permissions) }
-    }.show()*/
+    }.show(parentFragmentManager, "image_permission_alert")
+    /*   AlertDialog.Builder(requireContext()).apply {
+           setMessage("이미지를 가져오기 위해서, 외부 저장소 읽기 권한이 필요합니다.")
+           setNegativeButton("취소", null)
+           setPositiveButton("동의") { _, _ -> requestPermissionLauncher.launch(permissions) }
+       }.show()*/
 }
 
-fun Fragment.showRequireLoginDialog(alreadyHome: Boolean? = null) {
+fun Fragment.showRequireLoginDialog(alreadyHome: Boolean? = null, presentFragId: Int) {
 
     AppCustomDialog(
         "로그인 후 이용가능합니다.",
         "로그인하러 가기",
         "닫기",
-        onClickNegative = { if (alreadyHome != true) {
-            findNavController().navigateUp()
-        }}
-    ){
+        onClickNegative = {
+            if (alreadyHome != true) {
+                findNavController().navigateUp()
+            }
+        }
+    ) {
         //그냥 navigate to 로 보낼 경우 바텀 메뉴 이동에 오류가 생길 때가 있어서 bottomNavigationView 를 통해 이동, checked 조정
-      navigateToMyPage()
-    }.show(parentFragmentManager,"login_alert_dialog")
+        navigateToMyPage(presentFragId)
+    }.show(parentFragmentManager, "login_alert_dialog")
 }
 
-fun Fragment.navigateToMyPage() {
+fun Fragment.navigateToMyPage(presentFragId: Int) {
     val bottomNavigationView =
         requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
     val loginMenuItem = bottomNavigationView.menu.findItem(R.id.navigation_mypage)
     loginMenuItem.isChecked = true
     bottomNavigationView.selectedItemId = R.id.navigation_mypage
+    findNavController().popBackStack(presentFragId, true)
     findNavController().navigate(R.id.action_global_to_myPageFragment)
 }
 
@@ -254,20 +257,26 @@ fun EditText.addTextLengthLimit(endText: String) {
     })
 }
 
-fun itemViewRatioSetting(context : Context,itemView : View,spanCount:Int?,reduceViewWidth :Boolean?=null) {
+fun itemViewRatioSetting(
+    context: Context,
+    itemView: View,
+    spanCount: Int?,
+    reduceViewWidth: Boolean? = null
+) {
     val aspectRatio = 4f / 3f // 3:4 비율
 
     // 현재 spanCount에 따라 너비와 높이를 조정
     val layoutParams = itemView.layoutParams as ViewGroup.MarginLayoutParams
     var screenWidth = context.resources.displayMetrics.widthPixels
-    if(reduceViewWidth==true){
+    if (reduceViewWidth == true) {
         screenWidth -= (0.1 * screenWidth).toInt()
     }
-    val itemWidth = screenWidth /  (spanCount ?: 2)
+    val itemWidth = screenWidth / (spanCount ?: 2)
 
     layoutParams.width = itemWidth
     layoutParams.height = (itemWidth * aspectRatio).toInt()
 }
+
 fun Fragment.absolutelyPath(path: Uri?, context: Context): String? {
     val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
     val c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)
@@ -323,7 +332,7 @@ fun getMimeType(file: File): String {
     return "image/${mime}"
 }
 
-fun getAssetsTextString(mContext: Context, fileName: String): String{
+fun getAssetsTextString(mContext: Context, fileName: String): String {
     val termsString = StringBuilder()
     val reader: BufferedReader
 

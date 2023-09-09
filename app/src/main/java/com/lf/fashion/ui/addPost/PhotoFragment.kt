@@ -75,7 +75,7 @@ class PhotoFragment : Fragment() {
             }
         }
         }else{
-            showRequireLoginDialog()
+            showRequireLoginDialog(presentFragId = R.id.navigation_photo)
         }
     }
     /*private fun showPermissionInfoDialog() {

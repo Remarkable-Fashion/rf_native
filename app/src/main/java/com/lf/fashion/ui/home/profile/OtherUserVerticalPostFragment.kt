@@ -199,7 +199,7 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
     override fun profileSpaceClicked(userId: Int) {
         val myUniqueId = userPref.getMyUniqueId()
         if (userId == myUniqueId) {
-            navigateToMyPage()
+            navigateToMyPage(R.id.otherUserVerticalPostFragment)
             return
         }
         findNavController().navigate(

@@ -16,6 +16,7 @@ import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.childChip
 import com.lf.fashion.ui.home.adapter.ClothesRvAdapter
 import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
+import com.lf.fashion.ui.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
 
@@ -71,6 +72,8 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
             if (userPref.loginCheck()) {
                 //팔로우 create / delete
                 viewModel.changeFollowingState(!followBtn.isSelected, userId)
+            }else{
+                showRequireLoginDialog(presentFragId = R.id.userInfoFragment)
             }
         }
     }
