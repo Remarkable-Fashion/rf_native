@@ -206,14 +206,14 @@ class SearchResultFragment(private val resultCategory: String) :
         }
     }
 
-    //todo test
     override fun gridPhotoClicked(postIndex: Int) {
         //grid 포토 클릭시!!
+        viewModel.setGridMode(1)
+        layoutVisibilityUpdate(false)
         binding.verticalViewpager.apply {
+            Log.e(TAG, "gridPhotoClicked: ok")
             setCurrentItem(postIndex,false)
         }
-        viewModel.setGridMode(1)
-        layoutVisibilityUpdate(true)
     }
 
 }

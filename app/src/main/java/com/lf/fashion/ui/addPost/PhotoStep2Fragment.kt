@@ -414,7 +414,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                         binding.filterSpace.heightValue.text.toString().replace(" cm", "").toInt()
                     val weight =
                         binding.filterSpace.weightValue.text.toString().replace(" kg", "").toInt()
-                    //todo test
+
                     val uploadPost = UploadPost(
                         imageUploadResponse.imgUrls!!,
                         binding.introduceValue.text.toString(),
