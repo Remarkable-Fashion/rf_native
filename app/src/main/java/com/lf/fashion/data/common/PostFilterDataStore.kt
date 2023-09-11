@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -16,8 +17,8 @@ private val Context.postFilterDataStore: DataStore<Preferences> by preferencesDa
 class PostFilterDataStore @Inject constructor(@ApplicationContext context: Context) {
     companion object {
         private val FILTER_GENDER = stringPreferencesKey("POST_FILTER_GENDER")
-        private val FILTER_HEIGHT = stringPreferencesKey("POST_FILTER_HEIGHT")
-        private val FILTER_WEIGHT = stringPreferencesKey("POST_FILTER_WEIGHT")
+        private val FILTER_HEIGHT = intPreferencesKey("POST_FILTER_HEIGHT")
+        private val FILTER_WEIGHT = intPreferencesKey("POST_FILTER_WEIGHT")
        // private val FILTER_BODY_TYPE = stringPreferencesKey("FILTER_BODY_TYPE")
 
         private val FILTER_TPO = stringPreferencesKey("POST_FILTER_TPO")
@@ -31,11 +32,11 @@ class PostFilterDataStore @Inject constructor(@ApplicationContext context: Conte
             preferences[FILTER_GENDER]
         }
 
-    val height: Flow<String?>
+    val height: Flow<Int?>
         get() = appContext.postFilterDataStore.data.map { preferences ->
             preferences[FILTER_HEIGHT]
         }
-    val weight: Flow<String?>
+    val weight: Flow<Int?>
         get() = appContext.postFilterDataStore.data.map { preferences ->
             preferences[FILTER_WEIGHT]
         }
@@ -60,8 +61,8 @@ class PostFilterDataStore @Inject constructor(@ApplicationContext context: Conte
     //main filter
     suspend fun saveMainFilterInstance(
         gender: String? = null,
-        height: String? = null,
-        weight: String? = null,
+        height: Int? = null,
+        weight: Int? = null,
       //  bodyType: String? = null,
         tpo: String? = null,
         season: String? = null,

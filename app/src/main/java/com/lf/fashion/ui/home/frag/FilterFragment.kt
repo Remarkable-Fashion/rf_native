@@ -3,6 +3,7 @@ package com.lf.fashion.ui.home.frag
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,6 +17,10 @@ import com.lf.fashion.ui.addUnitTextListener
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.childChip
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 /**
  * 홈 메인 상단의 필터 아이콘을 클릭시 노출되는 프래그먼트입니다.
@@ -47,6 +52,7 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
         super.onViewCreated(view, savedInstanceState)
         binding = HomeBPhotoFilterFragmentBinding.bind(view)
         filterDataStore = PostFilterDataStore(requireContext().applicationContext)
+        exposeSavedValue()
         //생성 후 다른 바텀 메뉴 이동시 다시 home menu 클릭시 selected 아이콘으로 변경 안되는 오류 해결하기위해 수동 메뉴 checked 코드 추가
         val bottomNavigationView =
             requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
@@ -61,9 +67,39 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
         cancelBtnBackStack(binding.cancelBtn)
 
         editTextListenerSetting()
+        clearPostFilter()
         savePostFilter()
     }
+    private fun exposeSavedValue(){
+        CoroutineScope(Dispatchers.Main).launch{
+            filterDataStore.height.first()?.let {
+                binding.filterSpace.heightValue.setText("$it cm")
+            }
+            filterDataStore.weight.first()?.let{
+                binding.filterSpace.weightValue.setText("$it kg")
+            }
 
+            filterDataStore.postGender.first()?.let{
+                if(it =="Male"){
+                    binding.filterSpace.genderManBtn.isSelected = true
+                }else if( it == "Female"){
+                    binding.filterSpace.genderWomanBtn.isSelected = true
+                }
+            }
+            filterDataStore.tpo.first()?.let{
+                val tpo = it.split(",").toMutableList()
+                viewModel.tposTexts = tpo
+            }
+            filterDataStore.season.first()?.let{
+                val season = it.split(",").toMutableList()
+                viewModel.seasonsTexts = season
+            }
+            filterDataStore.style.first()?.let{
+                val style = it.split(",").toMutableList()
+                viewModel.stylesTexts = style
+            }
+        }
+    }
     private fun editTextListenerSetting() {
         addUnitTextListener(binding.filterSpace.heightValue, height = true) {
             viewModel.savedHeight = it.toInt()
@@ -148,7 +184,7 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
         }
     }
 
-    private fun savePostFilter() {
+    private fun clearPostFilter() {
         binding.clearBtn.setOnClickListener {
             binding.filterSpace.apply {
                 genderManBtn.isSelected = false
@@ -172,22 +208,28 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
                 }
             }
             viewModel.clearAll()
-            //todo datastore clear
+            CoroutineScope(Dispatchers.IO).launch {
+                filterDataStore.clearMainFilter()
+            }
         }
     }
 
-    private fun clearPostFilter() {
+    private fun savePostFilter() {
         binding.submitBtn.setOnClickListener {
-
+            Log.e(TAG, "savePostFilter: 몸무게 ${viewModel.savedWeight},키 ${viewModel.savedHeight}" +
+                    ",성별 ${viewModel.selectedGender} ,tpo : ${viewModel.tposTexts.joinToString(",")}" )
+            CoroutineScope(Dispatchers.IO).launch {
+                filterDataStore.saveMainFilterInstance(
+                    viewModel.selectedGender,
+                    viewModel.savedHeight,
+                    viewModel.savedWeight,
+                    viewModel.tposTexts.joinToString(","),
+                    viewModel.seasonsTexts.joinToString(","),
+                    viewModel.stylesTexts.joinToString(",")
+                )
+            }
+            Log.e(TAG, "savePostFilter: ${filterDataStore.height}")
+            Toast.makeText(requireContext(),"필터가 저장되었습니다.",Toast.LENGTH_SHORT).show()
         }
-    }
-
-    fun removeEmojis(input: String): String {
-        // 이모지 패턴 정규식
-        val emojiPattern = Regex("[\\p{So}\\p{Sk}]")
-        val value1 = input.replace(emojiPattern, "")
-
-        // 이모지와 공백을 제거한 문자열 반환
-        return value1.replace("\\s".toRegex(), "")
     }
 }
