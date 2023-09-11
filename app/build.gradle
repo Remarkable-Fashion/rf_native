@@ -20,8 +20,8 @@ android {
     defaultConfig {
         applicationId "com.lf.fashion"
         minSdk 28
-        targetSdk 32
-        versionCode 14
+        targetSdk 33
+        versionCode 16
         versionName "2.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
