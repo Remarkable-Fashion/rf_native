@@ -56,6 +56,7 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment),View.OnCl
     }
 
     private fun chipSetting() {
+        // tposTexts 는 외부 화면에 갔다가 다시 돌아왔을 때 checked 유지를 위해서 ! (새로 동적 생성하는 구조이기 때문에 생성하면서 text가 같으면 checked 처리한다)
         viewModel.tpoChipList.observe(viewLifecycleOwner) {
             it?.let {
                 val tpoChipGroup = binding.filterSpace.filterInclude.tpoChipGroup
