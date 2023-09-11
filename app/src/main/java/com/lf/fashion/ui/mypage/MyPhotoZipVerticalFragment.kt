@@ -179,10 +179,10 @@ class MyPhotoZipVerticalFragment : Fragment(R.layout.mypage_photozip_vertical_fr
     }
 
     override fun infoBtnClicked(postId: Int) {
-      /*  findNavController().navigate(
+        findNavController().navigate(
             R.id.action_global_to_userInfoFragment,
             bundleOf("postId" to postId)
-        )*/
+        )
     }
 
     override fun profileSpaceClicked(userId: Int) {
