@@ -35,7 +35,6 @@
         android:id="@+id/scrap_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="3"
         tools:listitem="@layout/home_grid_item"
         app:layout_constraintTop_toBottomOf="@id/title_underline"

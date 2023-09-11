@@ -7,6 +7,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.UserDataStorePref
@@ -57,6 +58,8 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
                             recentResponse = response
 
                             with(binding.scrapRv) {
+                                layoutManager = StaggeredGridLayoutManager(3,
+                                    StaggeredGridLayoutManager.VERTICAL)
                                 adapter = gridPostAdapter.apply {
                                     while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
                                         removeItemDecorationAt(0)

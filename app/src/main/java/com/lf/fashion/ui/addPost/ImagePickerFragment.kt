@@ -27,12 +27,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.R
 import com.lf.fashion.TAG
+import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.model.ImageItem
 import com.lf.fashion.databinding.PhotoImagePickerFragmentBinding
 import com.lf.fashion.ui.AppCustomDialog
 import com.lf.fashion.ui.addPost.adapter.CheckedImageAdapter
 import com.lf.fashion.ui.addPost.adapter.ImageAdapter
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
+import com.lf.fashion.ui.showPermissionDialog
+import com.lf.fashion.ui.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -48,6 +51,8 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
     private val viewModel: ImagePickerViewModel by viewModels {
         ImagePickerViewModelFactory(requireContext())
     }
+    private lateinit var userPref : UserDataStorePref
+
     private val checkedImageAdapter =CheckedImageAdapter(this@ImagePickerFragment)
     companion object{
         const val REQUEST_KEY ="REGISTER_CLOTH_IMAGE"
@@ -93,6 +98,12 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        userPref = UserDataStorePref(requireContext())
+        if (!userPref.loginCheck()) {
+            showRequireLoginDialog(presentFragId = R.id.imagePickerFragment)
+            return
+        }
+
         val backStackFragment = arguments?.get("from")
         val imageLimit = arguments?.get("limit") as Int
 
