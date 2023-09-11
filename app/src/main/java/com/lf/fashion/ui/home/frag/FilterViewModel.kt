@@ -22,7 +22,8 @@ class FilterViewModel @Inject constructor(private val repository: FilterReposito
     var styleChipList: LiveData<List<ChipInfo>> = _styleChipList
 
     var selectedGender :String?=null
-
+    var savedHeight : Int?=null
+    var savedWeight : Int?=null
     val selectedTpos: MutableList<Int> = mutableListOf()
     val selectedSeasons : MutableList<Int> = mutableListOf()
     val selectedStyles : MutableList<Int> = mutableListOf()
@@ -49,5 +50,16 @@ class FilterViewModel @Inject constructor(private val repository: FilterReposito
         viewModelScope.launch {
             _styleChipList.value = repository.getStyleChips()
         }
+    }
+    fun clearAll(){
+        selectedTpos.clear()
+        selectedSeasons.clear()
+        selectedStyles.clear()
+        tposTexts.clear()
+        seasonsTexts.clear()
+        stylesTexts.clear()
+        selectedGender = null
+        savedHeight = null
+        savedWeight = null
     }
 }

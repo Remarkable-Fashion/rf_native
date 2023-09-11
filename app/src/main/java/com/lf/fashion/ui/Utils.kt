@@ -213,13 +213,16 @@ fun addTextChangeListener(
 }
 
 @SuppressLint("SetTextI18n")
-fun addUnitTextListener(editText: EditText, height: Boolean) {
+fun addUnitTextListener(editText: EditText, height: Boolean ,  valueListener: ((value: String) -> Unit)?=null) {
     val endText = if (height) "cm" else "kg"
     editText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
         if (!hasFocus) {
             val text = editText.text.toString()
             if (!text.endsWith(endText)) {
                 editText.setText("$text $endText")
+                valueListener?.let{//viewModel 에 height weight 값을 저장할 수 있도록 뱉어주기
+                    valueListener(text)
+                }
             }
             if (editText.text.toString() == " $endText") {
                 val replace = editText.text.toString().replace(" $endText", "")
