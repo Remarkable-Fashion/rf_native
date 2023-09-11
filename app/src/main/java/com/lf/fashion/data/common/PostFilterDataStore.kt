@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 private val Context.postFilterDataStore: DataStore<Preferences> by preferencesDataStore(name = "post_filter_data_store")
 
-class PostFilterDataStorePref @Inject constructor(@ApplicationContext context: Context) {
+class PostFilterDataStore @Inject constructor(@ApplicationContext context: Context) {
     companion object {
         private val FILTER_GENDER = stringPreferencesKey("POST_FILTER_GENDER")
         private val FILTER_HEIGHT = stringPreferencesKey("POST_FILTER_HEIGHT")
