@@ -44,7 +44,6 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
                     }
 
                 val authKey = runBlocking { requestAuthKey.await() }
-                Log.d(TAG, "RemoteDataSource - provideOkHttpClient: ${authKey}");
                 //if(authKey.isNotEmpty()) {
 
                 //testJWT 유효기간 365
@@ -57,7 +56,7 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
                 request = requestBuilder.build()
 
                 // }
-                Log.d(TAG, "RemoteDataSource - provideOkHttpClient: ${request.url}")
+                Log.e(TAG, "RemoteDataSource - provideOkHttpClient: ${request.url}")
             }
             //api url 에 따라 분류하여 response 인터셉트
             val response =
@@ -69,9 +68,7 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
                             val allHeaders: Headers = response.headers
                             val accessJWT: String? = allHeaders["x-auth-cookie"]
                             val refreshJWT: String? = allHeaders["x-auth-cookie-refresh"]
-
                             Log.d(TAG, "RemoteDataSource - provideOkHttpClient: $accessJWT")
-
                             if (accessJWT != null && refreshJWT != null) {
                                 runBlocking {
                                     launch(Dispatchers.IO) {

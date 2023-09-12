@@ -8,28 +8,40 @@ import retrofit2.http.*
 interface MainHomeApi {
     @GET("post")
     suspend fun getRandomPost(
+        @Query("take") take: Int,
         @Query("sex") sex: String,
-        @Query("take") take: Int
+        @Query("height") height: Int?=null,
+        @Query("weight") weight: Int?=null,
+        @Query("tpo") tpo: List<Int>?=null,
+        @Query("season") season: List<Int>?=null,
+        @Query("style") style: List<Int>?=null,
     ): RandomPostResponse
 
     @GET("post/public")
     suspend fun getRandomPostPublic(
+        @Query("take") take: Int,
         @Query("sex") sex: String,
-        @Query("take") take: Int
-    ): RandomPostResponse
+        @Query("height") height: Int?=null,
+        @Query("weight") weight: Int?=null,
+        @Query("tpo") tpo: List<Int>?=null,
+        @Query("season") season: List<Int>?=null,
+        @Query("style") style: List<Int>?=null,
+        ): RandomPostResponse
 
     @GET("post/{id}")
-    suspend fun getPostInfoById(@Path("id") postId : Int) : PostInfo
-/*
-    @GET("clothes/{id}/recommend/top") //@Query("category") category: String
-    suspend fun getRecommendTopClothes(@Path("id") postId: Int,@Query("category") category: String) : RecommendCloth*/
+    suspend fun getPostInfoById(@Path("id") postId: Int): PostInfo
+    /*
+        @GET("clothes/{id}/recommend/top") //@Query("category") category: String
+        suspend fun getRecommendTopClothes(@Path("id") postId: Int,@Query("category") category: String) : RecommendCloth*/
 
     @GET("clothes/{id}/recommend") //@Query("category") category: String
-    suspend fun getRecommendClothesInfo(@Path("id") postId: Int,
-                                        @Query("category") category: String,
-                                        @Query("order") orderMode : String) : RecommendCloth
+    suspend fun getRecommendClothesInfo(
+        @Path("id") postId: Int,
+        @Query("category") category: String,
+        @Query("order") orderMode: String
+    ): RecommendCloth
 
     @GET("post/user/{id}?take=20")
-    suspend fun getPostByUserId(@Path("id") userId : Int) : RandomPostResponse
+    suspend fun getPostByUserId(@Path("id") userId: Int): RandomPostResponse
 }
 

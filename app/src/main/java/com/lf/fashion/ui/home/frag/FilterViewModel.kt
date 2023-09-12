@@ -24,9 +24,9 @@ class FilterViewModel @Inject constructor(private val repository: FilterReposito
     var selectedGender :String?=null
     var savedHeight : Int?=null
     var savedWeight : Int?=null
-    val selectedTpos: MutableList<Int> = mutableListOf()
-    val selectedSeasons : MutableList<Int> = mutableListOf()
-    val selectedStyles : MutableList<Int> = mutableListOf()
+    val selectedTposId: MutableList<Int> = mutableListOf()
+    val selectedSeasonsId : MutableList<Int> = mutableListOf()
+    val selectedStylesId : MutableList<Int> = mutableListOf()
     var tposTexts: MutableList<String> = mutableListOf()
     var seasonsTexts : MutableList<String> = mutableListOf()
     var stylesTexts : MutableList<String> = mutableListOf()
@@ -57,9 +57,9 @@ class FilterViewModel @Inject constructor(private val repository: FilterReposito
         }
     }
     fun clearAll(){
-        selectedTpos.clear()
-        selectedSeasons.clear()
-        selectedStyles.clear()
+        selectedTposId.clear()
+        selectedSeasonsId.clear()
+        selectedStylesId.clear()
         tposTexts.clear()
         seasonsTexts.clear()
         stylesTexts.clear()

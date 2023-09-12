@@ -82,10 +82,10 @@ class LookFilterFragment : Fragment(R.layout.search_filter_fragment),View.OnClic
                 val tpoChipGroup = binding.filterSpace.filterInclude.tpoChipGroup
                 childChip(it, tpoChipGroup, chipStyle, filterViewModel = viewModel){chipId,text,isChecked->
                     if(isChecked){
-                        viewModel.selectedTpos.add(chipId)
+                        viewModel.selectedTposId.add(chipId)
                         viewModel.tposTexts.add(text)
                     }else{
-                      viewModel.selectedTpos.remove(chipId)
+                      viewModel.selectedTposId.remove(chipId)
                       viewModel.tposTexts.remove(text)
                     }
                     Log.e(TAG, "chipSetting: ${viewModel.tposTexts}")
@@ -97,10 +97,10 @@ class LookFilterFragment : Fragment(R.layout.search_filter_fragment),View.OnClic
                 val seasonChipGroup = binding.filterSpace.filterInclude.seasonChipGroup
                 childChip(it, seasonChipGroup, chipStyle, filterViewModel = viewModel){chipId,text,isChecked->
                     if(isChecked){
-                        viewModel.selectedSeasons.add(chipId)
+                        viewModel.selectedSeasonsId.add(chipId)
                         viewModel.seasonsTexts.add(text)
                     }else{
-                        viewModel.selectedSeasons.remove(chipId)
+                        viewModel.selectedSeasonsId.remove(chipId)
                         viewModel.seasonsTexts.remove(text)
                     }
                 }
@@ -111,10 +111,10 @@ class LookFilterFragment : Fragment(R.layout.search_filter_fragment),View.OnClic
                 val styleChipGroup = binding.filterSpace.filterInclude.styleChipGroup
                 childChip(it, styleChipGroup, chipStyle, filterViewModel = viewModel){chipId,text,isChecked->
                     if(isChecked){
-                        viewModel.selectedStyles.add(chipId)
+                        viewModel.selectedStylesId.add(chipId)
                         viewModel.stylesTexts.add(text)
                     }else{
-                        viewModel.selectedStyles.remove(chipId)
+                        viewModel.selectedStylesId.remove(chipId)
                         viewModel.stylesTexts.remove(text)
                     }
                 }

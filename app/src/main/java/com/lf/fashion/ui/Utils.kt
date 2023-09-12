@@ -17,7 +17,9 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
@@ -26,6 +28,7 @@ import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ChipInfo
+import com.lf.fashion.ui.addPost.ImagePickerFragment
 import com.lf.fashion.ui.addPost.UploadPostViewModel
 import com.lf.fashion.ui.home.frag.FilterViewModel
 import java.io.BufferedReader
@@ -34,8 +37,12 @@ import java.io.IOException
 import java.io.InputStreamReader
 import kotlin.math.roundToInt
 
-fun Fragment.cancelBtnBackStack(view: ImageView) {
+const val NEED_TO_REFRESH ="need_to_refresh"
+fun Fragment.cancelBtnBackStack(view: ImageView,needRefresh : Boolean?=null) {
     view.setOnClickListener {
+        if(needRefresh==true){
+            setFragmentResult(NEED_TO_REFRESH, bundleOf("refresh" to true))
+        }
         findNavController().popBackStack()
     }
 }
@@ -79,6 +86,7 @@ fun Fragment.childChip(
         //다른 Fragment 갔다가 돌아왔을 때 chip 을 새로 생성하는데,
         // 이때 text 값이 같으면 다시 checked를 주기 위한 작업
         //val viewModel = uploadPostViewModel ?: filterViewModel
+        // id 값을 구별자로 주변 tpos seasons styles 의 아이디가 서로 겹치기때문에 불가.
         uploadPostViewModel?.let { it ->
             if (it.tposTexts.isNotEmpty()) {
                 val text = chipList[j].text

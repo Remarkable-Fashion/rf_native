@@ -12,6 +12,7 @@ import com.google.android.material.chip.Chip
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.PostFilterDataStore
+import com.lf.fashion.data.model.FilterItem
 import com.lf.fashion.databinding.HomeBPhotoFilterFragmentBinding
 import com.lf.fashion.ui.addUnitTextListener
 import com.lf.fashion.ui.cancelBtnBackStack
@@ -64,7 +65,7 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
 
         chipSetting()
 
-        cancelBtnBackStack(binding.cancelBtn)
+        cancelBtnBackStack(binding.cancelBtn,needRefresh = true)
 
         editTextListenerSetting()
         clearPostFilter()
@@ -122,10 +123,10 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
                     filterViewModel = viewModel
                 ) { chipId, text, isChecked ->
                     if (isChecked) {
-                        viewModel.selectedTpos.add(chipId)
+                        viewModel.selectedTposId.add(chipId)
                         viewModel.tposTexts.add(text)
                     } else {
-                        viewModel.selectedTpos.remove(chipId)
+                        viewModel.selectedTposId.remove(chipId)
                         viewModel.tposTexts.remove(text)
                     }
                     Log.e(TAG, "chipSetting: ${viewModel.tposTexts}")
@@ -142,10 +143,10 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
                     filterViewModel = viewModel
                 ) { chipId, text, isChecked ->
                     if (isChecked) {
-                        viewModel.selectedSeasons.add(chipId)
+                        viewModel.selectedSeasonsId.add(chipId)
                         viewModel.seasonsTexts.add(text)
                     } else {
-                        viewModel.selectedSeasons.remove(chipId)
+                        viewModel.selectedSeasonsId.remove(chipId)
                         viewModel.seasonsTexts.remove(text)
                     }
                 }
@@ -161,10 +162,10 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
                     filterViewModel = viewModel
                 ) { chipId, text, isChecked ->
                     if (isChecked) {
-                        viewModel.selectedStyles.add(chipId)
+                        viewModel.selectedStylesId.add(chipId)
                         viewModel.stylesTexts.add(text)
                     } else {
-                        viewModel.selectedStyles.remove(chipId)
+                        viewModel.selectedStylesId.remove(chipId)
                         viewModel.stylesTexts.remove(text)
                     }
                 }
@@ -219,15 +220,18 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
         binding.submitBtn.setOnClickListener {
             binding.filterSpace.heightValue.clearFocus()
             binding.filterSpace.weightValue.clearFocus()
-
+            val tpoFilterItem = FilterItem(viewModel.tposTexts.joinToString(","),viewModel.selectedTposId.joinToString (","))
+            val seasonFilterItem = FilterItem(viewModel.seasonsTexts.joinToString(","),viewModel.selectedSeasonsId.joinToString (","))
+            val styleFilterItem = FilterItem(viewModel.stylesTexts.joinToString(","),viewModel.selectedStylesId.joinToString (","))
+            Log.e(TAG, "savePostFilter: $tpoFilterItem")
             CoroutineScope(Dispatchers.IO).launch {
                 filterDataStore.saveMainFilterInstance(
                     viewModel.selectedGender,
                     viewModel.savedHeight,
                     viewModel.savedWeight,
-                    viewModel.tposTexts.joinToString(","),
-                    viewModel.seasonsTexts.joinToString(","),
-                    viewModel.stylesTexts.joinToString(",")
+                    tpoFilterItem,
+                    seasonFilterItem,
+                    styleFilterItem
                 )
             }
             Toast.makeText(requireContext(), "필터가 저장되었습니다.", Toast.LENGTH_SHORT).show()

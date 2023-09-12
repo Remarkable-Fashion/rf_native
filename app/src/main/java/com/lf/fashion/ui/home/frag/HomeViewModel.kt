@@ -40,20 +40,25 @@ class HomeViewModel @Inject constructor(
 
     init {
         postMode.value = "random"
-        getPostList("Male", 21)
-
+     //   getPostList(21,"Male")
     }
 
-    fun getPostList(sex: String, take: Int) {
+    fun getPostList(take: Int,
+                    sex: String,
+                    height :Int?=null,
+                    weight :Int?=null,
+                    tpo : List<Int>?=null,
+                    season : List<Int>?=null,
+                    style :List<Int>?=null
+    ) {
         Log.d(TAG, "suspend getPostList 호출 ")
         viewModelScope.launch {
             val savedToken = userPreferences.accessToken.first()
-            Log.d(TAG, "HomeViewModel - getPostList: $savedToken");
             if (savedToken.isNullOrEmpty()) {
-                _response.value = homeRepository.getRandomPostPublic(sex, take)
+                _response.value = homeRepository.getRandomPostPublic(take, sex, height, weight, tpo, season, style)
                 Log.d(TAG, "HomeViewModel - getPostList: public ! ${_response.value}")
             } else {
-                _response.value = homeRepository.getRandomPost(sex, take)
+                _response.value = homeRepository.getRandomPost(take,sex, height, weight, tpo, season, style)
                 Log.d(TAG, "HomeViewModel - getPostList: private ! ${_response.value}")
             }
         }

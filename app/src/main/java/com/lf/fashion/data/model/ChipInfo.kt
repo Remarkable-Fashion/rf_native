@@ -5,3 +5,7 @@ data class ChipInfo(
     val text: String,
     val emoji: String?
 )
+data class FilterItem(
+    val text : String,
+    val id : String
+)

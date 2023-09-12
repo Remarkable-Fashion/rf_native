@@ -9,12 +9,25 @@ class HomeRepository @Inject constructor(
 ) : SafeApiCall {
 
 
-    suspend fun getRandomPost(sex: String, take: Int) = safeApiCall {
-        postApi.getRandomPost(sex, take)
+    suspend fun getRandomPost(take: Int,
+                              sex: String,
+                              height :Int?,
+                              weight :Int?,
+                              tpo : List<Int>?,
+                              season : List<Int>?,
+                              style :List<Int>?) = safeApiCall {
+        postApi.getRandomPost(take,sex,height,weight,tpo,season, style)
     }
 
-    suspend fun getRandomPostPublic(sex: String, take: Int) = safeApiCall {
-        postApi.getRandomPostPublic(sex, take)
+    suspend fun getRandomPostPublic(take: Int,
+                                    sex: String,
+                                    height :Int?,
+                                    weight :Int?,
+                                    tpo : List<Int>?,
+                                    season : List<Int>?,
+                                    style :List<Int>?
+    ) = safeApiCall {
+        postApi.getRandomPostPublic(take,sex,height,weight,tpo,season, style)
     }
 
     suspend fun getPostInfoByPostId(postId: Int) = safeApiCall {

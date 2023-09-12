@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
 import com.lf.fashion.TAG
+import com.lf.fashion.data.common.PostFilterDataStore
 import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.*
@@ -53,13 +54,14 @@ class HomeFragment :
     private lateinit var userPref: UserDataStorePref
     private lateinit var likeClickedPosts: Posts
     private lateinit var scrapClickedPosts: Posts
-
+    private lateinit var filterDataStore: PostFilterDataStore
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = HomeAFragmentBinding.bind(view)
 
         //앱 최초 실행시 gender 선택 다이얼로그 띄우기
         userPref = UserDataStorePref(requireContext().applicationContext)
+        filterDataStore = PostFilterDataStore(requireContext().applicationContext)
 
         runBlocking {
             launch {
@@ -72,18 +74,16 @@ class HomeFragment :
             }
         }
 
-        // 상단 메뉴 - 랜덤 모드 선택이 디폴트
-        binding.appBarRandom.isSelected = true
+        requestPost()
 
-        //기본 레이아웃 ui adapter 연결
-        setMainViewPagerUI()
 
-        //onclick listener 묶어서 한번에 달기
-        binding.topMenu.children.forEach { it.setOnClickListener(this) }
+        binding.appBarRandom.isSelected = true                              // 상단 메뉴 - 랜덤 모드 선택이 디폴트
+        setMainViewPagerUI()                                                //기본 레이아웃 ui adapter 연결
+        binding.topMenu.children.forEach { it.setOnClickListener(this) }    //onclick listener 묶어서 한번에 달기
+
 
         //좋아요 상태 변화 관찰&업데이트
         updateLikeState()
-
         //스크랩 상태 변화 관찰&업데이트
         updateScrapState()
 
@@ -92,8 +92,28 @@ class HomeFragment :
 
         //당겨서 새로고침
         binding.layoutSwipeRefreah.setOnRefreshListener {
-            viewModel.getPostList("Male", 21)
+            requestPost()
             return@setOnRefreshListener
+        }
+       /* setFragmentResultListener(requestKey = NEED_TO_REFRESH) { _, bundle ->
+            if (bundle.getBoolean("refresh")) {
+                requestPost()
+            }
+        }*/
+    }
+    private fun requestPost(){
+        CoroutineScope(Dispatchers.IO).launch{
+            with(filterDataStore){
+                val tpo = tpoId.first()?.split(",")?.map { it.toInt() }
+                val season = seasonId.first()?.split(",")?.map { it.toInt() }
+                val style = styleId.first()?.split(",")?.map { it.toInt() }
+                val gender = postGender.first()?:"Male"
+                val height = height.first()
+                val weight = weight.first()
+                withContext(Dispatchers.Main) {
+                    viewModel.getPostList(21, gender, height, weight, tpo, season, style)
+                }
+            }
         }
     }
 
@@ -109,13 +129,13 @@ class HomeFragment :
                 }
 
                 "random" -> {
-                    requestRandomPost()
+                    observePostResponse()
                 }
             }
         }
     }
 
-    private fun requestRandomPost() {
+    private fun observePostResponse() {
         viewModel.response.observe(viewLifecycleOwner) { resource ->
             binding.layoutSwipeRefreah.isRefreshing = false
             when (resource) {
@@ -123,7 +143,7 @@ class HomeFragment :
                     val response = resource.value
 
                     val currentGridCount = binding.gridText.text.toString().toInt()
-                    val spanCount = if(currentGridCount ==1 || currentGridCount ==2) 2 else 3
+                    val spanCount = if (currentGridCount == 1 || currentGridCount == 2) 2 else 3
 
                     photoLayoutVisibilityMode(default = currentGridCount == 1)
 
@@ -142,7 +162,10 @@ class HomeFragment :
                         //3개로 보고있다가 refresh하는 경우를 감안해서 view에서 grid count를 받아오기
                         //staggeredGrid layoutManager 연결
                         layoutManager =
-                            StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL)
+                            StaggeredGridLayoutManager(
+                                spanCount,
+                                StaggeredGridLayoutManager.VERTICAL
+                            )
                         adapter = gridAdapter.apply {
                             addItemDecoration(GridSpaceItemDecoration(spanCount, 6))
                             submitList(response.posts)
@@ -295,7 +318,7 @@ class HomeFragment :
             }
             post.isFavorite = !post.isFavorite!!  // 좋아요 상태 반전
             likeClickedPosts = post
-        }else{
+        } else {
             showRequireLoginDialog(presentFragId = R.id.navigation_home)
         }
     }
@@ -306,7 +329,7 @@ class HomeFragment :
             viewModel.changeScrapState(create = !scrapState, post.id)
             post.isScrap = !post.isScrap!!
             scrapClickedPosts = post
-        }else{
+        } else {
             showRequireLoginDialog(presentFragId = R.id.navigation_home)
         }
 
