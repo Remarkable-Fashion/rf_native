@@ -95,11 +95,6 @@ class HomeFragment :
             requestPost()
             return@setOnRefreshListener
         }
-       /* setFragmentResultListener(requestKey = NEED_TO_REFRESH) { _, bundle ->
-            if (bundle.getBoolean("refresh")) {
-                requestPost()
-            }
-        }*/
     }
     private fun requestPost(){
         CoroutineScope(Dispatchers.IO).launch{
