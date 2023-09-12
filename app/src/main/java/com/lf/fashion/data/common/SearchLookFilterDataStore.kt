@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -16,8 +17,8 @@ private val Context.searchLookFilterDataStore: DataStore<Preferences> by prefere
 class SearchLookFilterDataStore @Inject constructor(@ApplicationContext context: Context)  {
     companion object {
         private val LOOK_FILTER_GENDER = stringPreferencesKey("LOOK_FILTER_GENDER")
-        private val LOOK_FILTER_HEIGHT = stringPreferencesKey("LOOK_FILTER_HEIGHT")
-        private val LOOK_FILTER_WEIGHT = stringPreferencesKey("LOOK_FILTER_WEIGHT")
+        private val LOOK_FILTER_HEIGHT = intPreferencesKey("LOOK_FILTER_HEIGHT")
+        private val LOOK_FILTER_WEIGHT = intPreferencesKey("LOOK_FILTER_WEIGHT")
         // private val FILTER_BODY_TYPE = stringPreferencesKey("FILTER_BODY_TYPE")
 
         private val LOOK_FILTER_TPO = stringPreferencesKey("LOOK_FILTER_TPO")
@@ -33,11 +34,11 @@ class SearchLookFilterDataStore @Inject constructor(@ApplicationContext context:
         get() = appContext.searchLookFilterDataStore.data.map { preferences ->
             preferences[LOOK_FILTER_GENDER]
         }
-    val height: Flow<String?>
+    val height: Flow<Int?>
         get() = appContext.searchLookFilterDataStore.data.map { preferences ->
             preferences[LOOK_FILTER_HEIGHT]
         }
-    val weight: Flow<String?>
+    val weight: Flow<Int?>
         get() = appContext.searchLookFilterDataStore.data.map { preferences ->
             preferences[LOOK_FILTER_WEIGHT]
         }
@@ -62,8 +63,8 @@ class SearchLookFilterDataStore @Inject constructor(@ApplicationContext context:
     //        bodyType: String? = null,
     suspend fun saveLookFilterInstance(
         gender: String? = null,
-        height: String? = null,
-        weight: String? = null,
+        height: Int? = null,
+        weight: Int? = null,
         tpo: String? = null,
         season: String? = null,
         style: String? = null

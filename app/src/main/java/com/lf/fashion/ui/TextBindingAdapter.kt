@@ -15,7 +15,6 @@ import java.text.DecimalFormat
 fun applyMonthsSales(view: TextView, price: Int) {
     val decimalFormat = DecimalFormat("#,###")
     val formatted = view.context.getString(R.string.price_format, decimalFormat.format(price))
-    Log.e(TAG, "applyMonthsSales: $formatted", )
     view.text = formatted
 }
 

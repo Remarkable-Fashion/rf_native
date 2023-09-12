@@ -52,7 +52,7 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
         super.onViewCreated(view, savedInstanceState)
         binding = HomeBPhotoFilterFragmentBinding.bind(view)
         filterDataStore = PostFilterDataStore(requireContext().applicationContext)
-        exposeSavedValue()
+        exposeSavedValue()// datastore 에 저장된 필터값 ui에 노출
         //생성 후 다른 바텀 메뉴 이동시 다시 home menu 클릭시 selected 아이콘으로 변경 안되는 오류 해결하기위해 수동 메뉴 checked 코드 추가
         val bottomNavigationView =
             requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
@@ -72,31 +72,32 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
     }
     private fun exposeSavedValue(){
         CoroutineScope(Dispatchers.Main).launch{
-            filterDataStore.height.first()?.let {
-                binding.filterSpace.heightValue.setText("$it cm")
-            }
-            filterDataStore.weight.first()?.let{
-                binding.filterSpace.weightValue.setText("$it kg")
-            }
-
-            filterDataStore.postGender.first()?.let{
-                if(it =="Male"){
-                    binding.filterSpace.genderManBtn.isSelected = true
-                }else if( it == "Female"){
-                    binding.filterSpace.genderWomanBtn.isSelected = true
+            with(filterDataStore){
+                height.first()?.let {
+                    binding.filterSpace.heightValue.setText("$it cm")
                 }
-            }
-            filterDataStore.tpo.first()?.let{
-                val tpo = it.split(",").toMutableList()
-                viewModel.tposTexts = tpo
-            }
-            filterDataStore.season.first()?.let{
-                val season = it.split(",").toMutableList()
-                viewModel.seasonsTexts = season
-            }
-            filterDataStore.style.first()?.let{
-                val style = it.split(",").toMutableList()
-                viewModel.stylesTexts = style
+                weight.first()?.let{
+                    binding.filterSpace.weightValue.setText("$it kg")
+                }
+                postGender.first()?.let{
+                    if(it =="Male"){
+                        binding.filterSpace.genderManBtn.isSelected = true
+                    }else if( it == "Female"){
+                        binding.filterSpace.genderWomanBtn.isSelected = true
+                    }
+                }
+                tpo.first()?.let{
+                    val tpo = it.split(",").toMutableList()
+                    viewModel.tposTexts = tpo
+                }
+                season.first()?.let{
+                    val season = it.split(",").toMutableList()
+                    viewModel.seasonsTexts = season
+                }
+                style.first()?.let{
+                    val style = it.split(",").toMutableList()
+                    viewModel.stylesTexts = style
+                }
             }
         }
     }
@@ -216,8 +217,9 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
 
     private fun savePostFilter() {
         binding.submitBtn.setOnClickListener {
-            Log.e(TAG, "savePostFilter: 몸무게 ${viewModel.savedWeight},키 ${viewModel.savedHeight}" +
-                    ",성별 ${viewModel.selectedGender} ,tpo : ${viewModel.tposTexts.joinToString(",")}" )
+            binding.filterSpace.heightValue.clearFocus()
+            binding.filterSpace.weightValue.clearFocus()
+
             CoroutineScope(Dispatchers.IO).launch {
                 filterDataStore.saveMainFilterInstance(
                     viewModel.selectedGender,
@@ -228,8 +230,7 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
                     viewModel.stylesTexts.joinToString(",")
                 )
             }
-            Log.e(TAG, "savePostFilter: ${filterDataStore.height}")
-            Toast.makeText(requireContext(),"필터가 저장되었습니다.",Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "필터가 저장되었습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -3,27 +3,35 @@ package com.lf.fashion.ui.search
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.chip.Chip
 import com.lf.fashion.R
 import com.lf.fashion.TAG
+import com.lf.fashion.data.common.SearchLookFilterDataStore
 import com.lf.fashion.databinding.SearchFilterFragmentBinding
 import com.lf.fashion.ui.addUnitTextListener
 import com.lf.fashion.ui.cancelBtnBackStack
 import com.lf.fashion.ui.childChip
 import com.lf.fashion.ui.home.frag.FilterViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 /**
  * 홈 메인 상단의 필터 아이콘을 클릭시 노출되는 프래그먼트입니다.
  */
 @AndroidEntryPoint
-class SearchFilterFragment : Fragment(R.layout.search_filter_fragment),View.OnClickListener {
+class LookFilterFragment : Fragment(R.layout.search_filter_fragment),View.OnClickListener {
     private lateinit var binding: SearchFilterFragmentBinding
     private val viewModel: FilterViewModel by viewModels()
     private val chipStyle = "default"
-
+    private lateinit var lookFilterDataStore: SearchLookFilterDataStore
     override fun onResume() {
         viewModel.selectedGender?.let {
             if (it == "Male") { binding.filterSpace.genderManBtn.isSelected = true }
@@ -35,6 +43,7 @@ class SearchFilterFragment : Fragment(R.layout.search_filter_fragment),View.OnCl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = SearchFilterFragmentBinding.bind(view)
+        lookFilterDataStore = SearchLookFilterDataStore(requireContext().applicationContext)
         //생성 후 다른 바텀 메뉴 이동시 다시 home menu 클릭시 selected 아이콘으로 변경 안되는 오류 해결하기위해 수동 메뉴 checked 코드 추가
         val bottomNavigationView =
             requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
@@ -52,13 +61,19 @@ class SearchFilterFragment : Fragment(R.layout.search_filter_fragment),View.OnCl
         chipSetting()
 
         cancelBtnBackStack(binding.cancelBtn)
-
+        exposeSavedValue() // datastore 에 저장된 필터값 ui에 노출
         editTextListenerSetting()
+        clearLookFilter()
+        saveLookFilter()
     }
 
     private fun editTextListenerSetting() {
-        addUnitTextListener(binding.filterSpace.heightValue, height = true)
-        addUnitTextListener(binding.filterSpace.weightValue, height = false)
+        addUnitTextListener(binding.filterSpace.heightValue, height = true){
+            viewModel.savedHeight = it.toInt()
+        }
+        addUnitTextListener(binding.filterSpace.weightValue, height = false){
+            viewModel.savedWeight = it.toInt()
+        }
     }
 
     private fun chipSetting() {
@@ -116,6 +131,85 @@ class SearchFilterFragment : Fragment(R.layout.search_filter_fragment),View.OnCl
             button.isSelected = button == v
             if (button.isSelected) {
                 viewModel.selectedGender = if (button.text.toString() == "MAN") "Male" else "Female"
+            }
+        }
+    }
+    private fun clearLookFilter(){
+        binding.clearBtn.setOnClickListener {
+            binding.filterSpace.apply {
+                genderManBtn.isSelected = false
+                genderWomanBtn.isSelected = false
+                heightValue.setText("")
+                weightValue.setText("")
+                filterInclude.tpoChipGroup.children.forEach {
+                    if (it is Chip) {
+                        it.isChecked = false
+                    }
+                }
+                filterInclude.seasonChipGroup.children.forEach {
+                    if (it is Chip) {
+                        it.isChecked = false
+                    }
+                }
+                filterInclude.styleChipGroup.children.forEach {
+                    if (it is Chip) {
+                        it.isChecked = false
+                    }
+                }
+            }
+            viewModel.clearAll()
+            CoroutineScope(Dispatchers.IO).launch {
+                lookFilterDataStore.clearLookFilter()
+            }
+        }
+    }
+    private fun saveLookFilter(){
+        binding.submitBtn.setOnClickListener {
+            binding.filterSpace.heightValue.clearFocus()
+            binding.filterSpace.weightValue.clearFocus()
+
+            CoroutineScope(Dispatchers.IO).launch {
+                lookFilterDataStore.saveLookFilterInstance(
+                    viewModel.selectedGender,
+                    viewModel.savedHeight,
+                    viewModel.savedWeight,
+                    viewModel.tposTexts.joinToString(","),
+                    viewModel.seasonsTexts.joinToString(","),
+                    viewModel.stylesTexts.joinToString(",")
+                )
+            }
+            Toast.makeText(requireContext(), "필터가 저장되었습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+    private fun exposeSavedValue(){
+        CoroutineScope(Dispatchers.Main).launch{
+            with(lookFilterDataStore){
+                height.first()?.let {
+                    Log.e(TAG, "exposeSavedValue: $it")
+                    binding.filterSpace.heightValue.setText("$it cm")
+                }
+                weight.first()?.let{
+                    binding.filterSpace.weightValue.setText("$it kg")
+                }
+                lookGender.first()?.let{
+                    if(it =="Male"){
+                        binding.filterSpace.genderManBtn.isSelected = true
+                    }else if( it == "Female"){
+                        binding.filterSpace.genderWomanBtn.isSelected = true
+                    }
+                }
+                tpo.first()?.let{
+                    val tpo = it.split(",").toMutableList()
+                    viewModel.tposTexts = tpo
+                }
+                season.first()?.let{
+                    val season = it.split(",").toMutableList()
+                    viewModel.seasonsTexts = season
+                }
+                style.first()?.let{
+                    val style = it.split(",").toMutableList()
+                    viewModel.stylesTexts = style
+                }
             }
         }
     }

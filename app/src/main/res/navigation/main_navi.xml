@@ -229,7 +229,7 @@
         android:label="OtherUserVerticalPostFragment" />
     <fragment
         android:id="@+id/searchFilterFragment"
-        android:name="com.lf.fashion.ui.search.SearchFilterFragment"
+        android:name="com.lf.fashion.ui.search.LookFilterFragment"
         android:label="SearchFilterFragment" />
     <fragment
         android:id="@+id/myPhotoZipFragment"

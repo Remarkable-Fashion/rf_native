@@ -31,6 +31,11 @@ class FilterViewModel @Inject constructor(private val repository: FilterReposito
     var seasonsTexts : MutableList<String> = mutableListOf()
     var stylesTexts : MutableList<String> = mutableListOf()
 
+    //search itemFilter 에서 사용하는 변수
+    var minPrice : Int? = null
+    var maxPrice : Int? = null
+    var selectedColor :MutableList<String> = mutableListOf()
+
     init {
         getTPOChipsInfo()
         getSeasonChipsInfo()
@@ -61,5 +66,8 @@ class FilterViewModel @Inject constructor(private val repository: FilterReposito
         selectedGender = null
         savedHeight = null
         savedWeight = null
+        maxPrice =null
+        minPrice =null
+        selectedColor.clear()
     }
 }
