@@ -40,7 +40,11 @@ class HomeRepository @Inject constructor(
     }*/
 
     suspend fun getRecommendClothesInfo(postId: Int, category: String , orderMode : String) = safeApiCall {
-        postApi.getRecommendClothesInfo(postId,category,orderMode)
+        if(orderMode == "Best"){
+            postApi.getRecommendTopClothes(postId,category)
+        }else {
+            postApi.getRecommendClothesInfo(postId, category)
+        }
     }
     suspend fun getPostByUserId(userId : Int) = safeApiCall {
         postApi.getPostByUserId(userId)

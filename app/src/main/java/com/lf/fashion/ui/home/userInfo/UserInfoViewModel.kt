@@ -1,11 +1,9 @@
 package com.lf.fashion.ui.home.userInfo
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.lf.fashion.TAG
 import com.lf.fashion.data.common.Event
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.CommunicateRepository
@@ -49,17 +47,12 @@ class UserInfoViewModel @Inject constructor(
         }
     }
 
-    fun getLookBook(postId: Int, category: String, orderMode: String) {
+    fun getTop3LookBook(postId: Int, category: String, orderMode: String) {
         viewModelScope.launch {
             _lookBook.value = repository.getRecommendClothesInfo(postId, category ,orderMode)
         }
     }
 
-    /*   fun getTopLook(postId: Int, category: String) {
-           viewModelScope.launch {
-               _topLook.value = repository.getRecommendClothesTop3(postId, category)
-           }
-       }*/
 
     fun changeFollowingState(create: Boolean, userId: Int) {
         viewModelScope.launch {

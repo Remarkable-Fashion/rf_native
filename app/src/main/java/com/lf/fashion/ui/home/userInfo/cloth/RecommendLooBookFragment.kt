@@ -89,7 +89,7 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
             isCategoryInit = true
         }
 
-        //베스트순 / 최신순 변할 때마다 새로 요청
+        //베스트 / 최신순 변할 때마다 새로 요청
         viewModel.orderByMode.observe(viewLifecycleOwner) { orderBy ->
             if (isOrderByInit) {
                 Log.e(TAG, "onViewCreated: order observe")
@@ -104,7 +104,7 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
     }
 
     private fun requestLookBook() {
-        viewModel.getLookBook(
+        viewModel.getTop3LookBook(
             postId,
             viewModel.selectedCategory.value ?: "All",
             viewModel.orderByMode.value ?: "Best"
