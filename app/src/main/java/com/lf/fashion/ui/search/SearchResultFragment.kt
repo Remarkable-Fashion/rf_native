@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.R
 import com.lf.fashion.TAG
+import com.lf.fashion.data.common.SearchItemFilterDataStore
+import com.lf.fashion.data.common.SearchLookFilterDataStore
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.SearchResultViewpagerBinding
 import com.lf.fashion.ui.GridPhotoClickListener
@@ -21,6 +23,11 @@ import com.lf.fashion.ui.search.adapter.ItemVerticalAdapter
 import com.lf.fashion.ui.search.adapter.LookPostGridAdapter
 import com.lf.fashion.ui.search.adapter.LookVerticalAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class SearchResultFragment(private val resultCategory: String) :
@@ -32,23 +39,28 @@ class SearchResultFragment(private val resultCategory: String) :
     private val viewModel: SearchViewModel by hiltNavGraphViewModels(R.id.navigation_search)
     private val itemGridAdapter = ItemGridAdapter(3, this)
     private val lookPostGridAdapter = LookPostGridAdapter(3, this)
-
+    private lateinit var lookFilterDataStore: SearchLookFilterDataStore
+    private lateinit var itemFilterDataStore: SearchItemFilterDataStore
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = SearchResultViewpagerBinding.bind(view)
+        lookFilterDataStore = SearchLookFilterDataStore(requireContext().applicationContext)
+        itemFilterDataStore = SearchItemFilterDataStore(requireContext().applicationContext)
 
         val searchTerm = viewModel.savedSearchTerm
         Log.d(TAG, "SearchResultFragment - onViewCreated: ${viewModel.savedSearchTerm}")
 
         when (resultCategory) {
             "look" -> {
-                viewModel.getSearchResult(searchTerm)
+                requestLookSearch(searchTerm)
+              //  viewModel.getSearchResult(searchTerm)
                 lookResultUiBinding()
             }
 
             "item" -> { // item
-                viewModel.getItemSearchResult(searchTerm)
+                requestItemSearch(searchTerm)
+                //viewModel.getItemSearchResult(searchTerm)
                 itemResultUiBinding()
             }
             else->{
@@ -78,7 +90,34 @@ class SearchResultFragment(private val resultCategory: String) :
         }
 
     }
-
+    private fun requestLookSearch(searchTerm : String){
+        CoroutineScope(Dispatchers.IO).launch{
+            with(lookFilterDataStore){
+                val tpo = tpoId.first()?.split(",")?.map { it.toInt() }
+                val season = seasonId.first()?.split(",")?.map { it.toInt() }
+                val style = styleId.first()?.split(",")?.map { it.toInt() }
+                val gender = lookGender.first()
+                val height = height.first()
+                val weight = weight.first()
+                withContext(Dispatchers.Main) {
+                    viewModel.getSearchResult(searchTerm, gender, height, weight, tpo, season, style)
+                }
+            }
+        }
+    }
+    private fun requestItemSearch(searchTerm: String){
+        CoroutineScope(Dispatchers.IO).launch {
+            with(itemFilterDataStore){
+                val gender = itemGender.first()
+                val minPrice = minPrice.first()
+                val maxPrice = maxPrice.first()
+                val color = color.first()?.split(",")
+                withContext(Dispatchers.Main){
+                    viewModel.getItemSearchResult(searchTerm,gender,minPrice,maxPrice, color)
+                }
+            }
+        }
+    }
     private fun itemResultUiBinding() {
 
         viewModel.itemList.observe(viewLifecycleOwner) { resource ->

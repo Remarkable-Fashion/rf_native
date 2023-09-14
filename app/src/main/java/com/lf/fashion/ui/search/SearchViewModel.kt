@@ -35,7 +35,8 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
     private val _searchTermRank = MutableLiveData<List<SearchTerm>>()
     var searchTermRank: LiveData<List<SearchTerm>> = _searchTermRank
 
-    var savedSearchTerm =""
+    var savedSearchTerm = ""
+
     init {
         getSearchTermRank()
     }
@@ -51,16 +52,30 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
         }
     }
 
-    fun getSearchResult(term: String) {
+    fun getSearchResult(
+        term: String,
+        sex: String? = null,
+        height: Int? = null,
+        weight: Int? = null,
+        tpo: List<Int>? = null,
+        season: List<Int>? = null,
+        style: List<Int>? = null
+
+    ) {
         viewModelScope.launch {
-            _lookList.value = searchRepository.getSearchResult(term)
+            _lookList.value =
+                searchRepository.getSearchResult(term, sex, height, weight, tpo, season, style)
             Log.e(TAG, "getSearchResult 위치 : ViewModel - request")
         }
     }
 
-    fun getItemSearchResult(term: String) {
+    fun getItemSearchResult(term: String,
+                            sex: String? = null,
+                            minPrice: Int? = null,
+                            maxPrice : Int?=null,
+                            color : List<String>?=null) {
         viewModelScope.launch {
-            _itemList.value = searchRepository.getItemSearchResult(term)
+            _itemList.value = searchRepository.getItemSearchResult(term,sex, minPrice, maxPrice, color)
 
         }
     }

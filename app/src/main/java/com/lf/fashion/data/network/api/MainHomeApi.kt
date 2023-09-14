@@ -14,7 +14,7 @@ interface MainHomeApi {
         @Query("weight") weight: Int?=null,
         @Query("tpo") tpo: List<Int>?=null,
         @Query("season") season: List<Int>?=null,
-        @Query("style") style: List<Int>?=null,
+        @Query("style") style: List<Int>?=null
     ): RandomPostResponse
 
     @GET("post/public")
@@ -25,7 +25,7 @@ interface MainHomeApi {
         @Query("weight") weight: Int?=null,
         @Query("tpo") tpo: List<Int>?=null,
         @Query("season") season: List<Int>?=null,
-        @Query("style") style: List<Int>?=null,
+        @Query("style") style: List<Int>?=null
         ): RandomPostResponse
 
     @GET("post/{id}")

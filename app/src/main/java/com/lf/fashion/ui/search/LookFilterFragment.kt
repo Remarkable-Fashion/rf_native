@@ -12,6 +12,7 @@ import com.google.android.material.chip.Chip
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.SearchLookFilterDataStore
+import com.lf.fashion.data.model.FilterItem
 import com.lf.fashion.databinding.SearchFilterFragmentBinding
 import com.lf.fashion.ui.addUnitTextListener
 import com.lf.fashion.ui.cancelBtnBackStack
@@ -167,15 +168,17 @@ class LookFilterFragment : Fragment(R.layout.search_filter_fragment),View.OnClic
         binding.submitBtn.setOnClickListener {
             binding.filterSpace.heightValue.clearFocus()
             binding.filterSpace.weightValue.clearFocus()
-
+            val tpoFilterItem = FilterItem(viewModel.tposTexts.joinToString(","),viewModel.selectedTposId.joinToString (","))
+            val seasonFilterItem = FilterItem(viewModel.seasonsTexts.joinToString(","),viewModel.selectedSeasonsId.joinToString (","))
+            val styleFilterItem = FilterItem(viewModel.stylesTexts.joinToString(","),viewModel.selectedStylesId.joinToString (","))
             CoroutineScope(Dispatchers.IO).launch {
                 lookFilterDataStore.saveLookFilterInstance(
                     viewModel.selectedGender,
                     viewModel.savedHeight,
                     viewModel.savedWeight,
-                    viewModel.tposTexts.joinToString(","),
-                    viewModel.seasonsTexts.joinToString(","),
-                    viewModel.stylesTexts.joinToString(",")
+                    tpoFilterItem,
+                    seasonFilterItem,
+                    styleFilterItem
                 )
             }
             Toast.makeText(requireContext(), "필터가 저장되었습니다.", Toast.LENGTH_SHORT).show()

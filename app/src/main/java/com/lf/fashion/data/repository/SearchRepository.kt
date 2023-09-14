@@ -8,10 +8,22 @@ class SearchRepository @Inject constructor(private val searchApi: SearchApi) : S
     suspend fun getSearchTermRank() =safeApiCall {
         searchApi.getSearchTermRank()
     }
-    suspend fun getSearchResult(term : String) = safeApiCall{
-        searchApi.getSearchResult(term)
+    suspend fun getSearchResult(term : String,
+                                sex: String?=null,
+                                height :Int?=null,
+                                weight :Int?=null,
+                                tpo : List<Int>?=null,
+                                season : List<Int>?=null,
+                                style :List<Int>?=null
+    ) = safeApiCall{
+        searchApi.getSearchResult(term,sex,height, weight, tpo, season, style)
     }
-    suspend fun getItemSearchResult(term : String) = safeApiCall{
-        searchApi.getItemSearchResult(term)
+    suspend fun getItemSearchResult(term : String,
+                                    sex: String? = null,
+                                    minPrice: Int? = null,
+                                    maxPrice : Int?=null,
+                                    color : List<String>?=null
+    ) = safeApiCall{
+        searchApi.getItemSearchResult(term,sex, minPrice, maxPrice,color)
     }
 }
