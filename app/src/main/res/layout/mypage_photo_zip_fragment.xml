@@ -133,8 +133,6 @@
                     android:id="@+id/grid_rv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="3"
                     tools:listitem="@layout/home_grid_item"
                     app:layout_constraintStart_toStartOf="@id/profile_space"
                     app:layout_constraintEnd_toEndOf="@id/profile_space"

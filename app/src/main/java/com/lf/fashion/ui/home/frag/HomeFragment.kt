@@ -95,6 +95,9 @@ class HomeFragment :
             requestPost()
             return@setOnRefreshListener
         }
+
+        observePostResponse()
+
     }
     private fun requestPost(){
         CoroutineScope(Dispatchers.IO).launch{
@@ -118,15 +121,7 @@ class HomeFragment :
         (전환 속도 감소, 메모리에 무리가 가지않는다면 ok)*/
         photoLayoutVisibilityMode(true) // default ui visibility
         viewModel.postMode.observe(viewLifecycleOwner) {
-            when (it) {
-                "following" -> {
-                    //TODO 엔드포인트 생성시 반영
-                }
-
-                "random" -> {
-                    observePostResponse()
-                }
-            }
+           requestPost()
         }
     }
 
@@ -156,6 +151,9 @@ class HomeFragment :
                     with(binding.gridRecyclerView) {
                         //3개로 보고있다가 refresh하는 경우를 감안해서 view에서 grid count를 받아오기
                         //staggeredGrid layoutManager 연결
+                        while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
+                            removeItemDecorationAt(0)
+                        }
                         layoutManager =
                             StaggeredGridLayoutManager(
                                 spanCount,

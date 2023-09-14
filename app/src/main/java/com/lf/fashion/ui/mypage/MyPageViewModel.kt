@@ -71,7 +71,6 @@ class MyPageViewModel @Inject constructor(
     init {
       getSavedLoginToken()
         if (!savedLoginToken.value.isNullOrEmpty()) {
-            Log.e(TAG, "MyPageViewModel init: ")
             getPostList()
             getMyInfo()
         }

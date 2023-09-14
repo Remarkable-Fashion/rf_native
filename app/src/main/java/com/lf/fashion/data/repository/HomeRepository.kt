@@ -9,47 +9,53 @@ class HomeRepository @Inject constructor(
 ) : SafeApiCall {
 
 
-    suspend fun getRandomPost(take: Int,
-                              sex: String,
-                              height :Int?,
-                              weight :Int?,
-                              tpo : List<Int>?,
-                              season : List<Int>?,
-                              style :List<Int>?) = safeApiCall {
-        postApi.getRandomPost(take,sex,height,weight,tpo,season, style)
+    suspend fun getRandomPost(
+        take: Int,
+        sex: String,
+        height: Int?,
+        weight: Int?,
+        tpo: List<Int>?,
+        season: List<Int>?,
+        style: List<Int>?
+    ) = safeApiCall {
+        postApi.getRandomPost(take, sex, height, weight, tpo, season, style)
     }
 
-    suspend fun getRandomPostPublic(take: Int,
-                                    sex: String,
-                                    height :Int?,
-                                    weight :Int?,
-                                    tpo : List<Int>?,
-                                    season : List<Int>?,
-                                    style :List<Int>?
+    suspend fun getRandomPostPublic(
+        take: Int,
+        sex: String,
+        height: Int?,
+        weight: Int?,
+        tpo: List<Int>?,
+        season: List<Int>?,
+        style: List<Int>?
     ) = safeApiCall {
-        postApi.getRandomPostPublic(take,sex,height,weight,tpo,season, style)
+        postApi.getRandomPostPublic(take, sex, height, weight, tpo, season, style)
+    }
+
+    suspend fun getFollowingPost(
+        take: Int,
+        sex: String,
+        height: Int?,
+        weight: Int?,
+        tpo: List<Int>?,
+        season: List<Int>?,
+        style: List<Int>?
+    ) = safeApiCall {
+        postApi.getFollowingPost(1, take, sex, height, weight, tpo, season, style)
     }
 
     suspend fun getPostInfoByPostId(postId: Int) = safeApiCall {
         postApi.getPostInfoById(postId)
     }
 
-   /* suspend fun getRecommendClothesTop3(postId: Int, category: String) = safeApiCall {
-        postApi.getRecommendTopClothes(postId,category)
-
-    }*/
-
-    suspend fun getRecommendClothesInfo(postId: Int, category: String , orderMode : String) = safeApiCall {
-        if(orderMode == "Best"){
-            postApi.getRecommendTopClothes(postId,category)
-        }else {
-            postApi.getRecommendClothesInfo(postId, category)
+    suspend fun getRecommendClothesInfo(postId: Int, category: String, orderMode: String) =
+        safeApiCall {
+            if (orderMode == "Best") {
+                postApi.getRecommendTopClothes(postId, category)
+            } else {
+                postApi.getRecommendClothesInfo(postId, category)
+            }
         }
-    }
-    suspend fun getPostByUserId(userId : Int) = safeApiCall {
-        postApi.getPostByUserId(userId)
-    }
-
-
 
 }

@@ -40,29 +40,56 @@ class HomeViewModel @Inject constructor(
 
     init {
         postMode.value = "random"
-     //   getPostList(21,"Male")
+        //   getPostList(21,"Male")
     }
 
-    fun getPostList(take: Int,
-                    sex: String,
-                    height :Int?=null,
-                    weight :Int?=null,
-                    tpo : List<Int>?=null,
-                    season : List<Int>?=null,
-                    style :List<Int>?=null
+    fun getPostList(
+        take: Int,
+        sex: String,
+        height: Int? = null,
+        weight: Int? = null,
+        tpo: List<Int>? = null,
+        season: List<Int>? = null,
+        style: List<Int>? = null
     ) {
         Log.d(TAG, "suspend getPostList 호출 ")
         viewModelScope.launch {
-            val savedToken = userPreferences.accessToken.first()
-            if (savedToken.isNullOrEmpty()) {
-                _response.value = homeRepository.getRandomPostPublic(take, sex, height, weight, tpo, season, style)
-                Log.d(TAG, "HomeViewModel - getPostList: public ! ${_response.value}")
-            } else {
-                _response.value = homeRepository.getRandomPost(take,sex, height, weight, tpo, season, style)
-                Log.d(TAG, "HomeViewModel - getPostList: private ! ${_response.value}")
+            when (postMode.value) {
+                "random" -> {
+                    val savedToken = userPreferences.accessToken.first()
+                    if (savedToken.isNullOrEmpty()) {
+                        _response.value = homeRepository.getRandomPostPublic(
+                            take,
+                            sex,
+                            height,
+                            weight,
+                            tpo,
+                            season,
+                            style
+                        )
+                        Log.d(TAG, "HomeViewModel - getPostList: public ! ${_response.value}")
+                    } else {
+                        _response.value = homeRepository.getRandomPost(
+                            take,
+                            sex,
+                            height,
+                            weight,
+                            tpo,
+                            season,
+                            style
+                        )
+                        Log.d(TAG, "HomeViewModel - getPostList: private ! ${_response.value}")
+                    }
+                }
+                "following" ->{
+
+                _response.value = homeRepository.getFollowingPost(take, sex, height, weight, tpo, season, style)
+
+                }
             }
         }
     }
+
 
     fun changeLikesState(create: Boolean, postId: Int) {
         viewModelScope.launch {
@@ -84,9 +111,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    suspend fun deletePost(postId : Int) : MsgResponse{
-        val response =  myPageRepository.deletePost(postId)
-        return if(response is Resource.Success) return response.value
-        else MsgResponse(false,"Resource Fail")
+    suspend fun deletePost(postId: Int): MsgResponse {
+        val response = myPageRepository.deletePost(postId)
+        return if (response is Resource.Success) return response.value
+        else MsgResponse(false, "Resource Fail")
     }
 }

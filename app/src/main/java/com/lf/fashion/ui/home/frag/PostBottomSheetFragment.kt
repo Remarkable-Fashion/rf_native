@@ -203,11 +203,12 @@ class PostBottomSheetFragment(
     //TODO 신고하기 api 연결
     private fun getDetailInfo(p1: String) {
         Log.e(TAG, "getDetailInfo: $p1")
-        val layoutinflater = LayoutInflater.from(context)
-        val dialogView = layoutinflater.inflate(R.layout.item_dialog_declare, null)
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.item_dialog_declare, null)
         val dialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)
             .setPositiveButton("등록") { dialog, id ->
+
+
                 Log.e(
                     TAG,
                     "getDetailInfo: $p1 의 ${dialogView.findViewById<EditText>(R.id.declare_value).text.toString()}",

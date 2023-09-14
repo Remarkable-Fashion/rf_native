@@ -28,6 +28,18 @@ interface MainHomeApi {
         @Query("style") style: List<Int>? = null
     ): RandomPostResponse
 
+    @GET("post/followings")
+    suspend fun getFollowingPost(
+        @Query("page") cursor: Int,
+        @Query("pageSize") take :Int,
+        @Query("sex") sex: String,
+        @Query("height") height: Int? = null,
+        @Query("weight") weight: Int? = null,
+        @Query("tpo") tpo: List<Int>? = null,
+        @Query("season") season: List<Int>? = null,
+        @Query("style") style: List<Int>? = null
+    ) :RandomPostResponse
+
     @GET("post/{id}")
     suspend fun getPostInfoById(@Path("id") postId: Int): PostInfo
 

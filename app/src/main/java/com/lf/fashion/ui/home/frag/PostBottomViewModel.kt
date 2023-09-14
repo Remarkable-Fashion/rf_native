@@ -68,4 +68,8 @@ class PostBottomViewModel @Inject constructor(
             }
         }
     }
+
+    fun declarePost(postId: Int,message : String){
+
+    }
 }

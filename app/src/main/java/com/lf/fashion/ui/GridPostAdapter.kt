@@ -41,14 +41,16 @@ class GridPostAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(post: Posts) {
             //post 내부 첫번째 사진을 grid 로 노출
-            binding.photoUrl = post.images[0].url
-
+            if(post.images.isNotEmpty()) {
+                binding.photoUrl = post.images[0].url
+            }
             binding.gridImage.setOnClickListener {
                 gridPhotoClickListener.gridPhotoClicked(currentList.indexOf(post))
             }
             binding.scrapIcon.isSelected = post.isScrap ?: false
 
             //spanCount 갯수에 따라 이미지뷰 (정확히는 이미지뷰를 감싸는 ConstraintLayout 높이를 조정
+            //reduceViewWidth 는 부모 크기보다 width가 적을때 true 보내기
             itemViewRatioSetting(context, itemView, spanCount,reduceViewWidth)
 
             //스크랩 페이지 grid 모아보기에서 스크랩 아이콘을 숨긴다

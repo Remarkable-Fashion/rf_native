@@ -1,6 +1,7 @@
 package com.lf.fashion.ui.scrap
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.MainNaviDirections
+import com.lf.fashion.TAG
 import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ImageUrl
@@ -186,6 +188,7 @@ class ScrapVerticalFragment : Fragment(),
 
     override fun profileSpaceClicked(userId: Int) {
         val myUniqueId = userPref.getMyUniqueId()
+        Log.e(TAG, "profileSpaceClicked: $myUniqueId , $userId")
         if (userId == myUniqueId) {
             navigateToMyPage(R.id.scrapVerticalFragment)
             return

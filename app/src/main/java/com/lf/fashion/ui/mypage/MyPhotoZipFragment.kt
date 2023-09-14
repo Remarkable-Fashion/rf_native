@@ -7,6 +7,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
 import com.lf.fashion.data.common.UserDataStorePref
@@ -70,8 +71,9 @@ class MyPhotoZipFragment : Fragment(R.layout.mypage_photo_zip_fragment), GridPho
 
             }
         }
-        with(binding.gridRv) { //grid layout
-            adapter = GridPostAdapter(3, this@MyPhotoZipFragment, null).apply {
+        with(binding.gridRv) {//grid layout
+            layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
+            adapter = GridPostAdapter(3, this@MyPhotoZipFragment, null,reduceViewWidth = true).apply {
                 viewModel.posts.observe(viewLifecycleOwner) { resource ->
                     when (resource) {
                         is Resource.Success -> {
