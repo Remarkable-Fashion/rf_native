@@ -41,8 +41,9 @@ class PostBottomSheetFragment(
     private lateinit var userPref: UserDataStorePref
     private val viewModel: PostBottomViewModel by viewModels()
     private var blocked: Boolean = false // 최초값 차단 false 로 ..
-    private var scrapState by Delegates.notNull<Boolean>()
-    private var followState by Delegates.notNull<Boolean>()
+    private var scrapState  = false
+    private var followState = false
+    private var isPublicState = post?.isPublic?:true
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = HomeBottomDialogItemBinding.bind(view)
@@ -61,7 +62,7 @@ class PostBottomSheetFragment(
             viewModel.postInfo.observe(viewLifecycleOwner) { resources ->
                 if (resources is Resource.Success) {
                     val response = resources.value
-
+                    Log.e(TAG, "onViewCreated: $response")
                     scrapState = response.isScrap ?: false
                     followState = response.isFollow ?: false
 
@@ -110,7 +111,7 @@ class PostBottomSheetFragment(
         binding.privateSettingBtn.isVisible = myPost
         binding.postEditBtn.isVisible = myPost
         binding.deleteBtn.isVisible = myPost
-
+        btnTextUpdate("isPublic",isPublicState)
     }
 
     //TODO 버튼 반응 구현
@@ -148,6 +149,13 @@ class PostBottomSheetFragment(
                     dismiss()
                 }
             }
+            binding.privateSettingBtn ->{
+                post?.let {
+                    Log.e(TAG, "onClick: 게시 상태 수정 클릭 $it")
+                    myBottomDialogListener?.changePostPublicStatus(it)
+                    dismiss()
+                }
+            }
 
         }
     }
@@ -173,6 +181,7 @@ class PostBottomSheetFragment(
 
             }
         }
+        //viewModel 로 response 관리. 연결 어댑터 diffUtil로 뱃지 노출
     }
 
     private fun btnTextUpdate(name: String, state: Boolean) {
@@ -188,6 +197,9 @@ class PostBottomSheetFragment(
             "block" -> {
                 binding.blockBtn.text = if (state) "차단 취소" else "차단하기"
 
+            }
+            "isPublic" ->{
+                binding.privateSettingBtn.text = if(state) "이미지 게시 해지하기" else "이미지 게시하기"
             }
         }
     }
@@ -210,7 +222,7 @@ class PostBottomSheetFragment(
         val dialogView = LayoutInflater.from(context).inflate(R.layout.item_dialog_declare, null)
         val dialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)
-            .setPositiveButton("등록") { dialog, id ->
+            .setPositiveButton("등록") { _, _ ->
                 CoroutineScope(Dispatchers.Main).launch {
                     val response = viewModel.declarePost(
                         DeclareInfo(

@@ -5,6 +5,7 @@ import com.lf.fashion.data.model.FollowingUserList
 import com.lf.fashion.data.model.MsgResponse
 import com.lf.fashion.data.model.MyBlockUserList
 import com.lf.fashion.data.model.MyInfo
+import com.lf.fashion.data.model.PostStatus
 import com.lf.fashion.data.model.RandomPostResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -38,4 +39,7 @@ interface MyPageApi {
 
     @DELETE("post/{id}")
     suspend fun deletePost(@Path("id") postId : Int) : MsgResponse
+
+    @PATCH("post/{id}/status")
+    suspend fun updatePostStatus(@Path("id") postId :Int ,@Body isPublic :PostStatus) :MsgResponse
 }

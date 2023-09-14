@@ -59,31 +59,32 @@ class DefaultPostAdapter(
                 post.user = userInfoPost.user // 하단에서 사용할 수도 있으니까 초기화
             }
             profileSpaceVisibilityBinding(post) // 마이페이지일 경우 userInfo 도 post 내부 user 도 없기 때문에 숨김 처리
-
-            val postDetailMenu = binding.postDetailMenu
-            postDetailMenu.likeBtn.isSelected = post.isFavorite?:false
-            postDetailMenu.likesValue.text = post.count.favorites.toString()
-            postDetailMenu.scrapBtn.isSelected = post.isScrap?:true //null 인 경우는 내 스크랩 모아보기이기 때문에, 모두 true
-
             nestedAdapter.submitList(post.images)
 
-            postDetailMenu.likeBtn.setOnClickListener {
-                verticalViewPagerClickListener.likeBtnClicked(it.isSelected,post)
-            }
-            postDetailMenu.scrapBtn.setOnClickListener {
-                verticalViewPagerClickListener.scrapBtnClicked(it.isSelected,post)
-            }
-            postDetailMenu.shareBtn.setOnClickListener {
-                verticalViewPagerClickListener.shareBtnClicked(post)
-            }
+            val postDetailMenu = binding.postDetailMenu
+            with(postDetailMenu){
+                likeBtn.isSelected = post.isFavorite?:false
+                likesValue.text = post.count.favorites.toString()
+                scrapBtn.isSelected = post.isScrap?:true //null 인 경우는 내 스크랩 모아보기이기 때문에, 모두 true
 
-            postDetailMenu.photoZipBtn.setOnClickListener {
-                verticalViewPagerClickListener.photoZipBtnClicked(post)
-            }
+                likeBtn.setOnClickListener {
+                    verticalViewPagerClickListener.likeBtnClicked(it.isSelected,post)
+                }
 
-            postDetailMenu.kebabBtn.setOnClickListener {
-                Log.d(TAG, "kebabBtnClicked In DefaultAdapter  - postId : $post.id");
-                verticalViewPagerClickListener.kebabBtnClicked(post)
+                scrapBtn.setOnClickListener {
+                    verticalViewPagerClickListener.scrapBtnClicked(it.isSelected,post)
+                }
+                shareBtn.setOnClickListener {
+                    verticalViewPagerClickListener.shareBtnClicked(post)
+                }
+                photoZipBtn.setOnClickListener {
+                    verticalViewPagerClickListener.photoZipBtnClicked(post)
+                }
+                kebabBtn.setOnClickListener {
+                    Log.d(TAG, "kebabBtnClicked In DefaultAdapter  - postId : $post.id");
+                    verticalViewPagerClickListener.kebabBtnClicked(post)
+                }
+
             }
 
             binding.infoBtn.setOnClickListener {
@@ -101,6 +102,7 @@ class DefaultPostAdapter(
             if (userInfoPost == null && post.user == null) {
                 binding.profileImage.isVisible = false
                 binding.profileName.isVisible = false
+                binding.privateBadge.isVisible = post.isPublic == false // 나의 게시물 + 미게시 게시물일 경우 미게시 뱃지 노출
             } else {
                 binding.profileImage.isVisible = true
                 binding.profileName.isVisible = true
@@ -109,9 +111,7 @@ class DefaultPostAdapter(
             binding.postDetailMenu.photoZipBtn.isVisible = myPhotozip != true
         }
     }
-//    fun startChangeByGridClicked(){
-//
-//    }
+
 }
 
 class DefaultPostDiff : DiffUtil.ItemCallback<Posts>() {
@@ -139,6 +139,10 @@ class DefaultPostDiff : DiffUtil.ItemCallback<Posts>() {
 
         if (oldItem.isScrap != newItem.isScrap) {
             payload.add("SCRAP_STATE")
+        }
+
+        if(oldItem.isPublic != newItem.isPublic){
+            payload.add("PUBLIC_STATE")
         }
 
         return if (payload.isEmpty()) null else payload

@@ -7,6 +7,7 @@ data class PostInfo(
     val id: Int,
     val isFollow: Boolean?=false,
     val isScrap :Boolean?=false,
+    val isPublic :Boolean?=false,
     val createdAt : String,
     val user: UserInfo,
     @SerializedName("_count")

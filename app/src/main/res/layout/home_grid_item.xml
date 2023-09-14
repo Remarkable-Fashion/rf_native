@@ -32,5 +32,22 @@
             android:layout_margin="8dp"
             app:layout_constraintEnd_toEndOf="@id/grid_image"
             app:layout_constraintTop_toTopOf="@id/grid_image"/>
+        <TextView
+            android:id="@+id/private_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="미게시"
+            android:background="@drawable/bg_trans_white_radi15"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            style="@style/spoqa_11sp_bold"
+            android:layout_marginTop="7dp"
+            android:layout_marginStart="7dp"
+            android:visibility="gone"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

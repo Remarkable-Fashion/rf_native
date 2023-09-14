@@ -6,6 +6,7 @@ import com.lf.fashion.data.network.SafeApiCall
 import com.lf.fashion.data.network.api.JWTApi
 import com.lf.fashion.data.network.api.MyPageApi
 import com.lf.fashion.data.model.MyInfo
+import com.lf.fashion.data.model.PostStatus
 import com.lf.fashion.ui.getMimeType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -58,7 +59,7 @@ class MyPageRepository @Inject constructor(
             val file = File(profileImagePath)
             // 파일 확장자를 기반으로 MIME 타입을 추론하여 전달
             val mimeType = getMimeType(file)
-            val requestFile = file.asRequestBody(mimeType?.toMediaTypeOrNull())
+            val requestFile = file.asRequestBody(mimeType.toMediaTypeOrNull())
             partBody = MultipartBody.Part.createFormData("avartar", file.name, requestFile)
 
 
@@ -78,5 +79,9 @@ class MyPageRepository @Inject constructor(
 
     suspend fun deletePost(postId : Int) = safeApiCall {
         myPageApi.deletePost(postId)
+    }
+
+    suspend fun updatePostStatus(postId: Int,status : Boolean)=safeApiCall {
+        myPageApi.updatePostStatus(postId, PostStatus(status))
     }
 }

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.TAG
@@ -59,6 +60,10 @@ class GridPostAdapter(
                     binding.scrapIcon.visibility = View.GONE
                 }
             }
+
+            //미게시 상태일 경우 뱃지 노출
+            binding.privateBadge.isVisible = post.isPublic == false
+
             binding.executePendingBindings()
         }
     }

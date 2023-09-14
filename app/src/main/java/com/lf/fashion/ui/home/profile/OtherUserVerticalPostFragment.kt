@@ -28,8 +28,7 @@ import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
 class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
-    PhotoClickListener, VerticalViewPagerClickListener,
-    MyBottomDialogListener {
+    PhotoClickListener, VerticalViewPagerClickListener {
     private lateinit var binding: UserVerticalFragmentBinding
     private val viewModel: OtherUserProfileViewModel by hiltNavGraphViewModels(R.id.otherUserProfileFragment)
     private val defaultAdapter = DefaultPostAdapter(
@@ -83,24 +82,6 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
 
     }
 
-
-    override fun onBottomSheetDismissed(post: Posts) {
-        val currentList = defaultAdapter.currentList
-        val position = currentList.indexOf(post)
-
-        if (position != -1) {
-            defaultAdapter.currentList[position].apply {
-                isScrap = post.isScrap
-            }
-            defaultAdapter.notifyItemChanged(position, "SCRAP_STATE")
-
-
-        }
-    }
-
-    //내 게시물일때만 수정가능하기 때문에 해당 페이지에선 사용 x
-    override fun deleteMyPost(post: Posts) {
-    }
 
     override fun photoClicked(bool: Boolean, photo: List<ImageUrl>) {
         if (bool) {
@@ -178,7 +159,7 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
     }
 
     override fun kebabBtnClicked(post: Posts) {
-        val dialog = PostBottomSheetFragment(post, myBottomDialogListener = this)
+        val dialog = PostBottomSheetFragment(post)
         dialog.show(parentFragmentManager, "bottom_sheet")
     }
 

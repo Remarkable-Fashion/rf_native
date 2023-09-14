@@ -54,7 +54,23 @@
             android:fontFamily="@font/montserrat_bold"
             android:textColor="@color/white"
             tools:text="rf_user"/>
-
+        <TextView
+            android:id="@+id/private_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="미게시"
+            android:background="@drawable/bg_trans_white_radi15"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            style="@style/spoqa_11sp_bold"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="20dp"
+            android:visibility="gone"
+            />
         <ImageView
             android:id="@+id/info_btn"
             android:layout_width="93dp"

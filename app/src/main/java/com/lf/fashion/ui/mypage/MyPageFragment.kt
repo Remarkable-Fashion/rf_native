@@ -202,10 +202,10 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
 
     override fun gridPhotoClicked(postIndex: Int) {
         //grid 포토 클릭시!!
-        Log.e(TAG, "gridPhotoClicked: GRID CLICKED")
+        Log.e(TAG, "gridPhotoClicked: GRID CLICKED ")
+        //바텀 메뉴 중복 클릭시 첫 화면으로 돌아가도록 구현한 리스너가 에러가 나기 때문에 지워준다. (이후에 다시 달아줌)
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
         bottomNavigationView.setOnItemReselectedListener(null)
-        //binding.myNestedScrollView.setOnTouchListener{_,_ -> true}
         viewModel.editClickedPostIndex(postIndex)
         findNavController().navigate(
             R.id.action_navigation_mypage_to_myPageVerticalFragment

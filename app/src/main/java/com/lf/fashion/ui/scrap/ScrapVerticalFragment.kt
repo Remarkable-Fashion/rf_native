@@ -220,4 +220,21 @@ class ScrapVerticalFragment : Fragment(),
                 }
             }
         }    }
+
+    override fun changePostPublicStatus(post: Posts) {
+        CoroutineScope(Dispatchers.Main).launch {
+            //기존 게시/미게시 상태의 반전
+            val response = viewModel.changePostStatus(post.id, !(post.isPublic ?: true))
+            if(response.success){
+                Toast.makeText(requireContext(),"게시물의 상태가 변경되었습니다",Toast.LENGTH_SHORT).show()
+                val currentList = defaultAdapter.currentList
+                val position = currentList.indexOf(post)
+                if(position != -1){
+                    defaultAdapter.currentList[position].apply {
+                        isPublic = !isPublic!!
+                    }
+                    defaultAdapter.notifyItemChanged(position,"PUBLIC_STATE")
+                }            }
+        }
+    }
 }

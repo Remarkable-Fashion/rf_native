@@ -116,4 +116,10 @@ class HomeViewModel @Inject constructor(
         return if (response is Resource.Success) return response.value
         else MsgResponse(false, "Resource Fail")
     }
+
+    suspend fun changePostStatus(postInt: Int,status : Boolean) :MsgResponse{
+        val response = myPageRepository.updatePostStatus(postInt,!status)
+        return if (response is Resource.Success) return response.value
+        else MsgResponse(false, "Resource Fail")
+    }
 }

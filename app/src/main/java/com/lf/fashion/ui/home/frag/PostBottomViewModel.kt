@@ -71,6 +71,10 @@ class PostBottomViewModel @Inject constructor(
     }
 
     suspend fun declarePost(declareInfo: DeclareInfo):MsgResponse{
+        viewModelScope.launch {
+            communicateRepository.declarePost(declareInfo)
+        }
+
         val response =  communicateRepository.declarePost(declareInfo)
         return if(response is Resource.Success) return response.value
         else MsgResponse(false,"Resource Fail")
