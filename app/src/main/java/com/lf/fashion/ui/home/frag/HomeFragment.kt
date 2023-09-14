@@ -73,12 +73,14 @@ class HomeFragment :
                 }
             }
         }
-
-        requestPost()
-
+        /*response 로 post 를 받아서 중첩 viewPager 와 recyclerView 모두에게 adapter 연결/submitList 후 visibility 로 노출을 관리한다
+              (전환 속도 감소, 메모리에 무리가 가지않는다면 ok)*/
+        photoLayoutVisibilityMode(true) // default ui visibility
+        viewModel.postMode.observe(viewLifecycleOwner) {
+            requestPost()
+        }
 
         binding.appBarRandom.isSelected = true                              // 상단 메뉴 - 랜덤 모드 선택이 디폴트
-        setMainViewPagerUI()                                                //기본 레이아웃 ui adapter 연결
         binding.topMenu.children.forEach { it.setOnClickListener(this) }    //onclick listener 묶어서 한번에 달기
 
 
@@ -115,15 +117,6 @@ class HomeFragment :
         }
     }
 
-
-    private fun setMainViewPagerUI() {
-        /*response 로 post 를 받아서 중첩 viewPager 와 recyclerView 모두에게 adapter 연결/submitList 후 visibility 로 노출을 관리한다
-        (전환 속도 감소, 메모리에 무리가 가지않는다면 ok)*/
-        photoLayoutVisibilityMode(true) // default ui visibility
-        viewModel.postMode.observe(viewLifecycleOwner) {
-           requestPost()
-        }
-    }
 
     private fun observePostResponse() {
         viewModel.response.observe(viewLifecycleOwner) { resource ->

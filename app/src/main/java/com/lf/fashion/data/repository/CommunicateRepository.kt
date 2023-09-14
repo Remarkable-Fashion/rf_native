@@ -2,6 +2,7 @@ package com.lf.fashion.data.repository
 
 import android.util.Log
 import com.lf.fashion.TAG
+import com.lf.fashion.data.model.DeclareInfo
 import com.lf.fashion.data.network.SafeApiCall
 import com.lf.fashion.data.network.api.CommunicateApi
 import javax.inject.Inject
@@ -53,5 +54,10 @@ class CommunicateRepository @Inject constructor(
     }
     suspend fun deleteClothesLike(clothesId: Int) = safeApiCall {
         comApi.deleteClothesLike(clothesId)
+    }
+
+    suspend fun declarePost(declareInfo: DeclareInfo)=safeApiCall {
+        Log.e(TAG, "declarePost: $declareInfo" )
+        comApi.declarePost(declareInfo)
     }
 }

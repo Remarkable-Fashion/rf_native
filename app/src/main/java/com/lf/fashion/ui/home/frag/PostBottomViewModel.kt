@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lf.fashion.TAG
+import com.lf.fashion.data.model.DeclareInfo
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.CommunicateRepository
 import com.lf.fashion.data.repository.HomeRepository
@@ -69,7 +70,9 @@ class PostBottomViewModel @Inject constructor(
         }
     }
 
-    fun declarePost(postId: Int,message : String){
-
+    suspend fun declarePost(declareInfo: DeclareInfo):MsgResponse{
+        val response =  communicateRepository.declarePost(declareInfo)
+        return if(response is Resource.Success) return response.value
+        else MsgResponse(false,"Resource Fail")
     }
 }

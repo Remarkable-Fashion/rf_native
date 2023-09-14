@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -14,11 +15,15 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.UserDataStorePref
+import com.lf.fashion.data.model.DeclareInfo
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.databinding.HomeBottomDialogItemBinding
 import com.lf.fashion.ui.MyBottomDialogListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 /**
@@ -200,19 +205,24 @@ class PostBottomSheetFragment(
         dialog.show()
     }
 
-    //TODO 신고하기 api 연결
     private fun getDetailInfo(p1: String) {
         Log.e(TAG, "getDetailInfo: $p1")
         val dialogView = LayoutInflater.from(context).inflate(R.layout.item_dialog_declare, null)
         val dialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)
             .setPositiveButton("등록") { dialog, id ->
-
-
-                Log.e(
-                    TAG,
-                    "getDetailInfo: $p1 의 ${dialogView.findViewById<EditText>(R.id.declare_value).text.toString()}",
-                )
+                CoroutineScope(Dispatchers.Main).launch {
+                    val response = viewModel.declarePost(
+                        DeclareInfo(
+                            post!!.id,
+                            dialogView.findViewById<EditText>(R.id.declare_value).text.toString()
+                        )
+                    )
+                    if(response.success){
+                        Toast.makeText(requireContext(),"신고가 완료되었습니다.",Toast.LENGTH_SHORT).show()
+                    }
+                    this@PostBottomSheetFragment.dismiss()
+                }
             }
             .setNegativeButton("닫기") { _, _ ->
 
