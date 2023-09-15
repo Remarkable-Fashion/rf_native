@@ -414,7 +414,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                         binding.filterSpace.heightValue.text.toString().replace(" cm", "").toInt()
                     val weight =
                         binding.filterSpace.weightValue.text.toString().replace(" kg", "").toInt()
-
+                    val isPublic = !(binding.notPostNow.isChecked)
                     val uploadPost = UploadPost(
                         imageUploadResponse.imgUrls!!,
                         binding.introduceValue.text.toString(),
@@ -424,7 +424,8 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                         styles,
                         clothes = viewModel.uploadedClothes,
                         height,
-                        weight
+                        weight,
+                        isPublic
                     )
                     Log.e(TAG, "uploadPost: $uploadPost")
                     val postUploadResponse = viewModel.uploadPostInfo(uploadPost)

@@ -12,5 +12,6 @@ data class UploadPost(
     val styles : List<Int>,
     val clothes : List <UploadCloth>,
     val height : Int ,
-    val weight : Int
+    val weight : Int,
+    val isPublic : Boolean
 )
