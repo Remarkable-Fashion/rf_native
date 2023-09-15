@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
@@ -48,8 +49,6 @@ SearchRankRowClickListener{
         binding = SearchFragmentBinding.bind(view)
 
         userPreferences = UserDataStorePref(requireContext().applicationContext)
-
-        searchOrderBySpinnerOnclick()
 
         // 바로 datastore 에서 history 꺼내와서 liveData 객체에 담아주기
         runBlocking {
@@ -107,7 +106,7 @@ SearchRankRowClickListener{
                 searchAction(term)
             }
         }
-        searchResultViewSetting()  //결과 레이아웃 내부 세팅 (tab,viewpager)
+        searchResultViewPagerSetting()  //결과 레이아웃 내부 세팅 (tab,viewpager)
 
         //검색 결과 화면에서 grid 모드로 보다가 사진을 클릭해서 1개씩 보기 모드로 바뀔 경우
         viewModel.gridMode.observe(viewLifecycleOwner){
@@ -172,7 +171,7 @@ SearchRankRowClickListener{
         binding.searchTerm.nest.setOnClickListener { hideKeyboard() }
     }
 
-    private fun searchResultViewSetting() {
+    private fun searchResultViewPagerSetting() {
         val tabViewpager = binding.searchResult.tabViewpager
         val tabLayout = binding.searchResult.tab
 
@@ -180,6 +179,15 @@ SearchRankRowClickListener{
         TabLayoutMediator(tabLayout, tabViewpager) { tab, position ->
             tab.text = tabTitleArray[position]
         }.attach()
+
+        //탭이 바뀔 때마다 spinner array 도 바뀌어야한다
+        tabViewpager.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                setupOrderBySpinner(position)
+                super.onPageSelected(position)
+
+            }
+        })
     }
 
     private fun recentSearchTermChipSetting() {
@@ -261,17 +269,24 @@ SearchRankRowClickListener{
         }
     }
 
-    private fun searchOrderBySpinnerOnclick() {
+    private fun setupOrderBySpinner(tabPosition :Int) {
         val orderBySpinner = binding.searchResult.orderBySpinner
-        orderBySpinner.onItemSelectedListener = this
-        ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.spinner_order,
-            R.layout.spinner_text_view
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            orderBySpinner.adapter = adapter
-        }
+
+        val arrayResId = when(tabPosition) {
+                0-> R.array.spinner_look_order
+                1 -> R.array.spinner_item_order
+            else-> R.array.spinner_look_order // 기본
+            }
+            orderBySpinner.onItemSelectedListener = this
+            ArrayAdapter . createFromResource (
+                requireContext(),
+                arrayResId,
+                R.layout.spinner_text_view
+            ).also { adapter ->
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    orderBySpinner.adapter = adapter
+            }
+
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {

@@ -69,13 +69,16 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
         }
     }
 
-    fun getItemSearchResult(term: String,
-                            sex: String? = null,
-                            minPrice: Int? = null,
-                            maxPrice : Int?=null,
-                            color : List<String>?=null) {
+    fun getItemSearchResult(
+        term: String,
+        sex: String? = null,
+        minPrice: Int? = null,
+        maxPrice: Int? = null,
+        color: List<String>? = null
+    ) {
         viewModelScope.launch {
-            _itemList.value = searchRepository.getItemSearchResult(term,sex, minPrice, maxPrice, color)
+            _itemList.value =
+                searchRepository.getItemSearchResult(term, sex, minPrice, maxPrice, color)
 
         }
     }

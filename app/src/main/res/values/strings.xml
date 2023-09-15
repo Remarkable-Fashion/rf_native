@@ -91,11 +91,15 @@
         <item>기타 문제</item>
     </string-array>
 
-    <string-array name="spinner_order">
+    <string-array name="spinner_item_order">
         <item>인기순</item>
         <item>최신순</item>
         <item>고가순</item>
         <item>저가순</item>
     </string-array>
 
+    <string-array name="spinner_look_order">
+        <item>인기순</item>
+        <item>최신순</item>
+    </string-array>
 </resources>

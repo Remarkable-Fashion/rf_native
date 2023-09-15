@@ -36,11 +36,13 @@ class SearchResultFragment(private val resultCategory: String) :
 
     //TODO : 이부분 해결해야합니당
     constructor() : this("back") // 외부 메뉴 이동후 재진입할 경우 기본 생성자 필요!
+
     private val viewModel: SearchViewModel by hiltNavGraphViewModels(R.id.navigation_search)
     private val itemGridAdapter = ItemGridAdapter(3, this)
     private val lookPostGridAdapter = LookPostGridAdapter(3, this)
     private lateinit var lookFilterDataStore: SearchLookFilterDataStore
     private lateinit var itemFilterDataStore: SearchItemFilterDataStore
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,16 +56,15 @@ class SearchResultFragment(private val resultCategory: String) :
         when (resultCategory) {
             "look" -> {
                 requestLookSearch(searchTerm)
-              //  viewModel.getSearchResult(searchTerm)
                 lookResultUiBinding()
             }
 
             "item" -> { // item
                 requestItemSearch(searchTerm)
-                //viewModel.getItemSearchResult(searchTerm)
                 itemResultUiBinding()
             }
-            else->{
+
+            else -> {
                 findNavController().navigate(R.id.action_global_to_searchFragment)
             }
         }
@@ -90,9 +91,10 @@ class SearchResultFragment(private val resultCategory: String) :
         }
 
     }
-    private fun requestLookSearch(searchTerm : String){
-        CoroutineScope(Dispatchers.IO).launch{
-            with(lookFilterDataStore){
+
+    private fun requestLookSearch(searchTerm: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            with(lookFilterDataStore) {
                 val tpo = tpoId.first()?.split(",")?.map { it.toInt() }
                 val season = seasonId.first()?.split(",")?.map { it.toInt() }
                 val style = styleId.first()?.split(",")?.map { it.toInt() }
@@ -100,24 +102,34 @@ class SearchResultFragment(private val resultCategory: String) :
                 val height = height.first()
                 val weight = weight.first()
                 withContext(Dispatchers.Main) {
-                    viewModel.getSearchResult(searchTerm, gender, height, weight, tpo, season, style)
+                    viewModel.getSearchResult(
+                        searchTerm,
+                        gender,
+                        height,
+                        weight,
+                        tpo,
+                        season,
+                        style
+                    )
                 }
             }
         }
     }
-    private fun requestItemSearch(searchTerm: String){
+
+    private fun requestItemSearch(searchTerm: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            with(itemFilterDataStore){
+            with(itemFilterDataStore) {
                 val gender = itemGender.first()
                 val minPrice = minPrice.first()
                 val maxPrice = maxPrice.first()
                 val color = color.first()?.split(",")
-                withContext(Dispatchers.Main){
-                    viewModel.getItemSearchResult(searchTerm,gender,minPrice,maxPrice, color)
+                withContext(Dispatchers.Main) {
+                    viewModel.getItemSearchResult(searchTerm, gender, minPrice, maxPrice, color)
                 }
             }
         }
     }
+
     private fun itemResultUiBinding() {
 
         viewModel.itemList.observe(viewLifecycleOwner) { resource ->
@@ -251,7 +263,7 @@ class SearchResultFragment(private val resultCategory: String) :
         layoutVisibilityUpdate(false)
         binding.verticalViewpager.apply {
             Log.e(TAG, "gridPhotoClicked: ok")
-            setCurrentItem(postIndex,false)
+            setCurrentItem(postIndex, false)
         }
     }
 
