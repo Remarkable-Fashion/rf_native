@@ -26,8 +26,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.invoke
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class SearchResultFragment(private val resultCategory: String) :
@@ -42,6 +44,7 @@ class SearchResultFragment(private val resultCategory: String) :
     private val lookPostGridAdapter = LookPostGridAdapter(3, this)
     private lateinit var lookFilterDataStore: SearchLookFilterDataStore
     private lateinit var itemFilterDataStore: SearchItemFilterDataStore
+    private var isSpinnerInit = false
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,12 +58,12 @@ class SearchResultFragment(private val resultCategory: String) :
 
         when (resultCategory) {
             "look" -> {
-                requestLookSearch(searchTerm)
+               // requestLookSearch(searchTerm)
                 lookResultUiBinding()
             }
 
             "item" -> { // item
-                requestItemSearch(searchTerm)
+               // requestItemSearch(searchTerm)
                 itemResultUiBinding()
             }
 
@@ -89,10 +92,20 @@ class SearchResultFragment(private val resultCategory: String) :
             }
             if (resultCategory == "look") lookPostGridAdapter.notifyDataSetChanged() else itemGridAdapter.notifyDataSetChanged()
         }
-
+     //   orderBySpinnerObserve()
     }
+    /*private fun orderBySpinnerObserve(){
+        viewModel.selectedOrderBy.observe(viewLifecycleOwner){
+            if(isSpinnerInit) {
+                Log.e(TAG, "orderBySpinnerObserve: 값이 바뀜 ${viewModel.spinnerInit}")
+            }else{
+                isSpinnerInit = true
+            }
 
-    private fun requestLookSearch(searchTerm: String) {
+            //viewModel.savedSearchTerm
+        }
+    }*/
+    /* fun requestLookSearch(searchTerm: String) {
         CoroutineScope(Dispatchers.IO).launch {
             with(lookFilterDataStore) {
                 val tpo = tpoId.first()?.split(",")?.map { it.toInt() }
@@ -101,6 +114,8 @@ class SearchResultFragment(private val resultCategory: String) :
                 val gender = lookGender.first()
                 val height = height.first()
                 val weight = weight.first()
+                val orderBy = viewModel.selectedOrderBy.value?.toString() ?: "인기순"
+
                 withContext(Dispatchers.Main) {
                     viewModel.getSearchResult(
                         searchTerm,
@@ -109,7 +124,8 @@ class SearchResultFragment(private val resultCategory: String) :
                         weight,
                         tpo,
                         season,
-                        style
+                        style,
+                        orderBy
                     )
                 }
             }
@@ -123,12 +139,14 @@ class SearchResultFragment(private val resultCategory: String) :
                 val minPrice = minPrice.first()
                 val maxPrice = maxPrice.first()
                 val color = color.first()?.split(",")
+                val orderBy = viewModel.selectedOrderBy.value?.toString() ?: "인기순"
+
                 withContext(Dispatchers.Main) {
-                    viewModel.getItemSearchResult(searchTerm, gender, minPrice, maxPrice, color)
+                    viewModel.getItemSearchResult(searchTerm, gender, minPrice, maxPrice, color,orderBy)
                 }
             }
         }
-    }
+    }*/
 
     private fun itemResultUiBinding() {
 

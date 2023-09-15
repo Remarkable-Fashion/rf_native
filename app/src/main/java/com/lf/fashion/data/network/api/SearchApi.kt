@@ -20,7 +20,8 @@ interface SearchApi {
         @Query("weight") weight: Int? = null,
         @Query("tpo") tpo: List<Int>? = null,
         @Query("season") season: List<Int>? = null,
-        @Query("style") style: List<Int>? = null
+        @Query("style") style: List<Int>? = null,
+        @Query("order") order : String
     ): SearchLookResult
 
     @GET("search/clothes?take=5")
@@ -29,7 +30,8 @@ interface SearchApi {
         @Query("sex") sex: String? = null,
         @Query("priceRange") minPrice: Int? = null,
         @Query("priceRange") maxPrice: Int? = null,
-        @Query("color") colorList: List<String>? = null
+        @Query("color") colorList: List<String>? = null,
+        @Query("order") order : String
     ): SearchItemResult
 
 }

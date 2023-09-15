@@ -37,6 +37,8 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
 
     var savedSearchTerm = ""
 
+    var selectedOrderBy = ""
+
     init {
         getSearchTermRank()
     }
@@ -59,12 +61,12 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
         weight: Int? = null,
         tpo: List<Int>? = null,
         season: List<Int>? = null,
-        style: List<Int>? = null
-
+        style: List<Int>? = null,
+        order: String
     ) {
         viewModelScope.launch {
             _lookList.value =
-                searchRepository.getSearchResult(term, sex, height, weight, tpo, season, style)
+                searchRepository.getSearchResult(term, sex, height, weight, tpo, season, style,order)
             Log.e(TAG, "getSearchResult 위치 : ViewModel - request")
         }
     }
@@ -74,11 +76,12 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
         sex: String? = null,
         minPrice: Int? = null,
         maxPrice: Int? = null,
-        color: List<String>? = null
+        color: List<String>? = null,
+        order: String
     ) {
         viewModelScope.launch {
             _itemList.value =
-                searchRepository.getItemSearchResult(term, sex, minPrice, maxPrice, color)
+                searchRepository.getItemSearchResult(term, sex, minPrice, maxPrice, color,order)
 
         }
     }

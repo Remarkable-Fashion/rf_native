@@ -14,16 +14,18 @@ class SearchRepository @Inject constructor(private val searchApi: SearchApi) : S
                                 weight :Int?=null,
                                 tpo : List<Int>?=null,
                                 season : List<Int>?=null,
-                                style :List<Int>?=null
+                                style :List<Int>?=null,
+                                order: String
     ) = safeApiCall{
-        searchApi.getSearchResult(term,sex,height, weight, tpo, season, style)
+        searchApi.getSearchResult(term,sex,height, weight, tpo, season, style,order)
     }
     suspend fun getItemSearchResult(term : String,
                                     sex: String? = null,
                                     minPrice: Int? = null,
                                     maxPrice : Int?=null,
-                                    color : List<String>?=null
+                                    color : List<String>?=null,
+                                    order: String
     ) = safeApiCall{
-        searchApi.getItemSearchResult(term,sex, minPrice, maxPrice,color)
+        searchApi.getItemSearchResult(term,sex, minPrice, maxPrice,color,order)
     }
 }
