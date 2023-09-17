@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
+import com.lf.fashion.MainActivity
 import com.lf.fashion.R
 import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.databinding.HomeBPhotoDetailFragmentBinding
@@ -17,6 +18,10 @@ import com.lf.fashion.ui.home.adapter.PhotoHorizontalAdapter
 class PhotoDetailFragment : Fragment(R.layout.home_b_photo_detail_fragment) {
     private lateinit var binding : HomeBPhotoDetailFragmentBinding
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        MainActivity.hideNavi(true)
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = HomeBPhotoDetailFragmentBinding.bind(view)
@@ -38,4 +43,9 @@ class PhotoDetailFragment : Fragment(R.layout.home_b_photo_detail_fragment) {
 
         cancelBtnBackStack(binding.cancelBtn)
     }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        MainActivity.hideNavi(false)
+    }
+
 }
