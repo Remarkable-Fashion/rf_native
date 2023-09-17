@@ -12,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.webkit.MimeTypeMap
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -28,7 +27,6 @@ import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ChipInfo
-import com.lf.fashion.ui.addPost.ImagePickerFragment
 import com.lf.fashion.ui.addPost.UploadPostViewModel
 import com.lf.fashion.ui.home.frag.FilterViewModel
 import java.io.BufferedReader
@@ -151,7 +149,7 @@ fun Fragment.showRequireLoginDialog(alreadyHome: Boolean? = null, presentFragId:
         "닫기",
         onClickNegative = {
             if (alreadyHome != true) {
-                findNavController().navigateUp()
+                findNavController().navigate(R.id.navigation_home)
             }
         }
     ) {
@@ -160,14 +158,15 @@ fun Fragment.showRequireLoginDialog(alreadyHome: Boolean? = null, presentFragId:
     }.show(parentFragmentManager, "login_alert_dialog")
 }
 
-fun Fragment.navigateToMyPage(presentFragId: Int) {
+fun Fragment.navigateToMyPage(presentFragId: Int) {/*
     val bottomNavigationView =
         requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
     val loginMenuItem = bottomNavigationView.menu.findItem(R.id.navigation_mypage)
     loginMenuItem.isChecked = true
-    bottomNavigationView.selectedItemId = R.id.navigation_mypage
-    findNavController().popBackStack(presentFragId, true)
-    findNavController().navigate(R.id.action_global_to_myPageFragment)
+    bottomNavigationView.selectedItemId = R.id.navigation_mypage*/
+
+    //findNavController().popBackStack(presentFragId, true)
+    findNavController().navigate(R.id.navigation_mypage)
 }
 
 fun addTextLengthCounter(editText: EditText, counterTextView: TextView, maxLength: Int) {

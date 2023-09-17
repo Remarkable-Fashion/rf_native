@@ -334,7 +334,7 @@ class HomeFragment :
 
     override fun photoZipBtnClicked(post: Posts) {
         findNavController().navigate(
-            R.id.action_global_to_photoZipFragment,
+            R.id.action_navigation_home_to_photoZipFragment,
             bundleOf("post" to post)
         )
     }

@@ -173,9 +173,10 @@ class MyPhotoZipVerticalFragment : Fragment(R.layout.mypage_photozip_vertical_fr
     }
 
     override fun photoZipBtnClicked(post: Posts) {
-        findNavController().navigate(
+        findNavController().navigateUp()
+       /* findNavController().navigate(
             R.id.action_global_to_photoZipFragment, bundleOf("post" to post)
-        )
+        )*/
     }
 
     override fun infoBtnClicked(postId: Int) {

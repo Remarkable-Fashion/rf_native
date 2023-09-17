@@ -178,7 +178,7 @@ class ScrapVerticalFragment : Fragment(),
 
     override fun photoZipBtnClicked(post: Posts) {
         findNavController().navigate(
-            R.id.action_global_to_photoZipFragment, bundleOf("post" to post)
+            R.id.action_scrap_to_photoZipFragment, bundleOf("post" to post)
         )
     }
 

@@ -1,18 +1,17 @@
 package com.lf.fashion
 
-import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.dynamiclinks.DynamicLink.*
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
@@ -44,15 +43,17 @@ class MainActivity : AppCompatActivity() {
                     Log.e(TAG, "onCreate: setOnItemReselectedListener")
                     when (item.itemId) {
                         R.id.navigation_search -> {
-                            navController?.apply {
+                            navController?.navigate(R.id.navigation_search)
+                           /* navController?.apply {
                                 popBackStack(R.id.navigation_search, false)
-                            }
+                            }*/
                         }
 
                         R.id.navigation_mypage -> {
-                            navController?.apply {
+                            navController?.navigate(R.id.navigation_mypage)
+                        /*    navController?.apply {
                                 popBackStack(R.id.navigation_mypage, false)
-                            }
+                            }*/
                         }
 
                         R.id.navigation_photo -> {
@@ -60,9 +61,10 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         R.id.navigation_home -> {
-                            navController?.apply {
+                            navController?.navigate(R.id.navigation_home)
+                        /*  navController?.apply {
                                 popBackStack(R.id.navigation_home, false)
-                            }
+                            }*/
                         }
                     }
                 }
@@ -83,7 +85,30 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.mainContainer)?.findNavController()
         navController?.let {
             bottomNavigationView.setupWithNavController(it)
+            bottomNavigationView.setOnItemSelectedListener { item ->
+                when(item.itemId) {
+                    R.id.navigation_home ->{
+                        it.navigate(R.id.navigation_home)
+                    }
+                    R.id.navigation_mypage ->{
+                        it.navigate(R.id.navigation_mypage)
+                    }
+                    R.id.navigation_photo ->{
+                        it.navigate(R.id.navigation_photo)
+                    }
+                    R.id.navigation_scrap ->{
+                        it.navigate(R.id.navigation_scrap)
+                    }
+                    R.id.navigation_search ->{
+                        it.navigate(R.id.navigation_search)
+                    }
+                }
+                //NavigationUI.onNavDestinationSelected(item, it)
+                return@setOnItemSelectedListener true
+            }
         }
+
+
 
         //bottomNavigationView.selectedItemId = selectedMenuItemId
 

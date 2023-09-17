@@ -181,9 +181,7 @@ class MyPageVerticalFragment : Fragment(),
 
     override fun photoZipBtnClicked(post: Posts) {
         post.user = userInfo
-        /*   findNavController().navigate(
-               R.id.action_global_to_photoZipFragment, bundleOf("post" to post)
-           )*/
+
         findNavController().navigate(
             R.id.action_myPageVerticalFragment_to_myPhotoZipFragment,
             bundleOf("post" to post)
