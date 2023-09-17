@@ -36,7 +36,6 @@ class SearchResultFragment(private val resultCategory: String) :
     Fragment(R.layout.search_result_viewpager), GridPhotoClickListener {
     private lateinit var binding: SearchResultViewpagerBinding
 
-    //TODO : 이부분 해결해야합니당
     constructor() : this("back") // 외부 메뉴 이동후 재진입할 경우 기본 생성자 필요!
 
     private val viewModel: SearchViewModel by hiltNavGraphViewModels(R.id.navigation_search)
@@ -44,7 +43,6 @@ class SearchResultFragment(private val resultCategory: String) :
     private val lookPostGridAdapter = LookPostGridAdapter(3, this)
     private lateinit var lookFilterDataStore: SearchLookFilterDataStore
     private lateinit var itemFilterDataStore: SearchItemFilterDataStore
-    private var isSpinnerInit = false
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,12 +56,10 @@ class SearchResultFragment(private val resultCategory: String) :
 
         when (resultCategory) {
             "look" -> {
-               // requestLookSearch(searchTerm)
                 lookResultUiBinding()
             }
 
-            "item" -> { // item
-               // requestItemSearch(searchTerm)
+            "item" -> {
                 itemResultUiBinding()
             }
 
@@ -92,61 +88,8 @@ class SearchResultFragment(private val resultCategory: String) :
             }
             if (resultCategory == "look") lookPostGridAdapter.notifyDataSetChanged() else itemGridAdapter.notifyDataSetChanged()
         }
-     //   orderBySpinnerObserve()
-    }
-    /*private fun orderBySpinnerObserve(){
-        viewModel.selectedOrderBy.observe(viewLifecycleOwner){
-            if(isSpinnerInit) {
-                Log.e(TAG, "orderBySpinnerObserve: 값이 바뀜 ${viewModel.spinnerInit}")
-            }else{
-                isSpinnerInit = true
-            }
-
-            //viewModel.savedSearchTerm
-        }
-    }*/
-    /* fun requestLookSearch(searchTerm: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            with(lookFilterDataStore) {
-                val tpo = tpoId.first()?.split(",")?.map { it.toInt() }
-                val season = seasonId.first()?.split(",")?.map { it.toInt() }
-                val style = styleId.first()?.split(",")?.map { it.toInt() }
-                val gender = lookGender.first()
-                val height = height.first()
-                val weight = weight.first()
-                val orderBy = viewModel.selectedOrderBy.value?.toString() ?: "인기순"
-
-                withContext(Dispatchers.Main) {
-                    viewModel.getSearchResult(
-                        searchTerm,
-                        gender,
-                        height,
-                        weight,
-                        tpo,
-                        season,
-                        style,
-                        orderBy
-                    )
-                }
-            }
-        }
     }
 
-    private fun requestItemSearch(searchTerm: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            with(itemFilterDataStore) {
-                val gender = itemGender.first()
-                val minPrice = minPrice.first()
-                val maxPrice = maxPrice.first()
-                val color = color.first()?.split(",")
-                val orderBy = viewModel.selectedOrderBy.value?.toString() ?: "인기순"
-
-                withContext(Dispatchers.Main) {
-                    viewModel.getItemSearchResult(searchTerm, gender, minPrice, maxPrice, color,orderBy)
-                }
-            }
-        }
-    }*/
 
     private fun itemResultUiBinding() {
 
