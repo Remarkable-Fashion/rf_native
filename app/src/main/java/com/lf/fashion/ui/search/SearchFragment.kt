@@ -34,24 +34,28 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class SearchFragment : Fragment(R.layout.search_fragment),
     AdapterView.OnItemSelectedListener,
-SearchRankRowClickListener{
+    SearchRankRowClickListener {
     private lateinit var binding: SearchFragmentBinding
     private lateinit var userPreferences: UserDataStorePref
     private val viewModel: SearchViewModel by hiltNavGraphViewModels(R.id.navigation_search)
     private lateinit var lookFilterDataStore: SearchLookFilterDataStore
     private lateinit var itemFilterDataStore: SearchItemFilterDataStore
-    private var orderByMode: String = "Best"
 
     private val tabTitleArray = arrayOf("LOOK", "ITEM")
     private val historyList = MutableLiveData<MutableList<String>>()
     private val termRankAdapter = TermRankAdapter(this)
+    private var orderByParamMap =
+        mapOf("인기순" to "best", "최신순" to "recent", "고가순" to "high", "저가순" to "low")
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = SearchFragmentBinding.bind(view)
+
         lookFilterDataStore = SearchLookFilterDataStore(requireContext().applicationContext)
         itemFilterDataStore = SearchItemFilterDataStore(requireContext().applicationContext)
         userPreferences = UserDataStorePref(requireContext().applicationContext)
@@ -68,12 +72,10 @@ SearchRankRowClickListener{
             }
         }
 
-        Log.e(TAG, "onViewCreated: ${viewModel.savedSearchTerm}", )
         //검색어 et에 있을시 인기 검색어 gone
-        if (viewModel.savedSearchTerm.isNotEmpty()){
+        if (viewModel.savedSearchTerm.isNotEmpty()) {
             searchTermRankUiVisible(default = false)
-
-            Log.e(TAG, "onViewCreated: ${binding.searchTerm.root.isVisible}")
+           // Log.e(TAG, "onViewCreated: ${binding.searchTerm.root.isVisible}")
         }
         //검색 동작
         searchEtSetActionListener() // 검색 동작시 ui visibility 로 결과 레이아웃 노출 조정
@@ -88,7 +90,7 @@ SearchRankRowClickListener{
         filterOnclickNavigate() // item / look 각 필터 이동
         searchResultViewPagerSetting()  //결과 레이아웃 내부 세팅 (tab,viewpager)
 
-        /** 탭이 바뀔 때마다 spinner array 바꿔주기 , 및 item / look 검색 결과 request 하는 메소드 **/
+        // 탭이 바뀔 때마다 spinner array 바꿔주기
         searchViewPagerOnChangeCallback(binding.searchResult.tabViewpager)
 
         binding.searchIcon.setOnClickListener {
@@ -99,9 +101,22 @@ SearchRankRowClickListener{
         }
 
         //검색 결과 화면에서 grid 모드로 보다가 사진을 클릭해서 1개씩 보기 모드로 바뀔 경우
-        viewModel.gridMode.observe(viewLifecycleOwner){
-            if(it ==1){
+        viewModel.gridMode.observe(viewLifecycleOwner) {
+            if (it == 1) {
                 binding.searchResult.gridText.text = "1"
+            }
+        }
+
+        // spinner 값 바뀔 때마다 request !
+        viewModel.selectedOrderBy.observe(viewLifecycleOwner){
+            when (binding.searchResult.tabViewpager.currentItem) {
+                0 -> { //look
+                   requestLookSearch(viewModel.savedSearchTerm)
+                }
+
+                1 -> { //item
+                    requestItemSearch(viewModel.savedSearchTerm)
+                }
             }
         }
     }
@@ -131,7 +146,6 @@ SearchRankRowClickListener{
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val searchTerm = textView.text.toString()
                 searchResultVisible(searchTerm)
-
                 true
             } else {
                 false
@@ -147,7 +161,7 @@ SearchRankRowClickListener{
                 //chip 에 추가
                 var newHistory = historyList.value
                 if (newHistory != null) {
-                   newHistory.add(0,searchTerm)
+                    newHistory.add(0, searchTerm)
                     newHistory = newHistory.distinct().toMutableList()
                     Log.e(TAG, "searchAction HISTORY: $newHistory")
                 } else {
@@ -163,7 +177,7 @@ SearchRankRowClickListener{
         }
     }
 
-    private fun searchTermRankUiVisible(default : Boolean) {
+    private fun searchTermRankUiVisible(default: Boolean) {
         binding.searchTerm.root.isVisible = default
         binding.searchResult.root.isVisible = !default
     }
@@ -184,7 +198,7 @@ SearchRankRowClickListener{
         val tabViewpager = binding.searchResult.tabViewpager
         val tabLayout = binding.searchResult.tab
 
-        tabViewpager.adapter = SearchResultViewPagerAdapter(this, )
+        tabViewpager.adapter = SearchResultViewPagerAdapter(this)
         TabLayoutMediator(tabLayout, tabViewpager) { tab, position ->
             tab.text = tabTitleArray[position]
         }.attach()
@@ -193,25 +207,12 @@ SearchRankRowClickListener{
     private fun searchViewPagerOnChangeCallback(tabViewpager: ViewPager2) {
         tabViewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                Log.e(TAG, "onPageSelected: 페이지 생성")
-                setupOrderBySpinner(position)
-
+                setupOrderBySpinner(position)  //페이지 바뀔때 spinner 새로 생성
                 super.onPageSelected(position)
-                when (position) {
-                    0 -> {
-                        requestLookSearch(viewModel.savedSearchTerm)
-                    }
-
-                    1 -> { // item
-                        requestItemSearch(viewModel.savedSearchTerm)
-                    }
-
-                }
             }
         })
     }
 
-    // order selected 되면 바꿔줘서 요청시켜야함  ㅠㅠㅠㅜ
     private fun requestLookSearch(searchTerm: String) {
         CoroutineScope(Dispatchers.IO).launch {
             with(lookFilterDataStore) {
@@ -221,9 +222,9 @@ SearchRankRowClickListener{
                 val gender = lookGender.first()
                 val height = height.first()
                 val weight = weight.first()
-                val orderBy = viewModel.selectedOrderBy.value?.toString() ?: "인기순"
+                val orderBy = orderByParamMap[viewModel.selectedOrderBy.value] ?:"best"
 
-                withContext(kotlinx.coroutines.Dispatchers.Main) {
+                withContext(Dispatchers.Main) {
                     viewModel.getSearchResult(
                         searchTerm,
                         gender,
@@ -246,10 +247,17 @@ SearchRankRowClickListener{
                 val minPrice = minPrice.first()
                 val maxPrice = maxPrice.first()
                 val color = color.first()?.split(",")
-                val orderBy = viewModel.selectedOrderBy.value?.toString() ?: "인기순"
+                val orderBy = orderByParamMap[viewModel.selectedOrderBy.value]?:"best"
 
-                withContext(kotlinx.coroutines.Dispatchers.Main) {
-                    viewModel.getItemSearchResult(searchTerm, gender, minPrice, maxPrice, color,orderBy)
+                withContext(Dispatchers.Main) {
+                    viewModel.getItemSearchResult(
+                        searchTerm,
+                        gender,
+                        minPrice,
+                        maxPrice,
+                        color,
+                        orderBy
+                    )
                 }
             }
         }
@@ -261,7 +269,6 @@ SearchRankRowClickListener{
         historyList.observe(viewLifecycleOwner) { history ->
             //기존 chipChild 모두 지우고, 새롭게 덮어쓴 ChipContents 리스트를 역순으로(최신 검색어 상단) child 칩 생성
             binding.searchTerm.recentTermChipGroup.removeAllViews()
-            //  val orderByRecent = history.reversed()
             //10개까지만 노출
             val chipRange = if (history.size > 10) 0..9 else history.indices
             for (j in chipRange) {
@@ -334,29 +341,29 @@ SearchRankRowClickListener{
         }
     }
 
-    private fun setupOrderBySpinner(tabPosition :Int) {
+    private fun setupOrderBySpinner(tabPosition: Int) {
         val orderBySpinner = binding.searchResult.orderBySpinner
 
-        val arrayResId = when(tabPosition) {
-                0-> R.array.spinner_look_order
-                1 -> R.array.spinner_item_order
-            else-> R.array.spinner_look_order // 기본
-            }
-            orderBySpinner.onItemSelectedListener = this
-            ArrayAdapter . createFromResource (
-                requireContext(),
-                arrayResId,
-                R.layout.spinner_text_view
-            ).also { adapter ->
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    orderBySpinner.adapter = adapter
-            }
+        val arrayResId = when (tabPosition) {
+            0 -> R.array.spinner_look_order
+            1 -> R.array.spinner_item_order
+            else -> R.array.spinner_look_order // 기본
+        }
+        orderBySpinner.onItemSelectedListener = this
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            arrayResId,
+            R.layout.spinner_text_view
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            orderBySpinner.adapter = adapter
+        }
     }
 
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-        Log.e(TAG, "onItemSelected: spinner ${parent.getItemAtPosition(position)}", )
-        viewModel.selectedOrderBy.value = parent.getItemAtPosition(position).toString()
+        viewModel.selectedOrderBy.value  = parent.getItemAtPosition(position).toString()
+        //Log.e(TAG, "onItemSelected: spinner ${viewModel.selectedOrderBy.value}")
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {

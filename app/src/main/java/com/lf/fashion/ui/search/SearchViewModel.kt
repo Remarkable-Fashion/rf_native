@@ -37,7 +37,7 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
 
     var savedSearchTerm = ""
 
-    var selectedOrderBy = ""
+    var selectedOrderBy = MutableLiveData<String>()
 
     init {
         getSearchTermRank()
