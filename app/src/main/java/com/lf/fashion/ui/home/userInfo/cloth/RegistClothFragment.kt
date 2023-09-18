@@ -38,7 +38,7 @@ import kotlin.properties.Delegates
 /**
  * 이 의상은 어때? 내부 + 버튼 클릭시 노출되는 의상 등록 fragment 입니다
  * **/
-//TODO: 업데이트 안내 코드 추가 , 의상등록 이미지 클릭 -> 이미지피커프래그먼트 연결
+//TODO: 업데이트 안내 코드 추가
 
 @AndroidEntryPoint
 class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), View.OnClickListener {

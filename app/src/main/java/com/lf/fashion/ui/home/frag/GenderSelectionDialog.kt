@@ -13,7 +13,9 @@ import com.lf.fashion.databinding.ItemGenderDialogBinding
  * 앱 최초 설치시에만 노출되는 gender 선택 dialog fragment 입니다
  * **/
 
-class GenderSelectionDialog : DialogFragment() , View.OnClickListener {
+class GenderSelectionDialog(
+    private val onClickGender: ((String) -> Unit) = {}
+) : DialogFragment() , View.OnClickListener {
     private lateinit var binding : ItemGenderDialogBinding
   /*  override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog =  super.onCreateDialog(savedInstanceState)
@@ -51,16 +53,19 @@ class GenderSelectionDialog : DialogFragment() , View.OnClickListener {
             binding.allGenderBtn ->{
                // binding.allGenderBtn.isSelected =!binding.allGenderBtn.isSelected
                 binding.allGenderBtn.isPressed = true
+                onClickGender("All")
                 this@GenderSelectionDialog.dismiss()
             }
             binding.genderManBtn ->{
               //  binding.genderManBtn.isSelected =!binding.allGenderBtn.isSelected
                 binding.genderManBtn.isPressed = true
+                onClickGender("Male")
                 this@GenderSelectionDialog.dismiss()
             }
             binding.genderWomanBtn ->{
                // binding.genderWomanBtn.isSelected =!binding.genderWomanBtn.isSelected
                 binding.genderWomanBtn.isPressed = true
+                onClickGender("Female")
                 this@GenderSelectionDialog.dismiss()
             }
         }

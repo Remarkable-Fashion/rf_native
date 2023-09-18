@@ -318,10 +318,8 @@ fun Fragment.handleApiError(
 
 // 파일 확장자로부터 MIME 타입을 추론하는 함수
 fun getMimeType(file: File): String {
-    Log.e(TAG, "Util getMimeType: ${file.absoluteFile}")
     val split = file.absoluteFile.toString().split(".")
     val mime = split[1]
-
     //val extension = MimeTypeMap.getFileExtensionFromUrl(file.absolutePath)
     //return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
     Log.e(TAG, "getMimeType: image/${mime}")

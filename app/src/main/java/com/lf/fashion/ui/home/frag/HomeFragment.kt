@@ -28,7 +28,6 @@ import com.lf.fashion.ui.GridPostAdapter
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener
 import com.lf.fashion.ui.MyBottomDialogListener
-import com.lf.fashion.ui.mainBottomMenuListener
 import com.lf.fashion.ui.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -63,26 +62,33 @@ class HomeFragment :
         userPref = UserDataStorePref(requireContext().applicationContext)
         filterDataStore = PostFilterDataStore(requireContext().applicationContext)
 
-        runBlocking {
-            launch {
-                if (userPref.firstActivate.first().isNullOrEmpty()) {
-                    val dialog = GenderSelectionDialog()
-                    dialog.show(parentFragmentManager, "gender_selection_dialog")
-                    userPref.isNotFirstActivate()  //테스트를 위해 계속 띄우려고 지워둠 ! -> 거슬려서 활성화
-                    //TODO : 아직 다이얼로그 띄우기만하고 클릭시 api 요청 파라미터에 넣는 작업 x -> 필터기능 파라미터로 전부 정리되고나면 pref 에 넣어 관리할것
+        //todo test
+        CoroutineScope(Dispatchers.Main).launch {
+            if (userPref.firstActivate.first().isNullOrEmpty()) {
+                val dialog = GenderSelectionDialog{
+                    Log.e(TAG, "onViewCreated: $it")
+                    CoroutineScope(Dispatchers.IO).launch{
+                        filterDataStore.saveGender(it)
+                    }
                 }
+                dialog.show(parentFragmentManager, "gender_selection_dialog")
+                userPref.isNotFirstActivate()
             }
         }
+
         /*response 로 post 를 받아서 중첩 viewPager 와 recyclerView 모두에게 adapter 연결/submitList 후 visibility 로 노출을 관리한다
               (전환 속도 감소, 메모리에 무리가 가지않는다면 ok)*/
         photoLayoutVisibilityMode(true) // default ui visibility
         viewModel.postMode.observe(viewLifecycleOwner) {
             requestPost()
+
+            //상단 랜덤/팔로잉 모드 selected 적용
+            val randomMode = (it == "random")
+            binding.appBarRandom.isSelected = randomMode
+            binding.appBarFollowing.isSelected = !randomMode
         }
 
-        binding.appBarRandom.isSelected = true                              // 상단 메뉴 - 랜덤 모드 선택이 디폴트
         binding.topMenu.children.forEach { it.setOnClickListener(this) }    //onclick listener 묶어서 한번에 달기
-
 
         //좋아요 상태 변화 관찰&업데이트
         updateLikeState()
@@ -101,13 +107,14 @@ class HomeFragment :
         observePostResponse()
 
     }
-    private fun requestPost(){
-        CoroutineScope(Dispatchers.IO).launch{
-            with(filterDataStore){
+
+    private fun requestPost() {
+        CoroutineScope(Dispatchers.IO).launch {
+            with(filterDataStore) {
                 val tpo = tpoId.first()?.split(",")?.map { it.toInt() }
                 val season = seasonId.first()?.split(",")?.map { it.toInt() }
                 val style = styleId.first()?.split(",")?.map { it.toInt() }
-                val gender = postGender.first()?:"Male"
+                val gender = postGender.first() ?: "Male"
                 val height = height.first()
                 val weight = weight.first()
                 withContext(Dispatchers.Main) {
@@ -197,14 +204,10 @@ class HomeFragment :
         when (view) {
             //상단 바의 랜덤,팔로잉 버튼 각각 클릭 (임시로 select 여부만 변경 처리)
             binding.topFollowingMenuLayer -> { //팔로잉 버튼 클릭
-                binding.appBarFollowing.isSelected = true
-                binding.appBarRandom.isSelected = false
                 viewModel.postMode.value = "following"
             }
 
             binding.appBarRandom -> { //랜덤 버튼 클릭
-                binding.appBarFollowing.isSelected = false
-                binding.appBarRandom.isSelected = true
                 viewModel.postMode.value = "random"
             }
 
@@ -411,16 +414,17 @@ class HomeFragment :
         CoroutineScope(Dispatchers.Main).launch {
             //기존 게시/미게시 상태의 반전
             val response = viewModel.changePostStatus(post.id, !(post.isPublic ?: true))
-            if(response.success){
-                Toast.makeText(requireContext(),"게시물의 상태가 변경되었습니다",Toast.LENGTH_SHORT).show()
+            if (response.success) {
+                Toast.makeText(requireContext(), "게시물의 상태가 변경되었습니다", Toast.LENGTH_SHORT).show()
                 val currentList = defaultAdapter.currentList
                 val position = currentList.indexOf(post)
-                if(position != -1){
+                if (position != -1) {
                     defaultAdapter.currentList[position].apply {
                         isPublic = !isPublic!!
                     }
-                    defaultAdapter.notifyItemChanged(position,"PUBLIC_STATE")
-                }            }
+                    defaultAdapter.notifyItemChanged(position, "PUBLIC_STATE")
+                }
+            }
         }
     }
 

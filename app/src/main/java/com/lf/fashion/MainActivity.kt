@@ -35,10 +35,7 @@ class MainActivity : AppCompatActivity() {
             bottomNaviSetItemSelectedListener(it)
         }
 
-
-        //bottomNavigationView.selectedItemId = selectedMenuItemId
-
-        // BottomNavigationView의 메뉴 아이템 클릭 리스너 설정
+        // BottomNavigationView의 메뉴 아이템 다시 클릭할 경우(reselected)리스너 설정
         bottomNaviReselectedListener(navController)
 
         //딥링크 부분 .. 구현하다가 말았..

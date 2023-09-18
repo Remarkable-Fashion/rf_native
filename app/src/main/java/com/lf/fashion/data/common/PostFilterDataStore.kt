@@ -106,7 +106,13 @@ class PostFilterDataStore @Inject constructor(@ApplicationContext context: Conte
         }
     }
 
-
+    suspend fun saveGender(
+        gender: String
+    ){
+        appContext.postFilterDataStore.edit { preferences ->
+            preferences[FILTER_GENDER] = gender
+        }
+    }
     suspend fun clearMainFilter() {
         appContext.postFilterDataStore.edit { preferences ->
             preferences.apply {
