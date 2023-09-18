@@ -17,8 +17,6 @@ import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.lf.fashion.MainActivity
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
@@ -27,6 +25,7 @@ import com.lf.fashion.data.model.Posts
 import com.lf.fashion.data.model.UserInfo
 import com.lf.fashion.databinding.MyVerticalFragmentBinding
 import com.lf.fashion.ui.MyBottomDialogListener
+import com.lf.fashion.ui.mainBottomMenuListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -52,19 +51,13 @@ class MyPageVerticalFragment : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-        val loginMenuItem = bottomNavigationView.menu.findItem(R.id.navigation_mypage)
-        loginMenuItem.isChecked = true
-        bottomNavigationView.selectedItemId = R.id.navigation_mypage
-
         binding = MyVerticalFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        MainActivity.bottomNaviReselectedListener(findNavController())
+        mainBottomMenuListener(true)
         cancelBtnBackStack(binding.backBtn)
         viewModel.myInfo.observe(viewLifecycleOwner) {
             userInfo = UserInfo(it.id, it.name, it.profile, null)
@@ -190,7 +183,7 @@ class MyPageVerticalFragment : Fragment(),
 
     override fun infoBtnClicked(postId: Int) {
         findNavController().navigate(
-            R.id.action_global_to_userInfoFragment,
+            R.id.action_myPageVerticalFragment_to_userInfoFragment,
             bundleOf("postId" to postId)
         )
 

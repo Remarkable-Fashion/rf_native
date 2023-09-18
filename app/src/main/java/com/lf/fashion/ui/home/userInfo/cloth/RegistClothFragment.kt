@@ -82,6 +82,7 @@ class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), Vie
     }
 
     override fun onResume() {
+        MainActivity.hideNavi(true)
         viewModel.selectedCategory?.let {
             val cloth = binding.clothRegistForm
             when (it) {

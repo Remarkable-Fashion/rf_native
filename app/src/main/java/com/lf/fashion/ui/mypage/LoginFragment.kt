@@ -72,7 +72,7 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
                             if (resource.value.success) {
                                 //      showLoading(requireActivity(),false)
                                 Log.d(TAG, "LoginFragment - requestJWTToken: ");
-                                findNavController().navigate(R.id.action_loginFragment_to_navigation_mypage)
+                                findNavController().navigate(R.id.navigation_mypage)
                             }
                             binding.progressBar.visibility = View.GONE
                         }

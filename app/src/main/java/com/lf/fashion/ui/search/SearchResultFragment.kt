@@ -64,7 +64,7 @@ class SearchResultFragment(private val resultCategory: String) :
             }
 
             else -> {
-                findNavController().navigate(R.id.action_global_to_searchFragment)
+                findNavController().navigate(R.id.navigation_search)
             }
         }
 

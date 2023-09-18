@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
 import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
@@ -20,6 +19,7 @@ import com.lf.fashion.ui.GridPhotoClickListener
 import com.lf.fashion.ui.GridPostAdapter
 import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
 import com.lf.fashion.ui.home.photozip.PhotoZipViewModel
+import com.lf.fashion.ui.mainBottomMenuListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
 
@@ -41,12 +41,6 @@ class MyPhotoZipFragment : Fragment(R.layout.mypage_photo_zip_fragment), GridPho
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //마이페이지 내부로 설정
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-        val myPage = bottomNavigationView.menu.findItem(R.id.navigation_mypage)
-        myPage.isChecked = true
-
         binding = MypagePhotoZipFragmentBinding.bind(view)
         userPref = UserDataStorePref(requireContext().applicationContext)
 
@@ -145,9 +139,8 @@ class MyPhotoZipFragment : Fragment(R.layout.mypage_photo_zip_fragment), GridPho
 
     override fun gridPhotoClicked(postIndex: Int) {
         //grid 포토 클릭시!!
+        mainBottomMenuListener(false)
         viewModel.editClickedPostIndex(postIndex)
-        //,
-        //            bundleOf("postList" to postList)
         findNavController().navigate(
             R.id.action_myPhotoZipFragment_to_myPhotoZipVerticalFragment,
             bundleOf("userInfoPost" to userInfoPost)

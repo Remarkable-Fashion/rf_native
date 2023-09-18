@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
 import com.lf.fashion.R
 import com.lf.fashion.TAG
@@ -54,11 +53,6 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
         binding = HomeBPhotoFilterFragmentBinding.bind(view)
         filterDataStore = PostFilterDataStore(requireContext().applicationContext)
         exposeSavedValue()// datastore 에 저장된 필터값 ui에 노출
-        //생성 후 다른 바텀 메뉴 이동시 다시 home menu 클릭시 selected 아이콘으로 변경 안되는 오류 해결하기위해 수동 메뉴 checked 코드 추가
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-        val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_home)
-        homeMenu.isChecked = true
 
         binding.filterSpace.genderManBtn.setOnClickListener(this)
         binding.filterSpace.genderWomanBtn.setOnClickListener(this)

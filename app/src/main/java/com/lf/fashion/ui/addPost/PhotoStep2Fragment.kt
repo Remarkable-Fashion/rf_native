@@ -15,7 +15,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.lf.fashion.MainActivity
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.model.UploadCloth
@@ -41,8 +41,12 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
     //selectedClothImageUri 는 adpater 에 보내서 띄워주는 역할을 한다
     private var selectedClothImageUri: String? = null
     private val chipStyle = "default"
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        MainActivity.hideNavi(true)
+    }
     override fun onResume() {
+        MainActivity.hideNavi(true)
         viewModel.selectedGender?.let {
             if (it == "Male") {
                 binding.filterSpace.genderManBtn.isSelected = true
@@ -76,12 +80,6 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //생성 후 다른 바텀 메뉴 이동시 다시 home menu 클릭시 selected 아이콘으로 변경 안되는 오류 해결하기위해 수동 메뉴 checked 코드 추가
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-        val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_photo)
-        homeMenu.isChecked = true
-
 
         //photoFragment -> ImagePicker -> PHtoStep2Fragment 로 받아온 이미지들 ..
         val imageUris = arguments?.get("image_uri") as Array<String>
@@ -445,9 +443,8 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                     ).show()
 
                     //findNavController 로 mypage 프래그먼트 이동시 backStack 문제로 photo menu 접근이 불가,
-                    //메뉴탭 수동으로 이동시키고 backStack 제거하여 viewModel 과 edittext data clear
                     //findNavController().popBackStack(R.id.navigation_photo, true)
-                    navigateToMyPage(R.id.navigation_photo)
+                    findNavController().navigate(R.id.navigation_mypage)
                 } else {
                     Toast.makeText(requireContext(), "사진의 용량이 허용 크기를 초과하였습니다.", Toast.LENGTH_SHORT)
                         .show()
@@ -468,5 +465,8 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
             }
         }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        MainActivity.hideNavi(false)
+    }
 }

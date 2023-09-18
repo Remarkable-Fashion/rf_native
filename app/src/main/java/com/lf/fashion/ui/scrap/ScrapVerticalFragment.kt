@@ -18,7 +18,6 @@ import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.UserDataStorePref
@@ -26,7 +25,7 @@ import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.ui.MyBottomDialogListener
-import com.lf.fashion.ui.navigateToMyPage
+import com.lf.fashion.ui.mainBottomMenuListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -52,12 +51,6 @@ class ScrapVerticalFragment : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-        val scrapMenu = bottomNavigationView.menu.findItem(R.id.navigation_scrap)
-        scrapMenu.isChecked = true
-        bottomNavigationView.selectedItemId = R.id.navigation_scrap
-
         binding = ScrapVerticalFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -65,6 +58,7 @@ class ScrapVerticalFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         cancelBtnBackStack(binding.backBtn)
+        mainBottomMenuListener(true)
         userPref = UserDataStorePref(requireContext().applicationContext)
 
 
@@ -183,18 +177,19 @@ class ScrapVerticalFragment : Fragment(),
     }
 
     override fun infoBtnClicked(postId: Int) {
-        findNavController().navigate(R.id.action_global_to_userInfoFragment)
+        findNavController().navigate(R.id.action_scrapVerticalFragment_to_userInfoFragment,
+            bundleOf("postId" to postId))
     }
 
     override fun profileSpaceClicked(userId: Int) {
         val myUniqueId = userPref.getMyUniqueId()
         Log.e(TAG, "profileSpaceClicked: $myUniqueId , $userId")
         if (userId == myUniqueId) {
-            navigateToMyPage(R.id.scrapVerticalFragment)
+            findNavController().navigate(R.id.navigation_mypage)
             return
         }
         findNavController().navigate(
-            R.id.action_global_to_otherUSerFragment,
+            R.id.action_scrap_fragment_to_otherUserProfileFragment,
             bundleOf("userId" to userId)
         )
     }

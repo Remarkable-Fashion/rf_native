@@ -76,7 +76,7 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
 
                     is Resource.Failure -> {
                         if (resources.errorCode == 401) {
-                            showRequireLoginDialog(presentFragId = R.id.navigation_scrap)
+                            showRequireLoginDialog()
                         } else {
                             Log.e(TAG, "onViewCreated postList response Error: $resources ")
                         }
@@ -89,7 +89,7 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
                 }
             }
         } else {
-            showRequireLoginDialog(presentFragId = R.id.navigation_scrap)
+            showRequireLoginDialog()
 
         }
 
@@ -133,6 +133,7 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
     override fun gridPhotoClicked(postIndex: Int) {
         Log.d(TAG, "ScrapFragment - gridPhotoClicked: grid 포토 클릭 $postIndex")
         // post list 에서 클릭한 포토의 포지션을 viewModel 에 저장
+        mainBottomMenuListener(false)
         viewModel.editClickedPostIndex(postIndex)
         findNavController().navigate(R.id.action_navigation_scrap_to_scrapVerticalFragment)
     }

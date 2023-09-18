@@ -8,7 +8,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.lf.fashion.R
@@ -21,7 +20,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 /**
@@ -78,11 +76,6 @@ class ItemFilterFragment : Fragment(R.layout.search_item_filter_fragment), View.
         super.onViewCreated(view, savedInstanceState)
         binding = SearchItemFilterFragmentBinding.bind(view)
         itemFilterDataStore = SearchItemFilterDataStore(requireContext().applicationContext)
-        //생성 후 다른 바텀 메뉴 이동시 다시 home menu 클릭시 selected 아이콘으로 변경 안되는 오류 해결하기 위해 수동 메뉴 checked 코드 추가
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-        val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_search)
-        homeMenu.isChecked = true
         if (viewModel.maxPrice == null) {
             binding.priceMax = maxPriceDefault // 초기값 5만원
         }

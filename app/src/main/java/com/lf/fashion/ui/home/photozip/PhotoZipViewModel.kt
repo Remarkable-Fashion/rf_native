@@ -9,6 +9,7 @@ import com.lf.fashion.data.repository.CommunicateRepository
 import com.lf.fashion.data.repository.OtherUserInfoRepository
 import com.lf.fashion.data.model.MsgResponse
 import com.lf.fashion.data.model.OtherUserInfo
+import com.lf.fashion.data.model.Posts
 import com.lf.fashion.data.model.RandomPostResponse
 import com.lf.fashion.data.repository.MyPageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,6 +42,7 @@ class PhotoZipViewModel @Inject constructor(
 
     var havetoRefresh = MutableLiveData<Boolean>()
 
+    var bundlePost : Posts? = null
     fun getPostByUserId(userId: Int) {
         viewModelScope.launch {
             _posts.value = otherUserInfoRepository.getPostByUserId(userId)

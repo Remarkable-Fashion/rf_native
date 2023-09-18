@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
 import com.lf.fashion.data.common.UserDataStorePref
@@ -22,7 +21,6 @@ import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.VerticalViewPagerClickListener
 import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
-import com.lf.fashion.ui.navigateToMyPage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,11 +40,6 @@ class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_frag
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-        val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_home)
-        homeMenu.isChecked = true
-
         binding = HomeBPhotozipVerticalFragmentBinding.bind(view)
         cancelBtnBackStack(binding.backBtn)
         userPref = UserDataStorePref(requireContext().applicationContext)
@@ -173,7 +166,7 @@ class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_frag
 
     override fun infoBtnClicked(postId: Int) {
         findNavController().navigate(
-            R.id.action_global_to_userInfoFragment,
+            R.id.action_photoZipFragment_to_userInfoFragment,
             bundleOf("postId" to postId)
         )
     }
@@ -181,11 +174,11 @@ class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_frag
     override fun profileSpaceClicked(userId: Int) {
         val myUniqueId = userPref.getMyUniqueId()
         if (userId == myUniqueId) {
-            navigateToMyPage(R.id.photoZipVerticalFragment)
+            findNavController().navigate(R.id.navigation_mypage)
             return
         }
         findNavController().navigate(
-            R.id.action_global_to_otherUSerFragment,
+            R.id.action_photoZipVerticalFragment_to_otherUserProfileFragment,
             bundleOf("userId" to userId)
         )
     }

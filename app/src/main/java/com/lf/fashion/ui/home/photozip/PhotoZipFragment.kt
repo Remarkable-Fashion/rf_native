@@ -1,6 +1,7 @@
 package com.lf.fashion.ui.home.photozip
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -8,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
+import com.lf.fashion.TAG
 import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.Posts
@@ -34,31 +35,25 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
     private lateinit var userInfoPost: Posts
     private lateinit var userPref: UserDataStorePref
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //생성 후 다른 바텀 메뉴 이동시 다시 home menu 클릭시 selected 아이콘으로 변경 안되는 오류 해결하기위해 수동 메뉴 checked 코드 추가
-       /* val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-        val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_home)
-        homeMenu.isChecked = true*/
-
+        Log.e(TAG, "onViewCreated: photozip")
         binding = HomeBPhotoZipFragmentBinding.bind(view)
         userPref = UserDataStorePref(requireContext().applicationContext)
 
-        val post = arguments?.get("post") as Posts
-        userInfoPost =
-            post // photoZip 엔드포인트 response 에는 post 내부에 user 정보가 없어서 vertical Fragment 로 이동시 같이 보낸다
-        if (post.user == null) return
+        viewModel.bundlePost = arguments?.get("post") as Posts
+        if (viewModel.bundlePost == null) return
+
+        userInfoPost = viewModel.bundlePost!! // photoZip 엔드포인트 response 에는 post 내부에 user 정보가 없어서 vertical Fragment 로 이동시 같이 보낸다
        // binding.userInfo = post.user
 
-        followStateBinding(post)
+        followStateBinding(userInfoPost)
         followBtnOnclick()
         // 팔로우 응답 success -> ui update
         updateFollowingState()
 
-        viewModel.getPostByUserId(post.user!!.id)
-        viewModel.getProfileInfoByUserId(post.user!!.id)
+        viewModel.getPostByUserId(userInfoPost.user!!.id)
+        viewModel.getProfileInfoByUserId(userInfoPost.user!!.id)
         viewModel.profileInfo.observe(viewLifecycleOwner){
             if (it is Resource.Success) {
                 val profile = it.value
@@ -108,7 +103,7 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
         profileKebabBtnOnClick()
 
         binding.layoutSwipeRefreah.setOnRefreshListener {
-            post.user?.let {
+            userInfoPost.user?.let {
                 viewModel.getPostByUserId(it.id)
                 viewModel.getProfileInfoByUserId(it.id)
             }
@@ -133,7 +128,7 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
                 //팔로우 create / delete
                 viewModel.changeFollowingState(!followBtn.isSelected, userId)
             }else{
-                showRequireLoginDialog(presentFragId = R.id.photoZipFragment)
+                showRequireLoginDialog()
             }
         }
     }

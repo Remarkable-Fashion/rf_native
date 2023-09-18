@@ -23,6 +23,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.lf.fashion.MainActivity
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
@@ -134,14 +135,10 @@ fun Fragment.showPermissionDialog(
     AppCustomDialog("이미지를 가져오기 위해서, 외부 저장소 읽기 권한이 필요합니다.", "동의") {
         requestPermissionLauncher.launch(permissions)
     }.show(parentFragmentManager, "image_permission_alert")
-    /*   AlertDialog.Builder(requireContext()).apply {
-           setMessage("이미지를 가져오기 위해서, 외부 저장소 읽기 권한이 필요합니다.")
-           setNegativeButton("취소", null)
-           setPositiveButton("동의") { _, _ -> requestPermissionLauncher.launch(permissions) }
-       }.show()*/
+
 }
 
-fun Fragment.showRequireLoginDialog(alreadyHome: Boolean? = null, presentFragId: Int) {
+fun Fragment.showRequireLoginDialog(alreadyHome: Boolean? = null) {
 
     AppCustomDialog(
         "로그인 후 이용가능합니다.",
@@ -153,21 +150,10 @@ fun Fragment.showRequireLoginDialog(alreadyHome: Boolean? = null, presentFragId:
             }
         }
     ) {
-        //그냥 navigate to 로 보낼 경우 바텀 메뉴 이동에 오류가 생길 때가 있어서 bottomNavigationView 를 통해 이동, checked 조정
-        navigateToMyPage(presentFragId)
+        findNavController().navigate(R.id.navigation_mypage)
     }.show(parentFragmentManager, "login_alert_dialog")
 }
 
-fun Fragment.navigateToMyPage(presentFragId: Int) {/*
-    val bottomNavigationView =
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-    val loginMenuItem = bottomNavigationView.menu.findItem(R.id.navigation_mypage)
-    loginMenuItem.isChecked = true
-    bottomNavigationView.selectedItemId = R.id.navigation_mypage*/
-
-    //findNavController().popBackStack(presentFragId, true)
-    findNavController().navigate(R.id.navigation_mypage)
-}
 
 fun addTextLengthCounter(editText: EditText, counterTextView: TextView, maxLength: Int) {
     editText.addTextChangedListener(object : TextWatcher {
@@ -364,4 +350,13 @@ fun getAssetsTextString(mContext: Context, fileName: String): String {
     }
     return "fail"
 }
-
+fun Fragment.mainBottomMenuListener(setting : Boolean){
+    if(setting){
+        MainActivity.bottomNaviReselectedListener(findNavController())
+        MainActivity.bottomNaviSetItemSelectedListener(findNavController())
+    }else{
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
+        bottomNavigationView.setOnItemSelectedListener(null)
+        bottomNavigationView.setOnItemReselectedListener(null)
+    }
+}

@@ -10,7 +10,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.UserDataStorePref
@@ -48,11 +47,6 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = HomeBRecommendFragmentBinding.bind(view)
-        //생성 후 다른 바텀 메뉴 이동시 다시 home menu 클릭시 selected 아이콘으로 변경 안되는 오류 해결하기위해 수동 메뉴 checked 코드 추가
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-        val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_home)
-        homeMenu.isChecked = true
         userPref = UserDataStorePref(requireContext().applicationContext)
 
         isSpinnerInit = false // 옵션 값 초기화할때 observe 되어서 중복 다수 요청됨을 방지
@@ -158,7 +152,7 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
                     bundleOf("clothesPostId" to postId)
                 )
             } else {
-                showRequireLoginDialog(presentFragId = R.id.recommendFragment)
+                showRequireLoginDialog()
             }
         }
     }
@@ -210,7 +204,7 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
 
             }
         } else {
-            showRequireLoginDialog(presentFragId = R.id.recommendFragment)
+            showRequireLoginDialog()
         }
     }
 }

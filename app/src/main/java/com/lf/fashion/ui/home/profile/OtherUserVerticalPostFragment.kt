@@ -21,7 +21,6 @@ import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.VerticalViewPagerClickListener
 import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
-import com.lf.fashion.ui.navigateToMyPage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -39,7 +38,7 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
 
     private lateinit var likeClickedPosts: Posts
     private lateinit var scrapClickedPosts: Posts
-    private lateinit var userInfo : UserInfo
+    private lateinit var userInfo: UserInfo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,8 +46,8 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
         cancelBtnBackStack(binding.backBtn)
         userPref = UserDataStorePref(requireContext().applicationContext)
 
-        viewModel.profileInfo.observe(viewLifecycleOwner){ resources->
-            if(resources is Resource.Success ) {
+        viewModel.profileInfo.observe(viewLifecycleOwner) { resources ->
+            if (resources is Resource.Success) {
                 val it = resources.value
                 userInfo = UserInfo(it.id, it.name, it.profile, null)
             }
@@ -60,7 +59,9 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
                     binding.verticalViewpager.apply {
                         adapter = defaultAdapter
                         (adapter as? DefaultPostAdapter)?.apply {
-                            response.posts.forEach { it.user = userInfo } // userInfo 가 null 이기때문에 채우기 (mypagevertical 에서는 필요없다)
+                            response.posts.forEach {
+                                it.user = userInfo
+                            } // userInfo 가 null 이기때문에 채우기 (mypagevertical 에서는 필요없다)
                             submitList(response.posts)
                             //scrapFragment 에서 선택한 item 의 index 를 시작 index 로 지정 , animation false 처리
                             setCurrentItem(viewModel.startIndex.value ?: 0, false)
@@ -165,14 +166,15 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
 
     override fun photoZipBtnClicked(post: Posts) {
         post.user = userInfo
-       /* findNavController().navigate(
-            R.id.action_global_to_photoZipFragment, bundleOf("post" to post)
-        )*/
+        findNavController().navigate(
+            R.id.action_otherUserVerticalPostFragment_to_photoZipFragment,
+            bundleOf("post" to post)
+        )
     }
 
     override fun infoBtnClicked(postId: Int) {
         findNavController().navigate(
-            R.id.action_global_to_userInfoFragment,
+            R.id.action_otherUserVerticalPostFragment_to_userInfoFragment,
             bundleOf("postId" to postId)
         )
     }
@@ -180,13 +182,10 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
     override fun profileSpaceClicked(userId: Int) {
         val myUniqueId = userPref.getMyUniqueId()
         if (userId == myUniqueId) {
-            navigateToMyPage(R.id.otherUserVerticalPostFragment)
+            findNavController().navigate(R.id.navigation_mypage)
             return
         }
-        findNavController().navigate(
-            R.id.action_global_to_otherUSerFragment,
-            bundleOf("userId" to userId)
-        )
+        findNavController().navigateUp()
     }
 
 }

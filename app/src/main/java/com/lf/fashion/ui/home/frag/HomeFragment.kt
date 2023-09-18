@@ -28,7 +28,7 @@ import com.lf.fashion.ui.GridPostAdapter
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener
 import com.lf.fashion.ui.MyBottomDialogListener
-import com.lf.fashion.ui.navigateToMyPage
+import com.lf.fashion.ui.mainBottomMenuListener
 import com.lf.fashion.ui.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -216,7 +216,7 @@ class HomeFragment :
 
             //상단 바의 필터 버튼 클릭
             binding.filter -> {
-                findNavController().navigate(R.id.action_global_to_filterFragment)
+                findNavController().navigate(R.id.action_home_fragment_to_filterFragment)
             }
         }
 
@@ -305,7 +305,7 @@ class HomeFragment :
             post.isFavorite = !post.isFavorite!!  // 좋아요 상태 반전
             likeClickedPosts = post
         } else {
-            showRequireLoginDialog(presentFragId = R.id.navigation_home)
+            showRequireLoginDialog()
         }
     }
 
@@ -316,7 +316,7 @@ class HomeFragment :
             post.isScrap = !post.isScrap!!
             scrapClickedPosts = post
         } else {
-            showRequireLoginDialog(presentFragId = R.id.navigation_home)
+            showRequireLoginDialog()
         }
 
     }
@@ -341,7 +341,7 @@ class HomeFragment :
 
     override fun infoBtnClicked(postId: Int) {
         findNavController().navigate(
-            R.id.action_global_to_userInfoFragment,
+            R.id.action_home_fragment_to_userInfoFragment,
             bundleOf("postId" to postId)
         )
     }
@@ -350,11 +350,11 @@ class HomeFragment :
     override fun profileSpaceClicked(userId: Int) {
         val myUniqueId = userPref.getMyUniqueId()
         if (userId == myUniqueId) {
-            navigateToMyPage(presentFragId = R.id.navigation_home)
+            findNavController().navigate(R.id.navigation_mypage)
             return
         }
         findNavController().navigate(
-            R.id.action_global_to_otherUSerFragment,
+            R.id.action_home_fragment_to_otherUserProfileFragment,
             bundleOf("userId" to userId)
         )
     }

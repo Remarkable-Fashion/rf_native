@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.MainActivity
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
@@ -26,7 +25,7 @@ import com.lf.fashion.ui.home.VerticalViewPagerClickListener
 import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
 import com.lf.fashion.ui.home.photozip.PhotoZipViewModel
-import com.lf.fashion.ui.navigateToMyPage
+import com.lf.fashion.ui.mainBottomMenuListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -49,11 +48,7 @@ class MyPhotoZipVerticalFragment : Fragment(R.layout.mypage_photozip_vertical_fr
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-        val myPage = bottomNavigationView.menu.findItem(R.id.navigation_mypage)
-        myPage.isChecked = true
-        Log.e(TAG, " onviewCreated : My vertical fragment !! ")
+        mainBottomMenuListener(true)
 
         binding = MypagePhotozipVerticalFragmentBinding.bind(view)
         cancelBtnBackStack(binding.backBtn)
@@ -181,7 +176,7 @@ class MyPhotoZipVerticalFragment : Fragment(R.layout.mypage_photozip_vertical_fr
 
     override fun infoBtnClicked(postId: Int) {
         findNavController().navigate(
-            R.id.action_global_to_userInfoFragment,
+            R.id.action_myPhotoZipVerticalFragment_to_userInfoFragment,
             bundleOf("postId" to postId)
         )
     }
@@ -189,13 +184,10 @@ class MyPhotoZipVerticalFragment : Fragment(R.layout.mypage_photozip_vertical_fr
     override fun profileSpaceClicked(userId: Int) {
         val myUniqueId = userPref.getMyUniqueId()
         if (userId == myUniqueId) {
-            navigateToMyPage(R.id.myPhotoZipVerticalFragment)
+            findNavController().navigate(R.id.navigation_mypage)
             return
         }
-        findNavController().navigate(
-            R.id.action_global_to_otherUSerFragment,
-            bundleOf("userId" to userId)
-        )
+
     }
 
     override fun onBottomSheetDismissed(post: Posts) {

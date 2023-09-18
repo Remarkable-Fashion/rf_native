@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
 import com.lf.fashion.R
 import com.lf.fashion.TAG
@@ -45,11 +44,6 @@ class LookFilterFragment : Fragment(R.layout.search_filter_fragment),View.OnClic
         super.onViewCreated(view, savedInstanceState)
         binding = SearchFilterFragmentBinding.bind(view)
         lookFilterDataStore = SearchLookFilterDataStore(requireContext().applicationContext)
-        //생성 후 다른 바텀 메뉴 이동시 다시 home menu 클릭시 selected 아이콘으로 변경 안되는 오류 해결하기위해 수동 메뉴 checked 코드 추가
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-        val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_search)
-        homeMenu.isChecked = true
 
         arguments?.get("searchResult")?.let {
             if (it as Boolean) {

@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.UserDataStorePref
@@ -24,6 +23,7 @@ import com.lf.fashion.ui.GridPhotoClickListener
 import com.lf.fashion.ui.GridPostAdapter
 import com.lf.fashion.ui.OnScrollUtils
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
+import com.lf.fashion.ui.mainBottomMenuListener
 import com.lf.fashion.ui.mypage.setting.SettingBottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -203,9 +203,10 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
     override fun gridPhotoClicked(postIndex: Int) {
         //grid 포토 클릭시!!
         Log.e(TAG, "gridPhotoClicked: GRID CLICKED ")
+
         //바텀 메뉴 중복 클릭시 첫 화면으로 돌아가도록 구현한 리스너가 에러가 나기 때문에 지워준다. (이후에 다시 달아줌)
-        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-        bottomNavigationView.setOnItemReselectedListener(null)
+        mainBottomMenuListener(false)
+
         viewModel.editClickedPostIndex(postIndex)
         findNavController().navigate(
             R.id.action_navigation_mypage_to_myPageVerticalFragment

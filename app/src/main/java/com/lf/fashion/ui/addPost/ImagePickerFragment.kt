@@ -25,6 +25,8 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.lf.fashion.MainNaviDirections
+import com.lf.fashion.NavigationPhotoDirections
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.UserDataStorePref
@@ -100,7 +102,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
         super.onViewCreated(view, savedInstanceState)
         userPref = UserDataStorePref(requireContext())
         if (!userPref.loginCheck()) {
-            showRequireLoginDialog(presentFragId = R.id.imagePickerFragment)
+            showRequireLoginDialog()
             return
         }
 
@@ -115,7 +117,8 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
             val imageUriArray = viewModel.getCheckedImageUriList().toTypedArray()
             when (backStackFragment) {
                 "PhotoFragment" ->{ //PhotoFragment -> ImagePicker 일땐 backstack 이 아니라 PhotoStep2로 가야하기 때문에 분리..
-                    val action =  ImagePickerFragmentDirections.actionImagePickerFragmentToPhotoStep2Fragment(imageUriArray)
+                //todo
+                val action =  MainNaviDirections.actionGlobalToPhotoStep2Fragment(imageUriArray)
                     findNavController().navigate(action)
                 }
                 else -> {

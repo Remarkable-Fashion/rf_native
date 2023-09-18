@@ -7,7 +7,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lf.fashion.R
 import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
@@ -33,12 +32,6 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        //생성 후 다른 바텀 메뉴 이동시 다시 home menu 클릭시 selected 아이콘으로 변경 안되는 오류 해결하기위해 수동 메뉴 checked 코드 추가
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-        val homeMenu = bottomNavigationView.menu.findItem(R.id.navigation_home)
-        homeMenu.isChecked = true
 
         binding = HomeBUserInfoFragmentBinding.bind(view)
         userPref = UserDataStorePref(requireContext().applicationContext)
@@ -73,7 +66,7 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
                 //팔로우 create / delete
                 viewModel.changeFollowingState(!followBtn.isSelected, userId)
             }else{
-                showRequireLoginDialog(presentFragId = R.id.userInfoFragment)
+                showRequireLoginDialog()
             }
         }
     }
