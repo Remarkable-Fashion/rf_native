@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
 import com.lf.fashion.TAG
@@ -54,6 +55,7 @@ class HomeFragment :
     private lateinit var likeClickedPosts: Posts
     private lateinit var scrapClickedPosts: Posts
     private lateinit var filterDataStore: PostFilterDataStore
+    private var postList = mutableListOf<Posts>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = HomeAFragmentBinding.bind(view)
@@ -65,9 +67,9 @@ class HomeFragment :
         //todo test
         CoroutineScope(Dispatchers.Main).launch {
             if (userPref.firstActivate.first().isNullOrEmpty()) {
-                val dialog = GenderSelectionDialog{
+                val dialog = GenderSelectionDialog {
                     Log.e(TAG, "onViewCreated: $it")
-                    CoroutineScope(Dispatchers.IO).launch{
+                    CoroutineScope(Dispatchers.IO).launch {
                         filterDataStore.saveGender(it)
                     }
                 }
@@ -106,9 +108,46 @@ class HomeFragment :
 
         observePostResponse()
 
+        randomPostScrollEndPoint()
+        observeLoadMorePost()
     }
 
-    private fun requestPost() {
+    //todo
+    private fun randomPostScrollEndPoint() {
+        binding.homeMainViewpager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                val totalItemCount = binding.homeMainViewpager.adapter?.itemCount ?: 0
+                if (position == totalItemCount - 1 && viewModel.postMode.value == "random") {
+                    requestPost(loadMore = true)
+                }
+            }
+        })
+
+        binding.gridRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val staggeredGridLayoutManager =
+                    binding.gridRecyclerView.layoutManager as StaggeredGridLayoutManager
+                val lastVisibleItems =
+                    staggeredGridLayoutManager.findLastCompletelyVisibleItemPositions(null)
+                val totalItemCount = recyclerView.adapter?.itemCount ?: 0
+
+                // StaggeredGridLayoutManager는 배열 형태로 마지막 행의 아이템 인덱스를 반환합니다.
+                // 여러 열을 가진 경우, 가장 마지막에 보이는 아이템의 인덱스를 확인합니다.
+                val lastVisibleItem = lastVisibleItems.maxOrNull() ?: -1
+
+                if (lastVisibleItem == totalItemCount - 1&& viewModel.postMode.value == "random") {
+                    // 마지막 아이템이 보이는 경우 처리할 내용을 여기에 추가
+                    requestPost(loadMore = true)
+
+                }
+            }
+        })
+    }
+
+    private fun requestPost(loadMore : Boolean?=null) {
         CoroutineScope(Dispatchers.IO).launch {
             with(filterDataStore) {
                 val tpo = tpoId.first()?.split(",")?.map { it.toInt() }
@@ -118,7 +157,7 @@ class HomeFragment :
                 val height = height.first()
                 val weight = weight.first()
                 withContext(Dispatchers.Main) {
-                    viewModel.getPostList(21, gender, height, weight, tpo, season, style)
+                    viewModel.getPostList(loadMore,21, gender, height, weight, tpo, season, style)
                 }
             }
         }
@@ -131,10 +170,8 @@ class HomeFragment :
             when (resource) {
                 is Resource.Success -> {
                     val response = resource.value
-
                     val currentGridCount = binding.gridText.text.toString().toInt()
                     val spanCount = if (currentGridCount == 1 || currentGridCount == 2) 2 else 3
-
                     photoLayoutVisibilityMode(default = currentGridCount == 1)
 
                     //1개씩 보기 뷰페이저 세팅
@@ -166,18 +203,38 @@ class HomeFragment :
 
                     }
                 }
-
-                is Resource.Loading -> {
-
-                }
-
                 else -> {
 
                 }
             }
         }
     }
+    @SuppressLint("NotifyDataSetChanged")
+    private fun observeLoadMorePost(){
+        viewModel.loadMore.observe(viewLifecycleOwner){resource->
+            when(resource){
+                is Resource.Success ->{
+                    val morePost = resource.value
+                    val currentList = gridAdapter.currentList.toMutableList()
+                    Log.e(TAG, "observeLoadMorePost: currrent : ${currentList.size} , more : ${morePost.posts.size}")
+                    currentList.addAll(morePost.posts)
+                    Log.e(TAG, "observeLoadMorePost: 합 : $morePost")
 
+                    gridAdapter.apply {
+                        submitList(currentList)
+                        notifyDataSetChanged()
+                    }
+                    defaultAdapter.apply {
+                        submitList(currentList)
+                        notifyDataSetChanged()
+                    }
+                }
+                else ->{
+
+                }
+            }
+        }
+    }
     private fun editGridSpanCount(spanCount: Int) {
         with(binding.gridRecyclerView) {
             layoutManager =

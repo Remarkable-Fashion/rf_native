@@ -29,6 +29,10 @@ class HomeViewModel @Inject constructor(
     private val _response = MutableLiveData<Resource<RandomPostResponse>>()
     var response: LiveData<Resource<RandomPostResponse>> = _response
 
+
+    private val _loadMore = MutableLiveData<Resource<RandomPostResponse>>()
+    var loadMore: LiveData<Resource<RandomPostResponse>> = _loadMore
+
     private val _likeResponse = MutableLiveData<Resource<MsgResponse>>()
     val likeResponse = _likeResponse
 
@@ -44,6 +48,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getPostList(
+        loadMore : Boolean?=null,
         take: Int,
         sex: String,
         height: Int? = null,
@@ -54,11 +59,12 @@ class HomeViewModel @Inject constructor(
     ) {
         Log.d(TAG, "suspend getPostList 호출 ")
         viewModelScope.launch {
-            when (postMode.value) {
+
+            val savedToken = userPreferences.accessToken.first()
+           val postData = when (postMode.value) {
                 "random" -> {
-                    val savedToken = userPreferences.accessToken.first()
                     if (savedToken.isNullOrEmpty()) {
-                        _response.value = homeRepository.getRandomPostPublic(
+                        homeRepository.getRandomPostPublic(
                             take,
                             sex,
                             height,
@@ -67,9 +73,8 @@ class HomeViewModel @Inject constructor(
                             season,
                             style
                         )
-                        Log.d(TAG, "HomeViewModel - getPostList: public ! ${_response.value}")
                     } else {
-                        _response.value = homeRepository.getRandomPost(
+                       homeRepository.getRandomPost(
                             take,
                             sex,
                             height,
@@ -78,13 +83,18 @@ class HomeViewModel @Inject constructor(
                             season,
                             style
                         )
-                        Log.d(TAG, "HomeViewModel - getPostList: private ! ${_response.value}")
                     }
                 }
                 "following" ->{
-
-                _response.value = homeRepository.getFollowingPost(take, sex, height, weight, tpo, season, style)
-
+                 homeRepository.getFollowingPost(take, sex, height, weight, tpo, season, style)
+                }
+               else -> null
+            }
+            postData?.let {
+                if (loadMore == true) {
+                    _loadMore.value = it
+                } else {
+                    _response.value = it
                 }
             }
         }
