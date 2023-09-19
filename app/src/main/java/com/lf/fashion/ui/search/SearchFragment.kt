@@ -50,9 +50,10 @@ class SearchFragment : Fragment(R.layout.search_fragment),
     private val tabTitleArray = arrayOf("LOOK", "ITEM")
     private val historyList = MutableLiveData<MutableList<String>>()
     private val termRankAdapter = TermRankAdapter(this)
-    private var orderByParamMap =
-        mapOf("인기순" to "best", "최신순" to "recent", "고가순" to "high", "저가순" to "low")
-
+    companion object {
+        var orderByParamMap =
+            mapOf("인기순" to "best", "최신순" to "recent", "고가순" to "high", "저가순" to "low")
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = SearchFragmentBinding.bind(view)
@@ -232,6 +233,7 @@ class SearchFragment : Fragment(R.layout.search_fragment),
 
                 withContext(Dispatchers.Main) {
                     viewModel.getSearchResult(
+                        null,
                         searchTerm,
                         gender,
                         height,
@@ -257,6 +259,7 @@ class SearchFragment : Fragment(R.layout.search_fragment),
 
                 withContext(Dispatchers.Main) {
                     viewModel.getItemSearchResult(
+                        null,
                         searchTerm,
                         gender,
                         minPrice,

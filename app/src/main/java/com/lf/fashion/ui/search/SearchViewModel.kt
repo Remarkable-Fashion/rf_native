@@ -27,10 +27,14 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
     private val _lookList = MutableLiveData<Resource<SearchLookResult>>()
     var lookList: LiveData<Resource<SearchLookResult>> = _lookList
 
-
     private val _itemList = MutableLiveData<Resource<SearchItemResult>>()
     var itemList: LiveData<Resource<SearchItemResult>> = _itemList
 
+    private val _loadMoreLook = MutableLiveData<Resource<SearchLookResult>>()
+    var loadMoreLook: LiveData<Resource<SearchLookResult>> = _loadMoreLook
+
+    private val _loadMoreItem = MutableLiveData<Resource<SearchItemResult>>()
+    var loadMoreItem: LiveData<Resource<SearchItemResult>> = _loadMoreItem
 
     private val _searchTermRank = MutableLiveData<List<SearchTerm>>()
     var searchTermRank: LiveData<List<SearchTerm>> = _searchTermRank
@@ -55,6 +59,7 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
     }
 
     fun getSearchResult(
+        loadMore : Boolean?=null,
         term: String,
         sex: String? = null,
         height: Int? = null,
@@ -62,29 +67,43 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
         tpo: List<Int>? = null,
         season: List<Int>? = null,
         style: List<Int>? = null,
-        order: String
+        order: String,
+        cursor : List<Long>?=null
     ) {
         viewModelScope.launch {
-            _lookList.value =
-                searchRepository.getSearchResult(term, sex, height, weight, tpo, season, style,order)
+
+           val responseData =
+                searchRepository.getSearchResult(term, sex, height, weight, tpo, season, style,order,cursor)
+            if(loadMore == true){
+                _loadMoreLook.value =responseData
+            }else{
+                _lookList.value = responseData
+            }
             Log.e(TAG, "getSearchResult 위치 : ViewModel - request")
         }
     }
 
     fun getItemSearchResult(
+        loadMore : Boolean?=null,
         term: String,
         sex: String? = null,
         minPrice: Int? = null,
         maxPrice: Int? = null,
         color: List<String>? = null,
-        order: String
+        order: String,
+        cursor : List<Long>?=null
     ) {
         viewModelScope.launch {
-            _itemList.value =
-                searchRepository.getItemSearchResult(term, sex, minPrice, maxPrice, color,order)
-
+            val responseData =
+                searchRepository.getItemSearchResult(term, sex, minPrice, maxPrice, color,order,cursor)
+            if(loadMore == true){
+                _loadMoreItem.value = responseData
+            }else{
+                _itemList.value = responseData
+            }
         }
     }
+
 
     fun setGridMode(mode: Int) {
         _gridMode.value = mode

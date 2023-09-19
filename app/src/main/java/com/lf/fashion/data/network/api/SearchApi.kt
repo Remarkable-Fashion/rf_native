@@ -12,7 +12,7 @@ interface SearchApi {
     @GET("search/rank")
     suspend fun getSearchTermRank(): List<SearchTerm>
 
-    @GET("search/post?take=5")
+    @GET("search/post?take=9")
     suspend fun getSearchResult(
         @Query("search") term: String,
         @Query("sex") sex: String? = null,
@@ -21,17 +21,19 @@ interface SearchApi {
         @Query("tpo") tpo: List<Int>? = null,
         @Query("season") season: List<Int>? = null,
         @Query("style") style: List<Int>? = null,
-        @Query("order") order : String
+        @Query("order") order : String,
+        @Query("cursor")cursor : List<Long>?=null
     ): SearchLookResult
 
-    @GET("search/clothes?take=5")
+    @GET("search/clothes?take=9")
     suspend fun getItemSearchResult(
         @Query("search") term: String,
         @Query("sex") sex: String? = null,
         @Query("priceRange") minPrice: Int? = null,
         @Query("priceRange") maxPrice: Int? = null,
         @Query("color") colorList: List<String>? = null,
-        @Query("order") order : String
+        @Query("order") order : String,
+        @Query("cursor")cursor : List<Long>?=null
     ): SearchItemResult
 
 }
