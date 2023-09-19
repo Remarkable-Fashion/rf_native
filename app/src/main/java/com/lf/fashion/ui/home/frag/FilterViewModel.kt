@@ -24,9 +24,9 @@ class FilterViewModel @Inject constructor(private val repository: FilterReposito
     var selectedGender :String?=null
     var savedHeight : Int?=null
     var savedWeight : Int?=null
-    val selectedTposId: MutableList<Int> = mutableListOf()
-    val selectedSeasonsId : MutableList<Int> = mutableListOf()
-    val selectedStylesId : MutableList<Int> = mutableListOf()
+    var selectedTposId: MutableList<Int> = mutableListOf()
+    var selectedSeasonsId : MutableList<Int> = mutableListOf()
+    var selectedStylesId : MutableList<Int> = mutableListOf()
     var tposTexts: MutableList<String> = mutableListOf()
     var seasonsTexts : MutableList<String> = mutableListOf()
     var stylesTexts : MutableList<String> = mutableListOf()

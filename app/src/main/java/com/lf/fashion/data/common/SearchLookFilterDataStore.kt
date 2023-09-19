@@ -1,12 +1,14 @@
 package com.lf.fashion.data.common
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.lf.fashion.TAG
 import com.lf.fashion.data.model.FilterItem
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -87,21 +89,33 @@ class SearchLookFilterDataStore @Inject constructor(@ApplicationContext context:
         style: FilterItem? = null
     ) {
         appContext.searchLookFilterDataStore.edit { preferences ->
-            gender?.let { preferences[LOOK_FILTER_GENDER] = it }
-            height?.let { preferences[LOOK_FILTER_HEIGHT] = it }
-            weight?.let { preferences[LOOK_FILTER_WEIGHT] = it }
+            gender?.let { preferences[LOOK_FILTER_GENDER] = it } ?: preferences.remove(LOOK_FILTER_GENDER)
+            height?.let { preferences[LOOK_FILTER_HEIGHT] = it } ?: preferences.remove(LOOK_FILTER_HEIGHT)
+            weight?.let { preferences[LOOK_FILTER_WEIGHT] = it } ?: preferences.remove(LOOK_FILTER_WEIGHT)
             //  bodyType?.let { preferences[LOOK_FILTER_BODY_TYPE] = it }
-            tpo?.let {
+
+            tpo?.also {
                 preferences[LOOK_FILTER_TPO] = it.text
                 preferences[LOOK_FILTER_TPO_ID] = it.id
+            } ?: run {
+                preferences.remove(LOOK_FILTER_TPO)
+                preferences.remove(LOOK_FILTER_TPO_ID)
             }
-            season?.let {
+
+            season?.also {
                 preferences[LOOK_FILTER_SEASON] = it.text
                 preferences[LOOK_FILTER_SEASON_ID] = it.id
+            } ?: run {
+                preferences.remove(LOOK_FILTER_SEASON)
+                preferences.remove(LOOK_FILTER_SEASON_ID)
             }
-            style?.let {
+
+            style?.also {
                 preferences[LOOK_FILTER_STYLE] = it.text
                 preferences[LOOK_FILTER_STYLE_ID] = it.id
+            } ?: run {
+                preferences.remove(LOOK_FILTER_STYLE)
+                preferences.remove(LOOK_FILTER_STYLE_ID)
             }
         }
     }

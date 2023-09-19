@@ -149,12 +149,13 @@ class HomeFragment :
     private fun requestPost(loadMore : Boolean?=null) {
         CoroutineScope(Dispatchers.IO).launch {
             with(filterDataStore) {
-                val tpo = tpoId.first()?.split(",")?.map { it.toInt() }
-                val season = seasonId.first()?.split(",")?.map { it.toInt() }
-                val style = styleId.first()?.split(",")?.map { it.toInt() }
-                val gender = postGender.first() ?: "Male"
+                val tpo = tpoId.first()?.split(",")?.mapNotNull { it.toIntOrNull() }
+                val season = seasonId.first()?.split(",")?.mapNotNull { it.toIntOrNull() }
+                val style = styleId.first()?.split(",")?.mapNotNull { it.toIntOrNull() }
+                val gender = postGender.first() ?: "All"
                 val height = height.first()
                 val weight = weight.first()
+                Log.e(TAG, "requestPost: $tpo ,$season ,$style", )
                 withContext(Dispatchers.Main) {
                     viewModel.getPostList(loadMore,21, gender, height, weight, tpo, season, style)
                 }

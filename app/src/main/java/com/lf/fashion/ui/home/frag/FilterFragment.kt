@@ -59,49 +59,80 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
 
         chipSetting()
 
-        cancelBtnBackStack(binding.cancelBtn,needRefresh = true)
+        cancelBtnBackStack(binding.cancelBtn, needRefresh = true)
 
         editTextListenerSetting()
         clearPostFilter()
         savePostFilter()
     }
-    private fun exposeSavedValue(){
-        CoroutineScope(Dispatchers.Main).launch{
-            with(filterDataStore){
+
+    private fun exposeSavedValue() {
+        CoroutineScope(Dispatchers.Main).launch {
+            with(filterDataStore) {
                 height.first()?.let {
                     binding.filterSpace.heightValue.setText("$it cm")
+                    viewModel.savedHeight = it
                 }
-                weight.first()?.let{
+                weight.first()?.let {
                     binding.filterSpace.weightValue.setText("$it kg")
+                    viewModel.savedWeight = it
                 }
-                postGender.first()?.let{
-                    if(it =="Male"){
+                postGender.first()?.let {
+                    if (it == "Male") {
                         binding.filterSpace.genderManBtn.isSelected = true
-                    }else if( it == "Female"){
+                    } else if (it == "Female") {
                         binding.filterSpace.genderWomanBtn.isSelected = true
                     }
+                    viewModel.selectedGender = it
                 }
-                tpo.first()?.let{
+                tpo.first()?.let {
                     val tpo = it.split(",").toMutableList()
                     viewModel.tposTexts = tpo
                 }
-                season.first()?.let{
+                season.first()?.let {
                     val season = it.split(",").toMutableList()
                     viewModel.seasonsTexts = season
                 }
-                style.first()?.let{
+                style.first()?.let {
                     val style = it.split(",").toMutableList()
                     viewModel.stylesTexts = style
                 }
+
+                tpoId.first()?.let {
+                    it.split(",").mapNotNull { it.toIntOrNull() }.toMutableList().apply {
+                        viewModel.selectedTposId = this
+                    }
+                }
+
+                seasonId.first()?.let {
+                    it.split(",").mapNotNull { it.toIntOrNull() }.toMutableList().apply {
+                        viewModel.selectedSeasonsId = this
+                    }
+                }
+                styleId.first()?.let {
+                    it.split(",").mapNotNull { it.toIntOrNull() }.toMutableList().apply {
+                        viewModel.selectedStylesId = this
+                    }
+                }
+
             }
         }
     }
+
     private fun editTextListenerSetting() {
         addUnitTextListener(binding.filterSpace.heightValue, height = true) {
-            viewModel.savedHeight = it.toInt()
+            if (it.isNotEmpty()) {
+                viewModel.savedHeight = it.toInt()
+            } else {
+                viewModel.savedHeight = null
+            }
         }
         addUnitTextListener(binding.filterSpace.weightValue, height = false) {
-            viewModel.savedWeight = it.toInt()
+            if (it.isNotEmpty()) {
+                viewModel.savedWeight = it.toInt()
+            } else {
+                viewModel.savedWeight = null
+            }
         }
     }
 
@@ -117,13 +148,15 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
                     filterViewModel = viewModel
                 ) { chipId, text, isChecked ->
                     if (isChecked) {
-                        viewModel.selectedTposId.add(chipId)
-                        viewModel.tposTexts.add(text)
+                        val contains = viewModel.tposTexts.contains(text)
+                        if(!contains) {
+                            viewModel.selectedTposId.add(chipId)
+                            viewModel.tposTexts.add(text)
+                        }
                     } else {
                         viewModel.selectedTposId.remove(chipId)
                         viewModel.tposTexts.remove(text)
                     }
-                    Log.e(TAG, "chipSetting: ${viewModel.tposTexts}")
                 }
             }
         }
@@ -137,8 +170,11 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
                     filterViewModel = viewModel
                 ) { chipId, text, isChecked ->
                     if (isChecked) {
-                        viewModel.selectedSeasonsId.add(chipId)
-                        viewModel.seasonsTexts.add(text)
+                        val contains = viewModel.seasonsTexts.contains(text)
+                        if(!contains) {
+                            viewModel.selectedSeasonsId.add(chipId)
+                            viewModel.seasonsTexts.add(text)
+                        }
                     } else {
                         viewModel.selectedSeasonsId.remove(chipId)
                         viewModel.seasonsTexts.remove(text)
@@ -156,8 +192,11 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
                     filterViewModel = viewModel
                 ) { chipId, text, isChecked ->
                     if (isChecked) {
-                        viewModel.selectedStylesId.add(chipId)
-                        viewModel.stylesTexts.add(text)
+                        val contains = viewModel.stylesTexts.contains(text)
+                        if(!contains) {
+                            viewModel.selectedStylesId.add(chipId)
+                            viewModel.stylesTexts.add(text)
+                        }
                     } else {
                         viewModel.selectedStylesId.remove(chipId)
                         viewModel.stylesTexts.remove(text)
@@ -214,10 +253,20 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
         binding.submitBtn.setOnClickListener {
             binding.filterSpace.heightValue.clearFocus()
             binding.filterSpace.weightValue.clearFocus()
-            val tpoFilterItem = FilterItem(viewModel.tposTexts.joinToString(","),viewModel.selectedTposId.joinToString (","))
-            val seasonFilterItem = FilterItem(viewModel.seasonsTexts.joinToString(","),viewModel.selectedSeasonsId.joinToString (","))
-            val styleFilterItem = FilterItem(viewModel.stylesTexts.joinToString(","),viewModel.selectedStylesId.joinToString (","))
+            val tpoFilterItem = FilterItem(
+                viewModel.tposTexts.joinToString(","),
+                viewModel.selectedTposId.joinToString(",")
+            )
+            val seasonFilterItem = FilterItem(
+                viewModel.seasonsTexts.joinToString(","),
+                viewModel.selectedSeasonsId.joinToString(",")
+            )
+            val styleFilterItem = FilterItem(
+                viewModel.stylesTexts.joinToString(","),
+                viewModel.selectedStylesId.joinToString(",")
+            )
             Log.e(TAG, "savePostFilter: $tpoFilterItem")
+            Log.e(TAG, "savePostFilter: ${viewModel.selectedGender} ${viewModel.savedHeight}")
             CoroutineScope(Dispatchers.IO).launch {
                 filterDataStore.saveMainFilterInstance(
                     viewModel.selectedGender,

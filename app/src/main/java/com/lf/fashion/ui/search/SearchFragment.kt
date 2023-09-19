@@ -45,6 +45,7 @@ class SearchFragment : Fragment(R.layout.search_fragment),
     private val viewModel: SearchViewModel by hiltNavGraphViewModels(R.id.navigation_search)
     private lateinit var lookFilterDataStore: SearchLookFilterDataStore
     private lateinit var itemFilterDataStore: SearchItemFilterDataStore
+    private var lastRequestTimeMillis: Long = 0 // 마지막 요청 시간을 저장할 변수
 
     private val tabTitleArray = arrayOf("LOOK", "ITEM")
     private val historyList = MutableLiveData<MutableList<String>>()
@@ -75,7 +76,7 @@ class SearchFragment : Fragment(R.layout.search_fragment),
         //검색어 et에 있을시 인기 검색어 gone
         if (viewModel.savedSearchTerm.isNotEmpty()) {
             searchTermRankUiVisible(default = false)
-           // Log.e(TAG, "onViewCreated: ${binding.searchTerm.root.isVisible}")
+            // Log.e(TAG, "onViewCreated: ${binding.searchTerm.root.isVisible}")
         }
         //검색 동작
         searchEtSetActionListener() // 검색 동작시 ui visibility 로 결과 레이아웃 노출 조정
@@ -108,18 +109,23 @@ class SearchFragment : Fragment(R.layout.search_fragment),
         }
 
         // spinner 값 바뀔 때마다 request !
-        viewModel.selectedOrderBy.observe(viewLifecycleOwner){
-            when (binding.searchResult.tabViewpager.currentItem) {
-                0 -> { //look
-                   requestLookSearch(viewModel.savedSearchTerm)
-                }
+        viewModel.selectedOrderBy.observe(viewLifecycleOwner) {
+            val currentTimeMillis = System.currentTimeMillis()
+            if (currentTimeMillis - lastRequestTimeMillis >= 500) { // 최소 0.5초 이내에 중복 요청 방지
+                lastRequestTimeMillis = currentTimeMillis // 현재 시간으로 갱신
+                when (binding.searchResult.tabViewpager.currentItem) {
+                    0 -> { //look
+                        requestLookSearch(viewModel.savedSearchTerm)
+                    }
 
-                1 -> { //item
-                    requestItemSearch(viewModel.savedSearchTerm)
+                    1 -> { //item
+                        requestItemSearch(viewModel.savedSearchTerm)
+                    }
                 }
             }
         }
     }
+
 
     private fun filterOnclickNavigate() {
         binding.searchResult.filter.setOnClickListener {
@@ -216,13 +222,13 @@ class SearchFragment : Fragment(R.layout.search_fragment),
     private fun requestLookSearch(searchTerm: String) {
         CoroutineScope(Dispatchers.IO).launch {
             with(lookFilterDataStore) {
-                val tpo = tpoId.first()?.split(",")?.map { it.toInt() }
-                val season = seasonId.first()?.split(",")?.map { it.toInt() }
-                val style = styleId.first()?.split(",")?.map { it.toInt() }
+                val tpo = tpoId.first()?.split(",")?.mapNotNull { it.toIntOrNull() }
+                val season = seasonId.first()?.split(",")?.mapNotNull { it.toIntOrNull() }
+                val style = styleId.first()?.split(",")?.mapNotNull { it.toIntOrNull() }
                 val gender = lookGender.first()
                 val height = height.first()
                 val weight = weight.first()
-                val orderBy = orderByParamMap[viewModel.selectedOrderBy.value] ?:"best"
+                val orderBy = orderByParamMap[viewModel.selectedOrderBy.value] ?: "best"
 
                 withContext(Dispatchers.Main) {
                     viewModel.getSearchResult(
@@ -247,7 +253,7 @@ class SearchFragment : Fragment(R.layout.search_fragment),
                 val minPrice = minPrice.first()
                 val maxPrice = maxPrice.first()
                 val color = color.first()?.split(",")
-                val orderBy = orderByParamMap[viewModel.selectedOrderBy.value]?:"best"
+                val orderBy = orderByParamMap[viewModel.selectedOrderBy.value] ?: "best"
 
                 withContext(Dispatchers.Main) {
                     viewModel.getItemSearchResult(
@@ -362,7 +368,7 @@ class SearchFragment : Fragment(R.layout.search_fragment),
 
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-        viewModel.selectedOrderBy.value  = parent.getItemAtPosition(position).toString()
+        viewModel.selectedOrderBy.value = parent.getItemAtPosition(position).toString()
         //Log.e(TAG, "onItemSelected: spinner ${viewModel.selectedOrderBy.value}")
     }
 

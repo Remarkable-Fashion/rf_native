@@ -193,11 +193,14 @@ class ItemFilterFragment : Fragment(R.layout.search_item_filter_fragment), View.
                     } else if (it == "Female") {
                         binding.genderWomanBtn.isSelected = true
                     }
+                    viewModel.selectedGender = it
                 }
                 val minPriceValue = minPrice.first()?:0
                 val maxPriceValue = maxPrice.first()?:maxPriceDefault
                 binding.priceMin = minPriceValue
                 binding.priceMax = maxPriceValue
+                viewModel.minPrice = minPriceValue
+                viewModel.maxPrice = maxPriceValue
                 val minPercentage = (minPriceValue.toFloat()/priceMaxLimit)*100
                 val maxPercentage = (maxPriceValue.toFloat()/priceMaxLimit)*100
                 binding.priceSeekbar.setProgress(minPercentage,maxPercentage)
@@ -205,6 +208,7 @@ class ItemFilterFragment : Fragment(R.layout.search_item_filter_fragment), View.
                 color.first()?.let{
                     val savedColorList = it.split(",").toMutableList()
                     selectedColorBinding(savedColorList)
+                    viewModel.selectedColor = savedColorList
                 }
             }
         }

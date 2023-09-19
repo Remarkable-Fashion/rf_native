@@ -6,6 +6,6 @@ import retrofit2.http.Query
 
 interface ScrapApi {
     //cursorId=3&
-    @GET("scrap?take=5")
+    @GET("scrap?take=21")
     suspend fun getScrapPost(@Query("cursor") nextCursor : Int? = null): RandomPostResponse
 }

@@ -23,6 +23,7 @@ class SearchItemFilterDataStore @Inject constructor(@ApplicationContext context:
 
 
     }
+
     private val appContext = context.applicationContext
     val itemGender: Flow<String?>
         get() = appContext.searchItemFilterDataStore.data.map { preferences ->
@@ -44,19 +45,27 @@ class SearchItemFilterDataStore @Inject constructor(@ApplicationContext context:
     suspend fun saveItemFilterInstance(
         gender: String? = null,
         minPrice: Int? = null,
-        maxPrice :Int?=null,
+        maxPrice: Int? = null,
         color: String? = null
     ) {
         appContext.searchItemFilterDataStore.edit { preferences ->
-            gender?.let { preferences[ITEM_FILTER_GENDER] = it }
-            minPrice?.let { preferences[ITEM_FILTER_MIN_PRICE] = it }
-            maxPrice?.let{preferences[ITEM_FILTER_MAX_PRICE] = it}
-            color?.let { preferences[ITEM_FILTER_COLOR] = it }
+            gender?.let { preferences[ITEM_FILTER_GENDER] = it } ?: preferences.remove(
+                ITEM_FILTER_GENDER
+            )
+            minPrice?.let { preferences[ITEM_FILTER_MIN_PRICE] = it } ?: preferences.remove(
+                ITEM_FILTER_MIN_PRICE
+            )
+            maxPrice?.let { preferences[ITEM_FILTER_MAX_PRICE] = it } ?: preferences.remove(
+                ITEM_FILTER_MAX_PRICE
+            )
+            color?.let { preferences[ITEM_FILTER_COLOR] = it } ?: preferences.remove(
+                ITEM_FILTER_COLOR
+            )
         }
     }
 
-    suspend fun clearItemFilter(){
-        appContext.searchItemFilterDataStore.edit{ preferences->
+    suspend fun clearItemFilter() {
+        appContext.searchItemFilterDataStore.edit { preferences ->
             preferences.apply {
                 remove(ITEM_FILTER_GENDER)
                 remove(ITEM_FILTER_MIN_PRICE)

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -27,16 +28,26 @@ import kotlinx.coroutines.launch
  * 홈 메인 상단의 필터 아이콘을 클릭시 노출되는 프래그먼트입니다.
  */
 @AndroidEntryPoint
-class LookFilterFragment : Fragment(R.layout.search_filter_fragment),View.OnClickListener {
+class LookFilterFragment : Fragment(R.layout.search_filter_fragment), View.OnClickListener {
     private lateinit var binding: SearchFilterFragmentBinding
     private val viewModel: FilterViewModel by viewModels()
     private val chipStyle = "default"
     private lateinit var lookFilterDataStore: SearchLookFilterDataStore
     override fun onResume() {
         viewModel.selectedGender?.let {
-            if (it == "Male") { binding.filterSpace.genderManBtn.isSelected = true }
-            else{ binding.filterSpace.genderWomanBtn.isSelected = true }
+            if (it == "Male") {
+                binding.filterSpace.genderManBtn.isSelected = true
+            } else {
+                binding.filterSpace.genderWomanBtn.isSelected = true
+            }
         }
+        viewModel.savedHeight?.let {
+            binding.filterSpace.heightValue.setText("$it cm")
+        }
+        viewModel.savedWeight?.let {
+            binding.filterSpace.weightValue.setText("$it kg")
+        }
+
         super.onResume()
     }
 
@@ -63,38 +74,59 @@ class LookFilterFragment : Fragment(R.layout.search_filter_fragment),View.OnClic
     }
 
     private fun editTextListenerSetting() {
-        addUnitTextListener(binding.filterSpace.heightValue, height = true){
-            viewModel.savedHeight = it.toInt()
-        }
-        addUnitTextListener(binding.filterSpace.weightValue, height = false){
-            viewModel.savedWeight = it.toInt()
-        }
+        addUnitTextListener(binding.filterSpace.heightValue, height = true) {
+            if (it.isNotEmpty()) {
+                viewModel.savedHeight = it.toInt()
+            } else {
+                viewModel.savedHeight = null
+            }        }
+        addUnitTextListener(binding.filterSpace.weightValue, height = false) {
+            if (it.isNotEmpty()) {
+                viewModel.savedWeight = it.toInt()
+            } else {
+                viewModel.savedWeight = null
+            }        }
     }
 
     private fun chipSetting() {
         viewModel.tpoChipList.observe(viewLifecycleOwner) {
             it?.let {
                 val tpoChipGroup = binding.filterSpace.filterInclude.tpoChipGroup
-                childChip(it, tpoChipGroup, chipStyle, filterViewModel = viewModel){chipId,text,isChecked->
-                    if(isChecked){
-                        viewModel.selectedTposId.add(chipId)
-                        viewModel.tposTexts.add(text)
-                    }else{
-                      viewModel.selectedTposId.remove(chipId)
-                      viewModel.tposTexts.remove(text)
+                childChip(
+                    it,
+                    tpoChipGroup,
+                    chipStyle,
+                    filterViewModel = viewModel
+                ) { chipId, text, isChecked ->
+                    if (isChecked) {
+                        val contains = viewModel.tposTexts.contains(text)
+                        if (!contains) {
+                            viewModel.selectedTposId.add(chipId)
+                            viewModel.tposTexts.add(text)
+                        }
+                    } else {
+                        viewModel.selectedTposId.remove(chipId)
+                        viewModel.tposTexts.remove(text)
                     }
-                    Log.e(TAG, "chipSetting: ${viewModel.tposTexts}")
                 }
             }
         }
         viewModel.seasonChipList.observe(viewLifecycleOwner) {
             it?.let {
                 val seasonChipGroup = binding.filterSpace.filterInclude.seasonChipGroup
-                childChip(it, seasonChipGroup, chipStyle, filterViewModel = viewModel){chipId,text,isChecked->
-                    if(isChecked){
-                        viewModel.selectedSeasonsId.add(chipId)
-                        viewModel.seasonsTexts.add(text)
-                    }else{
+                childChip(
+                    it,
+                    seasonChipGroup,
+                    chipStyle,
+                    filterViewModel = viewModel
+                ) { chipId, text, isChecked ->
+                    if (isChecked) {
+                        val contains = viewModel.seasonsTexts.contains(text)
+                        if (!contains) {
+                            viewModel.selectedSeasonsId.add(chipId)
+                            viewModel.seasonsTexts.add(text)
+                        }
+                    } else {
                         viewModel.selectedSeasonsId.remove(chipId)
                         viewModel.seasonsTexts.remove(text)
                     }
@@ -104,11 +136,19 @@ class LookFilterFragment : Fragment(R.layout.search_filter_fragment),View.OnClic
         viewModel.styleChipList.observe(viewLifecycleOwner) {
             it?.let {
                 val styleChipGroup = binding.filterSpace.filterInclude.styleChipGroup
-                childChip(it, styleChipGroup, chipStyle, filterViewModel = viewModel){chipId,text,isChecked->
-                    if(isChecked){
-                        viewModel.selectedStylesId.add(chipId)
-                        viewModel.stylesTexts.add(text)
-                    }else{
+                childChip(
+                    it,
+                    styleChipGroup,
+                    chipStyle,
+                    filterViewModel = viewModel
+                ) { chipId, text, isChecked ->
+                    if (isChecked) {
+                        val contains = viewModel.stylesTexts.contains(text)
+                        if (!contains) {
+                            viewModel.selectedStylesId.add(chipId)
+                            viewModel.stylesTexts.add(text)
+                        }
+                    } else {
                         viewModel.selectedStylesId.remove(chipId)
                         viewModel.stylesTexts.remove(text)
                     }
@@ -125,11 +165,13 @@ class LookFilterFragment : Fragment(R.layout.search_filter_fragment),View.OnClic
         genderBtns.forEach { button ->
             button.isSelected = button == v
             if (button.isSelected) {
-                viewModel.selectedGender = if (button.text.toString() == "MAN") "Male" else "Female"
+                viewModel.selectedGender =
+                    if (button.text.toString() == "MAN") "Male" else "Female"
             }
         }
     }
-    private fun clearLookFilter(){
+
+    private fun clearLookFilter() {
         binding.clearBtn.setOnClickListener {
             binding.filterSpace.apply {
                 genderManBtn.isSelected = false
@@ -158,13 +200,23 @@ class LookFilterFragment : Fragment(R.layout.search_filter_fragment),View.OnClic
             }
         }
     }
-    private fun saveLookFilter(){
+
+    private fun saveLookFilter() {
         binding.submitBtn.setOnClickListener {
             binding.filterSpace.heightValue.clearFocus()
             binding.filterSpace.weightValue.clearFocus()
-            val tpoFilterItem = FilterItem(viewModel.tposTexts.joinToString(","),viewModel.selectedTposId.joinToString (","))
-            val seasonFilterItem = FilterItem(viewModel.seasonsTexts.joinToString(","),viewModel.selectedSeasonsId.joinToString (","))
-            val styleFilterItem = FilterItem(viewModel.stylesTexts.joinToString(","),viewModel.selectedStylesId.joinToString (","))
+            val tpoFilterItem = FilterItem(
+                viewModel.tposTexts.joinToString(","),
+                viewModel.selectedTposId.joinToString(",")
+            )
+            val seasonFilterItem = FilterItem(
+                viewModel.seasonsTexts.joinToString(","),
+                viewModel.selectedSeasonsId.joinToString(",")
+            )
+            val styleFilterItem = FilterItem(
+                viewModel.stylesTexts.joinToString(","),
+                viewModel.selectedStylesId.joinToString(",")
+            )
             CoroutineScope(Dispatchers.IO).launch {
                 lookFilterDataStore.saveLookFilterInstance(
                     viewModel.selectedGender,
@@ -178,34 +230,53 @@ class LookFilterFragment : Fragment(R.layout.search_filter_fragment),View.OnClic
             Toast.makeText(requireContext(), "필터가 저장되었습니다.", Toast.LENGTH_SHORT).show()
         }
     }
-    private fun exposeSavedValue(){
-        CoroutineScope(Dispatchers.Main).launch{
-            with(lookFilterDataStore){
+
+    private fun exposeSavedValue() {
+        CoroutineScope(Dispatchers.Main).launch {
+            with(lookFilterDataStore) {
                 height.first()?.let {
-                    Log.e(TAG, "exposeSavedValue: $it")
                     binding.filterSpace.heightValue.setText("$it cm")
+                    viewModel.savedHeight = it
                 }
-                weight.first()?.let{
+                weight.first()?.let {
                     binding.filterSpace.weightValue.setText("$it kg")
+                    viewModel.savedWeight = it
                 }
-                lookGender.first()?.let{
-                    if(it =="Male"){
+                lookGender.first()?.let {
+                    if (it == "Male") {
                         binding.filterSpace.genderManBtn.isSelected = true
-                    }else if( it == "Female"){
+                    } else if (it == "Female") {
                         binding.filterSpace.genderWomanBtn.isSelected = true
                     }
+                    viewModel.selectedGender = it
                 }
-                tpo.first()?.let{
+                tpo.first()?.let {
                     val tpo = it.split(",").toMutableList()
                     viewModel.tposTexts = tpo
                 }
-                season.first()?.let{
+                season.first()?.let {
                     val season = it.split(",").toMutableList()
                     viewModel.seasonsTexts = season
                 }
-                style.first()?.let{
+                style.first()?.let {
                     val style = it.split(",").toMutableList()
                     viewModel.stylesTexts = style
+                }
+                tpoId.first()?.let {
+                    it.split(",").mapNotNull { it.toIntOrNull() }.toMutableList().apply {
+                        viewModel.selectedTposId = this
+                    }
+                }
+
+                seasonId.first()?.let {
+                    it.split(",").mapNotNull { it.toIntOrNull() }.toMutableList().apply {
+                        viewModel.selectedSeasonsId = this
+                    }
+                }
+                styleId.first()?.let {
+                    it.split(",").mapNotNull { it.toIntOrNull() }.toMutableList().apply {
+                        viewModel.selectedStylesId = this
+                    }
                 }
             }
         }

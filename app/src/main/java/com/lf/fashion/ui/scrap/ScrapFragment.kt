@@ -102,8 +102,8 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
     private fun loadMorePost() {
         if (recentResponse.hasNext == true) {
             viewModel.getMorePostList(recentResponse.nextCursor!!)
-            viewModel.morePost.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let { resource ->
+            viewModel.morePost.observe(viewLifecycleOwner) { /*event ->
+                event.getContentIfNotHandled()?.let { */resource ->
                     when (resource) {
                         is Resource.Success -> {
                             val more = resource.value
@@ -123,7 +123,7 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
                         else -> {
 
 
-                        }
+                        //}
                     }
                 }
             }

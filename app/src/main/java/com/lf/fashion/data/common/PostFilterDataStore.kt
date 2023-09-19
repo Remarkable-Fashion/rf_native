@@ -1,12 +1,14 @@
 package com.lf.fashion.data.common
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.lf.fashion.TAG
 import com.lf.fashion.data.model.FilterItem
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -86,22 +88,36 @@ class PostFilterDataStore @Inject constructor(@ApplicationContext context: Conte
         season: FilterItem? = null,
         style: FilterItem? = null
     ) {
+        Log.e(TAG, "saveMainFilterInstance: $tpo , $season ,$style ,")
+
         appContext.postFilterDataStore.edit { preferences ->
-            gender?.let { preferences[FILTER_GENDER] = it }
-            height?.let { preferences[FILTER_HEIGHT] = it }
-            weight?.let { preferences[FILTER_WEIGHT] = it }
-            //  bodyType?.let { preferences[FILTER_BODY_TYPE] = it }
+            gender?.let { preferences[FILTER_GENDER] = it } ?: preferences.remove(FILTER_GENDER)
+            height?.let { preferences[FILTER_HEIGHT] = it } ?: preferences.remove(FILTER_HEIGHT)
+            weight?.let { preferences[FILTER_WEIGHT] = it } ?: preferences.remove(FILTER_WEIGHT)
+            // bodyType?.let { preferences[FILTER_BODY_TYPE] = it }
+
             tpo?.let {
                 preferences[FILTER_TPO] = it.text
                 preferences[FILTER_TPO_ID] = it.id
+            } ?: run {
+                preferences.remove(FILTER_TPO)
+                preferences.remove(FILTER_TPO_ID)
             }
+
             season?.let {
                 preferences[FILTER_SEASON] = it.text
                 preferences[FILTER_SEASON_ID] = it.id
+            } ?: run {
+                preferences.remove(FILTER_SEASON)
+                preferences.remove(FILTER_SEASON_ID)
             }
+
             style?.let {
                 preferences[FILTER_STYLE] = it.text
                 preferences[FILTER_STYLE_ID] = it.id
+            } ?: run {
+                preferences.remove(FILTER_STYLE)
+                preferences.remove(FILTER_STYLE_ID)
             }
         }
     }
