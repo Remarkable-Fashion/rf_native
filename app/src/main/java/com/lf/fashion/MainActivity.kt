@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -14,17 +15,29 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
+import com.lf.fashion.data.common.PostFilterDataStore
+import com.lf.fashion.data.common.SearchItemFilterDataStore
+import com.lf.fashion.data.common.SearchLookFilterDataStore
 import com.lf.fashion.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    private lateinit var lookFilterDataStore: SearchLookFilterDataStore
+    private lateinit var itemFilterDataStore: SearchItemFilterDataStore
+    private lateinit var postFilterDataStore: PostFilterDataStore
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        lookFilterDataStore = SearchLookFilterDataStore(this.applicationContext)
+        itemFilterDataStore = SearchItemFilterDataStore(this.applicationContext)
+        postFilterDataStore = PostFilterDataStore(this.applicationContext)
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavBar)
         bottomNavigationView.itemIconTintList = null
@@ -55,6 +68,15 @@ class MainActivity : AppCompatActivity() {
                 // ...
             }
             .addOnFailureListener(this) { e -> Log.e(TAG, "onCreate: 다이나믹 링크 $e") }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        CoroutineScope(Dispatchers.IO).launch {
+            lookFilterDataStore.clearLookFilter()
+            itemFilterDataStore.clearItemFilter()
+            postFilterDataStore.clearMainFilter()
+        }
     }
 
     companion object {

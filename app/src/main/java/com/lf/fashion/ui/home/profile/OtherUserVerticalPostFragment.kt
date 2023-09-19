@@ -1,6 +1,7 @@
 package com.lf.fashion.ui.home.profile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
+import com.lf.fashion.TAG
 import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ImageUrl
@@ -80,9 +82,7 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
                 }
             }
         }
-
     }
-
 
     override fun photoClicked(bool: Boolean, photo: List<ImageUrl>) {
         if (bool) {
@@ -166,6 +166,7 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
 
     override fun photoZipBtnClicked(post: Posts) {
         post.user = userInfo
+        Log.e(TAG, "photoZipBtnClicked: $post")
         findNavController().navigate(
             R.id.action_otherUserVerticalPostFragment_to_photoZipFragment,
             bundleOf("post" to post)
