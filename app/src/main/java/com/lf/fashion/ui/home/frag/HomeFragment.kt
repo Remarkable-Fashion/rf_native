@@ -55,7 +55,6 @@ class HomeFragment :
     private lateinit var likeClickedPosts: Posts
     private lateinit var scrapClickedPosts: Posts
     private lateinit var filterDataStore: PostFilterDataStore
-    private var postList = mutableListOf<Posts>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = HomeAFragmentBinding.bind(view)
