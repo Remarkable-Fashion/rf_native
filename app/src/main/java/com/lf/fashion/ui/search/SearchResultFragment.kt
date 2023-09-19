@@ -175,6 +175,7 @@ class SearchResultFragment(private val resultCategory: String) :
                 }
             }
         }
+        //todo loadMoreItem observe 추가후 테스트 필요
     }
     private fun requestSearch() {
         when(resultCategory){
