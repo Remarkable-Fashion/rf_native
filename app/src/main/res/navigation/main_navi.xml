@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/photoDetailFragment"
-        android:name="com.lf.fashion.ui.home.frag.PhotoDetailFragment"
+        android:name="com.lf.fashion.ui.common.PhotoDetailFragment"
         android:label="PhotoDetailFragment"/>
 
     <navigation

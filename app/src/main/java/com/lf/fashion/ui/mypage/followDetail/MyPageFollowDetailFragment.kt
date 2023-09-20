@@ -7,7 +7,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.lf.fashion.MainActivity
 import com.lf.fashion.R
 import com.lf.fashion.databinding.MypageFollowDetailBinding
-import com.lf.fashion.ui.cancelBtnBackStack
+import com.lf.fashion.ui.common.cancelBtnBackStack
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

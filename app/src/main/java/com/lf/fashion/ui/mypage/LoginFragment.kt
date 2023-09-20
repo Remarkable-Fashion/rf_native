@@ -12,7 +12,7 @@ import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.LoginFragmentBinding
-import com.lf.fashion.ui.AppCustomDialog
+import com.lf.fashion.ui.common.AppCustomDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

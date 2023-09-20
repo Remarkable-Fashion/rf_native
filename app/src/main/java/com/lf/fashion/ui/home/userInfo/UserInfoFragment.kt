@@ -11,11 +11,11 @@ import com.lf.fashion.R
 import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.HomeBUserInfoFragmentBinding
-import com.lf.fashion.ui.cancelBtnBackStack
-import com.lf.fashion.ui.childChip
+import com.lf.fashion.ui.common.cancelBtnBackStack
+import com.lf.fashion.ui.common.childChip
 import com.lf.fashion.ui.home.adapter.ClothesRvAdapter
-import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
-import com.lf.fashion.ui.showRequireLoginDialog
+import com.lf.fashion.ui.common.PostBottomSheetFragment
+import com.lf.fashion.ui.common.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
 

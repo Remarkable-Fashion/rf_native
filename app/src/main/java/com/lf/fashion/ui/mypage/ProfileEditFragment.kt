@@ -18,8 +18,13 @@ import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.MyInfo
 import com.lf.fashion.databinding.MypageProfileFragmentBinding
-import com.lf.fashion.ui.*
 import com.lf.fashion.ui.addPost.ImagePickerFragment
+import com.lf.fashion.ui.common.absolutelyPath
+import com.lf.fashion.ui.common.addTextChangeListener
+import com.lf.fashion.ui.common.addTextLengthCounter
+import com.lf.fashion.ui.common.addUnitTextListener
+import com.lf.fashion.ui.common.cancelBtnBackStack
+import com.lf.fashion.ui.common.handleApiError
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

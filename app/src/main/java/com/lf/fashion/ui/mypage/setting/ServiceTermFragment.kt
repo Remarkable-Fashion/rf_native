@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import com.lf.fashion.MainActivity
 import com.lf.fashion.R
 import com.lf.fashion.databinding.MypageServicetermFragmentBinding
-import com.lf.fashion.ui.getAssetsTextString
+import com.lf.fashion.ui.common.getAssetsTextString
 
 class ServiceTermFragment :Fragment(R.layout.mypage_serviceterm_fragment) {
     private lateinit var binding:MypageServicetermFragmentBinding

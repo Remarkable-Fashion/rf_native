@@ -1,4 +1,4 @@
-package com.lf.fashion.ui
+package com.lf.fashion.ui.common
 
 import com.lf.fashion.data.model.Posts
 

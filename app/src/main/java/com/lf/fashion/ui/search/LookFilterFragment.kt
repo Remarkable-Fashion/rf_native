@@ -1,22 +1,19 @@
 package com.lf.fashion.ui.search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.chip.Chip
 import com.lf.fashion.R
-import com.lf.fashion.TAG
 import com.lf.fashion.data.common.SearchLookFilterDataStore
 import com.lf.fashion.data.model.FilterItem
 import com.lf.fashion.databinding.SearchFilterFragmentBinding
-import com.lf.fashion.ui.addUnitTextListener
-import com.lf.fashion.ui.cancelBtnBackStack
-import com.lf.fashion.ui.childChip
+import com.lf.fashion.ui.common.addUnitTextListener
+import com.lf.fashion.ui.common.cancelBtnBackStack
+import com.lf.fashion.ui.common.childChip
 import com.lf.fashion.ui.home.frag.FilterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope

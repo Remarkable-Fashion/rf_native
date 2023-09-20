@@ -16,12 +16,12 @@ import com.lf.fashion.data.model.Posts
 import com.lf.fashion.data.model.UserInfo
 import com.lf.fashion.databinding.MypagePhotoZipFragmentBinding
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
-import com.lf.fashion.ui.GridPhotoClickListener
-import com.lf.fashion.ui.GridPostAdapter
-import com.lf.fashion.ui.OnScrollUtils
-import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
+import com.lf.fashion.ui.common.adapter.GridPhotoClickListener
+import com.lf.fashion.ui.common.adapter.GridPostAdapter
+import com.lf.fashion.ui.common.OnScrollUtils
+import com.lf.fashion.ui.common.PostBottomSheetFragment
 import com.lf.fashion.ui.home.photozip.PhotoZipViewModel
-import com.lf.fashion.ui.mainBottomMenuListener
+import com.lf.fashion.ui.common.mainBottomMenuListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
 

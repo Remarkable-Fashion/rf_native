@@ -5,12 +5,10 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.lf.fashion.data.model.Cloth
 import com.lf.fashion.data.model.Posts
-import com.lf.fashion.data.model.SearchItemResult
 import com.lf.fashion.databinding.ItemSearchResultItemVerticalBinding
 import com.lf.fashion.databinding.ItemSearchVerticalBinding
-import com.lf.fashion.ui.home.adapter.DefaultPostDiff
+import com.lf.fashion.ui.common.adapter.DefaultPostDiff
 
 class LookVerticalAdapter() :
     ListAdapter<Posts, LookVerticalAdapter.LookVerticalViewHolder>(DefaultPostDiff()) {

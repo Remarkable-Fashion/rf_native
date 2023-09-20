@@ -5,7 +5,7 @@ import com.lf.fashion.TAG
 import com.lf.fashion.data.model.UploadPost
 import com.lf.fashion.data.network.SafeApiCall
 import com.lf.fashion.data.network.api.UploadPostApi
-import com.lf.fashion.ui.getMimeType
+import com.lf.fashion.ui.common.getMimeType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody

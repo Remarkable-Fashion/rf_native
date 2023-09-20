@@ -1,11 +1,9 @@
-package com.lf.fashion.ui
+package com.lf.fashion.ui.common.adapter
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.lf.fashion.R
-import com.lf.fashion.TAG
 import com.lf.fashion.data.model.Cloth
 import com.lf.fashion.data.model.Profile
 

@@ -11,11 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.lf.fashion.R
 import com.lf.fashion.databinding.ScrapVerticalFragmentBinding
-import com.lf.fashion.ui.cancelBtnBackStack
+import com.lf.fashion.ui.common.cancelBtnBackStack
 import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.VerticalViewPagerClickListener
-import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
-import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
+import com.lf.fashion.ui.common.adapter.DefaultPostAdapter
+import com.lf.fashion.ui.common.PostBottomSheetFragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -25,8 +25,8 @@ import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.data.model.Posts
-import com.lf.fashion.ui.MyBottomDialogListener
-import com.lf.fashion.ui.mainBottomMenuListener
+import com.lf.fashion.ui.common.MyBottomDialogListener
+import com.lf.fashion.ui.common.mainBottomMenuListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

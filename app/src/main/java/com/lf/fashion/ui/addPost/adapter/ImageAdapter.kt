@@ -2,7 +2,6 @@ package com.lf.fashion.ui.addPost.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
@@ -15,7 +14,7 @@ import com.lf.fashion.databinding.ItemCameraBinding
 import com.lf.fashion.databinding.ItemImageBinding
 import com.lf.fashion.ui.addPost.GalleryRvListener
 import com.lf.fashion.ui.addPost.ImagePickerViewModel
-import com.lf.fashion.ui.itemViewRatioSetting
+import com.lf.fashion.ui.common.itemViewRatioSetting
 
 /**
  * @param parentViewModel The ImagePicker's ViewModel which holds each ImageItem

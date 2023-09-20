@@ -15,8 +15,8 @@ import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.databinding.PhotoFragmentBinding
-import com.lf.fashion.ui.showPermissionDialog
-import com.lf.fashion.ui.showRequireLoginDialog
+import com.lf.fashion.ui.common.showPermissionDialog
+import com.lf.fashion.ui.common.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 /**permissioncheck 의 역할을 하는 fragment ..

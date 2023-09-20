@@ -1,7 +1,6 @@
 package com.lf.fashion.ui.search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TableRow
 import android.widget.TextView
@@ -11,10 +10,9 @@ import androidx.fragment.app.viewModels
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.lf.fashion.R
-import com.lf.fashion.TAG
 import com.lf.fashion.data.common.SearchItemFilterDataStore
 import com.lf.fashion.databinding.SearchItemFilterFragmentBinding
-import com.lf.fashion.ui.cancelBtnBackStack
+import com.lf.fashion.ui.common.cancelBtnBackStack
 import com.lf.fashion.ui.home.frag.FilterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope

@@ -17,12 +17,11 @@ import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.data.model.UserInfo
 import com.lf.fashion.databinding.UserVerticalFragmentBinding
-import com.lf.fashion.ui.MyBottomDialogListener
-import com.lf.fashion.ui.cancelBtnBackStack
+import com.lf.fashion.ui.common.cancelBtnBackStack
 import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.VerticalViewPagerClickListener
-import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
-import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
+import com.lf.fashion.ui.common.adapter.DefaultPostAdapter
+import com.lf.fashion.ui.common.PostBottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking

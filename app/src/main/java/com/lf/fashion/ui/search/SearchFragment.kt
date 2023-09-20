@@ -23,7 +23,7 @@ import com.lf.fashion.data.common.SearchItemFilterDataStore
 import com.lf.fashion.data.common.SearchLookFilterDataStore
 import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.databinding.SearchFragmentBinding
-import com.lf.fashion.ui.hideKeyboard
+import com.lf.fashion.ui.common.hideKeyboard
 import com.lf.fashion.ui.search.adapter.SearchRankRowClickListener
 import com.lf.fashion.ui.search.adapter.SearchResultViewPagerAdapter
 import com.lf.fashion.ui.search.adapter.TermRankAdapter
@@ -34,7 +34,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class SearchFragment : Fragment(R.layout.search_fragment),

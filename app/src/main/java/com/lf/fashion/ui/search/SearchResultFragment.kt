@@ -17,7 +17,7 @@ import com.lf.fashion.data.common.SearchItemFilterDataStore
 import com.lf.fashion.data.common.SearchLookFilterDataStore
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.SearchResultViewpagerBinding
-import com.lf.fashion.ui.GridPhotoClickListener
+import com.lf.fashion.ui.common.adapter.GridPhotoClickListener
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.search.adapter.ItemGridAdapter
 import com.lf.fashion.ui.search.adapter.ItemVerticalAdapter

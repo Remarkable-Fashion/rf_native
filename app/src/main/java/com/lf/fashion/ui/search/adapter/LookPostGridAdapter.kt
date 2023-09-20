@@ -7,11 +7,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.databinding.HomeGridItemBinding
-import com.lf.fashion.ui.GridPhotoClickListener
-import com.lf.fashion.ui.SpanCountEditBtnListener
-import com.lf.fashion.ui.convertDPtoPX
-import com.lf.fashion.ui.home.adapter.DefaultPostDiff
-import com.lf.fashion.ui.itemViewRatioSetting
+import com.lf.fashion.ui.common.adapter.GridPhotoClickListener
+import com.lf.fashion.ui.common.adapter.SpanCountEditBtnListener
+import com.lf.fashion.ui.common.adapter.DefaultPostDiff
+import com.lf.fashion.ui.common.itemViewRatioSetting
 
 class LookPostGridAdapter(
     private var spanCount: Int? = null,

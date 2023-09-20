@@ -7,7 +7,7 @@ import com.lf.fashion.data.network.api.JWTApi
 import com.lf.fashion.data.network.api.MyPageApi
 import com.lf.fashion.data.model.MyInfo
 import com.lf.fashion.data.model.PostStatus
-import com.lf.fashion.ui.getMimeType
+import com.lf.fashion.ui.common.getMimeType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody

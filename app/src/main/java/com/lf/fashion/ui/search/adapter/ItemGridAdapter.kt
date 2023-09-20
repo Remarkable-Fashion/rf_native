@@ -2,7 +2,6 @@ package com.lf.fashion.ui.search.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
@@ -10,10 +9,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.data.model.Cloth
 import com.lf.fashion.databinding.ItemSearchResultItemListBinding
-import com.lf.fashion.ui.GridPhotoClickListener
-import com.lf.fashion.ui.SpanCountEditBtnListener
-import com.lf.fashion.ui.convertDPtoPX
-import com.lf.fashion.ui.itemViewRatioSetting
+import com.lf.fashion.ui.common.adapter.GridPhotoClickListener
+import com.lf.fashion.ui.common.adapter.SpanCountEditBtnListener
+import com.lf.fashion.ui.common.itemViewRatioSetting
 
 class ItemGridAdapter(
     private var spanCount: Int? = null,

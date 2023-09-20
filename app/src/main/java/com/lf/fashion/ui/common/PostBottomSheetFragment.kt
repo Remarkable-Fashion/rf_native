@@ -1,4 +1,4 @@
-package com.lf.fashion.ui.home.frag
+package com.lf.fashion.ui.common
 
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -19,12 +19,10 @@ import com.lf.fashion.data.model.DeclareInfo
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.databinding.HomeBottomDialogItemBinding
-import com.lf.fashion.ui.MyBottomDialogListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.properties.Delegates
 
 /**
  * 공유 버튼 클릭시 노출되는 바텀 다이얼로그 시트입니다

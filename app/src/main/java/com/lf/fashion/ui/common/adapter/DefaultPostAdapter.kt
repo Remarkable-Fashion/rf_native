@@ -1,4 +1,4 @@
-package com.lf.fashion.ui.home.adapter
+package com.lf.fashion.ui.common.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +13,7 @@ import com.lf.fashion.data.model.Posts
 import com.lf.fashion.databinding.HomeAVerticalItemBinding
 import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.VerticalViewPagerClickListener
+import com.lf.fashion.ui.home.adapter.PhotoHorizontalAdapter
 
 class DefaultPostAdapter(
     private val photoClickListener: PhotoClickListener,

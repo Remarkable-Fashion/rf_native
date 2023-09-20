@@ -12,13 +12,14 @@ import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
-import com.lf.fashion.data.model.Posts
-import com.lf.fashion.data.model.RandomPostResponse
 import com.lf.fashion.databinding.ScrapFragmentBinding
-import com.lf.fashion.ui.*
+import com.lf.fashion.ui.common.OnScrollUtils
+import com.lf.fashion.ui.common.adapter.GridPhotoClickListener
+import com.lf.fashion.ui.common.adapter.GridPostAdapter
+import com.lf.fashion.ui.common.mainBottomMenuListener
+import com.lf.fashion.ui.common.showRequireLoginDialog
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Collections.addAll
 
 
 @AndroidEntryPoint

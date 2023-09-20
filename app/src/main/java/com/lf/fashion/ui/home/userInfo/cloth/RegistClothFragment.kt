@@ -21,17 +21,16 @@ import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.model.UploadCloth
 import com.lf.fashion.databinding.HomeBRegistClothFragmentBinding
-import com.lf.fashion.ui.AddPostClothesRvAdapter
-import com.lf.fashion.ui.absolutelyPath
+import com.lf.fashion.ui.common.adapter.AddPostClothesRvAdapter
+import com.lf.fashion.ui.common.absolutelyPath
 import com.lf.fashion.ui.addPost.ImagePickerFragment
-import com.lf.fashion.ui.addTextLengthCounter
-import com.lf.fashion.ui.cancelBtnBackStack
-import com.lf.fashion.ui.showPermissionDialog
+import com.lf.fashion.ui.common.addTextLengthCounter
+import com.lf.fashion.ui.common.cancelBtnBackStack
+import com.lf.fashion.ui.common.showPermissionDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlin.properties.Delegates
 

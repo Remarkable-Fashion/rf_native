@@ -26,18 +26,16 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.MainNaviDirections
-import com.lf.fashion.NavigationPhotoDirections
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.model.ImageItem
 import com.lf.fashion.databinding.PhotoImagePickerFragmentBinding
-import com.lf.fashion.ui.AppCustomDialog
+import com.lf.fashion.ui.common.AppCustomDialog
 import com.lf.fashion.ui.addPost.adapter.CheckedImageAdapter
 import com.lf.fashion.ui.addPost.adapter.ImageAdapter
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
-import com.lf.fashion.ui.showPermissionDialog
-import com.lf.fashion.ui.showRequireLoginDialog
+import com.lf.fashion.ui.common.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 /**

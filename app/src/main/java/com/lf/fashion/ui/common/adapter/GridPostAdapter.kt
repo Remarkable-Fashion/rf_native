@@ -1,17 +1,15 @@
-package com.lf.fashion.ui
+package com.lf.fashion.ui.common.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.lf.fashion.TAG
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.databinding.HomeGridItemBinding
-import com.lf.fashion.ui.home.adapter.DefaultPostDiff
+import com.lf.fashion.ui.common.itemViewRatioSetting
 
 class GridPostAdapter(
     private var spanCount: Int? = null,
