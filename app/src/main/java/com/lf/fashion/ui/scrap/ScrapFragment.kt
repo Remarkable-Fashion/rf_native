@@ -26,7 +26,6 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
     private lateinit var binding: ScrapFragmentBinding
     private val viewModel: ScrapViewModel by hiltNavGraphViewModels(R.id.navigation_scrap)
     private lateinit var gridPostAdapter: GridPostAdapter
-    private lateinit var recentResponse: RandomPostResponse
     private lateinit var onScrollListener: NestedScrollView.OnScrollChangeListener
     private lateinit var userPref: UserDataStorePref
 
@@ -49,14 +48,15 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
                 when (resources) {
                     is Resource.Success -> {
                         val response = resources.value
-                        Log.d(TAG, "ScrapFragment - onViewCreated RESPONSE: $response");
+                        Log.e(TAG, "ScrapFragment - onViewCreated RESPONSE: $response");
                         if (response.posts.isNotEmpty()) {
                             binding.scrapRv.visibility = View.VISIBLE
                             binding.arrayEmptyText.visibility = View.GONE
 
                             viewModel.allScrapList = response.posts.toMutableList()
-                            recentResponse = response
-
+                            viewModel.recentResponse = response
+                            Log.e(TAG, "onViewCreated: recentReesponse ${viewModel.recentResponse!!.size}")
+                            Log.e(TAG, "onViewCreated: allScrapList ${viewModel.allScrapList!!.size}")
                             with(binding.scrapRv) {
                                 layoutManager = StaggeredGridLayoutManager(3,
                                     StaggeredGridLayoutManager.VERTICAL)
@@ -100,15 +100,16 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
     }
 
     private fun loadMorePost() {
-        if (recentResponse.hasNext == true) {
-            viewModel.getMorePostList(recentResponse.nextCursor!!)
-            viewModel.morePost.observe(viewLifecycleOwner) { /*event ->
-                event.getContentIfNotHandled()?.let { */resource ->
+        if (viewModel.recentResponse?.hasNext == true) {
+            viewModel.getMorePostList(viewModel.recentResponse!!.nextCursor!!)
+            viewModel.morePost.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let { resource ->
                     when (resource) {
                         is Resource.Success -> {
                             val more = resource.value
                             viewModel.allScrapList.addAll(more.posts)
-                            recentResponse = more
+                            viewModel.recentResponse = more
+                            Log.e(TAG, "onViewCreated: loadMore allScrapList  ${viewModel.allScrapList!!.size}")
 
                             gridPostAdapter.apply {
                                 submitList(viewModel.allScrapList)
@@ -124,7 +125,7 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
 
 
                         //}
-                    }
+                    }}
                 }
             }
         }

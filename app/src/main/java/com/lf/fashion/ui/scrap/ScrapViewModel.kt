@@ -28,8 +28,8 @@ class ScrapViewModel @Inject constructor(
     private val _postResponse = MutableLiveData<Resource<RandomPostResponse>>()
     var postResponse: LiveData<Resource<RandomPostResponse>> = _postResponse
 
-    private val _morePost = MutableLiveData<Resource<RandomPostResponse>>()
-    var morePost: MutableLiveData<Resource<RandomPostResponse>> = _morePost
+    private val _morePost = MutableLiveData<Event<Resource<RandomPostResponse>>>()
+    var morePost: MutableLiveData<Event<Resource<RandomPostResponse>>> = _morePost
 
     private val _startIndex = MutableLiveData<Int>()
     var startIndex: MutableLiveData<Int> = _startIndex
@@ -42,6 +42,8 @@ class ScrapViewModel @Inject constructor(
 
     //새로 load 된 post 들까지 합쳐진 전체 itemList
     var allScrapList = mutableListOf<Posts>()
+    var recentResponse :RandomPostResponse? = null
+
     /*   init {
            getPostList()
        }
@@ -55,7 +57,7 @@ class ScrapViewModel @Inject constructor(
 
     fun getMorePostList(nextCursor: Int) {
         viewModelScope.launch {
-            _morePost.value = scrapRepository.getScrapPosts(nextCursor)
+            _morePost.value = Event(scrapRepository.getScrapPosts(nextCursor))
             Log.d(TAG, "ScrapViewModel - getPostList: ${_postResponse.value}");
         }
     }

@@ -18,6 +18,7 @@ import com.lf.fashion.ui.home.adapter.DefaultPostAdapter
 import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.TAG
 import com.lf.fashion.data.common.UserDataStorePref
@@ -74,6 +75,40 @@ class ScrapVerticalFragment : Fragment(),
         //좋아요 상태 변화 관찰&업데이트
         updateLikeState()
         updateScrapState()
+
+        binding.verticalViewpager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                val totalItemCount = binding.verticalViewpager.adapter?.itemCount ?: 0
+                if (position == totalItemCount - 1 && viewModel.recentResponse?.hasNext == true) {
+                    loadMorePost()
+                }
+            }
+        })
+    }
+
+    private fun loadMorePost() {
+        viewModel.getMorePostList(viewModel.recentResponse!!.nextCursor!!)
+        viewModel.morePost.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    val more = resource.value
+                    viewModel.allScrapList.addAll(more.posts)
+                    viewModel.recentResponse = more // new nextCursor , hasNext check 를 위해 값 초기화
+
+                    defaultAdapter.apply {
+                        submitList(viewModel.allScrapList)
+                        notifyDataSetChanged()
+                    }
+                }
+
+                else -> {
+
+                }
+            }}
+        }
     }
 
     private fun updateLikeState() {
@@ -157,8 +192,10 @@ class ScrapVerticalFragment : Fragment(),
     }
 
     override fun infoBtnClicked(postId: Int) {
-        findNavController().navigate(R.id.action_scrapVerticalFragment_to_userInfoFragment,
-            bundleOf("postId" to postId))
+        findNavController().navigate(
+            R.id.action_scrapVerticalFragment_to_userInfoFragment,
+            bundleOf("postId" to postId)
+        )
     }
 
     override fun profileSpaceClicked(userId: Int) {
@@ -194,22 +231,24 @@ class ScrapVerticalFragment : Fragment(),
                     }
                 }
             }
-        }    }
+        }
+    }
 
     override fun changePostPublicStatus(post: Posts) {
         CoroutineScope(Dispatchers.Main).launch {
             //기존 게시/미게시 상태의 반전
             val response = viewModel.changePostStatus(post.id, !(post.isPublic ?: true))
-            if(response.success){
-                Toast.makeText(requireContext(),"게시물의 상태가 변경되었습니다",Toast.LENGTH_SHORT).show()
+            if (response.success) {
+                Toast.makeText(requireContext(), "게시물의 상태가 변경되었습니다", Toast.LENGTH_SHORT).show()
                 val currentList = defaultAdapter.currentList
                 val position = currentList.indexOf(post)
-                if(position != -1){
+                if (position != -1) {
                     defaultAdapter.currentList[position].apply {
                         isPublic = !isPublic!!
                     }
-                    defaultAdapter.notifyItemChanged(position,"PUBLIC_STATE")
-                }            }
+                    defaultAdapter.notifyItemChanged(position, "PUBLIC_STATE")
+                }
+            }
         }
     }
 
