@@ -1,6 +1,7 @@
 package com.lf.fashion.ui.home.photozip
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -8,8 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
+import com.lf.fashion.TAG
 import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ImageUrl
@@ -37,7 +40,7 @@ class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_frag
 
     private lateinit var likeClickedPosts: Posts
     private lateinit var scrapClickedPosts: Posts
-
+    private var userId :Int? =null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = HomeBPhotozipVerticalFragmentBinding.bind(view)
@@ -45,41 +48,60 @@ class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_frag
         userPref = UserDataStorePref(requireContext().applicationContext)
 
         val userInfoPost = arguments?.get("userInfoPost") as Posts
+        userId = userInfoPost.user!!.id
+
         defaultAdapter = DefaultPostAdapter(
             this@PhotoZipVerticalFragment,
             this@PhotoZipVerticalFragment,
             userInfoPost
         )
 
-        viewModel.posts.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.Success -> {
-                    val response = resource.value
-                    binding.verticalViewpager.apply {
-                        adapter = defaultAdapter
-                        (adapter as? DefaultPostAdapter)?.apply {
-                            submitList(response.posts)
-                            //scrapFragment 에서 선택한 item 의 index 를 시작 index 로 지정 , animation false 처리
-                            setCurrentItem(viewModel.startIndex.value ?: 0, false)
-                        }
-                        getChildAt(0).overScrollMode =
-                            RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
-                    }
-                }
-
-                is Resource.Failure -> {
-
-                }
-
-                is Resource.Loading -> {
-
-                }
+        binding.verticalViewpager.apply {
+            adapter = defaultAdapter
+            (adapter as? DefaultPostAdapter)?.apply {
+                submitList(viewModel.allPostList)
+                //scrapFragment 에서 선택한 item 의 index 를 시작 index 로 지정 , animation false 처리
+                setCurrentItem(viewModel.startIndex.value ?: 0, false)
             }
-
+            getChildAt(0).overScrollMode =
+                RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
         }
+
         //좋아요 상태 변화 관찰&업데이트
         updateLikeState()
         updateScrapState()
+        binding.verticalViewpager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                val totalItemCount = binding.verticalViewpager.adapter?.itemCount ?: 0
+                if (position == totalItemCount - 1 && viewModel.recentResponse?.hasNext == true) {
+                    loadMorePost()
+                }
+            }
+        })
+    }
+    private fun loadMorePost() {
+        viewModel.getMorePostByUserId(userId!!,viewModel.recentResponse?.nextCursor!!)
+        viewModel.morePost.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        val more = resource.value
+                        viewModel.allPostList.addAll(more.posts)
+                        viewModel.recentResponse = more// new nextCursor , hasNext check 를 위해 값 재초기화
+                        Log.e(TAG, "loadMorePost: $more")
+                        defaultAdapter.apply {
+                            submitList(viewModel.allPostList)
+                            notifyDataSetChanged()
+                        }
+                    }
+                    else -> {
+
+                    }
+                }
+            }
+        }
 
     }
 

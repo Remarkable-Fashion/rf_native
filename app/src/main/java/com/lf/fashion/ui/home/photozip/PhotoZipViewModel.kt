@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lf.fashion.data.common.Event
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.CommunicateRepository
 import com.lf.fashion.data.repository.OtherUserInfoRepository
@@ -43,12 +44,23 @@ class PhotoZipViewModel @Inject constructor(
     var havetoRefresh = MutableLiveData<Boolean>()
 
     var bundlePost : Posts? = null
+
+    //새로 load 된 post 들까지 합쳐진 전체 itemList
+    var allPostList = mutableListOf<Posts>()
+    var recentResponse :RandomPostResponse? = null
+    private val _morePost = MutableLiveData<Event<Resource<RandomPostResponse>>>()
+    var morePost: MutableLiveData<Event<Resource<RandomPostResponse>>> = _morePost
+
     fun getPostByUserId(userId: Int) {
         viewModelScope.launch {
             _posts.value = otherUserInfoRepository.getPostByUserId(userId)
         }
     }
-
+    fun getMorePostByUserId(userId: Int , nextCursor : Int) {
+        viewModelScope.launch {
+            _morePost.value = Event(otherUserInfoRepository.getPostByUserId(userId,nextCursor))
+        }
+    }
     fun getProfileInfoByUserId(userId : Int) {
         viewModelScope.launch {
             _profileInfo.value =

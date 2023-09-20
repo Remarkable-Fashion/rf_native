@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
@@ -17,6 +18,7 @@ import com.lf.fashion.databinding.MypagePhotoZipFragmentBinding
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener
 import com.lf.fashion.ui.GridPostAdapter
+import com.lf.fashion.ui.OnScrollUtils
 import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
 import com.lf.fashion.ui.home.photozip.PhotoZipViewModel
 import com.lf.fashion.ui.mainBottomMenuListener
@@ -32,11 +34,9 @@ class MyPhotoZipFragment : Fragment(R.layout.mypage_photo_zip_fragment), GridPho
     private val viewModel: PhotoZipViewModel by hiltNavGraphViewModels(R.id.navigation_mypage)
     private var userId by Delegates.notNull<Int>()
     private lateinit var userInfoPost: Posts
-    // private var postList = mutableListOf<Posts>()
-
-    // private var followState by Delegates.notNull<Boolean>()
-
     private lateinit var userPref: UserDataStorePref
+    private lateinit var gridAdapter: GridPostAdapter
+    private lateinit var onScrollListener: NestedScrollView.OnScrollChangeListener
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,13 +65,20 @@ class MyPhotoZipFragment : Fragment(R.layout.mypage_photo_zip_fragment), GridPho
 
             }
         }
+        //스크롤 리스너 설정
+        onScrollListener = OnScrollUtils { loadMorePost() }
+        binding.nestedScrollView.setOnScrollChangeListener(onScrollListener)
+
+        gridAdapter = GridPostAdapter(3, this@MyPhotoZipFragment, null,reduceViewWidth = true)
         with(binding.gridRv) {//grid layout
             layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
-            adapter = GridPostAdapter(3, this@MyPhotoZipFragment, null,reduceViewWidth = true).apply {
+            adapter = gridAdapter.apply {
                 viewModel.posts.observe(viewLifecycleOwner) { resource ->
                     when (resource) {
                         is Resource.Success -> {
                             val response = resource.value
+                            viewModel.recentResponse = response
+                            viewModel.allPostList = response.posts.toMutableList()
 
                             while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
                                 removeItemDecorationAt(0)
@@ -96,7 +103,30 @@ class MyPhotoZipFragment : Fragment(R.layout.mypage_photo_zip_fragment), GridPho
         profileKebabBtnOnClick()
 
     }
+    private fun loadMorePost() {
+        if (viewModel.recentResponse?.hasNext == true) {
+            var recentResponse = viewModel.recentResponse!!
+            viewModel.getMorePostByUserId(userInfoPost.user!!.id,recentResponse.nextCursor!!)
+            viewModel.morePost.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let { resource ->
+                    when (resource) {
+                        is Resource.Success -> {
+                            val more = resource.value
+                            viewModel.allPostList.addAll(more.posts)
+                            viewModel.recentResponse = more // new nextCursor , hasNext check 를 위해 값 재초기화
+                            gridAdapter.apply {
+                                submitList(viewModel.allPostList)
+                                notifyDataSetChanged()
+                            }
+                        }
+                        else -> {
 
+                        }
+                    }
+                }
+            }
+        }
+    }
     private fun followStateBinding(post: Posts) {
         //나의 사진 모아보기일 경우 팔로우 버튼을 숨김 (post.user.id == me.id)
         val myUniqueId = userPref.getMyUniqueId()

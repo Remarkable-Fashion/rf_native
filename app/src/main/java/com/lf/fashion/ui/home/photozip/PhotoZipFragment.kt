@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
@@ -19,6 +20,7 @@ import com.lf.fashion.databinding.HomeBPhotoZipFragmentBinding
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.GridPhotoClickListener
 import com.lf.fashion.ui.GridPostAdapter
+import com.lf.fashion.ui.OnScrollUtils
 import com.lf.fashion.ui.home.frag.PostBottomSheetFragment
 import com.lf.fashion.ui.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,6 +36,8 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
     private var userId by Delegates.notNull<Int>()
     private lateinit var userInfoPost: Posts
     private lateinit var userPref: UserDataStorePref
+    private lateinit var onScrollListener: NestedScrollView.OnScrollChangeListener
+    private lateinit var gridAdapter: GridPostAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,7 +55,6 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
         followBtnOnclick()
         // 팔로우 응답 success -> ui update
         updateFollowingState()
-
         viewModel.getPostByUserId(userInfoPost.user!!.id)
         viewModel.getProfileInfoByUserId(userInfoPost.user!!.id)
         viewModel.profileInfo.observe(viewLifecycleOwner){
@@ -62,20 +65,27 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
 
             }
         }
+        //스크롤 리스너 설정
+        onScrollListener = OnScrollUtils { loadMorePost() }
+        binding.nestedScrollView.setOnScrollChangeListener(onScrollListener)
+
+
+        gridAdapter = GridPostAdapter(3, this@PhotoZipFragment, null,reduceViewWidth = true)
         with(binding.gridRv) { //grid layout
             layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
-            adapter = GridPostAdapter(3, this@PhotoZipFragment, null,reduceViewWidth = true).apply {
+            adapter = gridAdapter.apply {
                 viewModel.posts.observe(viewLifecycleOwner) { resource ->
                     binding.layoutSwipeRefreah.isRefreshing = false
                     when (resource) {
                         is Resource.Success -> {
                             val response = resource.value
+                            viewModel.recentResponse = response
+                            viewModel.allPostList = response.posts.toMutableList()
 
                             while (itemDecorationCount > 0) { // 기존 추가한 itemDecoration 을 모두 지워주지않으면 점점 쌓인다.
                                 removeItemDecorationAt(0)
                             }
                             addItemDecoration(GridSpaceItemDecoration(3, 6))
-                            //postList.addAll(response.posts)
                             submitList(response.posts)
                         }
 
@@ -91,15 +101,6 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
             }
         }
 
-    /*    //vertical 뷰에서 포스트를 삭제한 경우 refresh 하는 코드!
-        viewModel.havetoRefresh.observe(viewLifecycleOwner){ it->
-            if(it) {
-                viewModel.getPostByUserId(post.user!!.id)
-                viewModel.getProfileInfoByUserId(post.user!!.id)
-                viewModel.havetoRefresh.value = false
-            }
-        }*/
-
         profileKebabBtnOnClick()
 
         binding.layoutSwipeRefreah.setOnRefreshListener {
@@ -109,7 +110,30 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
             }
         }
     }
+    private fun loadMorePost() {
+        if (viewModel.recentResponse?.hasNext == true) {
+            var recentResponse = viewModel.recentResponse!!
+            viewModel.getMorePostByUserId(userInfoPost.user!!.id,recentResponse.nextCursor!!)
+            viewModel.morePost.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let { resource ->
+                    when (resource) {
+                        is Resource.Success -> {
+                            val more = resource.value
+                            viewModel.allPostList.addAll(more.posts)
+                            viewModel.recentResponse = more // new nextCursor , hasNext check 를 위해 값 재초기화
+                            gridAdapter.apply {
+                                submitList(viewModel.allPostList)
+                                notifyDataSetChanged()
+                            }
+                        }
+                        else -> {
 
+                        }
+                    }
+                }
+            }
+        }
+    }
     private fun followStateBinding(post: Posts) {
         //나의 사진 모아보기일 경우 팔로우 버튼을 숨김 (post.user.id == me.id)
         val myUniqueId = userPref.getMyUniqueId()

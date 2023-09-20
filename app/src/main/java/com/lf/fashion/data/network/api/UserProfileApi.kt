@@ -11,7 +11,7 @@ import retrofit2.http.Query
 
 interface UserProfileApi {
 
-    @GET("post/user/{id}?take=20")
+    @GET("post/user/{id}?take=21")
     suspend fun getPostInfoByUserId(
         @Path("id") userId: Int,
         @Query("cursor") nextCursor: Int? = null
