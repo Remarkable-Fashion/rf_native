@@ -485,5 +485,10 @@ class HomeFragment :
         }
     }
 
+    //todo
+    override fun editPost(post: Posts) {
+
+    }
+
 
 }

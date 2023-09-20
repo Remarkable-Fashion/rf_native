@@ -236,6 +236,11 @@ class MyPhotoZipVerticalFragment : Fragment(R.layout.mypage_photozip_vertical_fr
         }
     }
 
+    //todo
+    override fun editPost(post: Posts) {
+
+    }
+
     override fun onDestroy() {
         MainActivity.hideNavi(false)
         super.onDestroy()

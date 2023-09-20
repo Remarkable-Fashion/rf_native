@@ -61,36 +61,16 @@ class ScrapVerticalFragment : Fragment(),
         mainBottomMenuListener(true)
         userPref = UserDataStorePref(requireContext().applicationContext)
 
-
-        viewModel.postResponse.observe(viewLifecycleOwner) { /*event ->
-            event.getContentIfNotHandled()?.let {*/ resource ->
-            when (resource) {
-                is Resource.Success -> {
-                    val response = resource.value
-
-                    binding.verticalViewpager.apply {
-                        adapter = defaultAdapter
-                        (adapter as? DefaultPostAdapter)?.apply {
-                            submitList(response.posts)
-                            //scrapFragment 에서 선택한 item 의 index 를 시작 index 로 지정 , animation false 처리
-                            setCurrentItem(viewModel.startIndex.value ?: 0, false)
-                        }
-                        getChildAt(0).overScrollMode =
-                            RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
-                    }
-                }
-
-                is Resource.Failure -> {
-
-                }
-
-                is Resource.Loading -> {
-
-                }
+        binding.verticalViewpager.apply {
+            adapter = defaultAdapter
+            (adapter as? DefaultPostAdapter)?.apply {
+                submitList(viewModel.allScrapList)
+                //scrapFragment 에서 선택한 item 의 index 를 시작 index 로 지정 , animation false 처리
+                setCurrentItem(viewModel.startIndex.value ?: 0, false)
             }
-            // }
+            getChildAt(0).overScrollMode =
+                RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
         }
-
         //좋아요 상태 변화 관찰&업데이트
         updateLikeState()
         updateScrapState()
@@ -231,5 +211,10 @@ class ScrapVerticalFragment : Fragment(),
                     defaultAdapter.notifyItemChanged(position,"PUBLIC_STATE")
                 }            }
         }
+    }
+
+    //todo
+    override fun editPost(post: Posts) {
+
     }
 }

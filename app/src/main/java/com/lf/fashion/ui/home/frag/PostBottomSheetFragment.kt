@@ -149,7 +149,8 @@ class PostBottomSheetFragment(
                     dismiss()
                 }
             }
-            binding.privateSettingBtn ->{
+
+            binding.privateSettingBtn -> {
                 post?.let {
                     Log.e(TAG, "onClick: 게시 상태 수정 클릭 $it")
                     myBottomDialogListener?.changePostPublicStatus(it)
@@ -157,6 +158,13 @@ class PostBottomSheetFragment(
                 }
             }
 
+            binding.postEditBtn -> {
+                post?.let {
+                    Log.e(TAG, "onClick: 게시물 수정 클릭 $it")
+                    myBottomDialogListener?.editPost(it)
+                    dismiss()
+                }
+            }
         }
     }
 

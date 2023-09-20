@@ -11,6 +11,7 @@ import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.CommunicateRepository
 import com.lf.fashion.data.repository.ScrapRepository
 import com.lf.fashion.data.model.MsgResponse
+import com.lf.fashion.data.model.Posts
 import com.lf.fashion.data.model.RandomPostResponse
 import com.lf.fashion.data.repository.MyPageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,6 +40,8 @@ class ScrapViewModel @Inject constructor(
     private val _scrapResponse = MutableLiveData<Resource<MsgResponse>>()
     val scrapResponse = _scrapResponse
 
+    //새로 load 된 post 들까지 합쳐진 전체 itemList
+    var allScrapList = mutableListOf<Posts>()
     /*   init {
            getPostList()
        }

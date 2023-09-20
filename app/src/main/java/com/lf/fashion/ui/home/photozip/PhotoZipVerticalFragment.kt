@@ -231,4 +231,9 @@ class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_frag
         }
     }
 
+    //todo
+    override fun editPost(post: Posts) {
+
+    }
+
 }

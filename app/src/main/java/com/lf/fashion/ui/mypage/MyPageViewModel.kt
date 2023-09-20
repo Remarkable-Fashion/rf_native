@@ -17,6 +17,7 @@ import com.lf.fashion.data.model.FollowingUserList
 import com.lf.fashion.data.model.MsgResponse
 import com.lf.fashion.data.model.MyBlockUserList
 import com.lf.fashion.data.model.MyInfo
+import com.lf.fashion.data.model.Posts
 import com.lf.fashion.data.model.RandomPostResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -67,6 +68,9 @@ class MyPageViewModel @Inject constructor(
     val myBlockUsers = _myBlockUsers
 
     var havetoRefresh = MutableLiveData<Boolean>()
+
+    //새로 load 된 post 들까지 합쳐진 전체 itemList
+    var allPostList = mutableListOf<Posts>()
 
     init {
       getSavedLoginToken()

@@ -34,7 +34,7 @@ import kotlinx.coroutines.runBlocking
 class MyPageFragment : Fragment(), GridPhotoClickListener {
     private lateinit var binding: MypageFragmentBinding
     private val viewModel: MyPageViewModel by hiltNavGraphViewModels(R.id.navigation_mypage)
-    private var postList = mutableListOf<Posts>()
+   // private var postList = mutableListOf<Posts>()
     private lateinit var gridAdapter: GridPostAdapter
     private lateinit var recentResponse: RandomPostResponse
     private lateinit var onScrollListener: NestedScrollView.OnScrollChangeListener
@@ -142,7 +142,7 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                         binding.arrayEmptyText.visibility = View.GONE
                         binding.gridRv.visibility = View.VISIBLE
                         recentResponse = response
-                        postList = response.posts.toMutableList()
+                        viewModel.allPostList = response.posts.toMutableList()
                         gridAdapter.submitList(response.posts)
                     } else {
                         binding.arrayEmptyText.visibility = View.VISIBLE
@@ -169,7 +169,7 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                     when (resource) {
                         is Resource.Success -> {
                             val more = resource.value
-                            postList.addAll(more.posts)
+                            viewModel.allPostList.addAll(more.posts)
                             recentResponse = more // new nextCursor , hasNext check 를 위해 값 재초기화
 
                             Log.e(
@@ -180,11 +180,12 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                                 TAG,
                                 "MyPageFragment - onScrolled LOAD MORE RECENT: ${more.posts}"
                             )
-                            Log.e(TAG, "Post List loadMorePost: $postList")
+                            Log.e(TAG, "Post List loadMorePost: ${viewModel.allPostList}")
                             gridAdapter.apply {
-                                submitList(postList)
+                                submitList(viewModel.allPostList)
                                 notifyDataSetChanged()
                             }
+
                         }
 
                         is Resource.Loading -> {
@@ -202,7 +203,7 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
 
     override fun gridPhotoClicked(postIndex: Int) {
         //grid 포토 클릭시!!
-        Log.e(TAG, "gridPhotoClicked: GRID CLICKED ")
+        Log.e(TAG, "gridPhotoClicked: GRID CLICKED $postIndex")
 
         //바텀 메뉴 중복 클릭시 첫 화면으로 돌아가도록 구현한 리스너가 에러가 나기 때문에 지워준다. (이후에 다시 달아줌)
         mainBottomMenuListener(false)

@@ -18,13 +18,13 @@ import com.lf.fashion.databinding.ScrapFragmentBinding
 import com.lf.fashion.ui.*
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Collections.addAll
 
 
 @AndroidEntryPoint
 class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener {
     private lateinit var binding: ScrapFragmentBinding
     private val viewModel: ScrapViewModel by hiltNavGraphViewModels(R.id.navigation_scrap)
-    private var postList = mutableListOf<Posts>()
     private lateinit var gridPostAdapter: GridPostAdapter
     private lateinit var recentResponse: RandomPostResponse
     private lateinit var onScrollListener: NestedScrollView.OnScrollChangeListener
@@ -54,7 +54,7 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
                             binding.scrapRv.visibility = View.VISIBLE
                             binding.arrayEmptyText.visibility = View.GONE
 
-                            postList.addAll(response.posts)
+                            viewModel.allScrapList = response.posts.toMutableList()
                             recentResponse = response
 
                             with(binding.scrapRv) {
@@ -107,11 +107,11 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
                     when (resource) {
                         is Resource.Success -> {
                             val more = resource.value
-                            postList.addAll(more.posts)
+                            viewModel.allScrapList.addAll(more.posts)
                             recentResponse = more
 
                             gridPostAdapter.apply {
-                                submitList(postList)
+                                submitList(viewModel.allScrapList)
                                 notifyDataSetChanged()
                             }
                         }
