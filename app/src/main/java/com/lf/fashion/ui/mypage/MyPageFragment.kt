@@ -34,9 +34,7 @@ import kotlinx.coroutines.runBlocking
 class MyPageFragment : Fragment(), GridPhotoClickListener {
     private lateinit var binding: MypageFragmentBinding
     private val viewModel: MyPageViewModel by hiltNavGraphViewModels(R.id.navigation_mypage)
-   // private var postList = mutableListOf<Posts>()
     private lateinit var gridAdapter: GridPostAdapter
-    private lateinit var recentResponse: RandomPostResponse
     private lateinit var onScrollListener: NestedScrollView.OnScrollChangeListener
     private lateinit var globalMyInfo: MyInfo
     private lateinit var userPref: UserDataStorePref
@@ -141,7 +139,7 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                     if (response.posts.isNotEmpty()) {
                         binding.arrayEmptyText.visibility = View.GONE
                         binding.gridRv.visibility = View.VISIBLE
-                        recentResponse = response
+                        viewModel.recentResponse = response
                         viewModel.allPostList = response.posts.toMutableList()
                         gridAdapter.submitList(response.posts)
                     } else {
@@ -162,7 +160,8 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
     }
 
     private fun loadMorePost() {
-        if (recentResponse.hasNext == true) {
+        if (viewModel.recentResponse?.hasNext == true) {
+            var recentResponse = viewModel.recentResponse!!
             viewModel.getMorePostList(recentResponse.nextCursor!!)
             viewModel.morePost.observe(viewLifecycleOwner) { event ->
                 event.getContentIfNotHandled()?.let { resource ->
@@ -170,17 +169,7 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                         is Resource.Success -> {
                             val more = resource.value
                             viewModel.allPostList.addAll(more.posts)
-                            recentResponse = more // new nextCursor , hasNext check 를 위해 값 재초기화
-
-                            Log.e(
-                                TAG,
-                                "MyPageFragment - onScrolled LOAD MORE RECENT: $recentResponse"
-                            )
-                            Log.e(
-                                TAG,
-                                "MyPageFragment - onScrolled LOAD MORE RECENT: ${more.posts}"
-                            )
-                            Log.e(TAG, "Post List loadMorePost: ${viewModel.allPostList}")
+                            viewModel.recentResponse = more // new nextCursor , hasNext check 를 위해 값 재초기화
                             gridAdapter.apply {
                                 submitList(viewModel.allPostList)
                                 notifyDataSetChanged()

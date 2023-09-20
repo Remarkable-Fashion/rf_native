@@ -71,7 +71,7 @@ class MyPageViewModel @Inject constructor(
 
     //새로 load 된 post 들까지 합쳐진 전체 itemList
     var allPostList = mutableListOf<Posts>()
-
+    var recentResponse :RandomPostResponse? = null
     init {
       getSavedLoginToken()
         if (!savedLoginToken.value.isNullOrEmpty()) {
