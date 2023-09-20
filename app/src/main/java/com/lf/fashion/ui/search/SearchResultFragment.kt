@@ -27,11 +27,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.invoke
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class SearchResultFragment(private val resultCategory: String) :
@@ -175,7 +172,34 @@ class SearchResultFragment(private val resultCategory: String) :
                 }
             }
         }
-        //todo loadMoreItem observe 추가후 테스트 필요
+        //todo loadMoreItem observe 테스트 필요
+        viewModel.loadMoreItem.observe(viewLifecycleOwner){ resource->
+            when(resource){
+                is Resource.Success ->{
+                    val moreItem = resource.value
+                    hasNext = moreItem.hasNext
+                    moreItem.nextCursor?.let {
+                        nextCursor = it
+                    }
+                    val currentList = itemGridAdapter.currentList.toMutableList()
+                    Log.e(TAG, "observeLoadMorePost: currrent : ${currentList.size} , more : ${moreItem.clothes}")
+                    currentList.addAll(moreItem.clothes!!)
+                    Log.e(TAG, "observeLoadMorePost: 합 : $moreItem")
+
+                    itemGridAdapter.apply {
+                        submitList(currentList)
+                        notifyDataSetChanged()
+                    }
+                    itemVerticalAdapter.apply {
+                        submitList(currentList)
+                        notifyDataSetChanged()
+                    }
+                }
+                else ->{
+
+                }
+            }
+        }
     }
     private fun requestSearch() {
         when(resultCategory){
