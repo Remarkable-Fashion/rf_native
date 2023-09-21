@@ -1,4 +1,4 @@
-package com.lf.fashion.ui.common
+package com.lf.fashion.ui.globalFrag.photoDetail
 
 import android.os.Bundle
 import android.view.View
@@ -9,6 +9,7 @@ import com.lf.fashion.MainActivity
 import com.lf.fashion.R
 import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.databinding.HomeBPhotoDetailFragmentBinding
+import com.lf.fashion.ui.common.cancelBtnBackStack
 import com.lf.fashion.ui.home.adapter.PhotoHorizontalAdapter
 
 /**

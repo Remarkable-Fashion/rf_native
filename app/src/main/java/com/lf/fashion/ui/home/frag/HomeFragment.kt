@@ -24,12 +24,12 @@ import com.lf.fashion.data.model.*
 import com.lf.fashion.databinding.HomeAFragmentBinding
 import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.VerticalViewPagerClickListener
-import com.lf.fashion.ui.common.adapter.DefaultPostAdapter
-import com.lf.fashion.ui.common.adapter.GridPostAdapter
+import com.lf.fashion.ui.globalFrag.adapter.DefaultPostAdapter
+import com.lf.fashion.ui.globalFrag.adapter.GridPostAdapter
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
-import com.lf.fashion.ui.common.adapter.GridPhotoClickListener
+import com.lf.fashion.ui.globalFrag.adapter.GridPhotoClickListener
 import com.lf.fashion.ui.common.MyBottomDialogListener
-import com.lf.fashion.ui.common.PostBottomSheetFragment
+import com.lf.fashion.ui.globalFrag.bottomsheet.PostBottomSheetFragment
 import com.lf.fashion.ui.common.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -488,8 +488,6 @@ class HomeFragment :
 
     //todo
     override fun editPost(post: Posts) {
-
+        findNavController().navigate(R.id.action_global_to_editPostFragment, bundleOf("post" to post))
     }
-
-
 }

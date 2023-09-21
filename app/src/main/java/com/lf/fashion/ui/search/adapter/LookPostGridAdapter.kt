@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.databinding.HomeGridItemBinding
-import com.lf.fashion.ui.common.adapter.GridPhotoClickListener
-import com.lf.fashion.ui.common.adapter.SpanCountEditBtnListener
-import com.lf.fashion.ui.common.adapter.DefaultPostDiff
+import com.lf.fashion.ui.globalFrag.adapter.GridPhotoClickListener
+import com.lf.fashion.ui.globalFrag.adapter.SpanCountEditBtnListener
+import com.lf.fashion.ui.globalFrag.adapter.DefaultPostDiff
 import com.lf.fashion.ui.common.itemViewRatioSetting
 
 class LookPostGridAdapter(

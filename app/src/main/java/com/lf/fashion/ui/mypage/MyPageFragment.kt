@@ -17,8 +17,8 @@ import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.model.MyInfo
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.MypageFragmentBinding
-import com.lf.fashion.ui.common.adapter.GridPhotoClickListener
-import com.lf.fashion.ui.common.adapter.GridPostAdapter
+import com.lf.fashion.ui.globalFrag.adapter.GridPhotoClickListener
+import com.lf.fashion.ui.globalFrag.adapter.GridPostAdapter
 import com.lf.fashion.ui.common.OnScrollUtils
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.common.mainBottomMenuListener

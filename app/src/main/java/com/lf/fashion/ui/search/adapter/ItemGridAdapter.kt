@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.data.model.Cloth
 import com.lf.fashion.databinding.ItemSearchResultItemListBinding
-import com.lf.fashion.ui.common.adapter.GridPhotoClickListener
-import com.lf.fashion.ui.common.adapter.SpanCountEditBtnListener
+import com.lf.fashion.ui.globalFrag.adapter.GridPhotoClickListener
+import com.lf.fashion.ui.globalFrag.adapter.SpanCountEditBtnListener
 import com.lf.fashion.ui.common.itemViewRatioSetting
 
 class ItemGridAdapter(

@@ -1,4 +1,4 @@
-package com.lf.fashion.ui.common.adapter
+package com.lf.fashion.ui.common
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter

@@ -23,7 +23,7 @@ import com.lf.fashion.data.model.UploadPost
 import com.lf.fashion.databinding.PhotoStep2FragmentBinding
 import com.lf.fashion.ui.common.AppCustomDialog
 import com.lf.fashion.ui.common.absolutelyPath
-import com.lf.fashion.ui.common.adapter.AddPostClothesRvAdapter
+import com.lf.fashion.ui.globalFrag.adapter.AddPostClothesRvAdapter
 import com.lf.fashion.ui.common.addTextLengthCounter
 import com.lf.fashion.ui.common.addUnitTextListener
 import com.lf.fashion.ui.common.childChip

@@ -18,10 +18,10 @@ import com.lf.fashion.data.model.Posts
 import com.lf.fashion.data.model.UserInfo
 import com.lf.fashion.databinding.HomeBPhotoZipFragmentBinding
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
-import com.lf.fashion.ui.common.adapter.GridPhotoClickListener
-import com.lf.fashion.ui.common.adapter.GridPostAdapter
+import com.lf.fashion.ui.globalFrag.adapter.GridPhotoClickListener
+import com.lf.fashion.ui.globalFrag.adapter.GridPostAdapter
 import com.lf.fashion.ui.common.OnScrollUtils
-import com.lf.fashion.ui.common.PostBottomSheetFragment
+import com.lf.fashion.ui.globalFrag.bottomsheet.PostBottomSheetFragment
 import com.lf.fashion.ui.common.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates

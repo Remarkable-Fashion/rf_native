@@ -21,7 +21,7 @@ import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.model.UploadCloth
 import com.lf.fashion.databinding.HomeBRegistClothFragmentBinding
-import com.lf.fashion.ui.common.adapter.AddPostClothesRvAdapter
+import com.lf.fashion.ui.globalFrag.adapter.AddPostClothesRvAdapter
 import com.lf.fashion.ui.common.absolutelyPath
 import com.lf.fashion.ui.addPost.ImagePickerFragment
 import com.lf.fashion.ui.common.addTextLengthCounter

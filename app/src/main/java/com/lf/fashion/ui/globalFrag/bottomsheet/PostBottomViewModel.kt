@@ -1,4 +1,4 @@
-package com.lf.fashion.ui.common
+package com.lf.fashion.ui.globalFrag.bottomsheet
 
 import android.util.Log
 import androidx.lifecycle.LiveData

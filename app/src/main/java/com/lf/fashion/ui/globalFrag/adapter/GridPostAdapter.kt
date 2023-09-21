@@ -1,4 +1,4 @@
-package com.lf.fashion.ui.common.adapter
+package com.lf.fashion.ui.globalFrag.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

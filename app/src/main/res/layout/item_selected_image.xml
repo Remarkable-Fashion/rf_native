@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    <data>
+        <variable
+            name="imageUrl"
+            type="String" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="85dp"
         android:layout_height="110dp"
@@ -15,6 +19,7 @@
             app:layout_constraintDimensionRatio="1:1"
             android:background="@color/photo_back_grey"
             android:layout_marginTop="8dp"
+            imageUrl="@{imageUrl}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
         <androidx.appcompat.widget.AppCompatButton

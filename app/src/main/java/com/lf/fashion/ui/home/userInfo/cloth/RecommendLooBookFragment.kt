@@ -20,7 +20,7 @@ import com.lf.fashion.ui.common.cancelBtnBackStack
 import com.lf.fashion.ui.home.ClothLikeClickListener
 import com.lf.fashion.ui.home.userInfo.UserInfoViewModel
 import com.lf.fashion.ui.home.adapter.LookBookRvAdapter
-import com.lf.fashion.ui.common.PostBottomSheetFragment
+import com.lf.fashion.ui.globalFrag.bottomsheet.PostBottomSheetFragment
 import com.lf.fashion.ui.common.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope

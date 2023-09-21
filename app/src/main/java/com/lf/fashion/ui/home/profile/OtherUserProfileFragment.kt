@@ -11,8 +11,8 @@ import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.UserProfileFragmentBinding
-import com.lf.fashion.ui.common.adapter.GridPhotoClickListener
-import com.lf.fashion.ui.common.adapter.GridPostAdapter
+import com.lf.fashion.ui.globalFrag.adapter.GridPhotoClickListener
+import com.lf.fashion.ui.globalFrag.adapter.GridPostAdapter
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 
 class OtherUserProfileFragment : Fragment(R.layout.user_profile_fragment), GridPhotoClickListener

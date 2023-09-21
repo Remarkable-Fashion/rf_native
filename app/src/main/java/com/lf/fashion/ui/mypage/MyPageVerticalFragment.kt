@@ -13,8 +13,8 @@ import com.lf.fashion.R
 import com.lf.fashion.ui.common.cancelBtnBackStack
 import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.VerticalViewPagerClickListener
-import com.lf.fashion.ui.common.adapter.DefaultPostAdapter
-import com.lf.fashion.ui.common.PostBottomSheetFragment
+import com.lf.fashion.ui.globalFrag.adapter.DefaultPostAdapter
+import com.lf.fashion.ui.globalFrag.bottomsheet.PostBottomSheetFragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2

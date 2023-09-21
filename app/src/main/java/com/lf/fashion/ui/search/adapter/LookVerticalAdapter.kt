@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.databinding.ItemSearchResultItemVerticalBinding
 import com.lf.fashion.databinding.ItemSearchVerticalBinding
-import com.lf.fashion.ui.common.adapter.DefaultPostDiff
+import com.lf.fashion.ui.globalFrag.adapter.DefaultPostDiff
 
 class LookVerticalAdapter() :
     ListAdapter<Posts, LookVerticalAdapter.LookVerticalViewHolder>(DefaultPostDiff()) {
