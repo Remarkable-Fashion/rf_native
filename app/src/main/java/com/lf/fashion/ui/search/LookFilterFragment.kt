@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.chip.Chip
 import com.lf.fashion.R
 import com.lf.fashion.data.common.SearchLookFilterDataStore
+import com.lf.fashion.data.model.ChipInfo
 import com.lf.fashion.data.model.FilterItem
 import com.lf.fashion.databinding.SearchFilterFragmentBinding
 import com.lf.fashion.ui.common.addUnitTextListener
@@ -19,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 /**
@@ -86,73 +88,64 @@ class LookFilterFragment : Fragment(R.layout.search_filter_fragment), View.OnCli
     }
 
     private fun chipSetting() {
-        viewModel.tpoChipList.observe(viewLifecycleOwner) {
-            it?.let {
-                val tpoChipGroup = binding.filterSpace.filterInclude.tpoChipGroup
-                childChip(
-                    it,
-                    tpoChipGroup,
-                    chipStyle,
-                    filterViewModel = viewModel
-                ) { chipId, text, isChecked ->
-                    if (isChecked) {
-                        val contains = viewModel.tposTexts.contains(text)
-                        if (!contains) {
-                            viewModel.selectedTposId.add(chipId)
-                            viewModel.tposTexts.add(text)
+            viewModel.tpoChipList.observe(viewLifecycleOwner) {
+                it?.let {
+                    val tpoChipGroup = binding.filterSpace.filterInclude.tpoChipGroup
+                    childChip(
+                        it,
+                        tpoChipGroup,
+                        chipStyle,
+                        filterViewModel = viewModel
+                    ) { chipInfo, isChecked ->
+                        if (isChecked) {
+                            if(!viewModel.selectedTpos.any { it.text == chipInfo.text }) {
+                                viewModel.selectedTpos.add(chipInfo)
+                            }
+                        } else {
+                            viewModel.selectedTpos.remove(chipInfo)
                         }
-                    } else {
-                        viewModel.selectedTposId.remove(chipId)
-                        viewModel.tposTexts.remove(text)
+                    }
+                }
+            }
+            viewModel.seasonChipList.observe(viewLifecycleOwner) {
+                it?.let {
+                    val seasonChipGroup = binding.filterSpace.filterInclude.seasonChipGroup
+                    childChip(
+                        it,
+                        seasonChipGroup,
+                        chipStyle,
+                        filterViewModel = viewModel
+                    ) { chipInfo, isChecked ->
+                        if (isChecked) {
+                            if(!viewModel.selectedSeasons.any { it.text == chipInfo.text }) {
+                                viewModel.selectedSeasons.add(chipInfo)
+                            }
+                        } else {
+                            viewModel.selectedSeasons.remove(chipInfo)
+                        }
+                    }
+                }
+            }
+            viewModel.styleChipList.observe(viewLifecycleOwner) {
+                it?.let {
+                    val styleChipGroup = binding.filterSpace.filterInclude.styleChipGroup
+                    childChip(
+                        it,
+                        styleChipGroup,
+                        chipStyle,
+                        filterViewModel = viewModel
+                    ) { chipInfo, isChecked ->
+                        if (isChecked) {
+                            if(!viewModel.selectedStyles.any { it.text == chipInfo.text }) {
+                                viewModel.selectedStyles.add(chipInfo)
+                            }
+                        } else {
+                            viewModel.selectedStyles.remove(chipInfo)
+                        }
                     }
                 }
             }
         }
-        viewModel.seasonChipList.observe(viewLifecycleOwner) {
-            it?.let {
-                val seasonChipGroup = binding.filterSpace.filterInclude.seasonChipGroup
-                childChip(
-                    it,
-                    seasonChipGroup,
-                    chipStyle,
-                    filterViewModel = viewModel
-                ) { chipId, text, isChecked ->
-                    if (isChecked) {
-                        val contains = viewModel.seasonsTexts.contains(text)
-                        if (!contains) {
-                            viewModel.selectedSeasonsId.add(chipId)
-                            viewModel.seasonsTexts.add(text)
-                        }
-                    } else {
-                        viewModel.selectedSeasonsId.remove(chipId)
-                        viewModel.seasonsTexts.remove(text)
-                    }
-                }
-            }
-        }
-        viewModel.styleChipList.observe(viewLifecycleOwner) {
-            it?.let {
-                val styleChipGroup = binding.filterSpace.filterInclude.styleChipGroup
-                childChip(
-                    it,
-                    styleChipGroup,
-                    chipStyle,
-                    filterViewModel = viewModel
-                ) { chipId, text, isChecked ->
-                    if (isChecked) {
-                        val contains = viewModel.stylesTexts.contains(text)
-                        if (!contains) {
-                            viewModel.selectedStylesId.add(chipId)
-                            viewModel.stylesTexts.add(text)
-                        }
-                    } else {
-                        viewModel.selectedStylesId.remove(chipId)
-                        viewModel.stylesTexts.remove(text)
-                    }
-                }
-            }
-        }
-    }
 
     override fun onClick(v: View?) {
         val genderBtns = listOf(
@@ -203,16 +196,16 @@ class LookFilterFragment : Fragment(R.layout.search_filter_fragment), View.OnCli
             binding.filterSpace.heightValue.clearFocus()
             binding.filterSpace.weightValue.clearFocus()
             val tpoFilterItem = FilterItem(
-                viewModel.tposTexts.joinToString(","),
-                viewModel.selectedTposId.joinToString(",")
+                viewModel.selectedTpos.joinToString(",") { it.text },
+                viewModel.selectedTpos.joinToString(","){ it.id.toString() }
             )
             val seasonFilterItem = FilterItem(
-                viewModel.seasonsTexts.joinToString(","),
-                viewModel.selectedSeasonsId.joinToString(",")
+                viewModel.selectedSeasons.joinToString(",") { it.text },
+                viewModel.selectedSeasons.joinToString(","){ it.id.toString() }
             )
             val styleFilterItem = FilterItem(
-                viewModel.stylesTexts.joinToString(","),
-                viewModel.selectedStylesId.joinToString(",")
+                viewModel.selectedStyles.joinToString(",") { it.text },
+                viewModel.selectedStyles.joinToString(","){ it.id.toString() }
             )
             CoroutineScope(Dispatchers.IO).launch {
                 lookFilterDataStore.saveLookFilterInstance(
@@ -247,32 +240,33 @@ class LookFilterFragment : Fragment(R.layout.search_filter_fragment), View.OnCli
                     }
                     viewModel.selectedGender = it
                 }
-                tpo.first()?.let {
-                    val tpo = it.split(",").toMutableList()
-                    viewModel.tposTexts = tpo
-                }
-                season.first()?.let {
-                    val season = it.split(",").toMutableList()
-                    viewModel.seasonsTexts = season
-                }
-                style.first()?.let {
-                    val style = it.split(",").toMutableList()
-                    viewModel.stylesTexts = style
-                }
-                tpoId.first()?.let {
-                    it.split(",").mapNotNull { it.toIntOrNull() }.toMutableList().apply {
-                        viewModel.selectedTposId = this
+                tpo.firstOrNull()?.let { tpoData ->
+                    val tpo = tpoData.split(",").toMutableList()
+                    val tpoIdData = tpoId.firstOrNull()
+                    if (!tpoIdData.isNullOrEmpty()) {
+                        val tpoIds = tpoIdData.split(",").mapNotNull { it.toIntOrNull() }.toMutableList()
+                        val chipInfoList = tpo.zip(tpoIds) { text, id -> ChipInfo(id, text,null) }
+                        viewModel.selectedTpos = chipInfoList.toMutableList()
                     }
                 }
 
-                seasonId.first()?.let {
-                    it.split(",").mapNotNull { it.toIntOrNull() }.toMutableList().apply {
-                        viewModel.selectedSeasonsId = this
+                season.firstOrNull()?.let { seasonData ->
+                    val season = seasonData.split(",").toMutableList()
+                    val seasonIdData = seasonId.firstOrNull()
+                    if (!seasonIdData.isNullOrEmpty()) {
+                        val seasonIds = seasonIdData.split(",").mapNotNull { it.toIntOrNull() }.toMutableList()
+                        val chipInfoList = season.zip(seasonIds) { text, id -> ChipInfo(id, text,null) }
+                        viewModel.selectedSeasons = chipInfoList.toMutableList()
                     }
                 }
-                styleId.first()?.let {
-                    it.split(",").mapNotNull { it.toIntOrNull() }.toMutableList().apply {
-                        viewModel.selectedStylesId = this
+
+                style.firstOrNull()?.let { styleData ->
+                    val style = styleData.split(",").toMutableList()
+                    val styleIdData = styleId.firstOrNull()
+                    if (!styleIdData.isNullOrEmpty()) {
+                        val styleIds = styleIdData.split(",").mapNotNull { it.toIntOrNull() }.toMutableList()
+                        val chipInfoList = style.zip(styleIds) { text, id -> ChipInfo(id, text,null) }
+                        viewModel.selectedStyles = chipInfoList.toMutableList()
                     }
                 }
             }

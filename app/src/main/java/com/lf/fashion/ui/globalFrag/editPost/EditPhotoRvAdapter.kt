@@ -4,11 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.lf.fashion.data.model.ImageItem
 import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.databinding.ItemSelectedImageBinding
+import com.lf.fashion.ui.addPost.CheckedImageRVListener
 import com.lf.fashion.ui.home.adapter.PhotoDiff
 
-class EditPhotoRvAdapter : ListAdapter<ImageUrl, EditPhotoRvAdapter.EditPostRvViewHolder>(PhotoDiff()){
+class EditPhotoRvAdapter (private val removeBtnClick :(ImageUrl)->Unit): ListAdapter<ImageUrl, EditPhotoRvAdapter.EditPostRvViewHolder>(PhotoDiff()){
     private lateinit var binding : ItemSelectedImageBinding
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EditPostRvViewHolder {
         binding = ItemSelectedImageBinding.inflate(LayoutInflater.from(parent.context),parent,false)
@@ -24,7 +26,7 @@ class EditPhotoRvAdapter : ListAdapter<ImageUrl, EditPhotoRvAdapter.EditPostRvVi
             binding.imageUrl = image.url
 
             binding.selectedCancelBtn.setOnClickListener {
-
+                removeBtnClick(image)
             }
         }
     }

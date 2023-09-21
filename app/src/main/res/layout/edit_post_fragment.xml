@@ -50,7 +50,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/photo_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="133dp"
         tools:listitem="@layout/item_selected_image"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="horizontal"
@@ -59,7 +59,7 @@
         android:paddingBottom="15dp"
         android:paddingStart="13dp"
         android:paddingEnd="13dp"
-
+        android:overScrollMode="never"
         />
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/add_btn"

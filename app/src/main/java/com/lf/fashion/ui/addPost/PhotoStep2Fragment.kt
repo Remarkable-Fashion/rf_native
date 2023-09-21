@@ -138,16 +138,13 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                     tpoChipGroup,
                     chipStyle,
                     uploadPostViewModel = viewModel
-                ) { chipId, text, isChecked ->
+                ) { chipInfo, isChecked ->
                     if (isChecked) {
-                        if (!viewModel.selectedTpos.contains(chipId)) {
-                            viewModel.selectedTpos.add(chipId)
-                            viewModel.tposTexts.add(text)
+                        if (!viewModel.selectedTpos.any { it.text == chipInfo.text }) {
+                            viewModel.selectedTpos.add(chipInfo)
                         }
                     } else {
-                        viewModel.selectedTpos.remove(chipId)
-                        viewModel.tposTexts.remove(text)
-
+                        viewModel.selectedTpos.remove(chipInfo)
                     }
                     Log.e(TAG, "chipSetting: ${viewModel.selectedTpos}")
                 }
@@ -161,15 +158,13 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                     seasonChipGroup,
                     chipStyle,
                     uploadPostViewModel = viewModel
-                ) { chipId, text, isChecked ->
+                ) { chipInfo, isChecked ->
                     if (isChecked) {
-                        if (!viewModel.selectedSeasons.contains(chipId)) {
-                            viewModel.selectedSeasons.add(chipId)
-                            viewModel.seasonsTexts.add(text)
+                        if (!viewModel.selectedSeasons.any { it.text == chipInfo.text }) {
+                            viewModel.selectedSeasons.add(chipInfo)
                         }
                     } else {
-                        viewModel.selectedSeasons.remove(chipId)
-                        viewModel.seasonsTexts.remove(text)
+                        viewModel.selectedSeasons.remove(chipInfo)
 
                     }
                     Log.e(TAG, "chipSetting: ${viewModel.selectedSeasons}")
@@ -184,15 +179,13 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                     styleChipGroup,
                     chipStyle,
                     uploadPostViewModel = viewModel
-                ) { chipId, text, isChecked ->
+                ) { chipInfo, isChecked ->
                     if (isChecked) {
-                        if (!viewModel.selectedStyles.contains(chipId)) {
-                            viewModel.selectedStyles.add(chipId)
-                            viewModel.stylesTexts.add(text)
+                        if (!viewModel.selectedStyles.any { it.text == chipInfo.text }) {
+                            viewModel.selectedStyles.add(chipInfo)
                         }
                     } else {
-                        viewModel.selectedStyles.remove(chipId)
-                        viewModel.stylesTexts.remove(text)
+                        viewModel.selectedStyles.remove(chipInfo)
 
                     }
                     Log.e(TAG, "chipSetting: ${viewModel.selectedStyles}")
@@ -410,9 +403,9 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                 }
                 val imageUploadResponse = viewModel.uploadPostImages(postImagePathList)
                 if (imageUploadResponse.success) {
-                    val tpos = viewModel.selectedTpos.distinct()
-                    val seasons = viewModel.selectedSeasons.distinct()
-                    val styles = viewModel.selectedStyles.distinct()
+                    val tpos = viewModel.selectedTpos.distinct().map { it.id }
+                    val seasons = viewModel.selectedSeasons.distinct().map { it.id }
+                    val styles = viewModel.selectedStyles.distinct().map { it.id }
                     val height =
                         binding.filterSpace.heightValue.text.toString().replace(" cm", "").toInt()
                     val weight =

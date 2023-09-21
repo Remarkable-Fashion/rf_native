@@ -1,10 +1,12 @@
 package com.lf.fashion.ui.globalFrag.editPost
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.lf.fashion.TAG
 import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.databinding.ItemImageBinding
 import com.lf.fashion.ui.home.adapter.PhotoDiff
@@ -22,6 +24,8 @@ class EditPostAdapter(
     }
 
     override fun onBindViewHolder(holder: EditPostViewHolder, position: Int) {
+        Log.e(TAG, "onBindViewHolder: ${getItem(position)}")
+
         holder.bind(getItem(position))
     }
 

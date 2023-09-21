@@ -29,6 +29,7 @@ import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ChipInfo
 import com.lf.fashion.ui.addPost.UploadPostViewModel
+import com.lf.fashion.ui.globalFrag.editPost.EditPostViewModel
 import com.lf.fashion.ui.home.frag.FilterViewModel
 import java.io.BufferedReader
 import java.io.File
@@ -51,7 +52,8 @@ fun Fragment.childChip(
     chipList: List<ChipInfo>, chipGroup: ChipGroup, style: String,
     uploadPostViewModel: UploadPostViewModel? = null,
     filterViewModel: FilterViewModel? = null,
-    chipOnclick: ((Int, String, Boolean) -> Unit)? = null
+    editPostViewModel : EditPostViewModel?=null,
+    chipOnclick: ((ChipInfo, Boolean) -> Unit)? = null
 ) {
     for (j in chipList.indices) {
         val chip = when (style) {
@@ -78,7 +80,8 @@ fun Fragment.childChip(
         chip.text = content
         chip.setOnCheckedChangeListener { _, isChecked ->
             if (chipOnclick != null) {
-                chipOnclick(chipList[j].id, chipList[j].text, isChecked)
+                /*.id, chipList[j].text*/
+                chipOnclick(chipList[j], isChecked)
             }
         }
 
@@ -86,29 +89,35 @@ fun Fragment.childChip(
         // 이때 text 값이 같으면 다시 checked를 주기 위한 작업
         //val viewModel = uploadPostViewModel ?: filterViewModel
         // id 값을 구별자로 주변 tpos seasons styles 의 아이디가 서로 겹치기때문에 불가.
-        uploadPostViewModel?.let { it ->
-            if (it.tposTexts.isNotEmpty()) {
-                val text = chipList[j].text
-                if (it.tposTexts.contains(text) ||
-                    it.seasonsTexts.contains(text) ||
-                    it.stylesTexts.contains(text)
-                ) {
-                    chip.isChecked = true
-                }
-            }
+        val text = chipList[j].text
+        uploadPostViewModel?.let {
+            extracted(it.selectedTpos,it.selectedSeasons,it.selectedStyles, text, chip)
         }
-        filterViewModel?.let { it ->
-            if (it.tposTexts.isNotEmpty()) {
-                val text = chipList[j].text
-                if (it.tposTexts.contains(text) ||
-                    it.seasonsTexts.contains(text) ||
-                    it.stylesTexts.contains(text)
-                ) {
-                    chip.isChecked = true
-                }
-            }
+        filterViewModel?.let {
+            extracted(it.selectedTpos,it.selectedSeasons,it.selectedStyles, text, chip)
+        }
+        editPostViewModel?.let{
+            extracted(it.selectedTpos,it.selectedSeasons,it.selectedStyles, text, chip)
         }
         chipGroup.addView(chip)
+    }
+}
+
+private fun extracted(
+    tpos: MutableList<ChipInfo>,
+    seasons: MutableList<ChipInfo>,
+    styles: MutableList<ChipInfo>,
+    text: String,
+    chip: Chip
+) {
+    val tposTexts = tpos.map { it.text }
+    val seasonsTexts = seasons.map { it.text }
+    val stylesTexts = styles.map { it.text }
+    if (tposTexts.contains(text) ||
+        seasonsTexts.contains(text) ||
+        stylesTexts.contains(text)
+    ) {
+        chip.isChecked = true
     }
 }
 

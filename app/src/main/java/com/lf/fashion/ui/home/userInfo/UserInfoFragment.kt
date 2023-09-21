@@ -65,7 +65,7 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
             if (userPref.loginCheck()) {
                 //팔로우 create / delete
                 viewModel.changeFollowingState(!followBtn.isSelected, userId)
-            }else{
+            } else {
                 showRequireLoginDialog()
             }
         }
@@ -87,7 +87,9 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
                                 binding.arrayEmptyText.isVisible = nullOrEmpty
                                 binding.clothesRv.isVisible = !nullOrEmpty
 
-                                if(!nullOrEmpty) { submitList(response.clothes) }
+                                if (!nullOrEmpty) {
+                                    submitList(response.clothes)
+                                }
                             }
                         }
 
@@ -102,7 +104,9 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
 
                         //스타일 칩
                         val styleChipGroup = binding.infoSpace.styleChipGroup
-                        childChip(response.styles, styleChipGroup, "purple")
+                        response.styles?.let {
+                            childChip(it, styleChipGroup, "purple")
+                        }
                     }
 
                     is Resource.Loading -> {

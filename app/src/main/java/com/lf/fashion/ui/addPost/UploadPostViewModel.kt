@@ -33,13 +33,13 @@ class UploadPostViewModel @Inject constructor(
 
     var selectedGender :String?=null
 
-    val selectedTpos: MutableList<Int> = mutableListOf()
-    val selectedSeasons : MutableList<Int> = mutableListOf()
-    val selectedStyles : MutableList<Int> = mutableListOf()
+    val selectedTpos: MutableList<ChipInfo> = mutableListOf()
+    val selectedSeasons : MutableList<ChipInfo> = mutableListOf()
+    val selectedStyles : MutableList<ChipInfo> = mutableListOf()/*
     var tposTexts: MutableList<String> = mutableListOf()
     var seasonsTexts : MutableList<String> = mutableListOf()
     var stylesTexts : MutableList<String> = mutableListOf()
-
+*/
     var selectedClothCategory : String? =null
     var selectedPostImages : MutableList<String > = mutableListOf()
     var uploadedClothes : MutableList<UploadCloth> = mutableListOf()

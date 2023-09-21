@@ -24,12 +24,9 @@ class FilterViewModel @Inject constructor(private val repository: FilterReposito
     var selectedGender :String?=null
     var savedHeight : Int?=null
     var savedWeight : Int?=null
-    var selectedTposId: MutableList<Int> = mutableListOf()
-    var selectedSeasonsId : MutableList<Int> = mutableListOf()
-    var selectedStylesId : MutableList<Int> = mutableListOf()
-    var tposTexts: MutableList<String> = mutableListOf()
-    var seasonsTexts : MutableList<String> = mutableListOf()
-    var stylesTexts : MutableList<String> = mutableListOf()
+    var selectedTpos: MutableList<ChipInfo> = mutableListOf()
+    var selectedSeasons : MutableList<ChipInfo> = mutableListOf()
+    var selectedStyles : MutableList<ChipInfo> = mutableListOf()
 
     //search itemFilter 에서 사용하는 변수
     var minPrice : Int? = null
@@ -57,12 +54,12 @@ class FilterViewModel @Inject constructor(private val repository: FilterReposito
         }
     }
     fun clearAll(){
-        selectedTposId.clear()
-        selectedSeasonsId.clear()
-        selectedStylesId.clear()
-        tposTexts.clear()
+        selectedTpos.clear()
+        selectedSeasons.clear()
+        selectedStyles.clear()
+       /* tposTexts.clear()
         seasonsTexts.clear()
-        stylesTexts.clear()
+        stylesTexts.clear()*/
         selectedGender = null
         savedHeight = null
         savedWeight = null

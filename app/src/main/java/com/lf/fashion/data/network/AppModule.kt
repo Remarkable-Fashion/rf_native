@@ -89,4 +89,12 @@ object AppModule {
     ) : UploadClothesApi {
         return remoteDataSource.buildApi(UploadClothesApi::class.java)
     }
+
+    @Singleton
+    @Provides
+    fun provideEditPostApi(
+        remoteDataSource: RemoteDataSource
+    ) : EditPostApi {
+        return remoteDataSource.buildApi(EditPostApi::class.java)
+    }
 }

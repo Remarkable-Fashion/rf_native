@@ -3,21 +3,30 @@ package com.lf.fashion.ui.globalFrag.editPost
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.lf.fashion.MainActivity
+import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
 import com.lf.fashion.TAG
+import com.lf.fashion.data.model.ImageItem
+import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.databinding.EditPostFragmentBinding
+import com.lf.fashion.ui.addPost.ImagePickerFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class EditPostFragment : Fragment(R.layout.edit_post_fragment) {
+    private val viewModel: EditPostViewModel by hiltNavGraphViewModels(R.id.navigation_eidt_post)
     private lateinit var binding: EditPostFragmentBinding
-
+    private val editPostViewPagerAdapter = EditPostAdapter()
+    private lateinit var editPostRvAdapter: EditPhotoRvAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MainActivity.hideNavi(true)
@@ -27,17 +36,70 @@ class EditPostFragment : Fragment(R.layout.edit_post_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = EditPostFragmentBinding.bind(view)
         val post = arguments?.get("post") as Posts
+        viewModel.imageList.value = post.images.toMutableList()
+        viewModel.postId = post.id
+        if(viewModel.postId == null) return
+
+
         binding.horizontalViewPager.apply {
-            adapter = EditPostAdapter().apply { submitList(post.images) }
+            adapter = editPostViewPagerAdapter
             getChildAt(0).overScrollMode =
                 RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
         }
-        binding.photoList.apply {
-            adapter = EditPhotoRvAdapter().apply{ submitList(post.images)}
+        editPostRvAdapter = EditPhotoRvAdapter() {
+            viewModel.removeImage(it)
         }
+
+        binding.photoList.adapter = editPostRvAdapter
+
+
+        viewModel.imageList.observe(viewLifecycleOwner) {
+            Log.e(TAG, "onViewCreated: ${viewModel.imageList.value}")
+            editPostViewPagerAdapter.submitList(it)
+            editPostRvAdapter.submitList(it)
+            editPostViewPagerAdapter.notifyDataSetChanged()
+            editPostRvAdapter.notifyDataSetChanged()
+        }
+
+
         Log.e(TAG, "onViewCreated: $post")
+        submitBtnOnclick()
+        addImageBtnOnclick()
+
+        //ImagePickerFragment 에서 선택한 이미지를 바인딩하고 서버에 전송가능하도록 selectedImageUri 에 담아준다.
+        setFragmentResultListener(requestKey = ImagePickerFragment.REQUEST_KEY) { _, bundle ->
+            val imageUris = bundle.get("imageURI") as Array<String>
+            val imageURlList = imageUris.map { ImageUrl(it) }.toMutableList()
+            viewModel.newImageList = imageURlList
+            viewModel.addImage(imageURlList)
+        }
+    }
+
+    private fun addImageBtnOnclick() {
+        val size = viewModel.imageList.value?.size ?: 0
+        val space = 4 - size
+
+        binding.addBtn.setOnClickListener {
+            if(space <0){
+                Toast.makeText(requireContext(), "사진은 4장까지 등록 가능합니다.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            findNavController().navigate(
+                R.id.action_editPostFragment_to_imagePickerFragment,
+                bundleOf("limit" to space)
+            )
+        }
+    }
+
+    private fun submitBtnOnclick() {
         binding.submitBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_editPostFragment_to_editPostStep2Fragment , bundleOf("post" to post))
+            if (viewModel.imageList.value?.isEmpty() == true) {
+                Toast.makeText(requireContext(), "사진을 1개 이상 등록해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            findNavController().navigate(
+                R.id.action_editPostFragment_to_editPostStep2Fragment
+            )
         }
     }
 
