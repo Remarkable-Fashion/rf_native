@@ -1,6 +1,7 @@
 package com.lf.fashion.ui.search.adapter
 
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.lf.fashion.ui.search.SearchResultFragment
 

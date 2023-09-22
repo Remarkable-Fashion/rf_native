@@ -115,7 +115,6 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
             val imageUriArray = viewModel.getCheckedImageUriList().toTypedArray()
             when (backStackFragment) {
                 "PhotoFragment" ->{ //PhotoFragment -> ImagePicker 일땐 backstack 이 아니라 PhotoStep2로 가야하기 때문에 분리..
-                //todo
                 val action =  MainNaviDirections.actionGlobalToPhotoStep2Fragment(imageUriArray)
                     findNavController().navigate(action)
                 }

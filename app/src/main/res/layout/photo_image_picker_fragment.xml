@@ -70,6 +70,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_selected_image"
             android:visibility="gone"
+            android:overScrollMode="never"
             />
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"

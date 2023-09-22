@@ -10,6 +10,8 @@ import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.OtherUser
 import com.lf.fashion.databinding.ItemFollowerBinding
 import com.lf.fashion.ui.mypage.MyPageViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -46,24 +48,31 @@ class UserListAdapter(private val tabName: String, private val viewModel: MyPage
                     "follower" -> {
                         this.text = "삭제"
                         this.setOnClickListener {
-                            // TODO 아직 엔드포인트 없음
+                            CoroutineScope(Dispatchers.Main).launch {
+                                val response = viewModel.deleteFollowerById(wrap.user.id)
+                                if(response.success){
+                                    Toast.makeText(context , "팔로워를 삭제했습니다" ,Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                            val newList = currentList.toMutableList()
+                            newList.remove(wrap)
+                            submitList(newList)
                         }
                     }
 
                     "following" -> {
                         this.text = "취소"
                         this.setOnClickListener {
-                            runBlocking {
-                                launch {
-                                    val response =
-                                        viewModel.changeFollowingState(create = false, wrap.user.id)
-                                    if(response is Resource.Success && response.value.success){
-                                        Toast.makeText(context,"팔로우가 취소되었습니다.",Toast.LENGTH_SHORT).show()
-                                        val newList = currentList.toMutableList()
-                                        newList.remove(wrap)
-                                        submitList(newList)
-                                    }
+                            CoroutineScope(Dispatchers.Main).launch {
+                                val response =
+                                    viewModel.changeFollowingState(create = false, wrap.user.id)
+                                if (response is Resource.Success && response.value.success) {
+                                    Toast.makeText(context, "팔로우가 취소되었습니다.", Toast.LENGTH_SHORT)
+                                        .show()
                                 }
+                                val newList = currentList.toMutableList()
+                                newList.remove(wrap)
+                                submitList(newList)
                             }
                         }
                     }
@@ -75,12 +84,13 @@ class UserListAdapter(private val tabName: String, private val viewModel: MyPage
                                 launch {
                                     val response =
                                         viewModel.changeBlockUserState(create = false, wrap.user.id)
-                                    if(response is Resource.Success && response.value.success){
-                                        Toast.makeText(context,"차단이 해제되었습니다.",Toast.LENGTH_SHORT).show()
-                                        val newList = currentList.toMutableList()
-                                        newList.remove(wrap)
-                                        submitList(newList)
+                                    if (response is Resource.Success && response.value.success) {
+                                        Toast.makeText(context, "차단이 해제되었습니다.", Toast.LENGTH_SHORT)
+                                            .show()
                                     }
+                                    val newList = currentList.toMutableList()
+                                    newList.remove(wrap)
+                                    submitList(newList)
                                 }
                             }
                         }

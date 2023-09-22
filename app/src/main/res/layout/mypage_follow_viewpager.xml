@@ -41,6 +41,7 @@
         tools:listitem="@layout/item_follower"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="vertical"
+        android:overScrollMode="never"
         />
 
     <TextView

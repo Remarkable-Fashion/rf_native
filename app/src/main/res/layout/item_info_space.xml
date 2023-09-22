@@ -110,7 +110,7 @@
             android:layout_marginEnd="15dp"
             app:layout_constraintBaseline_toBaselineOf="@id/height_label"
             app:layout_constraintEnd_toEndOf="parent"
-            userHeight="@{userInfo.height}"
+            userHeight="@{postInfo.height}"
             tools:text="160cm"
             style="@style/spoqa_16sp_sub_label"
             android:textColor="@color/default_text" />
@@ -122,7 +122,7 @@
             app:layout_constraintBaseline_toBaselineOf="@id/weight_label"
             app:layout_constraintEnd_toEndOf="@id/height_value"
             tools:text="48kg"
-            userWeight="@{userInfo.weight}"
+            userWeight="@{postInfo.weight}"
             style="@style/spoqa_16sp_sub_label"
             android:textColor="@color/default_text" />
 <!--        android:text='@{userInfo.weight!=null?userInfo.weight+`kg`:""}'-->

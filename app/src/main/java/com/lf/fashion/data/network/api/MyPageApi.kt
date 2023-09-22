@@ -40,6 +40,9 @@ interface MyPageApi {
     @DELETE("post/{id}")
     suspend fun deletePost(@Path("id") postId : Int) : MsgResponse
 
+    @DELETE("user/follower/{id}")
+    suspend fun deleteFollowerById(@Path("id") userId :Int) : MsgResponse
+
     @PATCH("post/{id}/status")
     suspend fun updatePostStatus(@Path("id") postId :Int ,@Body isPublic :PostStatus) :MsgResponse
 }

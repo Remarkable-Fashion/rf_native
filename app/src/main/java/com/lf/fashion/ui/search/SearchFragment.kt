@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayoutMediator
@@ -93,7 +94,7 @@ class SearchFragment : Fragment(R.layout.search_fragment),
 
         // 탭이 바뀔 때마다 spinner array 바꿔주기
         searchViewPagerOnChangeCallback(binding.searchResult.tabViewpager)
-
+        binding.searchResult.tabViewpager.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER // 양옆 오버 스크롤 이벤트 shadow 제거
         binding.searchIcon.setOnClickListener {
             val term = binding.searchEt.text.toString()
             if (term.isNotEmpty()) {

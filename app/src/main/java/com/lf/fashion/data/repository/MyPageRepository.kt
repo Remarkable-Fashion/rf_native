@@ -84,4 +84,8 @@ class MyPageRepository @Inject constructor(
     suspend fun updatePostStatus(postId: Int,status : Boolean)=safeApiCall {
         myPageApi.updatePostStatus(postId, PostStatus(status))
     }
+
+    suspend fun deleteFollowerByUserId(userId : Int)=safeApiCall{
+        myPageApi.deleteFollowerById(userId)
+    }
 }

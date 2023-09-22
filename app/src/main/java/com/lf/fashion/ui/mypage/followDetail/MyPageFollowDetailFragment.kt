@@ -3,6 +3,7 @@ package com.lf.fashion.ui.mypage.followDetail
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lf.fashion.MainActivity
 import com.lf.fashion.R
@@ -24,6 +25,7 @@ class MyPageFollowDetailFragment : Fragment(R.layout.mypage_follow_detail) {
 
         val tabViewPager = binding.tabViewpager
         tabViewPager.adapter = FollowDetailAdapter(this)
+        tabViewPager.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER // 양옆 오버 스크롤 이벤트 shadow 제거
         TabLayoutMediator(binding.tab,tabViewPager){tab,position->
             tab.text = tabTitleArray[position]
         }.attach()

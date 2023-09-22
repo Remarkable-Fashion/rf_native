@@ -143,7 +143,9 @@
                     tools:listitem="@layout/home_grid_item"
                     app:layout_constraintStart_toStartOf="@id/profile_space"
                     app:layout_constraintEnd_toEndOf="@id/profile_space"
-                    app:layout_constraintTop_toBottomOf="@id/profile_space" />
+                    app:layout_constraintTop_toBottomOf="@id/profile_space"
+                    android:overScrollMode="never"
+                    />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

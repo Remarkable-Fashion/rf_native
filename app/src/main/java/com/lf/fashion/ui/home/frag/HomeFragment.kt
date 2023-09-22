@@ -112,7 +112,7 @@ class HomeFragment :
         observeLoadMorePost()
     }
 
-    //todo
+    //todo 계속 같은 response만 옴
     private fun randomPostScrollEndPoint() {
         binding.homeMainViewpager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
@@ -486,7 +486,6 @@ class HomeFragment :
         }
     }
 
-    //todo
     override fun editPost(post: Posts) {
         findNavController().navigate(R.id.action_global_to_editPostFragment, bundleOf("post" to post))
     }

@@ -71,22 +71,24 @@ class MyPageViewModel @Inject constructor(
 
     //새로 load 된 post 들까지 합쳐진 전체 itemList
     var allPostList = mutableListOf<Posts>()
-    var recentResponse :RandomPostResponse? = null
+    var recentResponse: RandomPostResponse? = null
+
     init {
-      getSavedLoginToken()
+        getSavedLoginToken()
         if (!savedLoginToken.value.isNullOrEmpty()) {
             getPostList()
             getMyInfo()
         }
     }
+
     suspend fun getJWT(loginAccessToken: String): Resource<MsgResponse> {
         return myPageRepository.getJWT(loginAccessToken)
     }
 
-     fun getSavedLoginToken() {
+    fun getSavedLoginToken() {
         viewModelScope.launch {
             _savedLoginToken.value = userPreferences.accessToken.first()
-           // Log.d(TAG, "MyPageViewModel - getSavedLoginToken: ${savedLoginToken.value}");
+            // Log.d(TAG, "MyPageViewModel - getSavedLoginToken: ${savedLoginToken.value}");
         }
     }
 
@@ -180,9 +182,9 @@ class MyPageViewModel @Inject constructor(
 
     suspend fun changeFollowingState(create: Boolean, userId: Int): Resource<MsgResponse> {
         val result = if (create) {
-         communicateRepository.createFollowing(userId)
+            communicateRepository.createFollowing(userId)
         } else {
-           communicateRepository.deleteFollowing(userId)
+            communicateRepository.deleteFollowing(userId)
         }
 
         return result
@@ -199,14 +201,21 @@ class MyPageViewModel @Inject constructor(
         return result
     }
 
-    suspend fun deletePost(postId : Int) : MsgResponse{
-         val response =  myPageRepository.deletePost(postId)
-         return if(response is Resource.Success) return response.value
-        else MsgResponse(false,"Resource Fail")
-    }
-    suspend fun changePostStatus(postInt: Int,status : Boolean) :MsgResponse{
-        val response = myPageRepository.updatePostStatus(postInt,!status)
+    suspend fun deletePost(postId: Int): MsgResponse {
+        val response = myPageRepository.deletePost(postId)
         return if (response is Resource.Success) return response.value
         else MsgResponse(false, "Resource Fail")
+    }
+
+    suspend fun changePostStatus(postInt: Int, status: Boolean): MsgResponse {
+        val response = myPageRepository.updatePostStatus(postInt, !status)
+        return if (response is Resource.Success) return response.value
+        else MsgResponse(false, "Resource Fail")
+    }
+
+    suspend fun deleteFollowerById(userId: Int): MsgResponse {
+        val response = myPageRepository.deleteFollowerByUserId(userId)
+        return if(response is Resource.Success) return response.value
+        else MsgResponse(false ,"Resource Fail")
     }
 }

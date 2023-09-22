@@ -269,8 +269,8 @@ class MyPageVerticalFragment : Fragment(),
         }
     }
 
-    //todo
     override fun editPost(post: Posts) {
+        findNavController().navigate(R.id.action_global_to_editPostFragment, bundleOf("post" to post))
 
     }
 }
