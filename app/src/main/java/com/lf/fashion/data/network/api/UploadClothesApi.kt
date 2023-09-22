@@ -1,7 +1,7 @@
 package com.lf.fashion.data.network.api
 
+import com.lf.fashion.data.model.Cloth
 import com.lf.fashion.data.model.MsgResponse
-import com.lf.fashion.data.model.UploadCloth
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.Multipart
@@ -14,7 +14,7 @@ interface UploadClothesApi {
     @POST("clothes/{id}/recommend")
     suspend fun uploadClothes(
         @Path("id") clothesId: Int,
-        @Body cloth : UploadCloth
+        @Body cloth : Cloth
     ): MsgResponse
 
     @Multipart

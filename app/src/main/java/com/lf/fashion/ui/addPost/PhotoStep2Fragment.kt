@@ -18,7 +18,7 @@ import com.bumptech.glide.Glide
 import com.lf.fashion.MainActivity
 import com.lf.fashion.R
 import com.lf.fashion.TAG
-import com.lf.fashion.data.model.UploadCloth
+import com.lf.fashion.data.model.Cloth
 import com.lf.fashion.data.model.UploadPost
 import com.lf.fashion.databinding.PhotoStep2FragmentBinding
 import com.lf.fashion.ui.common.AppCustomDialog
@@ -40,12 +40,13 @@ import kotlinx.coroutines.withContext
 class PhotoStep2Fragment : Fragment(), View.OnClickListener {
     private lateinit var binding: PhotoStep2FragmentBinding
     private val viewModel: UploadPostViewModel by hiltNavGraphViewModels(R.id.navigation_photo)
-    private val regClothesList = mutableListOf<UploadCloth>()
+    private val regClothesList = mutableListOf<Cloth>()
     private val addClothesAdapter = AddPostClothesRvAdapter()
 
     //selectedClothImageUri 는 adpater 에 보내서 띄워주는 역할을 한다
     private var selectedClothImageUri: String? = null
     private val chipStyle = "default"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MainActivity.hideNavi(true)
@@ -209,7 +210,8 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
             ) {
 
                 regClothesList.add(
-                    UploadCloth(
+                    Cloth(
+                        null,
                         name.toString(),
                         viewModel.selectedClothCategory!!,//viewModel.selectedCategory!!,
                         selectedClothImageUri!!,
@@ -217,7 +219,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                         color.toString(),
                         size.toString(),
                         brand.toString(),
-                        null
+                        null,null
                     )
                 )
                 addClothesAdapter.apply {
@@ -254,17 +256,19 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         binding.clothRegistForm.productImage.setOnClickListener {
             findNavController().navigate(
                 R.id.action_photoStep2Fragment_to_imagePickerFragment,
-                bundleOf("from" to "PhotoStep2Fragment", "limit" to 4)
+                bundleOf("from" to "PhotoStep2Fragment", "limit" to 1)
             )
         }
         setFragmentResultListener(requestKey = ImagePickerFragment.REQUEST_KEY) { _, bundle ->
             //의상 등록 부분에서 이미지 받아온 것
             val imageUris = bundle.get("imageURI") as Array<*>
-            imageUris[0]?.let {
-                selectedClothImageUri = imageUris[0].toString()
-                Glide.with(binding.root)
-                    .load(it)
-                    .into(binding.clothRegistForm.productImage)
+            if(imageUris.isNotEmpty()) {
+                imageUris[0]?.let {
+                    selectedClothImageUri = imageUris[0].toString()
+                    Glide.with(binding.root)
+                        .load(it)
+                        .into(binding.clothRegistForm.productImage)
+                }
             }
         }
     }

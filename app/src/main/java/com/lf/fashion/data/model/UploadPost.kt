@@ -10,7 +10,7 @@ data class UploadPost(
     val tpos : List<Int>,
     val seasons : List<Int>,
     val styles : List<Int>,
-    val clothes : List <UploadCloth>,
+    val clothes : List <Cloth>,
     val height : Int ,
     val weight : Int,
     val isPublic : Boolean

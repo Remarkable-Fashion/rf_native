@@ -19,7 +19,7 @@ import com.bumptech.glide.Glide
 import com.lf.fashion.MainActivity
 import com.lf.fashion.R
 import com.lf.fashion.TAG
-import com.lf.fashion.data.model.UploadCloth
+import com.lf.fashion.data.model.Cloth
 import com.lf.fashion.databinding.HomeBRegistClothFragmentBinding
 import com.lf.fashion.ui.globalFrag.adapter.AddPostClothesRvAdapter
 import com.lf.fashion.ui.common.absolutelyPath
@@ -43,7 +43,7 @@ import kotlin.properties.Delegates
 class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), View.OnClickListener {
 
     private lateinit var binding: HomeBRegistClothFragmentBinding
-    private val regClothesList = mutableListOf<UploadCloth>()
+    private val regClothesList = mutableListOf<Cloth>()
 
     // private var selectedCategory: String? = null
     private val addClothesAdapter = AddPostClothesRvAdapter()
@@ -104,11 +104,13 @@ class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), Vie
         //이미지 선택해서 받아온 이미지들 ..
         setFragmentResultListener(ImagePickerFragment.REQUEST_KEY) { _, bundle ->
             val imageUris = bundle.get("imageURI") as Array<*>
-            imageUris[0]?.let {
-                selectedImageUri = imageUris[0].toString()
-                Glide.with(binding.root)
-                    .load(it)
-                    .into(binding.clothRegistForm.productImage)
+            if (imageUris.isNotEmpty()) {
+                imageUris[0]?.let {
+                    selectedImageUri = imageUris[0].toString()
+                    Glide.with(binding.root)
+                        .load(it)
+                        .into(binding.clothRegistForm.productImage)
+                }
             }
         }
 
@@ -154,7 +156,8 @@ class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), Vie
             ) {
 
                 regClothesList.add(
-                    UploadCloth(
+                    Cloth(
+                        null,
                         nameValue,
                         viewModel.selectedCategory!!,
                         selectedImageUri!!,
@@ -162,6 +165,7 @@ class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), Vie
                         colorValue,
                         sizeValue,
                         brandValue,
+                        null,
                         binding.detailValue.text.toString()
                     )
                 )
@@ -237,12 +241,16 @@ class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), Vie
                                 )
                                     .show()
                                 findNavController().apply {
-                                    navigate(R.id.action_registClothFragment_to_recommendFragment,
-                                        bundleOf("postId" to clothesPostId,"backStackClear" to true)
+                                    navigate(
+                                        R.id.action_registClothFragment_to_recommendFragment,
+                                        bundleOf(
+                                            "postId" to clothesPostId,
+                                            "backStackClear" to true
+                                        )
                                     )
                                 }
                             }
-                        }else{
+                        } else {
                             withContext(Dispatchers.Main) {
                                 binding.progressBar.visibility = View.GONE
                                 Toast.makeText(

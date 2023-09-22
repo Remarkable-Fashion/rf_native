@@ -7,11 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.lf.fashion.data.model.ChipInfo
 import com.lf.fashion.data.model.Cloth
 import com.lf.fashion.data.model.MsgResponse
-import com.lf.fashion.data.model.UploadCloth
 import com.lf.fashion.data.model.UploadPost
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.FilterRepository
-import com.lf.fashion.data.repository.UploadClothesRepository
 import com.lf.fashion.data.repository.UploadPostRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -42,7 +40,7 @@ class UploadPostViewModel @Inject constructor(
 */
     var selectedClothCategory : String? =null
     var selectedPostImages : MutableList<String > = mutableListOf()
-    var uploadedClothes : MutableList<UploadCloth> = mutableListOf()
+    var uploadedClothes : MutableList<Cloth> = mutableListOf()
 
 
     init {

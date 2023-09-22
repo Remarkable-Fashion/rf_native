@@ -1,11 +1,11 @@
 package com.lf.fashion.ui.globalFrag.editPost
 
-import android.media.Image
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lf.fashion.data.model.ChipInfo
+import com.lf.fashion.data.model.Cloth
 import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.data.model.MsgResponse
 import com.lf.fashion.data.model.PostInfo
@@ -30,7 +30,7 @@ class EditPostViewModel @Inject constructor(
     var postId: Int? = null
     var imageList = MutableLiveData<MutableList<ImageUrl>>()
     var newImageList = mutableListOf<ImageUrl>()
-
+    var newClothImageList = mutableListOf<Cloth>()
     private val _tpoChipList = MutableLiveData<List<ChipInfo>>()
     var tpoChipList: LiveData<List<ChipInfo>> = _tpoChipList
 
@@ -42,10 +42,14 @@ class EditPostViewModel @Inject constructor(
 
     var selectedTpos: MutableList<ChipInfo> = mutableListOf()
     var selectedSeasons : MutableList<ChipInfo> = mutableListOf()
-    var selectedStyles : MutableList<ChipInfo> = mutableListOf()/*
-    var tposTexts: MutableList<String> = mutableListOf()
-    var seasonsTexts : MutableList<String> = mutableListOf()
-    var stylesTexts : MutableList<String> = mutableListOf()*/
+    var selectedStyles: MutableList<ChipInfo> = mutableListOf()
+
+    var selectedGender :String?=null
+    var selectedClothCategory : String? =null
+  //  var selectedPostImages : MutableList<String > = mutableListOf()
+    var uploadedClothes : MutableList<Cloth> = mutableListOf()
+
+
     suspend fun editPost(uploadPost: UploadPost): MsgResponse {
         val response = editPostRepository.editPost(uploadPost)
         return if (response is Resource.Success) response.value
@@ -70,7 +74,7 @@ class EditPostViewModel @Inject constructor(
         imageList.value = currentList // LiveData 값을 업데이트하여 관찰자를 트리거
     }
 
-    fun addImage(image: List<ImageUrl>) {
+    fun addToImageList(image: List<ImageUrl>) {
         val currentList = imageList.value ?: mutableListOf()
         currentList.addAll(image)
         imageList.value = currentList // LiveData 값을 업데이트하여 관찰자를 트리거
@@ -79,6 +83,21 @@ class EditPostViewModel @Inject constructor(
     fun getPostInfoByPostId(postId: Int) {
         viewModelScope.launch {
             _postInfo.value = editPostRepository.getPostInfo(postId)
+        }
+    }
+     fun getTPOChipsInfo(){
+        viewModelScope.launch {
+            _tpoChipList.value = filterRepository.getTPOChips()
+        }
+    }
+     fun getSeasonChipsInfo(){
+        viewModelScope.launch {
+            _seasonChipList.value = filterRepository.getSeasonChips()
+        }
+    }
+     fun getStyleChipsInfo(){
+        viewModelScope.launch {
+            _styleChipList.value = filterRepository.getStyleChips()
         }
     }
 }

@@ -188,9 +188,11 @@ class ProfileEditFragment : Fragment(R.layout.mypage_profile_fragment) {
         //ImagePickerFragment 에서 선택한 이미지를 바인딩하고 서버에 전송가능하도록 selectedImageUri 에 담아준다.
         setFragmentResultListener(requestKey = ImagePickerFragment.REQUEST_KEY) { _, bundle ->
             val imageUris = bundle.get("imageURI") as Array<*>
-            imageUris[0]?.let {
-                selectedImageUri = imageUris[0].toString()
-                binding.myInfo?.profile?.profileImage = it as String
+            if(imageUris.isNotEmpty()) {
+                imageUris[0]?.let {
+                    selectedImageUri = imageUris[0].toString()
+                    binding.myInfo?.profile?.profileImage = it as String
+                }
             }
         }
     }

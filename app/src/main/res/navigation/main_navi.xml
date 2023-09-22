@@ -477,7 +477,11 @@
         <fragment
             android:id="@+id/editPostStep2Fragment"
             android:name="com.lf.fashion.ui.globalFrag.editPost.EditPostStep2Fragment"
-            android:label="EditPostStep2Fragment" />
+            android:label="EditPostStep2Fragment" >
+            <action
+                android:id="@+id/action_editPostStep2Fragment_to_imagePickerFragment"
+                app:destination="@id/imagePickerFragment" />
+        </fragment>
         <fragment
             android:id="@+id/imagePickerFragment"
             android:name="com.lf.fashion.ui.addPost.ImagePickerFragment"

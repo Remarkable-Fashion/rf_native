@@ -2,9 +2,9 @@ package com.lf.fashion.data.repository
 
 import android.util.Log
 import com.lf.fashion.TAG
+import com.lf.fashion.data.model.Cloth
 import com.lf.fashion.data.network.SafeApiCall
 import com.lf.fashion.data.network.api.UploadClothesApi
-import com.lf.fashion.data.model.UploadCloth
 import com.lf.fashion.ui.common.getMimeType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class UploadClothesRepository @Inject constructor(private val uploadClothesApi: UploadClothesApi) :
     SafeApiCall {
 
-    suspend fun uploadClothesInfo(pageClothesId: Int, clothesInfo: UploadCloth) =safeApiCall{
+    suspend fun uploadClothesInfo(pageClothesId: Int, clothesInfo: Cloth) =safeApiCall{
         Log.e(TAG, "uploadClothesInfo:${clothesInfo.imageUrl} ")
         uploadClothesApi.uploadClothes(pageClothesId, clothesInfo)
     }

@@ -71,7 +71,7 @@ class EditPostFragment : Fragment(R.layout.edit_post_fragment) {
             val imageUris = bundle.get("imageURI") as Array<String>
             val imageURlList = imageUris.map { ImageUrl(it) }.toMutableList()
             viewModel.newImageList = imageURlList
-            viewModel.addImage(imageURlList)
+            viewModel.addToImageList(imageURlList) //
         }
     }
 

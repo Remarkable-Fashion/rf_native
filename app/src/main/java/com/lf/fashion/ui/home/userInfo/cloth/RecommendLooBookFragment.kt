@@ -186,7 +186,7 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
         if (userPref.loginCheck()) {
             CoroutineScope(Dispatchers.IO).launch {
                 val response =
-                    viewModel.changeClotheLikeState(create = !likeState, clothes.clothesInfo.id)
+                    viewModel.changeClotheLikeState(create = !likeState, clothes.clothesInfo.id!!)
                 if (response is Resource.Success && response.value.success) {
                     val currentList = lookBookRvAdapter.currentList
                     val position = currentList.indexOf(clothes)

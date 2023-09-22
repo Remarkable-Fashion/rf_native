@@ -1,10 +1,10 @@
 package com.lf.fashion.ui.home.userInfo.cloth
 
 import androidx.lifecycle.ViewModel
+import com.lf.fashion.data.model.Cloth
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.UploadClothesRepository
 import com.lf.fashion.data.model.MsgResponse
-import com.lf.fashion.data.model.UploadCloth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -13,7 +13,7 @@ class UploadClothesViewModel @Inject constructor(private val uploadClothesReposi
     ViewModel() {
 
     var selectedCategory : String? =null
-    suspend fun uploadClothesInfo(pageClothesId: Int, cloth: UploadCloth): MsgResponse {
+    suspend fun uploadClothesInfo(pageClothesId: Int, cloth: Cloth): MsgResponse {
         val response = uploadClothesRepository.uploadClothesInfo(pageClothesId, cloth)
         return if (response is Resource.Success) {
             response.value

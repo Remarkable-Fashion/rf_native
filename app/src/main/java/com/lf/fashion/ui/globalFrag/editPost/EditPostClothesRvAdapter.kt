@@ -1,4 +1,4 @@
-package com.lf.fashion.ui.globalFrag.adapter
+package com.lf.fashion.ui.globalFrag.editPost
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lf.fashion.TAG
 import com.lf.fashion.data.model.Cloth
+
 import com.lf.fashion.databinding.ItemRegistFormBinding
 import com.lf.fashion.ui.home.adapter.ClothDiff
 
-//PhotoStep2Fragment , RegistClothFragment 에서 사용.
-class AddPostClothesRvAdapter :
-    ListAdapter<Cloth, AddPostClothesRvAdapter.ClothesRvViewHolder>(ClothDiff()) {
-
+class EditPostClothesRvAdapter : ListAdapter<Cloth,EditPostClothesRvAdapter.ClothesRvViewHolder>(
+    ClothDiff()
+) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothesRvViewHolder {
         val binding =
             ItemRegistFormBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -46,4 +46,5 @@ class AddPostClothesRvAdapter :
             binding.executePendingBindings()
         }
     }
+
 }
