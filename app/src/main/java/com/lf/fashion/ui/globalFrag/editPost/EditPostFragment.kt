@@ -19,6 +19,7 @@ import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.databinding.EditPostFragmentBinding
 import com.lf.fashion.ui.addPost.ImagePickerFragment
+import com.lf.fashion.ui.common.cancelBtnBackStack
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,6 +37,12 @@ class EditPostFragment : Fragment(R.layout.edit_post_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = EditPostFragmentBinding.bind(view)
         val post = arguments?.get("post") as Posts
+
+        //step2Fragment 에서 사용할 데이터 미리 요청 (Step2Fragment 에서 호출시 의상 등록하러 갔다가 오면 계속 중복요청 !)
+        with(viewModel) {
+            getPostInfoByPostId(post.id)
+        }
+
         viewModel.imageList.value = post.images.toMutableList()
         viewModel.postId = post.id
         if(viewModel.postId == null) return
@@ -54,15 +61,12 @@ class EditPostFragment : Fragment(R.layout.edit_post_fragment) {
 
 
         viewModel.imageList.observe(viewLifecycleOwner) {
-            Log.e(TAG, "onViewCreated: ${viewModel.imageList.value}")
             editPostViewPagerAdapter.submitList(it)
             editPostRvAdapter.submitList(it)
             editPostViewPagerAdapter.notifyDataSetChanged()
             editPostRvAdapter.notifyDataSetChanged()
         }
 
-
-        Log.e(TAG, "onViewCreated: $post")
         submitBtnOnclick()
         addImageBtnOnclick()
 
@@ -73,6 +77,7 @@ class EditPostFragment : Fragment(R.layout.edit_post_fragment) {
             viewModel.newImageList = imageURlList
             viewModel.addToImageList(imageURlList) //
         }
+        cancelBtnBackStack(binding.backBtn)
     }
 
     private fun addImageBtnOnclick() {

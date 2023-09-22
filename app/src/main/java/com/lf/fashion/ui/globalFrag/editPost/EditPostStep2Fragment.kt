@@ -3,6 +3,8 @@ package com.lf.fashion.ui.globalFrag.editPost
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -36,6 +38,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import okhttp3.internal.wait
 
 @AndroidEntryPoint
 class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.OnClickListener {
@@ -47,64 +50,45 @@ class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.
 
     //selectedClothImageUri 는 adpater 에 보내서 띄워주는 역할을 한다
     private var selectedClothImageUri: String? = null
-    private var init = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MainActivity.hideNavi(true)
+        //기존 등록된 게시물 정보 viewModel 에 oncreate 최초 1 회 viewModel에 할당
+        viewModel.postInfo.value.apply {
+            when (this) {
+                is Resource.Success -> {
+                    val response = this.value
+                    viewModel.apply {
+                        selectedGender = response.gender
+                        savedHeight = response.height
+                        savedWeight = response.weight
+                        selectedGender = response.gender
+                        savedIntroduce = response.description
+                        selectedTpos = response.tpos?.toMutableList() ?: mutableListOf()
+                        selectedSeasons = response.season?.toMutableList() ?: mutableListOf()
+                        selectedStyles = response.styles?.toMutableList() ?: mutableListOf()
+                        savedClothList =response.clothes.toMutableList()
+                    }
+                }
+                else -> {
+
+                }
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = EditPostStep2FragmentBinding.bind(view)
         binding.clothesDetailRv.adapter = addClothesAdapter
-
-        with(viewModel) {
-            getPostInfoByPostId(this.postId!!)
-            if (init) {
-                getTPOChipsInfo()
-                getSeasonChipsInfo()
-                getStyleChipsInfo()
-            }
-            init = false
-        }
-
-        viewModel.postInfo.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.Success -> {
-                    val response = resource.value
-
-                    if (response.gender == "Male") {
-                        binding.filterSpace.genderManBtn.isSelected = true
-                    } else {
-                        binding.filterSpace.genderWomanBtn.isSelected = true
-                    }
-                    binding.filterSpace.heightValue.setText("${response.height} cm")
-                    binding.filterSpace.weightValue.setText("${response.weight} kg")
-                    binding.introduceValue.setText(response.description)
-                    viewModel.selectedGender = response.gender
-                    viewModel.selectedTpos = response.tpos?.toMutableList() ?: mutableListOf()
-                    viewModel.selectedSeasons = response.season?.toMutableList() ?: mutableListOf()
-                    viewModel.selectedStyles = response.styles?.toMutableList() ?: mutableListOf()
-
-                    addClothesAdapter.submitList(response.clothes)
-                    chipSetting()
-
-                }
-
-                else -> {
-
-                }
-            }
-        }
+        addClothesAdapter.submitList(viewModel.savedClothList)
 
         binding.clothRegistForm.topLinear.children.forEach { it.setOnClickListener(this) }
         binding.filterSpace.genderManBtn.setOnClickListener(this)
         binding.filterSpace.genderWomanBtn.setOnClickListener(this)
+        chipSetting()
 
-        addTextLengthCounter(binding.introduceValue, binding.textCounter, 50) //소개글 글자수 카운터
-        addUnitTextListener(binding.filterSpace.heightValue, height = true) //
-        addUnitTextListener(binding.filterSpace.weightValue, height = false)
-
+        editTextListener()  // height ,weight ,introduce 리스너 세팅 및 변한 값 viewModel에 할당
         imagePickerOpen()
         submitBtnOnclick()
         binding.backBtn.setOnClickListener {
@@ -113,8 +97,56 @@ class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.
         registerCloth()
     }
 
+    override fun onResume() {
+        super.onResume()
+        //최초에는 오리지널값 바인딩 / 재진입시 수정된 값 바인딩
+        viewModel.selectedGender?.let {
+            if (it == "Male") {
+                binding.filterSpace.genderManBtn.isSelected = true
+            } else {
+                binding.filterSpace.genderWomanBtn.isSelected = true
+            }
+        }
+        binding.filterSpace.heightValue.setText("${viewModel.savedHeight} cm")
+        binding.filterSpace.weightValue.setText("${viewModel.savedWeight} kg")
+        binding.introduceValue.setText(viewModel.savedIntroduce)
+
+    }
+
+    private fun editTextListener() {
+        addTextLengthCounter(binding.introduceValue, binding.textCounter, 50)//소개글 글자수 카운터
+        addUnitTextListener(binding.filterSpace.heightValue, height = true) {
+            if (it.isNotEmpty()) {
+                viewModel.savedHeight = it.toInt()
+            } else {
+                viewModel.savedHeight = null
+            }
+        }
+        addUnitTextListener(binding.filterSpace.weightValue, height = false) {
+            if (it.isNotEmpty()) {
+                viewModel.savedWeight = it.toInt()
+            } else {
+                viewModel.savedWeight = null
+            }
+        }
+        binding.introduceValue.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val currentValue = s?.toString() ?: ""
+                if (currentValue != viewModel.savedIntroduce) {
+                    viewModel.savedIntroduce = currentValue
+                }
+            }
+
+        })
+    }
+
     private fun chipSetting() {
-        //todo tpo만 두번 돌아감
         viewModel.tpoChipList.observe(viewLifecycleOwner) {
             it?.let {
                 Log.e(TAG, "chipSetting tpo: $it")

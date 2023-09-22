@@ -22,8 +22,7 @@ import javax.inject.Inject
 class EditPostViewModel @Inject constructor(
     private val editPostRepository: EditPostRepository,
     private val filterRepository: FilterRepository
-) :
-    ViewModel() {
+) : ViewModel() {
     private var _postInfo = MutableLiveData<Resource<PostInfo>>()
     val postInfo: LiveData<Resource<PostInfo>> = _postInfo
 
@@ -50,6 +49,15 @@ class EditPostViewModel @Inject constructor(
     var uploadedClothes : MutableList<Cloth> = mutableListOf()
 
 
+    var savedHeight : Int?=null
+    var savedWeight : Int?=null
+    var savedIntroduce : String?=null
+    var savedClothList = mutableListOf<Cloth>()
+    init {
+        getTPOChipsInfo()
+        getSeasonChipsInfo()
+        getStyleChipsInfo()
+    }
     suspend fun editPost(uploadPost: UploadPost): MsgResponse {
         val response = editPostRepository.editPost(uploadPost)
         return if (response is Resource.Success) response.value
