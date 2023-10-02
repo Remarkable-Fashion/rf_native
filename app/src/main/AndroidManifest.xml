@@ -39,13 +39,15 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        <!--    <intent-filter android:autoVerify="true">
+            <intent-filter> <!--딥 링크-->
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="randomcloset.com"
-                    android:scheme="https" />
-            </intent-filter>-->
+                <data
+                    android:scheme="http"
+                    android:host="randomcloset.com"
+                    />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"

@@ -68,6 +68,12 @@ class MainActivity : AppCompatActivity() {
                 // ...
             }
             .addOnFailureListener(this) { e -> Log.e(TAG, "onCreate: 다이나믹 링크 $e") }
+
+        //딥링크 데이터 꺼내기
+        val data =intent.data
+        data?.let{
+            val path = data.path
+        }
     }
 
     override fun onDestroy() {
