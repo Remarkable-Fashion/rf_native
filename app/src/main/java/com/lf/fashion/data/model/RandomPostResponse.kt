@@ -9,7 +9,8 @@ data class RandomPostResponse(
     val size: Int,
     val hasNext: Boolean? = true,
     val nextCursor: Int? = null,
-    val posts: List<Posts>
+    val posts: List<Posts>,
+    val nextFollowingCursor : String? = null
 )
 
 @Parcelize

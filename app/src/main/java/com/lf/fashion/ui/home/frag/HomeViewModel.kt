@@ -41,6 +41,7 @@ class HomeViewModel @Inject constructor(
 
 
     private val userPreferences = UserDataStorePref(context)
+    private var recentFollowingPostCursor = ""
 
     init {
         postMode.value = "random"
@@ -48,7 +49,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getPostList(
-        loadMore : Boolean?=null,
+        loadMore: Boolean? = null,
         take: Int,
         sex: String,
         height: Int? = null,
@@ -61,7 +62,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
 
             val savedToken = userPreferences.accessToken.first()
-           val postData = when (postMode.value) {
+            val postData = when (postMode.value) {
                 "random" -> {
                     if (savedToken.isNullOrEmpty()) {
                         homeRepository.getRandomPostPublic(
@@ -74,7 +75,7 @@ class HomeViewModel @Inject constructor(
                             style
                         )
                     } else {
-                       homeRepository.getRandomPost(
+                        homeRepository.getRandomPost(
                             take,
                             sex,
                             height,
@@ -85,16 +86,33 @@ class HomeViewModel @Inject constructor(
                         )
                     }
                 }
-                "following" ->{
-                 homeRepository.getFollowingPost(take, sex, height, weight, tpo, season, style)
+
+                "following" -> {
+                    homeRepository.getFollowingPost(
+                        recentFollowingPostCursor,
+                        take,
+                        sex,
+                        height,
+                        weight,
+                        tpo,
+                        season,
+                        style
+                    )
                 }
-               else -> null
+
+                else -> null
             }
-            postData?.let {
+            postData?.let { response ->
                 if (loadMore == true) {
-                    _loadMore.value = it
+                    _loadMore.value = response
                 } else {
-                    _response.value = it
+                    _response.value = response
+                }
+            //todo paging test
+                if (postMode.value == "following") {
+                    if (response is Resource.Success) {
+                        recentFollowingPostCursor = response.value.nextFollowingCursor!!
+                    }
                 }
             }
         }
@@ -127,8 +145,8 @@ class HomeViewModel @Inject constructor(
         else MsgResponse(false, "Resource Fail")
     }
 
-    suspend fun changePostStatus(postInt: Int,status : Boolean) :MsgResponse{
-        val response = myPageRepository.updatePostStatus(postInt,!status)
+    suspend fun changePostStatus(postInt: Int, status: Boolean): MsgResponse {
+        val response = myPageRepository.updatePostStatus(postInt, !status)
         return if (response is Resource.Success) return response.value
         else MsgResponse(false, "Resource Fail")
     }

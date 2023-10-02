@@ -34,6 +34,7 @@ class HomeRepository @Inject constructor(
     }
 
     suspend fun getFollowingPost(
+        cursor : String,
         take: Int,
         sex: String,
         height: Int?,
@@ -42,7 +43,7 @@ class HomeRepository @Inject constructor(
         season: List<Int>?,
         style: List<Int>?
     ) = safeApiCall {
-        postApi.getFollowingPost(1, take, sex, height, weight, tpo, season, style)
+        postApi.getFollowingPost(cursor, take, sex, height, weight, tpo, season, style)
     }
 
     suspend fun getPostInfoByPostId(postId: Int) = safeApiCall {

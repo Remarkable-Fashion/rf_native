@@ -30,8 +30,8 @@ interface MainHomeApi {
 
     @GET("post/followings")
     suspend fun getFollowingPost(
-        @Query("page") cursor: Int,
-        @Query("pageSize") take :Int,
+        @Query("cursor") cursor: String,
+        @Query("take") take :Int,
         @Query("sex") sex: String,
         @Query("height") height: Int? = null,
         @Query("weight") weight: Int? = null,
