@@ -108,12 +108,12 @@ class HomeFragment :
 
         observePostResponse()
 
-        randomPostScrollEndPoint()
+        scrollEndPointListener()
         observeLoadMorePost()
     }
 
     //todo 계속 같은 response만 옴
-    private fun randomPostScrollEndPoint() {
+    private fun scrollEndPointListener() {
         binding.homeMainViewpager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {

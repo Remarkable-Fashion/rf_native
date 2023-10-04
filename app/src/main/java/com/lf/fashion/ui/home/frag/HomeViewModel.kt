@@ -89,7 +89,7 @@ class HomeViewModel @Inject constructor(
 
                 "following" -> {
                     homeRepository.getFollowingPost(
-                        recentFollowingPostCursor,
+                        if(loadMore==true) recentFollowingPostCursor else null,
                         take,
                         sex,
                         height,

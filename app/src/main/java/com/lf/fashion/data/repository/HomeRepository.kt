@@ -34,7 +34,7 @@ class HomeRepository @Inject constructor(
     }
 
     suspend fun getFollowingPost(
-        cursor : String,
+        cursor : String?,
         take: Int,
         sex: String,
         height: Int?,
