@@ -38,26 +38,22 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
                 //userPref 에 저장된 jwt 토큰 가져와서 request Authorization Header 추가
                 val requestAuthKey: Deferred<String> =
                     CoroutineScope(Dispatchers.IO).async {
-
                         userPref.accessToken.first() ?: ""
-
                     }
 
                 val authKey = runBlocking { requestAuthKey.await() }
-                //if(authKey.isNotEmpty()) {
-
-                //testJWT 유효기간 365
-                val testJWT =
-                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjg4MDA4MzQxLCJleHAiOjE3MTk1NDQzNDF9.gr5Ijgdyy_ptL29Y3CE60fZZGNJQbli_eOdrzEOHL_o"
-                //  .addHeader("Authorization", "Bearer $authKey")
-
-                val requestBuilder: Request.Builder = original.newBuilder()
-                    .addHeader("Authorization", "Bearer $testJWT")
-                request = requestBuilder.build()
-
-                // }
-                Log.e(TAG, "RemoteDataSource - provideOkHttpClient: ${request.url}")
+                if (authKey.isNotEmpty()) {
+                    //testJWT 유효기간 365
+                    //val testJWT =
+                    //    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjg4MDA4MzQxLCJleHAiOjE3MTk1NDQzNDF9.gr5Ijgdyy_ptL29Y3CE60fZZGNJQbli_eOdrzEOHL_o"
+                    //    .addHeader("Authorization", "Bearer $testJWT")
+                    val requestBuilder: Request.Builder = original.newBuilder()
+                        .addHeader("Authorization", "Bearer $authKey")
+                    request = requestBuilder.build()
+                    Log.e(TAG, "RemoteDataSource - provideOkHttpClient: ${request.url}")
+                }
             }
+
             //api url 에 따라 분류하여 response 인터셉트
             val response =
                 with(original.url.toString()) {
@@ -79,16 +75,16 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
                             return@with response
                         }
 
-                       /* contains("post") -> {
+                        /* contains("post") -> {
 
-                            if (this.startsWith(BASE_WEB_URL + "me")) {
-                                return@with getPostResponse(chain, request)
-                            }
-                            return@with getPostResponse(chain, request, true)
-                        }
-                        startsWith(BASE_WEB_URL + "scrap") -> {
-                            return@with getPostResponse(chain, request, true)
-                        }*/
+                             if (this.startsWith(BASE_WEB_URL + "me")) {
+                                 return@with getPostResponse(chain, request)
+                             }
+                             return@with getPostResponse(chain, request, true)
+                         }
+                         startsWith(BASE_WEB_URL + "scrap") -> {
+                             return@with getPostResponse(chain, request, true)
+                         }*/
                         else -> {
                             return@with chain.proceed(request)
                         }
@@ -96,7 +92,7 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
                 }
             response
         })
-       // body log 찍기
+        // body log 찍기
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         client.addInterceptor(loggingInterceptor)

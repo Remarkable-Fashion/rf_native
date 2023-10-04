@@ -37,19 +37,27 @@ class ProfileEditFragment : Fragment(R.layout.mypage_profile_fragment) {
     private lateinit var introduceValue: EditText
     private var updatedSex: String? = null
     private var selectedImageUri: String? = null
-    var lastProfileRequest: String? = null // 마지막으로 요청한 값 저장
+    private var lastProfileRequest: String? = null // 마지막으로 요청한 값 저장 -> viewModel을 공유하고있어서 이전 success 값이 남아있기때문에 페이지 생성시마다 초기화되는 변수를 생성해둠
+    private lateinit var myInfo: MyInfo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MainActivity.hideNavi(true)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = MypageProfileFragmentBinding.bind(view)
 
+        val fragmentNames = findNavController().backQueue.mapNotNull { navBackStackEntry ->
+            val destination = navBackStackEntry.destination
+            destination.label?.toString() // 프래그먼트의 이름을 가져옴
+        }
+        Log.e(TAG, "profile edit onViewCreated: $fragmentNames")
+
         cancelBtnBackStack(binding.backBtn)
 
-        val myInfo = arguments?.get("myInfo") as MyInfo
+        myInfo = arguments?.get("myInfo") as MyInfo
         binding.myInfo = myInfo
 
         Log.d(TAG, "ProfileEditFragment - onViewCreated: ${myInfo.profile.profileImage}");
@@ -68,21 +76,32 @@ class ProfileEditFragment : Fragment(R.layout.mypage_profile_fragment) {
             if (lastProfileRequest == null) {
                 return@observe // 아직 요청이 없는 경우, 처리하지 않음
             }
+            when (resources) {
+                is Resource.Success -> {
+                    if (resources.value.success) {
+                        Toast.makeText(requireContext(), "프로필 수정이 완료되었습니다.", Toast.LENGTH_SHORT)
+                            .show()
+                        viewModel.myInfoChaged = true
+                        Log.e(TAG, "profile response: ${resources.value}", )
+                        findNavController().navigateUp()
+                    } else {
+                        // success가 false인 경우 처리
+                        Log.e(TAG, "RESPONSE onViewCreated: ${resources.value}")
+                        Toast.makeText(requireContext(), "오류가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
 
-            if (resources is Resource.Success && resources.value.success) {
-                Toast.makeText(requireContext(), "프로필 수정이 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                findNavController().navigateUp()
+                is Resource.Failure -> {
+                    Toast.makeText(requireContext(), "네트워크 오류 발생 ", Toast.LENGTH_SHORT).show()
+                    handleApiError(resources)
+                }
 
-            } else if (resources is Resource.Failure) {
-                Toast.makeText(requireContext(), "오류 발생 ", Toast.LENGTH_SHORT).show()
-                handleApiError(resources)
-
-            } else if (resources is Resource.Success) {
-                Log.d(TAG, "ProfileEditFragment - onViewCreated: ${resources.value}");
+                else -> {}
             }
 
             lastProfileRequest = null // 처리가 완료되었으므로 마지막 요청 초기화
         }
+
     }
 
 
@@ -90,25 +109,39 @@ class ProfileEditFragment : Fragment(R.layout.mypage_profile_fragment) {
         binding.submitBtn.setOnClickListener {
             if (nameValue.text.isNotBlank()) {
 
-                val weight = weightValue.text.toString().replace(" kg", "")
-                val height = heightValue.text.toString().replace(" cm", "")
+                val weight = weightValue.text.toString()
+                val weightNum = if (weight.isNotEmpty()) weight.replace(" kg", "").toInt() else null
+                val height = heightValue.text.toString()
+                val heightNum = if (height.isNotEmpty()) height.replace(" cm", "").toInt() else null
+                //닉네임 변경시 업데이트
+                val newName = if (myInfo.name != nameValue.text.toString()) {
+                    nameValue.text.toString()
+                } else null
 
-                var imagePath :String ?= null
-                selectedImageUri?.let{
+                var imagePath: String? = null
+                selectedImageUri?.let {
                     imagePath = absolutelyPath(Uri.parse(selectedImageUri), requireContext())
                 }
+
                 // 등록 api 연결
                 viewModel.updateMyProfile(
                     imagePath,
                     updatedSex,
-                    height,
-                    weight,
+                    heightNum,
+                    weightNum,
+                    newName,
                     introduceValue.text.toString()
-
                 )
+
 
                 // 마지막으로 요청한 값을 설정 _ 그냥 boolean 여부로 해도됨 해당 값 사용 x
                 lastProfileRequest = "${selectedImageUri ?: ""}, $updatedSex, $height, $weight, ${introduceValue.text}"
+            } else {
+                //닉네임이 빈값일 경우 최상단으로 스크롤 이동, 닉네임에 포커스
+                val nestedScrollView = binding.nestedScrollView
+                nestedScrollView.smoothScrollTo(0, 0) // (0, 0) 위치로 스무스하게 스크롤
+                binding.nameValue.requestFocus()
+                Toast.makeText(requireContext(), "닉네임을 입력해주세요", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -188,7 +221,7 @@ class ProfileEditFragment : Fragment(R.layout.mypage_profile_fragment) {
         //ImagePickerFragment 에서 선택한 이미지를 바인딩하고 서버에 전송가능하도록 selectedImageUri 에 담아준다.
         setFragmentResultListener(requestKey = ImagePickerFragment.REQUEST_KEY) { _, bundle ->
             val imageUris = bundle.get("imageURI") as Array<*>
-            if(imageUris.isNotEmpty()) {
+            if (imageUris.isNotEmpty()) {
                 imageUris[0]?.let {
                     selectedImageUri = imageUris[0].toString()
                     binding.myInfo?.profile?.profileImage = it as String
@@ -196,6 +229,7 @@ class ProfileEditFragment : Fragment(R.layout.mypage_profile_fragment) {
             }
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         MainActivity.hideNavi(false)

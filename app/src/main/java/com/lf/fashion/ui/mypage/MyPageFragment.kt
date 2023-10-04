@@ -36,7 +36,13 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
     private lateinit var onScrollListener: NestedScrollView.OnScrollChangeListener
     private lateinit var globalMyInfo: MyInfo
     private lateinit var userPref: UserDataStorePref
-
+    override fun onResume() {
+        super.onResume()
+        if(viewModel.myInfoChaged){
+            viewModel.getMyInfo()
+            viewModel.myInfoChaged = false
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,6 +61,13 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val fragmentNames = findNavController().backQueue.mapNotNull { navBackStackEntry ->
+            val destination = navBackStackEntry.destination
+            destination.label?.toString() // 프래그먼트의 이름을 가져옴
+        }
+        Log.e(TAG, "mypage onViewCreated: $fragmentNames")
+
         userPref = UserDataStorePref(requireContext().applicationContext)
 
         gridAdapter = GridPostAdapter(3, this@MyPageFragment, reduceViewWidth = true)
@@ -69,27 +82,38 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
 
         //스크롤 리스너 설정
         onScrollListener = OnScrollUtils { loadMorePost() }
-        binding.myNestedScrollView.setOnScrollChangeListener(onScrollListener)
+
+        //내 게시물 불러오기
+        loadMyPost()
 
         //내 정보 불러오기
         viewModel.myInfo.observe(viewLifecycleOwner) { myInfo ->
             myInfo?.let {
-                binding.userInfo = myInfo
+
+                //닉네임 정보 없을시 설정창으로 이동
+                //profile 수정 페이지를 통해 닉네임 수정시 바로 binding에 반영하기때문에 걸러진다.
+                if(myInfo.name.isNullOrEmpty()){
+                    findNavController().navigate(R.id.action_navigation_mypage_to_profileEditFragment,
+                        bundleOf("myInfo" to myInfo)
+                    )
+                }
+                Log.e(TAG, "onViewCreated: $myInfo")
                 globalMyInfo = myInfo
+                binding.userInfo = myInfo
+
                 runBlocking {
                     launch {
                         userPref.saveMyId(myInfo.id)
                     }
                 }
 
-                //내 게시물 불러오기
-                loadMyPost()
+
             }
         }
 
         binding.profileEditBtn.setOnClickListener {
             if (!::globalMyInfo.isInitialized) return@setOnClickListener
-
+            Log.e(TAG, "onViewCreated: $globalMyInfo")
             findNavController().navigate(
                 R.id.action_navigation_mypage_to_profileEditFragment,
                 bundleOf("myInfo" to globalMyInfo)

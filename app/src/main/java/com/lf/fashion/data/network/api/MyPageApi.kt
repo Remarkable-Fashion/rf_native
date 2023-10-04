@@ -24,8 +24,9 @@ interface MyPageApi {
     suspend fun updateProfileInfo(
         @Part profileImage: MultipartBody.Part?,
         @Part("sex") sex: RequestBody?,
-        @Part("height") height: RequestBody?,
-        @Part("weight") weight: RequestBody?,
+        @Part("height") height: Int?,
+        @Part("weight") weight: Int?,
+        @Part("name") name : RequestBody?,
         @Part("introduction") introduction : RequestBody?) : MsgResponse
 
     @GET("user/following/me")

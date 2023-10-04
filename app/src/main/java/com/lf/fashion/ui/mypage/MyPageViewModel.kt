@@ -73,6 +73,8 @@ class MyPageViewModel @Inject constructor(
     var allPostList = mutableListOf<Posts>()
     var recentResponse: RandomPostResponse? = null
 
+    var myInfoChaged  = false
+
     init {
         getSavedLoginToken()
         if (!savedLoginToken.value.isNullOrEmpty()) {
@@ -81,8 +83,8 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    suspend fun getJWT(loginAccessToken: String): Resource<MsgResponse> {
-        return myPageRepository.getJWT(loginAccessToken)
+    suspend fun getJWT(loginAccessToken: String,fcmToken : String): Resource<MsgResponse> {
+        return myPageRepository.getJWT(loginAccessToken,fcmToken)
     }
 
     fun getSavedLoginToken() {
@@ -147,8 +149,9 @@ class MyPageViewModel @Inject constructor(
     fun updateMyProfile(
         profileImage: String?,
         sex: String?,
-        height: String?,
-        weight: String?,
+        height: Int?,
+        weight: Int?,
+        name:String?,
         introText: String?
     ) {
         viewModelScope.launch {
@@ -157,11 +160,11 @@ class MyPageViewModel @Inject constructor(
                 sex,
                 height,
                 weight,
+                name,
                 introText
             )
         }
     }
-
     fun getMyFollowings() {
         viewModelScope.launch {
             _myFollowings.value = myPageRepository.getMyFollowings()

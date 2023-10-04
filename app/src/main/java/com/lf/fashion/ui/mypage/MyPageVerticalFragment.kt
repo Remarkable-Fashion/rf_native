@@ -61,7 +61,8 @@ class MyPageVerticalFragment : Fragment(),
         mainBottomMenuListener(true)
         cancelBtnBackStack(binding.backBtn)
         viewModel.myInfo.observe(viewLifecycleOwner) {
-            userInfo = UserInfo(it.id, it.name, it.profile, null)
+            //todo name can be null
+            userInfo = UserInfo(it.id, it.name!!, it.profile, null)
         }
         // val postList = arguments?.get("postList") as List<Posts>
         binding.verticalViewpager.apply {

@@ -20,8 +20,9 @@ class MyPageRepository @Inject constructor(
     private val myPageApi: MyPageApi
 ) : SafeApiCall {
 
-    suspend fun getJWT(loginAccessToken: String) = safeApiCall {
-        jwtApi.getJWT(loginAccessToken)
+    suspend fun getJWT(loginAccessToken: String,fcmToken : String) = safeApiCall {
+        Log.e(TAG, "getJWT: Repo Go")
+        jwtApi.getJWT(loginAccessToken,fcmToken)
     }
 
     suspend fun getMyInfo(): MyInfo {
@@ -45,13 +46,15 @@ class MyPageRepository @Inject constructor(
     suspend fun updateMyProfile(
         profileImagePath: String?,
         sex: String?,
-        height: String?,
-        weight: String?,
+        height: Int?,
+        weight: Int?,
+        name : String?,
         introduction: String?
     ) = safeApiCall {
         val sexRequestBody = sex?.toRequestBody("text/plain".toMediaTypeOrNull())
-        val heightRequestBody = height?.toRequestBody("text/plain".toMediaTypeOrNull())
-        val weightRequestBody = weight?.toRequestBody("text/plain".toMediaTypeOrNull())
+        val name = name?.toRequestBody("text/plain".toMediaTypeOrNull())
+        /*val heightRequestBody = height?.toRequestBody("text/plain".toMediaTypeOrNull())
+        val weightRequestBody = weight?.toRequestBody("text/plain".toMediaTypeOrNull())*/
         val introductionRequestBody = introduction?.toRequestBody("text/plain".toMediaTypeOrNull())
 
        var partBody : MultipartBody.Part? = null
@@ -71,8 +74,9 @@ class MyPageRepository @Inject constructor(
         myPageApi.updateProfileInfo(
             partBody,
             sexRequestBody,
-            heightRequestBody,
-            weightRequestBody,
+            height,
+            weight,
+            name,
             introductionRequestBody
         )
     }

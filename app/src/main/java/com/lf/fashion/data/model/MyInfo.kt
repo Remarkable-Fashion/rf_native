@@ -8,18 +8,8 @@ import kotlinx.parcelize.Parcelize
 data class MyInfo(
     val id: Int,
     val profile: Profile,
-    val name: String,
+    var name: String?,
     @SerializedName("_count")
-    val count: Count
+    val count: Count?
 ):Parcelable
 
-/*
-
-data class UpdateMyInfo(
-    val avartar : File?,
-    val sex : String?,
-    val height : String?,
-    val weight : String?,
-    val introduction : String?
-)
-*/

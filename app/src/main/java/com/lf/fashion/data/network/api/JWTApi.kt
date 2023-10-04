@@ -6,5 +6,6 @@ import retrofit2.http.Query
 
 interface JWTApi {
     @GET("auth/kakao")
-    suspend fun getJWT(@Query("accessToken") loginAccessToken: String): MsgResponse
+    suspend fun getJWT(@Query("accessToken") loginAccessToken: String,
+                       @Query("fcmToken") fcmToken : String): MsgResponse
 }
