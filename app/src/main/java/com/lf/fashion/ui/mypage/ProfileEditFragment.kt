@@ -1,5 +1,6 @@
 package com.lf.fashion.ui.mypage
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -25,6 +26,7 @@ import com.lf.fashion.ui.common.addTextLengthCounter
 import com.lf.fashion.ui.common.addUnitTextListener
 import com.lf.fashion.ui.common.cancelBtnBackStack
 import com.lf.fashion.ui.common.handleApiError
+import com.lf.fashion.ui.common.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -45,6 +47,7 @@ class ProfileEditFragment : Fragment(R.layout.mypage_profile_fragment) {
         MainActivity.hideNavi(true)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = MypageProfileFragmentBinding.bind(view)
@@ -102,6 +105,10 @@ class ProfileEditFragment : Fragment(R.layout.mypage_profile_fragment) {
             lastProfileRequest = null // 처리가 완료되었으므로 마지막 요청 초기화
         }
 
+        binding.topLayout.setOnTouchListener { v, event ->
+            hideKeyboard()
+            v.performClick()
+        }
     }
 
 

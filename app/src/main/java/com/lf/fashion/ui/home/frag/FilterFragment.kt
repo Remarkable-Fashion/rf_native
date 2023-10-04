@@ -1,5 +1,6 @@
 package com.lf.fashion.ui.home.frag
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -17,6 +18,7 @@ import com.lf.fashion.databinding.HomeBPhotoFilterFragmentBinding
 import com.lf.fashion.ui.common.addUnitTextListener
 import com.lf.fashion.ui.common.cancelBtnBackStack
 import com.lf.fashion.ui.common.childChip
+import com.lf.fashion.ui.common.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -50,6 +52,7 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
         super.onResume()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = HomeBPhotoFilterFragmentBinding.bind(view)
@@ -66,6 +69,11 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
         editTextListenerSetting()
         clearPostFilter()
         savePostFilter()
+
+        binding.filterSpace.topLayout.setOnTouchListener { v, event ->
+            hideKeyboard()
+            v.performClick()
+        }
     }
 
     private fun exposeSavedValue() {

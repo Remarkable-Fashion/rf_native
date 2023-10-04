@@ -1,5 +1,6 @@
 package com.lf.fashion.ui.search
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -15,6 +16,7 @@ import com.lf.fashion.databinding.SearchFilterFragmentBinding
 import com.lf.fashion.ui.common.addUnitTextListener
 import com.lf.fashion.ui.common.cancelBtnBackStack
 import com.lf.fashion.ui.common.childChip
+import com.lf.fashion.ui.common.hideKeyboard
 import com.lf.fashion.ui.home.frag.FilterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -50,6 +52,7 @@ class LookFilterFragment : Fragment(R.layout.search_filter_fragment), View.OnCli
         super.onResume()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = SearchFilterFragmentBinding.bind(view)
@@ -70,6 +73,11 @@ class LookFilterFragment : Fragment(R.layout.search_filter_fragment), View.OnCli
         editTextListenerSetting()
         clearLookFilter()
         saveLookFilter()
+
+        binding.filterSpace.topLayout.setOnTouchListener { v, event ->
+            hideKeyboard()
+            v.performClick()
+        }
     }
 
     private fun editTextListenerSetting() {

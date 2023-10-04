@@ -11,7 +11,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <ImageView
             android:id="@+id/back_btn"
@@ -70,9 +71,12 @@
             app:layout_constraintTop_toBottomOf="@id/title_underline">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@id/top_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="76dp">
+                android:paddingBottom="76dp"
+                android:clickable="true"
+                android:focusableInTouchMode="true">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/profile_image"
