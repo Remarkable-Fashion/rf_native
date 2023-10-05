@@ -1,5 +1,6 @@
 package com.lf.fashion.ui.search.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -49,7 +50,7 @@ class ItemGridAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Cloth) {
 
-          binding.includedClothSpace.photoUrl = item.imageUrl
+            binding.includedClothSpace.photoUrl = item.imageUrl
             // 현재 spanCount에 따라 너비와 높이를 조정
             itemViewRatioSetting(context, itemView, spanCount, reduceViewWidth = true)
 

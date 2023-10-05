@@ -1,5 +1,6 @@
 package com.lf.fashion.ui.globalFrag.editPost
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -33,6 +34,7 @@ class EditPostFragment : Fragment(R.layout.edit_post_fragment) {
         MainActivity.hideNavi(true)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = EditPostFragmentBinding.bind(view)
