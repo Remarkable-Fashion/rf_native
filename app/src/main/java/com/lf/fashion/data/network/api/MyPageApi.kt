@@ -46,4 +46,7 @@ interface MyPageApi {
 
     @PATCH("post/{id}/status")
     suspend fun updatePostStatus(@Path("id") postId :Int ,@Body isPublic :PostStatus) :MsgResponse
+
+    @DELETE("user/me")
+    suspend fun deleteUser():MsgResponse
 }

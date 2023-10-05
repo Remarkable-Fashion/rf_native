@@ -98,6 +98,14 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
                                     //      showLoading(requireActivity(),false)
                                     Log.d(TAG, "LoginFragment - requestJWTToken: ");
                                     findNavController().navigate(R.id.navigation_mypage)
+                                }else if(resource.value.msg!!.contains("기존")){
+                                    AppCustomDialog("기존 회원 이력이 존재합니다. 계정을 복구하시겠습니까?","네","아니요"
+                                        ,{
+                                        //todo 아니오 -> 기존 / delete 미정
+
+                                    },){
+                                        //todo 복구 엔드포인트로 요청
+                                    }
                                 }
                                 binding.progressBar.visibility = View.GONE
                             }

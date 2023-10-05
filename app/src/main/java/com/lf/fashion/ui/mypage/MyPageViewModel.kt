@@ -67,6 +67,9 @@ class MyPageViewModel @Inject constructor(
     private val _myBlockUsers = MutableLiveData<Resource<MyBlockUserList>>()
     val myBlockUsers = _myBlockUsers
 
+    private val _deleteUser = MutableLiveData<Resource<MsgResponse>>()
+    val deleteUser: LiveData<Resource<MsgResponse>> = _deleteUser
+
     var havetoRefresh = MutableLiveData<Boolean>()
 
     //새로 load 된 post 들까지 합쳐진 전체 itemList
@@ -220,5 +223,11 @@ class MyPageViewModel @Inject constructor(
         val response = myPageRepository.deleteFollowerByUserId(userId)
         return if(response is Resource.Success) return response.value
         else MsgResponse(false ,"Resource Fail")
+    }
+
+    fun deleteUser(){
+        viewModelScope.launch {
+            _deleteUser.value = myPageRepository.deleteUser()
+        }
     }
 }

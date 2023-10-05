@@ -53,8 +53,6 @@ class MyPageRepository @Inject constructor(
     ) = safeApiCall {
         val sexRequestBody = sex?.toRequestBody("text/plain".toMediaTypeOrNull())
         val name = name?.toRequestBody("text/plain".toMediaTypeOrNull())
-        /*val heightRequestBody = height?.toRequestBody("text/plain".toMediaTypeOrNull())
-        val weightRequestBody = weight?.toRequestBody("text/plain".toMediaTypeOrNull())*/
         val introductionRequestBody = introduction?.toRequestBody("text/plain".toMediaTypeOrNull())
 
        var partBody : MultipartBody.Part? = null
@@ -91,5 +89,9 @@ class MyPageRepository @Inject constructor(
 
     suspend fun deleteFollowerByUserId(userId : Int)=safeApiCall{
         myPageApi.deleteFollowerById(userId)
+    }
+
+    suspend fun deleteUser() = safeApiCall{
+        myPageApi.deleteUser()
     }
 }

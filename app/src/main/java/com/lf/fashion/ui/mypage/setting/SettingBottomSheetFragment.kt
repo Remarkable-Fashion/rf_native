@@ -11,6 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.lf.fashion.R
 import com.lf.fashion.data.model.MyInfo
 import com.lf.fashion.databinding.MypageSettingBottomDialogBinding
+import com.lf.fashion.ui.common.AppCustomDialog
 import com.lf.fashion.ui.mypage.MyPageViewModel
 
 /**
@@ -77,10 +78,20 @@ class SettingBottomSheetFragment(private val viewModel: MyPageViewModel) :
                 this@SettingBottomSheetFragment.dismiss()
             }
 
-            binding.Withdrawal -> {
-
+            //회원 탈퇴
+            binding.WithdrawalBtn -> {
+                confirmDeleteUser()
             }
 
         }
+    }
+
+    private fun confirmDeleteUser(){
+        AppCustomDialog("회원을 탈퇴하시겠습니까?","네","아니요"){
+            viewModel.deleteUser()
+        }.show(parentFragmentManager,"delete_user_confirm")
+        dismiss()
+        viewModel.clearSavedLoginToken()
+
     }
 }

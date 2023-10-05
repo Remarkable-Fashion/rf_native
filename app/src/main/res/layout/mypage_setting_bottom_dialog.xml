@@ -63,7 +63,7 @@
         android:layout_marginTop="10dp"
         />
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/Withdrawal"
+        android:id="@+id/WithdrawalBtn"
         android:layout_width="match_parent"
         android:layout_height="51dp"
         android:layout_weight="1"
