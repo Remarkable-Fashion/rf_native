@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.lf.fashion.MainActivity
 import com.lf.fashion.R
 import com.lf.fashion.databinding.MypageUserAlertSettingFragmentBinding
+import com.lf.fashion.ui.common.cancelBtnBackStack
 
 class UserAlertSettingFragment :Fragment(R.layout.mypage_user_alert_setting_fragment){
     private lateinit var binding : MypageUserAlertSettingFragmentBinding
@@ -23,7 +24,7 @@ class UserAlertSettingFragment :Fragment(R.layout.mypage_user_alert_setting_frag
         super.onViewCreated(view, savedInstanceState)
         binding = MypageUserAlertSettingFragmentBinding.bind(view)
 
-
+        cancelBtnBackStack(binding.cancelBtn)
     }
 
 }

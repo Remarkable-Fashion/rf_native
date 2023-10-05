@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
@@ -148,6 +149,7 @@ class ProfileEditFragment : Fragment(R.layout.mypage_profile_fragment) {
                 val nestedScrollView = binding.nestedScrollView
                 nestedScrollView.smoothScrollTo(0, 0) // (0, 0) 위치로 스무스하게 스크롤
                 binding.nameValue.requestFocus()
+                binding.nicknameWarning.isVisible = true
                 Toast.makeText(requireContext(), "닉네임을 입력해주세요", Toast.LENGTH_SHORT).show()
             }
         }
@@ -212,7 +214,10 @@ class ProfileEditFragment : Fragment(R.layout.mypage_profile_fragment) {
             )
         ) { changed ->
             if (changed) {
-                binding.submitBtn.isSelected = changed
+                binding.submitBtn.isSelected = true
+                if(binding.nameValue.text.isNotEmpty()){
+                    binding.nicknameWarning.isVisible = false
+                }
             }
         }
     }

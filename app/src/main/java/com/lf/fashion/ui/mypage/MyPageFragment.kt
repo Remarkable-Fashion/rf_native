@@ -9,6 +9,7 @@ import androidx.core.os.bundleOf
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lf.fashion.R
@@ -36,13 +37,7 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
     private lateinit var onScrollListener: NestedScrollView.OnScrollChangeListener
     private lateinit var globalMyInfo: MyInfo
     private lateinit var userPref: UserDataStorePref
-    override fun onResume() {
-        super.onResume()
-        if(viewModel.myInfoChaged){
-            viewModel.getMyInfo()
-            viewModel.myInfoChaged = false
-        }
-    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -90,14 +85,15 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
         viewModel.myInfo.observe(viewLifecycleOwner) { myInfo ->
             myInfo?.let {
 
-                //닉네임 정보 없을시 설정창으로 이동
-                //profile 수정 페이지를 통해 닉네임 수정시 바로 binding에 반영하기때문에 걸러진다.
-                if(myInfo.name.isNullOrEmpty()){
+                //닉네임 정보 없고 수정 전이면 수정창으로 이동
+                if(myInfo.name.isNullOrEmpty() && !viewModel.myInfoChaged){
                     findNavController().navigate(R.id.action_navigation_mypage_to_profileEditFragment,
                         bundleOf("myInfo" to myInfo)
                     )
                 }
-                Log.e(TAG, "onViewCreated: $myInfo")
+                Log.e(TAG, "nullorEmpty : ${myInfo.name} myInfoChaged : ${viewModel.myInfoChaged}")
+
+
                 globalMyInfo = myInfo
                 binding.userInfo = myInfo
 
@@ -106,8 +102,6 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                         userPref.saveMyId(myInfo.id)
                     }
                 }
-
-
             }
         }
 
@@ -142,7 +136,16 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
             return@setOnRefreshListener
         }
     }
-
+    override fun onResume() {
+        super.onResume()
+        if(viewModel.myInfoChaged){
+            lifecycleScope.launch {
+                viewModel.getMyInfo()
+            }
+            viewModel.myInfoChaged = false
+            Log.e(TAG, "onResume: getMyInfo")
+        }
+    }
     private fun navigateFollowDetailFrag() {
         binding.followerCount.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_mypage_to_myPageFollowDetailFragment)

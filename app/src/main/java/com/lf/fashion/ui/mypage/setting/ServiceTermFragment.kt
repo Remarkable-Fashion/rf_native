@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.lf.fashion.MainActivity
 import com.lf.fashion.R
 import com.lf.fashion.databinding.MypageServicetermFragmentBinding
+import com.lf.fashion.ui.common.cancelBtnBackStack
 import com.lf.fashion.ui.common.getAssetsTextString
 
 class ServiceTermFragment :Fragment(R.layout.mypage_serviceterm_fragment) {
@@ -25,7 +26,7 @@ class ServiceTermFragment :Fragment(R.layout.mypage_serviceterm_fragment) {
 
         binding.policyValue.text=
         getAssetsTextString(requireContext(),"service_term")
-
+        cancelBtnBackStack(binding.cancelBtn)
     }
 
 }

@@ -147,6 +147,16 @@
                         android:singleLine="true"
                         android:maxLength="20"
                         />
+                    <TextView
+                        android:id="@+id/nicknameWarning"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="닉네임은 필수 입력값입니다."
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textColor="@color/lf_orange"
+                        android:textSize="11sp"
+                        android:visibility="gone"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"

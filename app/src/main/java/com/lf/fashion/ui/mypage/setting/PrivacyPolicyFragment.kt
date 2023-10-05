@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.lf.fashion.MainActivity
 import com.lf.fashion.R
 import com.lf.fashion.databinding.MypagePrivacyPolicyFragmentBinding
+import com.lf.fashion.ui.common.cancelBtnBackStack
 import com.lf.fashion.ui.common.getAssetsTextString
 
 class PrivacyPolicyFragment :Fragment(R.layout.mypage_privacy_policy_fragment) {
@@ -25,7 +26,7 @@ class PrivacyPolicyFragment :Fragment(R.layout.mypage_privacy_policy_fragment) {
 
         binding.policyValue.text=
         getAssetsTextString(requireContext(),"privacy_policy")
-
+        cancelBtnBackStack(binding.cancelBtn)
     }
 
 }
