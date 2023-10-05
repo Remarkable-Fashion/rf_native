@@ -122,7 +122,7 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
         AppCustomDialog(
             "이전 화면으로 이동하겠습니까?\n" +
                     "등록 중인 내용은 초기화됩니다.",
-            "확인",
+            null,"확인",
             "닫기", null
         ) {
             findNavController().popBackStack()

@@ -58,8 +58,8 @@ class EditPostViewModel @Inject constructor(
         getSeasonChipsInfo()
         getStyleChipsInfo()
     }
-    suspend fun editPost(uploadPost: UploadPost): MsgResponse {
-        val response = editPostRepository.editPost(uploadPost)
+    suspend fun editPost(postId :Int , uploadPost: UploadPost): MsgResponse {
+        val response = editPostRepository.editPost(postId , uploadPost)
         return if (response is Resource.Success) response.value
         else MsgResponse(false, "Resource Fail")
     }

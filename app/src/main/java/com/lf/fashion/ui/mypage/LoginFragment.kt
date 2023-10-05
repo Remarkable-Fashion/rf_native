@@ -3,6 +3,7 @@ package com.lf.fashion.ui.mypage
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -15,6 +16,7 @@ import com.lf.fashion.TAG
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.LoginFragmentBinding
 import com.lf.fashion.ui.common.AppCustomDialog
+import com.lf.fashion.ui.common.handleApiError
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,31 +35,40 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = LoginFragmentBinding.bind(view)
 
-        binding.kakaoLoginBackground.setOnClickListener {
-            binding.progressBar.visibility = View.VISIBLE
-            UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
-                if (error != null) {
-                    Log.d(TAG, "MyPageFragment - onViewCreated: 카카오톡 간편 로그인 실패 : $error");
-                    if (error.message == "KakaoTalk not installed") {
-                        kakaoLoginWithAccount()
-                    } else {
-                        binding.progressBar.visibility = View.GONE
-                        //TODO alert 으로 오류 띄우는데, 나중에 배포시에는 오류코드로 바꾸거나 지워야합니다 ~!
-                        AppCustomDialog("로그인 오류\n${error.message}").show(
-                            parentFragmentManager,
-                            "login_error"
-                        )
-                        /*  AlertDialog.Builder(requireContext()).apply {
+        binding.kakaoLogin.setOnClickListener {
+            kakaologinRequest()
+        }
+        binding.kakaoLogin2.setOnClickListener {
+            kakaologinRequest()
+        }
+    }
+
+    private fun kakaologinRequest() {
+        binding.progressBar.visibility = View.VISIBLE
+        UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
+            if (error != null) {
+                Log.d(TAG, "MyPageFragment - onViewCreated: 카카오톡 간편 로그인 실패 : $error");
+                if (error.message == "KakaoTalk not installed") {
+                    kakaoLoginWithAccount()
+                } else {
+                    //TODO alert 으로 오류 띄우는데, 나중에 배포시에는 오류코드로 바꾸거나 지워야합니다 ~!
+                    AppCustomDialog("로그인 오류\n${error.message}").show(
+                        parentFragmentManager,
+                        "login_error"
+                    )
+                    /*  AlertDialog.Builder(requireContext()).apply {
                               setMessage("${error.message}")
                           }.show()*/
-                    }
-                } else if (token != null) {
-                    Log.d(TAG, "MyPageFragment - onViewCreated: 카카오톡 간편 로그인 성공 토큰 : $token")
+                    binding.progressBar.visibility = View.GONE
 
-                    requestJWTToken(token)
                 }
+            } else if (token != null) {
+                Log.d(TAG, "MyPageFragment - onViewCreated: 카카오톡 간편 로그인 성공 토큰 : $token")
+
+                requestJWTToken(token)
             }
         }
+
     }
 
     private fun kakaoLoginWithAccount() {
@@ -98,14 +109,8 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
                                     //      showLoading(requireActivity(),false)
                                     Log.d(TAG, "LoginFragment - requestJWTToken: ");
                                     findNavController().navigate(R.id.navigation_mypage)
-                                }else if(resource.value.msg!!.contains("기존")){
-                                    AppCustomDialog("기존 회원 이력이 존재합니다. 계정을 복구하시겠습니까?","네","아니요"
-                                        ,{
-                                        //todo 아니오 -> 기존 / delete 미정
-
-                                    },){
-                                        //todo 복구 엔드포인트로 요청
-                                    }
+                                } else {
+                                    Log.e(TAG, "requestJWTToken: ${resource.value.msg}")
                                 }
                                 binding.progressBar.visibility = View.GONE
                             }
@@ -114,15 +119,38 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
 
                             }
 
-                            is Resource.Failure ->
+                            is Resource.Failure -> {
+                                handleApiError(resource) { msg ->
+                                    if (msg.contains("기존")) {
+                                        Log.d(TAG, "Message: $msg")
+                                        AppCustomDialog(
+                                            "기존 회원 이력이 존재합니다.\n계정을 복구하시겠습니까?",
+                                            "신규 재가입은 탈퇴일 기준 30일 이후 가능합니다.",
+                                            "네",
+                                            "아니요",
+                                            {
+                                                Toast.makeText(
+                                                    requireContext(),
+                                                    "신규 재가입은 30일간 제한됩니다.",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            },
+                                        ) {
+                                            //todo 복구 엔드포인트로 요청
+                                        }.show(
+                                            parentFragmentManager,
+                                            "withdraw_member_login_confirm"
+                                        )
+                                    }
+                                }
                                 binding.progressBar.visibility = View.GONE
+                            }
                         }
                     }
                 }
             }
         }
     }
-
 
 
     private fun getUserInfo() {

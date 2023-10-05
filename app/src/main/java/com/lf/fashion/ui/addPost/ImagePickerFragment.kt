@@ -239,7 +239,7 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
     private fun applicationSettingIntent() {
         AppCustomDialog(
             "이미지를 촬영하기 위해서, 카메라 접근 권한이 필요합니다.\n 설정창으로 이동하시겠습니까?",
-            "동의"
+            null,"동의"
         ){
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
             val packageName = requireContext().packageName

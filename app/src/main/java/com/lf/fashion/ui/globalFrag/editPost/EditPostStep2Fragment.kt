@@ -67,9 +67,10 @@ class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.
                         selectedTpos = response.tpos?.toMutableList() ?: mutableListOf()
                         selectedSeasons = response.season?.toMutableList() ?: mutableListOf()
                         selectedStyles = response.styles?.toMutableList() ?: mutableListOf()
-                        savedClothList =response.clothes.toMutableList()
+                        savedClothList = response.clothes.toMutableList()
                     }
                 }
+
                 else -> {
 
                 }
@@ -277,12 +278,12 @@ class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.
         setFragmentResultListener(requestKey = ImagePickerFragment.REQUEST_KEY) { _, bundle ->
             //의상 등록 부분에서 이미지 받아온 것
             val imageUris = bundle.get("imageURI") as Array<*>
-            if(imageUris.isNotEmpty()){
-            imageUris[0]?.let {
-                selectedClothImageUri = imageUris[0].toString()
-                Glide.with(binding.root)
-                    .load(it)
-                    .into(binding.clothRegistForm.productImage)
+            if (imageUris.isNotEmpty()) {
+                imageUris[0]?.let {
+                    selectedClothImageUri = imageUris[0].toString()
+                    Glide.with(binding.root)
+                        .load(it)
+                        .into(binding.clothRegistForm.productImage)
                 }
             }
         }
@@ -337,9 +338,7 @@ class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.
             AppCustomDialog(
                 "등록 중이신 의상이 있습니다.\n삭제하고 등록하시겠습니까?"
             ) {
-                val isPostValid = postValueValidation()
-                Log.e(TAG, "clothValueValidation: $isPostValid")
-                if (isPostValid) {
+                if (postValueValidation()) {
                     //의상 & 게시물 등록
                     binding.progressBar.visibility = View.VISIBLE
                     uploadPostAndClothes()
@@ -391,7 +390,7 @@ class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.
     private fun uploadPostAndClothes() {
         binding.filterSpace.heightValue.clearFocus()
         binding.filterSpace.weightValue.clearFocus()
-
+        //todo test !!!
         CoroutineScope(Dispatchers.IO).launch {
             val requestUpload: Deferred<Boolean> = CoroutineScope(Dispatchers.IO).async {
                 //기존 등록된 의상 이미지가 아닌 새로 서버에 업로드 해야할 이미지만 담은 newClothImageList의 절대경로 추출
@@ -401,38 +400,38 @@ class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.
                         requireContext()
                     )
                 }
-                  val clothesImageResponse = viewModel.uploadNewClothImage(clothesImages)
-                  if (clothesImageResponse.success && clothesImageResponse.imgUrls != null) {
-                      //cloth의 이미지 url을 서버에 업로드된 이미지 주소로 바꿔주기
-                      val newList =
-                          viewModel.newClothImageList.mapIndexed { index, cloth ->
-                              cloth.copy(imageUrl = clothesImageResponse.imgUrls[index])
-                          }
-                      // Log.e(TAG, "submitBtnOnclick: ImageList $clothesImages")
-                      // Log.e(TAG, "submitBtnOnclick: newList $newList")
+                val clothesImageResponse = viewModel.uploadNewClothImage(clothesImages)
+                if (clothesImageResponse.success && clothesImageResponse.imgUrls != null) {
+                    //cloth의 이미지 url을 서버에 업로드된 이미지 주소로 바꿔주기
+                    val newList =
+                        viewModel.newClothImageList.mapIndexed { index, cloth ->
+                            cloth.copy(imageUrl = clothesImageResponse.imgUrls[index])
+                        }
+                    // Log.e(TAG, "submitBtnOnclick: ImageList $clothesImages")
+                    // Log.e(TAG, "submitBtnOnclick: newList $newList")
 
-                      viewModel.uploadedClothes = newList.toMutableList()
-                  }
+                    viewModel.uploadedClothes = newList.toMutableList()
+                }
 
-                  //새로 등록한 post 이미지 업로드 진행
-                  val postImagePathList = mutableListOf<String>()
+                //새로 등록한 post 이미지 업로드 진행
+                val postImagePathList = mutableListOf<String>()
                 viewModel.newImageList.forEach {
-                      absolutelyPath(Uri.parse(it.url), requireContext())?.let { path ->
-                          postImagePathList.add(path)
-                      }
-                  }
+                    absolutelyPath(Uri.parse(it.url), requireContext())?.let { path ->
+                        postImagePathList.add(path)
+                    }
+                }
                 val imageUploadResponse = viewModel.uploadNewPostImage(postImagePathList)
                 val original = viewModel.imageList.value
                 original?.removeAll(viewModel.newImageList)
                 //새로운 이미지 + 기존 이미지 모두 담은 viewModel imageList 를 upload !
-                if (imageUploadResponse.success && original !=null) {
-                      val tpos = viewModel.selectedTpos.distinct().map { it.id }
-                      val seasons = viewModel.selectedSeasons.distinct().map { it.id }
-                      val styles = viewModel.selectedStyles.distinct().map { it.id }
-                      val height =
-                          binding.filterSpace.heightValue.text.toString().replace(" cm", "").toInt()
-                      val weight =
-                          binding.filterSpace.weightValue.text.toString().replace(" kg", "").toInt()
+                if (imageUploadResponse.success && original != null) {
+                    val tpos = viewModel.selectedTpos.distinct().map { it.id }
+                    val seasons = viewModel.selectedSeasons.distinct().map { it.id }
+                    val styles = viewModel.selectedStyles.distinct().map { it.id }
+                    val height =
+                        binding.filterSpace.heightValue.text.toString().replace(" cm", "").toInt()
+                    val weight =
+                        binding.filterSpace.weightValue.text.toString().replace(" kg", "").toInt()
                     val isPublic = !(binding.notPostNow.isChecked)
 
                     // List<ImageUrl> -> List<String>
@@ -440,23 +439,25 @@ class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.
                     newPostList.addAll(imageUploadResponse.imgUrls!!)
 
                     val uploadPost = UploadPost(
-                          newPostList,
-                          binding.introduceValue.text.toString(),
-                          viewModel.selectedGender!!,
-                          tpos,
-                          seasons,
-                          styles,
-                          clothes = viewModel.uploadedClothes,
-                          height,
-                          weight,
-                          isPublic
-                      )
-                      Log.e(TAG, "uploadPost: $uploadPost")
-                    //todo 엔드포인트 데이터 파라미터 형식 미정
-                    //  val postUploadResponse = viewModel.uploadPostInfo(uploadPost)
-                    // postUploadResponse.success
-                      return@async false
-                  }
+                        newPostList,
+                        binding.introduceValue.text.toString(),
+                        viewModel.selectedGender!!,
+                        tpos,
+                        seasons,
+                        styles,
+                        clothes = viewModel.uploadedClothes,
+                        height,
+                        weight,
+                        isPublic
+                    )
+                    Log.e(TAG, "uploadPost: $uploadPost")
+                    //todo 엔드포인트 작업 예정
+                    viewModel.postId?.let { id ->
+                        val postUploadResponse = viewModel.editPost(id, uploadPost)
+                        postUploadResponse.success
+                        return@async false
+                    }
+                }
                 return@async false
             }
             withContext(Dispatchers.Main) {
@@ -497,6 +498,7 @@ class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.
         AppCustomDialog(
             "이전 화면으로 이동하겠습니까?\n" +
                     "등록 중인 내용은 초기화됩니다.",
+                    null,
             "확인",
             "닫기", null
         ) {

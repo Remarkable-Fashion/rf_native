@@ -5,12 +5,14 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import com.lf.fashion.R
 import com.lf.fashion.databinding.MyCustomDialogBinding
 
 class AppCustomDialog(
     private val msg: String,
+    private val subMsg : String? =null,
     private val positiveBtnText: String? = null,
     private val negativeBtnText: String? = null,
     private val onClickNegative: (() -> Unit)? = {},
@@ -22,6 +24,10 @@ class AppCustomDialog(
         super.onViewCreated(view, savedInstanceState)
         binding = MyCustomDialogBinding.bind(view)
         binding.dialogMsg.text = msg
+        subMsg?.let{
+            binding.dialogSubMsg.text= subMsg
+            binding.dialogSubMsg.isVisible = true
+        }
         binding.negativeBtn.text = negativeBtnText ?: "닫기"
         binding.positiveBtn.text = positiveBtnText ?: "확인"
 

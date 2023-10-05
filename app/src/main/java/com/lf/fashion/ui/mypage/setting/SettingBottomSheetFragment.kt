@@ -87,7 +87,7 @@ class SettingBottomSheetFragment(private val viewModel: MyPageViewModel) :
     }
 
     private fun confirmDeleteUser(){
-        AppCustomDialog("회원을 탈퇴하시겠습니까?","네","아니요"){
+        AppCustomDialog("회원을 탈퇴하시겠습니까?","회원 정보 복구는 30일 이내 가능하며,\n신규 재가입은 30일간 제한됩니다.","네","아니요"){
             viewModel.deleteUser()
         }.show(parentFragmentManager,"delete_user_confirm")
         dismiss()

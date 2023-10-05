@@ -23,6 +23,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.gson.JsonParser
 import com.lf.fashion.MainActivity
 import com.lf.fashion.R
 import com.lf.fashion.TAG
@@ -141,7 +142,7 @@ fun Fragment.showPermissionDialog(
     requestPermissionLauncher: ActivityResultLauncher<Array<String>>,
     permissions: Array<String>
 ) {
-    AppCustomDialog("이미지를 가져오기 위해서, 외부 저장소 읽기 권한이 필요합니다.", "동의") {
+    AppCustomDialog("이미지를 가져오기 위해서, 외부 저장소 읽기 권한이 필요합니다.", null,"동의") {
         requestPermissionLauncher.launch(permissions)
     }.show(parentFragmentManager, "image_permission_alert")
 
@@ -151,7 +152,7 @@ fun Fragment.showRequireLoginDialog(alreadyHome: Boolean? = null) {
 
     AppCustomDialog(
         "로그인 후 이용가능합니다.",
-        "로그인하러 가기",
+        null,"로그인하러 가기",
         "닫기",
         onClickNegative = {
             if (alreadyHome != true) {
@@ -294,7 +295,7 @@ fun Fragment.absolutelyPath(path: Uri?, context: Context): String? {
 
 fun Fragment.handleApiError(
     failure: Resource.Failure,
-    retry: (() -> Unit)? = null
+    retry: ((String) -> Unit)? = null
 ) {
     when {
         failure.isNetworkError -> {
@@ -316,9 +317,17 @@ fun Fragment.handleApiError(
         }
 
         else -> {
+            retry?.let { callback->
+                val error = failure.errorBody?.string().toString()
+                try {
 
-            val error = failure.errorBody?.string().toString()
-            Log.e(TAG, "handleApiError: $error")
+                    val json = JsonParser.parseString(error).asJsonObject
+                    val msg = json.get("msg").asString
+                    callback(msg)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
             //requireView().snackbar(error)
         }
     }

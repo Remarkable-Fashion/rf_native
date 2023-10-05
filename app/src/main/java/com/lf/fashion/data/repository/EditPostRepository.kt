@@ -13,14 +13,14 @@ import java.io.File
 import javax.inject.Inject
 
 class EditPostRepository @Inject constructor(private val editPostApi: EditPostApi) : SafeApiCall {
-    suspend fun editPost(uploadPost: UploadPost) = safeApiCall{
-        editPostApi.editPost()
+    suspend fun editPost(postId: Int, uploadPost: UploadPost) = safeApiCall {
+        editPostApi.editPost(postId,uploadPost)
     }
 
     suspend fun uploadNewPostImages(postImages: List<String>) = safeApiCall {
-        val partBody : MutableList<MultipartBody.Part> = mutableListOf()
+        val partBody: MutableList<MultipartBody.Part> = mutableListOf()
 
-        for(image in postImages) {
+        for (image in postImages) {
             val file = File(image)
             val mimeType = getMimeType(file)
             val requestFile = file.asRequestBody(mimeType?.toMediaTypeOrNull())
@@ -32,10 +32,11 @@ class EditPostRepository @Inject constructor(private val editPostApi: EditPostAp
         }
         editPostApi.uploadNewPostImage(partBody)
     }
-    suspend fun uploadClothesImages(clothImages : List<String>) =safeApiCall {
-        val partBody : MutableList<MultipartBody.Part> = mutableListOf()
 
-        for(image in clothImages) {
+    suspend fun uploadClothesImages(clothImages: List<String>) = safeApiCall {
+        val partBody: MutableList<MultipartBody.Part> = mutableListOf()
+
+        for (image in clothImages) {
             val file = File(image)
             val mimeType = getMimeType(file)
             val requestFile = file.asRequestBody(mimeType?.toMediaTypeOrNull())
@@ -48,7 +49,7 @@ class EditPostRepository @Inject constructor(private val editPostApi: EditPostAp
         editPostApi.uploadNewClothImages(partBody)
     }
 
-    suspend fun getPostInfo(postId : Int) = safeApiCall {
+    suspend fun getPostInfo(postId: Int) = safeApiCall {
         editPostApi.getPostInfoByPostId(postId)
     }
 }
