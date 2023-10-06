@@ -84,14 +84,7 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         CoroutineScope(Dispatchers.IO).launch {
             //fcm token get
             var fcmToken: String? = null
-            val fcmTask = FirebaseMessaging.getInstance().token/*.addOnCompleteListener(OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Log.w("dd", "Fetching FCM registration token failed", task.exception)
-                    return@OnCompleteListener
-                }
-                // Get new FCM registration token
-                fcmToken = task.result
-            })*/
+            val fcmTask = FirebaseMessaging.getInstance().token
             try {
                 // Wait for the FCM token to be retrieved
                 fcmToken = fcmTask.await()
@@ -100,6 +93,7 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
                 // Handle the error if token retrieval fails
             }
             fcmToken?.let {
+                Log.e(TAG, "FCM: $it")
                 val response = viewModel.getJWT(token.accessToken, it)
                 response.let { resource ->
                     withContext(Dispatchers.Main) {

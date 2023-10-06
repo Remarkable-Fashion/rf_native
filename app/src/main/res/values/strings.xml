@@ -103,5 +103,4 @@
         <item>최신순</item>
     </string-array>
     <string name="default_notification_channel_id">default_notification_channel_id</string>
-
 </resources>
