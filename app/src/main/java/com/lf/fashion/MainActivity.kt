@@ -1,5 +1,6 @@
 package com.lf.fashion
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
@@ -19,6 +22,7 @@ import com.lf.fashion.data.common.PostFilterDataStore
 import com.lf.fashion.data.common.SearchItemFilterDataStore
 import com.lf.fashion.data.common.SearchLookFilterDataStore
 import com.lf.fashion.databinding.ActivityMainBinding
+import com.lf.fashion.ui.common.AppCustomDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -74,6 +78,8 @@ class MainActivity : AppCompatActivity() {
         data?.let{
             val path = data.path
         }
+
+        updateAvailabilityCheck()
     }
 
     override fun onDestroy() {
@@ -84,7 +90,22 @@ class MainActivity : AppCompatActivity() {
             postFilterDataStore.clearMainFilter()
         }
     }
+    private fun updateAvailabilityCheck() {
+        val appUpdateManager = AppUpdateManagerFactory.create(this)
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE /*&& appUpdateInfo.isUpdateTypeAllowed(
+                        AppUpdateType.IMMEDIATE)*/) {
+                // 유효한 업데이트가 있을 때 스토어로 이동시키는 알림창 띄워주기
+                AppCustomDialog("업데이트 가능한 버전이 존재합니다.", "업데이트를 위해 구글 플레이스토어로 이동하시겠습니까?") {
+                    val storeIntent = Intent(Intent.ACTION_VIEW)
+                    storeIntent.data = Uri.parse("market://details?id=com.lf.fashion")
+                    startActivity(storeIntent)
+                }.show(supportFragmentManager, "update_dialog")
 
+            }
+        }
+    }
     companion object {
         private lateinit var binding: ActivityMainBinding
         fun hideNavi(state: Boolean) {
