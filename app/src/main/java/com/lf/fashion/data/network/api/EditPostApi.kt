@@ -1,5 +1,7 @@
 package com.lf.fashion.data.network.api
 
+import com.lf.fashion.data.model.Cloth
+import com.lf.fashion.data.model.EditPost
 import com.lf.fashion.data.model.MsgResponse
 import com.lf.fashion.data.model.PostInfo
 import com.lf.fashion.data.model.UploadPost
@@ -15,8 +17,17 @@ import retrofit2.http.Path
 interface EditPostApi {
 
     @PATCH("post/{id}")
-    fun editPost(@Path("id") postId : Int,
-                 @Body post : UploadPost) : MsgResponse
+    suspend fun editPost(
+        @Path("id") postId : Int,
+        @Body post : EditPost
+    ) : MsgResponse
+
+    //todo 엔드포인트 모름 ..
+    @PATCH("clothes/{id}")
+    suspend fun editCloth(
+        @Path("id") postId : Int,
+        @Body clothes : List<Cloth>
+    ) : MsgResponse
 
     @Multipart
     @POST("post/image")

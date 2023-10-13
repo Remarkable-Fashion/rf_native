@@ -2,6 +2,8 @@ package com.lf.fashion.data.repository
 
 import android.util.Log
 import com.lf.fashion.TAG
+import com.lf.fashion.data.model.Cloth
+import com.lf.fashion.data.model.EditPost
 import com.lf.fashion.data.model.UploadPost
 import com.lf.fashion.data.network.SafeApiCall
 import com.lf.fashion.data.network.api.EditPostApi
@@ -13,8 +15,12 @@ import java.io.File
 import javax.inject.Inject
 
 class EditPostRepository @Inject constructor(private val editPostApi: EditPostApi) : SafeApiCall {
-    suspend fun editPost(postId: Int, uploadPost: UploadPost) = safeApiCall {
-        editPostApi.editPost(postId,uploadPost)
+    suspend fun editPost(postId: Int, editPost: EditPost) = safeApiCall {
+        editPostApi.editPost(postId,editPost)
+    }
+
+    suspend fun editCloth(postId:Int ,clothes: List<Cloth>) = safeApiCall {
+        editPostApi.editCloth(postId,clothes)
     }
 
     suspend fun uploadNewPostImages(postImages: List<String>) = safeApiCall {

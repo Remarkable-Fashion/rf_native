@@ -21,7 +21,8 @@ import com.lf.fashion.MainActivity
 import com.lf.fashion.R
 import com.lf.fashion.TAG
 import com.lf.fashion.data.model.Cloth
-import com.lf.fashion.data.model.UploadPost
+import com.lf.fashion.data.model.EditPost
+import com.lf.fashion.data.model.MsgResponse
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.EditPostStep2FragmentBinding
 import com.lf.fashion.ui.addPost.ImagePickerFragment
@@ -80,6 +81,8 @@ class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if(viewModel.postId == null) {return}
+
         binding = EditPostStep2FragmentBinding.bind(view)
         binding.clothesDetailRv.adapter = addClothesAdapter
         addClothesAdapter.submitList(viewModel.savedClothList)
@@ -342,7 +345,7 @@ class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.
                 if (postValueValidation()) {
                     //의상 & 게시물 등록
                     binding.progressBar.visibility = View.VISIBLE
-                    uploadPostAndClothes()
+                    uploadClothes()
                 }
             }.show(parentFragmentManager, "alert_info_clear")
 
@@ -353,7 +356,7 @@ class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.
                 ) {
                     //의상 & 게시물 등록
                     binding.progressBar.visibility = View.VISIBLE
-                    uploadPostAndClothes()
+                    uploadClothes()
                 }.show(parentFragmentManager, "submit_confirm_dialog")
             }
         }
@@ -388,12 +391,12 @@ class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.
         return true
     }
 
-    private fun uploadPostAndClothes() {
+    private fun uploadClothes() {
         binding.filterSpace.heightValue.clearFocus()
         binding.filterSpace.weightValue.clearFocus()
         //todo test !!!
         CoroutineScope(Dispatchers.IO).launch {
-            val requestUpload: Deferred<Boolean> = CoroutineScope(Dispatchers.IO).async {
+            val requestUpload: Deferred<String> = CoroutineScope(Dispatchers.IO).async {
                 val clothes = viewModel.savedClothList.toMutableList() //기존 clothes를 새로운 list로 추출
 
                 //기존 등록된 의상 이미지가 아닌 새로 서버에 업로드 해야할 이미지만 담은 newClothImageList의 절대경로 추출
@@ -409,101 +412,100 @@ class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.
                         //cloth의 이미지 url을 서버에 업로드된 이미지 주소로 바꿔주기
                         val newList =
                             viewModel.newClothImageList.mapIndexed { index, cloth ->
-                                Log.e(TAG, "uploadPostAndClothes: $index , $cloth , $clothesImageResponse")
                                 cloth.copy(imageUrl = clothesImageResponse.imgUrls[index])
                             }
-                        // Log.e(TAG, "submitBtnOnclick: ImageList $clothesImages")
-                        // Log.e(TAG, "submitBtnOnclick: newList $newList")
+                        Log.e(TAG, "uploadPostAndClothes: ${viewModel.newClothImageList}")
+
                         clothes.addAll(newList) // 기존 clothes 에 새로운 cloth 더하기
                     }
                 }
 
-                viewModel.uploadedClothes = clothes
-
-                //새로 등록한 post 이미지 업로드 진행
-                //val postImagePathList = mutableListOf<String>()
-                val postImagePathList = viewModel.newImageList.mapNotNull {
-                    absolutelyPath(Uri.parse(it.url), requireContext())
+                viewModel.allClothes = clothes
+                val clothesResponse = viewModel.editClothes(viewModel.postId!!,clothes)
+                //의상 업로드 성공시 post 업로드 시도
+                if(clothesResponse.success) {
+                    val postUploadResponse = uploadPost()
+                    if( postUploadResponse.success) {
+                        return@async "성공"
+                    }else{
+                        return@async "게시물 등록 실패"
                     }
-                val tpos = viewModel.selectedTpos.distinct().map { it.id }
-                val seasons = viewModel.selectedSeasons.distinct().map { it.id }
-                val styles = viewModel.selectedStyles.distinct().map { it.id }
-                val height =
-                    binding.filterSpace.heightValue.text.toString().replace(" cm", "").toInt()
-                val weight =
-                    binding.filterSpace.weightValue.text.toString().replace(" kg", "").toInt()
-                val isPublic = !(binding.notPostNow.isChecked)
-                val originalPostImage = viewModel.imageList.value
-
-                if(postImagePathList.isNotEmpty()){
-                    val imageUploadResponse = viewModel.uploadNewPostImage(postImagePathList)
-                    originalPostImage?.removeAll(viewModel.newImageList)
-                    //새로운 이미지 + 기존 이미지 모두 담은 viewModel imageList 를 upload !
-                    if (imageUploadResponse.success && originalPostImage != null) {
-                        // List<ImageUrl> -> List<String>
-                        val newPostList = originalPostImage.map { it.url }.toMutableList()
-                        newPostList.addAll(imageUploadResponse.imgUrls!!)
-
-                        val uploadPost = UploadPost(
-                            newPostList,
-                            binding.introduceValue.text.toString(),
-                            viewModel.selectedGender!!,
-                            tpos,
-                            seasons,
-                            styles,
-                            clothes = viewModel.uploadedClothes,
-                            height,
-                            weight,
-                            isPublic
-                        )
-                        Log.e(TAG, "uploadPost: $uploadPost")
-                        viewModel.postId?.let { id ->
-                            val postUploadResponse = viewModel.editPost(id, uploadPost)
-                            return@async postUploadResponse.success
-                        }
-                    }
-
-                }else if(originalPostImage!=null){
-                    // List<ImageUrl> -> List<String>
-                    val uploadPost = UploadPost(
-                        originalPostImage.map { it.url }.toMutableList(),
-                        binding.introduceValue.text.toString(),
-                        viewModel.selectedGender!!,
-                        tpos,
-                        seasons,
-                        styles,
-                        clothes = viewModel.uploadedClothes,
-                        height,
-                        weight,
-                        isPublic
-                    )
-                    Log.e(TAG, "uploadPost: $uploadPost")
-                    viewModel.postId?.let { id ->
-                        val postUploadResponse = viewModel.editPost(id, uploadPost)
-                        return@async postUploadResponse.success
-                    }
+                }else {
+                    return@async "의상 등록 실패"
                 }
-                return@async false
             }
+
             withContext(Dispatchers.Main) {
                 val uploadResponse = runBlocking { requestUpload.await() }
                 binding.progressBar.visibility = View.GONE
-                if (uploadResponse) {
-                    Toast.makeText(
-                        requireContext(),
-                        "게시물이 등록되었습니다.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                when(uploadResponse) {
+                    "성공" -> {
+                        Toast.makeText(
+                            requireContext(),
+                            "게시물이 등록되었습니다.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        findNavController().navigate(R.id.navigation_mypage)
 
-                    //findNavController 로 mypage 프래그먼트 이동시 backStack 문제로 photo menu 접근이 불가,
-                    //findNavController().popBackStack(R.id.navigation_photo, true)
-                    findNavController().navigate(R.id.navigation_mypage)
-                } else {
-                    Toast.makeText(requireContext(), "사진의 용량이 허용 크기를 초과하였습니다.", Toast.LENGTH_SHORT)
-                        .show()
+                    }
+                    "게시물 등록 실패"->{
+                        Toast.makeText(requireContext(),"게시물 등록 오류",Toast.LENGTH_SHORT).show()
+                    }
+                    "의상 등록 실패"->{
+                        Toast.makeText(requireContext(),"의상 등록 오류",Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
+    }
+
+    private suspend fun uploadPost(): MsgResponse {
+        //새로 등록한 post 이미지 업로드 진행
+        //val postImagePathList = mutableListOf<String>()
+        val postImagePathList = viewModel.newImageList.mapNotNull {
+            absolutelyPath(Uri.parse(it.url), requireContext())
+        }
+        val tpos = viewModel.selectedTpos.distinct().map { it.id }
+        val seasons = viewModel.selectedSeasons.distinct().map { it.id }
+        val styles = viewModel.selectedStyles.distinct().map { it.id }
+        val height =
+            binding.filterSpace.heightValue.text.toString().replace(" cm", "").toInt()
+        val weight =
+            binding.filterSpace.weightValue.text.toString().replace(" kg", "").toInt()
+        val isPublic = !(binding.notPostNow.isChecked)
+        val originalPostImage = viewModel.imageList.value
+
+
+        if (postImagePathList.isNotEmpty()) {
+            val imageUploadResponse = viewModel.uploadNewPostImage(postImagePathList)
+            originalPostImage?.removeAll(viewModel.newImageList)
+            //새로운 이미지가 있을 경우 업로드 후, 성공시 새로운 이미지의 url + 기존 이미지 url 모두 담아 allPostImage 에 넣기
+            if (imageUploadResponse.success && originalPostImage != null) {
+                // List<ImageUrl> -> List<String>
+                val newPostList = originalPostImage.map { it.url }.toMutableList()
+                newPostList.addAll(imageUploadResponse.imgUrls!!)
+                viewModel.allPostImage = newPostList
+            }
+
+        } else if (originalPostImage != null) {
+            // List<ImageUrl> -> List<String>
+            viewModel.allPostImage = originalPostImage.map { it.url }.toMutableList()
+        }
+
+        //포스트 업로드
+        val uploadPost = EditPost(
+            viewModel.allPostImage,
+            binding.introduceValue.text.toString(),
+            viewModel.selectedGender!!,
+            tpos,
+            seasons,
+            styles,
+            height,
+            weight,
+            isPublic
+        )
+        Log.e(TAG, "uploadPost: $uploadPost")
+        return viewModel.editPost(viewModel.postId!!, uploadPost)
     }
 
     override fun onAttach(context: Context) {

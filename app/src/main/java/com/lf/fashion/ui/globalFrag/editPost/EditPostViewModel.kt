@@ -1,15 +1,17 @@
 package com.lf.fashion.ui.globalFrag.editPost
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lf.fashion.TAG
 import com.lf.fashion.data.model.ChipInfo
 import com.lf.fashion.data.model.Cloth
+import com.lf.fashion.data.model.EditPost
 import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.data.model.MsgResponse
 import com.lf.fashion.data.model.PostInfo
-import com.lf.fashion.data.model.UploadPost
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.repository.EditPostRepository
 import com.lf.fashion.data.repository.FilterRepository
@@ -45,9 +47,9 @@ class EditPostViewModel @Inject constructor(
 
     var selectedGender :String?=null
     var selectedClothCategory : String? =null
-  //  var selectedPostImages : MutableList<String > = mutableListOf()
-    var uploadedClothes : MutableList<Cloth> = mutableListOf()
 
+    var allClothes : MutableList<Cloth> = mutableListOf()
+    var allPostImage : MutableList<String> = mutableListOf()
 
     var savedHeight : Int?=null
     var savedWeight : Int?=null
@@ -58,12 +60,20 @@ class EditPostViewModel @Inject constructor(
         getSeasonChipsInfo()
         getStyleChipsInfo()
     }
-    suspend fun editPost(postId :Int , uploadPost: UploadPost): MsgResponse {
-        val response = editPostRepository.editPost(postId , uploadPost)
+    suspend fun editPost(postId :Int , editPost: EditPost): MsgResponse {
+        Log.e(TAG, "editPost postId: $postId")
+
+        val response = editPostRepository.editPost(postId , editPost)
+        Log.e(TAG, "editPost: $response")
         return if (response is Resource.Success) response.value
         else MsgResponse(false, "Resource Fail")
     }
-
+    suspend fun editClothes(postId: Int,editClothes : List<Cloth>) : MsgResponse{
+        val response = editPostRepository.editCloth(postId , editClothes)
+        Log.e(TAG, "editClothes: $response")
+        return if (response is Resource.Success) response.value
+        else MsgResponse(false, "Resource Fail")
+    }
     suspend fun uploadNewPostImage(images: List<String>): MsgResponse {
         val response = editPostRepository.uploadNewPostImages(images)
         return if (response is Resource.Success) response.value
