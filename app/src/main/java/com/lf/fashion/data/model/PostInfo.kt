@@ -21,5 +21,5 @@ data class PostInfo(
     val height : Int,
     val weight : Int,
     val tpos : List<ChipInfo>?,
-    val season : List<ChipInfo>?
+    val seasons : List<ChipInfo>?
 )

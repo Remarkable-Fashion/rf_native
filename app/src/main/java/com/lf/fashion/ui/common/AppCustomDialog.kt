@@ -28,6 +28,8 @@ class AppCustomDialog(
             binding.dialogSubMsg.text= subMsg
             binding.dialogSubMsg.isVisible = true
         }
+
+        binding.negativeBtn.isVisible = !negativeBtnText.equals("invisible")
         binding.negativeBtn.text = negativeBtnText ?: "닫기"
         binding.positiveBtn.text = positiveBtnText ?: "확인"
 

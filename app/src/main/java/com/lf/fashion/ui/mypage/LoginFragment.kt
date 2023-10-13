@@ -118,20 +118,12 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
                                     if (msg.contains("기존")) {
                                         Log.d(TAG, "Message: $msg")
                                         AppCustomDialog(
-                                            "기존 회원 이력이 존재합니다.\n계정을 복구하시겠습니까?",
-                                            "신규 재가입은 탈퇴일 기준 30일 이후 가능합니다.",
-                                            "네",
-                                            "아니요",
-                                            {
-                                                Toast.makeText(
-                                                    requireContext(),
-                                                    "신규 재가입은 30일간 제한됩니다.",
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                            },
-                                        ) {
-                                            //todo 복구 엔드포인트로 요청
-                                        }.show(
+                                            "기존 회원 이력이 존재합니다.",
+                                            "신규 재가입은 탈퇴일 기준 30일 이후 가능합니다.\n" +
+                                                    " 계정 복구 문의처: ___",
+                                            "확인",
+                                            "invisible",
+                                        ).show(
                                             parentFragmentManager,
                                             "withdraw_member_login_confirm"
                                         )

@@ -15,6 +15,7 @@ import com.lf.fashion.MainActivity
 import com.lf.fashion.MainNaviDirections
 import com.lf.fashion.R
 import com.lf.fashion.TAG
+import com.lf.fashion.data.model.Cloth
 import com.lf.fashion.data.model.ImageItem
 import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.data.model.Posts

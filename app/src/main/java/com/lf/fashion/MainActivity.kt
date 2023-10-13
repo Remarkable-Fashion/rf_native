@@ -63,7 +63,27 @@ class MainActivity : AppCompatActivity() {
                 if (pendingDynamicLinkData != null) {
                     deepLink = pendingDynamicLinkData.link
 
-                    Log.d(TAG, "MainActivity - onCreate: 호출된 딥링크 $deepLink")
+                    Log.e(TAG, "MainActivity - onCreate: 호출된 딥링크 ${deepLink?.getQueryParameter("post")}")
+                    val postParam = deepLink?.getQueryParameter("post") // 게시물
+                   // val itemParam = deepLink?.getQueryParameter("item") //
+                    val photoZip = deepLink?.getQueryParameter("photoZip") // 유저 사진 모아보기
+                    val userInfoParam = deepLink?.getQueryParameter("userInfo") // 유저 게시물 - 정보보기 페이지
+                    val recommendClothParam = deepLink?.getQueryParameter("recommend") //유저 게시물 - 이 의상은 어때 페이지
+                    if(!postParam.isNullOrEmpty()){
+                        Log.e(TAG, "dynamicLink post param: $postParam")
+                    }
+                    if(!photoZip.isNullOrEmpty()){
+                        Log.e(TAG, "dynamicLink photoZip param: $photoZip")
+
+                    }
+                    if(!userInfoParam.isNullOrEmpty()){
+                        Log.e(TAG, "dynamicLink userInfoParam param: $userInfoParam")
+
+                    }
+                    if(!recommendClothParam.isNullOrEmpty()){
+                        Log.e(TAG, "dynamicLink recommendClothParam param: $recommendClothParam")
+
+                    }
                 }
 
                 // Handle the deep link. For example, open the linked
