@@ -11,6 +11,7 @@ import com.lf.fashion.R
 import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.HomeBUserInfoFragmentBinding
+import com.lf.fashion.ui.common.CreateDynamicLink
 import com.lf.fashion.ui.common.cancelBtnBackStack
 import com.lf.fashion.ui.common.childChip
 import com.lf.fashion.ui.home.adapter.ClothesRvAdapter
@@ -140,9 +141,13 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
         }
     }
 
+    //todo usershare test
     private fun profileKebabBtnOnClick() {
         binding.profileSpace.kebabBtn.setOnClickListener {
-            val dialog = PostBottomSheetFragment(userId = userId)
+            val dialog = PostBottomSheetFragment(userId = userId){
+                CreateDynamicLink(requireContext(), "userInfo", it.id)
+
+            }
             dialog.show(parentFragmentManager, "bottom_sheet")
         }
     }

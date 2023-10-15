@@ -25,8 +25,8 @@ class MyPageRepository @Inject constructor(
         jwtApi.getJWT(loginAccessToken,fcmToken)
     }
 
-    suspend fun getMyInfo(): MyInfo {
-        return myPageApi.getMyPageInfo()
+    suspend fun getMyInfo() = safeApiCall {
+        myPageApi.getMyPageInfo()
     }
 
     suspend fun getMyPost(nextCursor: Int? = null) = safeApiCall {

@@ -19,6 +19,7 @@ import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.databinding.MypagePhotozipVerticalFragmentBinding
+import com.lf.fashion.ui.common.CreateDynamicLink
 import com.lf.fashion.ui.common.MyBottomDialogListener
 import com.lf.fashion.ui.common.cancelBtnBackStack
 import com.lf.fashion.ui.home.PhotoClickListener
@@ -262,6 +263,11 @@ class MyPhotoZipVerticalFragment : Fragment(R.layout.mypage_photozip_vertical_fr
     override fun editPost(post: Posts) {
         findNavController().navigate(R.id.action_global_to_editPostFragment, bundleOf("post" to post))
 
+    }
+
+    //todo
+    override fun shareBtn(post: Posts) {
+        CreateDynamicLink(requireContext(), "post" , post.id)
     }
 
     override fun onDestroy() {

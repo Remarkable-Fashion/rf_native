@@ -17,6 +17,8 @@ import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.data.model.UserInfo
 import com.lf.fashion.databinding.UserVerticalFragmentBinding
+import com.lf.fashion.ui.common.CreateDynamicLink
+import com.lf.fashion.ui.common.MyBottomDialogListener
 import com.lf.fashion.ui.common.cancelBtnBackStack
 import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.VerticalViewPagerClickListener
@@ -28,7 +30,7 @@ import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
 class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
-    PhotoClickListener, VerticalViewPagerClickListener {
+    PhotoClickListener, VerticalViewPagerClickListener, MyBottomDialogListener {
     private lateinit var binding: UserVerticalFragmentBinding
     private val viewModel: OtherUserProfileViewModel by hiltNavGraphViewModels(R.id.otherUserProfileFragment)
     private val defaultAdapter = DefaultPostAdapter(
@@ -187,5 +189,32 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
         }
         findNavController().navigateUp()
     }
+
+    override fun onBottomSheetDismissed(post: Posts) {
+        val currentList = defaultAdapter.currentList
+        val position = currentList.indexOf(post)
+
+        if (position != -1) {
+            defaultAdapter.currentList[position].apply {
+                isScrap = post.isScrap
+            }
+            defaultAdapter.notifyItemChanged(position, "SCRAP_STATE")
+        }
+    }
+    override fun shareBtn(post: Posts) {
+        CreateDynamicLink(requireContext(), "post" , post.id)
+    }
+
+
+
+    override fun deleteMyPost(post: Posts) {
+    }
+
+    override fun changePostPublicStatus(post: Posts) {
+    }
+
+    override fun editPost(post: Posts) {
+    }
+
 
 }

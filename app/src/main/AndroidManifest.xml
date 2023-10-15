@@ -43,10 +43,9 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data
-                    android:scheme="http"
-                    android:host="randomcloset.com"
-                    />
+                <data android:host="randomcloset.page.link"/>
+                <data android:scheme="https"/>
+                <data android:host="test-static-bcc.pages.dev"/>
             </intent-filter>
         </activity>
         <activity

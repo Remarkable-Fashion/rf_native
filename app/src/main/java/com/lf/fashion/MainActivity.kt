@@ -63,12 +63,13 @@ class MainActivity : AppCompatActivity() {
                 if (pendingDynamicLinkData != null) {
                     deepLink = pendingDynamicLinkData.link
 
-                    Log.e(TAG, "MainActivity - onCreate: 호출된 딥링크 ${deepLink?.getQueryParameter("post")}")
+                    Log.e(TAG, "MainActivity - onCreate: 호출된 딥링크 ${deepLink}")
                     val postParam = deepLink?.getQueryParameter("post") // 게시물
-                   // val itemParam = deepLink?.getQueryParameter("item") //
                     val photoZip = deepLink?.getQueryParameter("photoZip") // 유저 사진 모아보기
                     val userInfoParam = deepLink?.getQueryParameter("userInfo") // 유저 게시물 - 정보보기 페이지
                     val recommendClothParam = deepLink?.getQueryParameter("recommend") //유저 게시물 - 이 의상은 어때 페이지
+
+
                     if(!postParam.isNullOrEmpty()){
                         Log.e(TAG, "dynamicLink post param: $postParam")
                     }
@@ -84,20 +85,10 @@ class MainActivity : AppCompatActivity() {
                         Log.e(TAG, "dynamicLink recommendClothParam param: $recommendClothParam")
 
                     }
-                }
 
-                // Handle the deep link. For example, open the linked
-                // content, or apply promotional credit to the user's
-                // account.
-                // ...
+                }
             }
             .addOnFailureListener(this) { e -> Log.e(TAG, "onCreate: 다이나믹 링크 $e") }
-
-        //딥링크 데이터 꺼내기
-        val data =intent.data
-        data?.let{
-            val path = data.path
-        }
 
         updateAvailabilityCheck()
     }

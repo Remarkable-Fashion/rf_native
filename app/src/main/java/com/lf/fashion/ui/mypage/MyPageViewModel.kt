@@ -18,6 +18,7 @@ import com.lf.fashion.data.model.MsgResponse
 import com.lf.fashion.data.model.MyBlockUserList
 import com.lf.fashion.data.model.MyInfo
 import com.lf.fashion.data.model.Posts
+import com.lf.fashion.data.model.Profile
 import com.lf.fashion.data.model.RandomPostResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -107,7 +108,10 @@ class MyPageViewModel @Inject constructor(
 
     fun getMyInfo() {
         viewModelScope.launch {
-            _myInfo.value = myPageRepository.getMyInfo()
+            val response = myPageRepository.getMyInfo()
+            _myInfo.value = if(response is Resource.Success) response.value else MyInfo(-1,
+                Profile(null,null,null,null,null),null,null)
+            // 로그인 만료시 home 에서 handle 처리는 해두었지만, 혹시 모를 401 오류를 대비한 빈값 세팅
         }
     }
 

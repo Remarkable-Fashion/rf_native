@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -27,15 +28,20 @@ import com.google.gson.JsonParser
 import com.lf.fashion.MainActivity
 import com.lf.fashion.R
 import com.lf.fashion.TAG
+import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ChipInfo
 import com.lf.fashion.ui.addPost.UploadPostViewModel
 import com.lf.fashion.ui.globalFrag.editPost.EditPostViewModel
 import com.lf.fashion.ui.home.frag.FilterViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.File
 import java.io.IOException
 import java.io.InputStreamReader
+import kotlin.coroutines.coroutineContext
 import kotlin.math.roundToInt
 
 const val NEED_TO_REFRESH ="need_to_refresh"
@@ -310,14 +316,29 @@ fun Fragment.handleApiError(
               }*/
         }
 
+        //todo test
         failure.errorCode == 401 -> {
-            //  Toast.makeText(context, R.string.login_over, Toast.LENGTH_SHORT).show()
+            val error = failure.errorBody?.string().toString()
+            try {
+                val json = JsonParser.parseString(error).asJsonObject
+                val msg = json.get("msg").asString
+                if(msg.contains("jwt expired")){
+                    Toast.makeText(context, "로그인이 만료되었습니다.", Toast.LENGTH_SHORT).show()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val userPreferences = UserDataStorePref(requireContext())
+                        userPreferences.clearAccessTokenAndId()
+                    }
+                    findNavController().navigate(R.id.navigation_mypage)
+                }
+            }catch (e: Exception) {
+                e.printStackTrace()
+            }
 
             //logout()
         }
 
         else -> {
-            retry?.let { callback->
+            retry?.let { callback ->
                 val error = failure.errorBody?.string().toString()
                 try {
 
@@ -375,4 +396,8 @@ fun Fragment.mainBottomMenuListener(setting : Boolean){
         bottomNavigationView.setOnItemSelectedListener(null)
         bottomNavigationView.setOnItemReselectedListener(null)
     }
+}
+
+fun logout(){
+
 }

@@ -32,7 +32,8 @@ import kotlinx.coroutines.launch
 class PostBottomSheetFragment(
     private val post: Posts? = null,
     private val userId: Int? = null,
-    private val myBottomDialogListener: MyBottomDialogListener? = null
+    private val myBottomDialogListener: MyBottomDialogListener? = null,
+    private val userShareOnclick: (() -> Unit)? = null
 ) :
     BottomSheetDialogFragment(R.layout.home_bottom_dialog_item),
     View.OnClickListener {
@@ -121,7 +122,12 @@ class PostBottomSheetFragment(
             }
 
             binding.bottomSheetShareBtn -> {
-
+                myBottomDialogListener?.shareBtn(post!!)
+                if (myBottomDialogListener == null) { //유저 페이지 공유
+                    userShareOnclick?.let {
+                       it()
+                    }
+                }
             }
 
             binding.bottomSheetScrapBtn -> {

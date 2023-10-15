@@ -43,20 +43,18 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        viewModel.savedLoginToken.observe(viewLifecycleOwner) {
-            if (it.isNullOrEmpty()) {
-                findNavController().navigate(R.id.action_navigation_mypage_to_loginFragment)
-                return@observe
-            }
-        }
         binding = MypageFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel.savedLoginToken.observe(viewLifecycleOwner) {
+            if (it.isNullOrEmpty()) {
+                findNavController().navigate(R.id.action_navigation_mypage_to_loginFragment)
+                return@observe
+            }
+        }
         val fragmentNames = findNavController().backQueue.mapNotNull { navBackStackEntry ->
             val destination = navBackStackEntry.destination
             destination.label?.toString() // 프래그먼트의 이름을 가져옴

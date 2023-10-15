@@ -25,6 +25,7 @@ import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.data.model.Posts
+import com.lf.fashion.ui.common.CreateDynamicLink
 import com.lf.fashion.ui.common.MyBottomDialogListener
 import com.lf.fashion.ui.common.mainBottomMenuListener
 import kotlinx.coroutines.CoroutineScope
@@ -254,5 +255,10 @@ class ScrapVerticalFragment : Fragment(),
 
     override fun editPost(post: Posts) {
         findNavController().navigate(R.id.action_global_to_editPostFragment, bundleOf("post" to post))
+    }
+
+    //todo
+    override fun shareBtn(post: Posts) {
+        CreateDynamicLink(requireContext(), "post" , post.id)
     }
 }

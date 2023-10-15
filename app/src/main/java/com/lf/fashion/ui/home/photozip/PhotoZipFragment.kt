@@ -17,6 +17,7 @@ import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.data.model.UserInfo
 import com.lf.fashion.databinding.HomeBPhotoZipFragmentBinding
+import com.lf.fashion.ui.common.CreateDynamicLink
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.globalFrag.adapter.GridPhotoClickListener
 import com.lf.fashion.ui.globalFrag.adapter.GridPostAdapter
@@ -187,9 +188,14 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
         )
     }
 
+    //todo usershare test
     private fun profileKebabBtnOnClick() {
         binding.kebabBtn.setOnClickListener {
-            val dialog = PostBottomSheetFragment(userId = userInfoPost.user?.id)
+            val dialog = PostBottomSheetFragment(userId = userInfoPost.user?.id) {
+                userInfoPost.user?.let {
+                    CreateDynamicLink(requireContext(), "photoZip", it.id)
+                }
+            }
             dialog.show(parentFragmentManager, "bottom_sheet")
         }
     }

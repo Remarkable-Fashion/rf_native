@@ -8,4 +8,6 @@ interface MyBottomDialogListener {
     fun changePostPublicStatus(post:Posts)
 
     fun editPost(post:Posts)
+
+    fun shareBtn(post: Posts)
 }
