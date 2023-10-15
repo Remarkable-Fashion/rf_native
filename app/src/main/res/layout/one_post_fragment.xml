@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="post"
+            type="com.lf.fashion.data.model.Posts" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/horizontal_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/photo_back_grey"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/post_detail_menu"
+            tools:listitem="@layout/home_a_nested_horizontal_item"
+            />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="129dp"
+            android:src="@drawable/bg_gradiant_black"
+            app:layout_constraintBottom_toBottomOf="@id/horizontal_view_pager" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profile_image"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/horizontal_view_pager"
+            android:src="@drawable/ic_my_profile"
+            android:layout_marginTop="13dp"
+            android:layout_marginStart="20dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearance="@style/radi13"
+            imageUrl="@{post.user.profile.profileImage}"/>
+
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{post.user.name}"
+            app:layout_constraintStart_toEndOf="@id/profile_image"
+            app:layout_constraintTop_toTopOf="@id/profile_image"
+            app:layout_constraintBottom_toBottomOf="@id/profile_image"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:textColor="@color/white"
+            tools:text="rf_user"/>
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/viewpager_indicator"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:elevation="0dp"
+            app:tabBackground="@drawable/selector_indicator"
+            app:tabIndicatorHeight="0dp"
+            app:tabGravity="center"
+            app:tabPaddingEnd="5dp"
+            app:tabPaddingStart="5dp"
+            app:layout_constraintBottom_toBottomOf="@id/horizontal_view_pager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        <include
+            android:id="@+id/post_detail_menu"
+            layout="@layout/item_vertical_bottom_menu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/morePostBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/morePostBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="더 많은 게시물 보러가기"
+            android:padding="10dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:background="@color/lf_grey"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            />
+        <androidx.constraintlayout.helper.widget.Layer
+            android:id="@+id/profile_space"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:constraint_referenced_ids="profile_image,profile_name"
+            tools:ignore="MissingConstraints"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

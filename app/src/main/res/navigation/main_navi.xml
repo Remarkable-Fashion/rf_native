@@ -22,6 +22,10 @@
             app:nullable="true" />
     </action>
     <action
+        android:id="@+id/action_global_to_onePostFragment"
+        app:destination="@id/onePostFragment">
+    </action>
+    <action
         android:id="@+id/action_global_to_editPostFragment"
         app:destination="@id/navigation_eidt_post" />
     <fragment
@@ -487,4 +491,8 @@
             android:name="com.lf.fashion.ui.addPost.ImagePickerFragment"
             android:label="ImagePickerFragment"/>
     </navigation>
+    <fragment
+        android:id="@+id/onePostFragment"
+        android:name="com.lf.fashion.ui.globalFrag.OnePostFragment"
+        android:label="OnePostFragment" />
 </navigation>

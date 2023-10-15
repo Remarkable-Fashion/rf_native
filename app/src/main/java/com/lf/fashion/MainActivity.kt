@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.os.bundleOf
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -72,6 +73,7 @@ class MainActivity : AppCompatActivity() {
 
                     if(!postParam.isNullOrEmpty()){
                         Log.e(TAG, "dynamicLink post param: $postParam")
+                        navController?.navigate(R.id.action_global_to_onePostFragment, bundleOf("postId" to postParam))
                     }
                     if(!photoZip.isNullOrEmpty()){
                         Log.e(TAG, "dynamicLink photoZip param: $photoZip")
