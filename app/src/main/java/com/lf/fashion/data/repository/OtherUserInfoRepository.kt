@@ -20,6 +20,7 @@ class OtherUserInfoRepository @Inject constructor(
         userProfileApi.getMyFollowers(userId)
     }
 
+
     suspend fun getPostByUserId ( userId : Int,nextCursor : Int?=null) = safeApiCall {
         userProfileApi.getPostInfoByUserId(userId,nextCursor)
     }

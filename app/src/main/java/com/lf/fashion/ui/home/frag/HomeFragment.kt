@@ -140,7 +140,7 @@ class HomeFragment :
                 // 여러 열을 가진 경우, 가장 마지막에 보이는 아이템의 인덱스를 확인합니다.
                 val lastVisibleItem = lastVisibleItems.maxOrNull() ?: -1
 
-                if (lastVisibleItem == totalItemCount - 1&& viewModel.postMode.value == "random") {
+                if (lastVisibleItem == totalItemCount - 1 && viewModel.postMode.value == "random") {
                     // 마지막 아이템이 보이는 경우 처리할 내용을 여기에 추가
                     requestPost(loadMore = true)
 
@@ -149,7 +149,7 @@ class HomeFragment :
         })
     }
 
-    private fun requestPost(loadMore : Boolean?=null) {
+    private fun requestPost(loadMore: Boolean? = null) {
         CoroutineScope(Dispatchers.IO).launch {
             with(filterDataStore) {
                 val tpo = tpoId.first()?.split(",")?.mapNotNull { it.toIntOrNull() }
@@ -158,9 +158,9 @@ class HomeFragment :
                 val gender = postGender.first() ?: "All"
                 val height = height.first()
                 val weight = weight.first()
-                Log.e(TAG, "requestPost: $tpo ,$season ,$style", )
+                Log.e(TAG, "requestPost: $tpo ,$season ,$style")
                 withContext(Dispatchers.Main) {
-                    viewModel.getPostList(loadMore,21, gender, height, weight, tpo, season, style)
+                    viewModel.getPostList(loadMore, 21, gender, height, weight, tpo, season, style)
                 }
             }
         }
@@ -206,21 +206,27 @@ class HomeFragment :
 
                     }
                 }
+
                 is Resource.Failure -> {
                     handleApiError(resource)
                 }
-                else->{}
+
+                else -> {}
             }
         }
     }
+
     @SuppressLint("NotifyDataSetChanged")
-    private fun observeLoadMorePost(){
-        viewModel.loadMore.observe(viewLifecycleOwner){resource->
-            when(resource){
-                is Resource.Success ->{
+    private fun observeLoadMorePost() {
+        viewModel.loadMore.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Success -> {
                     val morePost = resource.value
                     val currentList = gridAdapter.currentList.toMutableList()
-                    Log.e(TAG, "observeLoadMorePost: currrent : ${currentList.size} , more : ${morePost.posts.size}")
+                    Log.e(
+                        TAG,
+                        "observeLoadMorePost: currrent : ${currentList.size} , more : ${morePost.posts.size}"
+                    )
                     currentList.addAll(morePost.posts)
                     Log.e(TAG, "observeLoadMorePost: 합 : $morePost")
 
@@ -233,13 +239,16 @@ class HomeFragment :
                         notifyDataSetChanged()
                     }
                 }
+
                 is Resource.Failure -> {
                     handleApiError(resource)
                 }
-                else->{}
+
+                else -> {}
             }
         }
     }
+
     private fun editGridSpanCount(spanCount: Int) {
         with(binding.gridRecyclerView) {
             layoutManager =
@@ -370,7 +379,7 @@ class HomeFragment :
             post.isFavorite = !post.isFavorite!!  // 좋아요 상태 반전
             likeClickedPosts = post
         } else {
-            showRequireLoginDialog()
+            showRequireLoginDialog(true)
         }
     }
 
@@ -381,7 +390,7 @@ class HomeFragment :
             post.isScrap = !post.isScrap!!
             scrapClickedPosts = post
         } else {
-            showRequireLoginDialog()
+            showRequireLoginDialog(true)
         }
 
     }
@@ -398,30 +407,42 @@ class HomeFragment :
     }
 
     override fun photoZipBtnClicked(post: Posts) {
-        findNavController().navigate(
-            R.id.action_navigation_home_to_photoZipFragment,
-            bundleOf("post" to post)
-        )
+        if (userPref.loginCheck()) {
+            findNavController().navigate(
+                R.id.action_navigation_home_to_photoZipFragment,
+                bundleOf("post" to post)
+            )
+        } else {
+            showRequireLoginDialog(true)
+        }
     }
 
     override fun infoBtnClicked(postId: Int) {
-        findNavController().navigate(
-            R.id.action_home_fragment_to_userInfoFragment,
-            bundleOf("postId" to postId)
-        )
+        if (userPref.loginCheck()) {
+            findNavController().navigate(
+                R.id.action_home_fragment_to_userInfoFragment,
+                bundleOf("postId" to postId)
+            )
+        } else {
+            showRequireLoginDialog(true)
+        }
     }
 
     //프로필 영역 클릭
     override fun profileSpaceClicked(userId: Int) {
-        val myUniqueId = userPref.getMyUniqueId()
-        if (userId == myUniqueId) {
-            findNavController().navigate(R.id.navigation_mypage)
-            return
+        if (userPref.loginCheck()) {
+            val myUniqueId = userPref.getMyUniqueId()
+            if (userId == myUniqueId) {
+                findNavController().navigate(R.id.navigation_mypage)
+                return
+            }
+            findNavController().navigate(
+                R.id.action_home_fragment_to_otherUserProfileFragment,
+                bundleOf("userId" to userId)
+            )
+        } else {
+            showRequireLoginDialog(true)
         }
-        findNavController().navigate(
-            R.id.action_home_fragment_to_otherUserProfileFragment,
-            bundleOf("userId" to userId)
-        )
     }
 
     override fun gridPhotoClicked(postIndex: Int) {
@@ -491,11 +512,14 @@ class HomeFragment :
     }
 
     override fun editPost(post: Posts) {
-        findNavController().navigate(R.id.action_global_to_editPostFragment, bundleOf("post" to post))
+        findNavController().navigate(
+            R.id.action_global_to_editPostFragment,
+            bundleOf("post" to post)
+        )
     }
 
     //todo
     override fun shareBtn(post: Posts) {
-        CreateDynamicLink(requireContext(), "post" , post.id)
+        CreateDynamicLink(requireContext(), "post", post.id)
     }
 }

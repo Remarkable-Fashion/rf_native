@@ -14,12 +14,14 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ListAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
@@ -169,6 +171,7 @@ fun Fragment.showRequireLoginDialog(alreadyHome: Boolean? = null) {
         findNavController().navigate(R.id.navigation_mypage)
     }.show(parentFragmentManager, "login_alert_dialog")
 }
+
 
 
 fun addTextLengthCounter(editText: EditText, counterTextView: TextView, maxLength: Int) {

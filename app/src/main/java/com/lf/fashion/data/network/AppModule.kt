@@ -97,4 +97,13 @@ object AppModule {
     ) : EditPostApi {
         return remoteDataSource.buildApi(EditPostApi::class.java)
     }
+
+
+    @Singleton
+    @Provides
+    fun provideDeepLinkApi(
+        remoteDataSource: RemoteDataSource
+    ) : DeepLinkPostApi {
+        return remoteDataSource.buildApi(DeepLinkPostApi::class.java)
+    }
 }

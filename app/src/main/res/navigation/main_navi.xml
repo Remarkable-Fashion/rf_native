@@ -22,8 +22,8 @@
             app:nullable="true" />
     </action>
     <action
-        android:id="@+id/action_global_to_onePostFragment"
-        app:destination="@id/onePostFragment">
+        android:id="@+id/action_global_to_deeplinkPostFragment"
+        app:destination="@id/navigation_deeplink_post">
     </action>
     <action
         android:id="@+id/action_global_to_editPostFragment"
@@ -491,8 +491,115 @@
             android:name="com.lf.fashion.ui.addPost.ImagePickerFragment"
             android:label="ImagePickerFragment"/>
     </navigation>
-    <fragment
-        android:id="@+id/onePostFragment"
-        android:name="com.lf.fashion.ui.globalFrag.OnePostFragment"
-        android:label="OnePostFragment" />
+    <navigation
+        android:id="@+id/navigation_deeplink_post"
+        app:startDestination="@id/deepLinkPostFragment">
+        <fragment
+            android:id="@+id/deepLinkPostFragment"
+            android:name="com.lf.fashion.ui.globalFrag.DeepLinkPostFragment"
+            android:label="DeepLinkPostFragment" >
+            <action
+                android:id="@+id/action_navigation_deeplink_to_photoZipFragment"
+                app:destination="@id/photoZipFragment" />
+            <action
+                android:id="@+id/action_deeplink_fragment_to_userInfoFragment"
+                app:destination="@id/userInfoFragment" />
+            <action
+                android:id="@+id/action_deeplink_fragment_to_otherUserProfileFragment"
+                app:destination="@id/otherUserProfileFragment" />
+            <action
+                android:id="@+id/action_deeplink_to_recommendFragment"
+                app:destination="@id/recommendFragment" />
+
+        </fragment>
+        <fragment
+            android:id="@+id/photoZipFragment"
+            android:name="com.lf.fashion.ui.home.photozip.PhotoZipFragment"
+            android:label="PhotoZipFragment">
+            <action
+                android:id="@+id/action_photoZipFragment_to_photoZipVerticalFragment"
+                app:destination="@id/photoZipVerticalFragment" />
+            <action
+                android:id="@+id/action_photoZipFragment_to_userInfoFragment"
+                app:destination="@id/userInfoFragment" />
+
+        </fragment>
+        <fragment
+            android:id="@+id/photoZipVerticalFragment"
+            android:name="com.lf.fashion.ui.home.photozip.PhotoZipVerticalFragment"
+            android:label="PhotoZipVerticalFragment">
+            <action
+                android:id="@+id/action_photoZipVerticalFragment_to_otherUserProfileFragment"
+                app:destination="@id/otherUserProfileFragment" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/userInfoFragment"
+            android:name="com.lf.fashion.ui.home.userInfo.UserInfoFragment"
+            android:label="UserInfoFragment">
+            <action
+                android:id="@+id/action_userInfoFragment_to_recommendFragment"
+                app:destination="@id/recommendFragment" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/recommendFragment"
+            android:name="com.lf.fashion.ui.home.userInfo.cloth.RecommendLooBookFragment"
+            android:label="RecommendFragment">
+            <action
+                android:id="@+id/action_recommendFragment_to_registClothFragment"
+                app:destination="@id/registClothFragment" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/imagePickerFragment"
+            android:name="com.lf.fashion.ui.addPost.ImagePickerFragment"
+            android:label="ImagePickerFragment">
+            <action
+                android:id="@+id/action_imagePickerFragment_to_registClothFragment"
+                app:destination="@id/registClothFragment">
+                <!--            <argument-->
+                <!--                android:name="image_uri"-->
+                <!--                android:defaultValue="@null"-->
+                <!--                app:argType="string[]"-->
+                <!--                app:nullable="true" />-->
+            </action>
+            <action
+                android:id="@+id/action_imagePickerFragment_to_profileEditFragment"
+                app:destination="@id/profileEditFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/registClothFragment"
+            android:name="com.lf.fashion.ui.home.userInfo.cloth.RegistClothFragment"
+            android:label="RegistClothFragment">
+            <action
+                android:id="@+id/action_registClothFragment_to_imagePickerFragment"
+                app:destination="@id/imagePickerFragment" />
+            <action
+                android:id="@+id/action_registClothFragment_to_recommendFragment"
+                app:destination="@id/recommendFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/otherUserProfileFragment"
+            android:name="com.lf.fashion.ui.home.profile.OtherUserProfileFragment"
+            android:label="OtherUserProfileFragment">
+            <action
+                android:id="@+id/action_otherUserProfileFragment_to_otherUserVerticalPostFragment"
+                app:destination="@id/otherUserVerticalPostFragment" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/otherUserVerticalPostFragment"
+            android:name="com.lf.fashion.ui.home.profile.OtherUserVerticalPostFragment"
+            android:label="OtherUserVerticalPostFragment">
+            <action
+                android:id="@+id/action_otherUserVerticalPostFragment_to_userInfoFragment"
+                app:destination="@id/userInfoFragment" />
+            <action
+                android:id="@+id/action_otherUserVerticalPostFragment_to_photoZipFragment"
+                app:destination="@id/photoZipFragment" />
+        </fragment>
+    </navigation>
+
+
 </navigation>

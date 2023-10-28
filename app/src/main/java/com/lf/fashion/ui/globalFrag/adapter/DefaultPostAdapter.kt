@@ -18,8 +18,8 @@ import com.lf.fashion.ui.home.adapter.PhotoHorizontalAdapter
 class DefaultPostAdapter(
     private val photoClickListener: PhotoClickListener,
     private val verticalViewPagerClickListener: VerticalViewPagerClickListener,
-    private val userInfoPost : Posts?=null,
-    private val myPhotozip : Boolean?=null
+    private val userInfoPost: Posts? = null,
+    private val myPhotozip: Boolean? = null
 ) :
     ListAdapter<Posts, DefaultPostAdapter.DefaultPostViewHolder>(DefaultPostDiff()) {
 
@@ -42,7 +42,8 @@ class DefaultPostAdapter(
         init {
             with(binding.horizontalViewPager) {
                 adapter = nestedAdapter
-                getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER // 양옆 오버 스크롤 이벤트 shadow 제거
+                getChildAt(0).overScrollMode =
+                    RecyclerView.OVER_SCROLL_NEVER // 양옆 오버 스크롤 이벤트 shadow 제거
 
                 TabLayoutMediator(
                     binding.viewpagerIndicator,
@@ -55,7 +56,7 @@ class DefaultPostAdapter(
         fun bind(post: Posts) {
             binding.post = post
 
-            if(userInfoPost!=null){   // photoZipVertical 에서 response 받는 posts 에는 user 정보가 없기 때문에, 파라미터가 존재할 시 이를 바인딩 해주도록 .
+            if (userInfoPost != null) {   // photoZipVertical 에서 response 받는 posts 에는 user 정보가 없기 때문에, 파라미터가 존재할 시 이를 바인딩 해주도록 .
                 binding.post = userInfoPost
                 post.user = userInfoPost.user // 하단에서 사용할 수도 있으니까 초기화
             }
@@ -63,17 +64,19 @@ class DefaultPostAdapter(
             nestedAdapter.submitList(post.images)
 
             val postDetailMenu = binding.postDetailMenu
-            with(postDetailMenu){
-                likeBtn.isSelected = post.isFavorite?:false
+            with(postDetailMenu) {
+                likeBtn.isSelected = post.isFavorite ?: false
                 likesValue.text = post.count.favorites.toString()
-                scrapBtn.isSelected = post.isScrap?:true //null 인 경우는 내 스크랩 모아보기이기 때문에, 모두 true
+                scrapBtn.isSelected = post.isScrap ?: true //null 인 경우는 내 스크랩 모아보기이기 때문에, 모두 true
 
                 likeBtn.setOnClickListener {
-                    verticalViewPagerClickListener.likeBtnClicked(it.isSelected,post)
+                    //if userPref logincheck !
+                    verticalViewPagerClickListener.likeBtnClicked(it.isSelected, post)
+
                 }
 
                 scrapBtn.setOnClickListener {
-                    verticalViewPagerClickListener.scrapBtnClicked(it.isSelected,post)
+                    verticalViewPagerClickListener.scrapBtnClicked(it.isSelected, post)
                 }
                 shareBtn.setOnClickListener {
                     verticalViewPagerClickListener.shareBtnClicked(post)
@@ -92,7 +95,7 @@ class DefaultPostAdapter(
                 verticalViewPagerClickListener.infoBtnClicked(post.id)
             }
             binding.profileSpace.setOnClickListener {
-                if(post.user==null) return@setOnClickListener
+                if (post.user == null) return@setOnClickListener
                 verticalViewPagerClickListener.profileSpaceClicked(post.user!!.id)
             }
             binding.executePendingBindings()
@@ -103,7 +106,8 @@ class DefaultPostAdapter(
             if (userInfoPost == null && post.user == null) {
                 binding.profileImage.isVisible = false
                 binding.profileName.isVisible = false
-                binding.privateBadge.isVisible = post.isPublic == false // 나의 게시물 + 미게시 게시물일 경우 미게시 뱃지 노출
+                binding.privateBadge.isVisible =
+                    post.isPublic == false // 나의 게시물 + 미게시 게시물일 경우 미게시 뱃지 노출
             } else {
                 binding.profileImage.isVisible = true
                 binding.profileName.isVisible = true
@@ -142,7 +146,7 @@ class DefaultPostDiff : DiffUtil.ItemCallback<Posts>() {
             payload.add("SCRAP_STATE")
         }
 
-        if(oldItem.isPublic != newItem.isPublic){
+        if (oldItem.isPublic != newItem.isPublic) {
             payload.add("PUBLIC_STATE")
         }
 

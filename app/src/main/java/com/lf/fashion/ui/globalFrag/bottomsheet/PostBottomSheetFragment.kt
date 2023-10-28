@@ -20,6 +20,7 @@ import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.databinding.HomeBottomDialogItemBinding
 import com.lf.fashion.ui.common.MyBottomDialogListener
+import com.lf.fashion.ui.common.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,9 +42,9 @@ class PostBottomSheetFragment(
     private lateinit var userPref: UserDataStorePref
     private val viewModel: PostBottomViewModel by viewModels()
     private var blocked: Boolean = false // 최초값 차단 false 로 ..
-    private var scrapState  = false
+    private var scrapState = false
     private var followState = false
-    private var isPublicState = post?.isPublic?:true
+    private var isPublicState = post?.isPublic ?: true
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = HomeBottomDialogItemBinding.bind(view)
@@ -111,7 +112,7 @@ class PostBottomSheetFragment(
         binding.privateSettingBtn.isVisible = myPost
         binding.postEditBtn.isVisible = myPost
         binding.deleteBtn.isVisible = myPost
-        btnTextUpdate("isPublic",isPublicState)
+        btnTextUpdate("isPublic", isPublicState)
     }
 
     //TODO 버튼 반응 구현
@@ -125,27 +126,31 @@ class PostBottomSheetFragment(
                 myBottomDialogListener?.shareBtn(post!!)
                 if (myBottomDialogListener == null) { //유저 페이지 공유
                     userShareOnclick?.let {
-                       it()
+                        it()
                     }
                 }
             }
 
             binding.bottomSheetScrapBtn -> {
                 viewModel.changeScrapState(!scrapState, post!!.id)
+
             }
             /* binding.noInterestBtn -> {
                  // 이 후 동작 알 수 없음 , 엔드포인트 없음
              }*/
             binding.bottomSheetFollowBtn -> {
                 viewModel.changeFollowingState(!followState, post!!.user!!.id)
+
             }
 
             binding.blockBtn -> {
                 viewModel.changeBlockUserState(!blocked, post!!.user!!.id)
+
             }
 
             binding.declareBtn -> {
                 showDeclareDialog()
+
             }
 
             binding.deleteBtn -> {
@@ -174,6 +179,13 @@ class PostBottomSheetFragment(
     }
 
     private fun observeAllMsgResponse() {
+        // 로그인한 사용자에게만 노출
+        val loginCheck = userPref.loginCheck()
+        binding.bottomSheetScrapBtn.isVisible = loginCheck
+        binding.bottomSheetFollowBtn.isVisible = loginCheck
+        binding.blockBtn.isVisible = loginCheck
+        binding.declareBtn.isVisible = loginCheck
+
         viewModel.followResponse.observe(viewLifecycleOwner) {
             if ((it is Resource.Success) && it.value.success) {
                 followState = !followState
@@ -211,8 +223,9 @@ class PostBottomSheetFragment(
                 binding.blockBtn.text = if (state) "차단 취소" else "차단하기"
 
             }
-            "isPublic" ->{
-                binding.privateSettingBtn.text = if(state) "이미지 게시 해지하기" else "이미지 게시하기"
+
+            "isPublic" -> {
+                binding.privateSettingBtn.text = if (state) "이미지 게시 해지하기" else "이미지 게시하기"
             }
         }
     }
@@ -243,8 +256,8 @@ class PostBottomSheetFragment(
                             dialogView.findViewById<EditText>(R.id.declare_value).text.toString()
                         )
                     )
-                    if(response.success){
-                        Toast.makeText(requireContext(),"신고가 완료되었습니다.",Toast.LENGTH_SHORT).show()
+                    if (response.success) {
+                        Toast.makeText(requireContext(), "신고가 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     }
                     this@PostBottomSheetFragment.dismiss()
                 }

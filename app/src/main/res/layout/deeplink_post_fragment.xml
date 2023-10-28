@@ -56,7 +56,32 @@
             android:textColor="@color/white"
             tools:text="rf_user"/>
 
+        <ImageView
+            android:id="@+id/info_btn"
+            android:layout_width="93dp"
+            android:layout_height="45dp"
+            android:src="@drawable/bg_grey_radi15"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@id/horizontal_view_pager"
+            android:padding="10dp"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
+            />
 
+        <TextView
+            android:id="@+id/info_btn_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="정보+"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            android:fontFamily="@font/spoqahansansneo_medium"
+            app:layout_constraintTop_toTopOf="@id/info_btn"
+            app:layout_constraintStart_toStartOf="@id/info_btn"
+            app:layout_constraintEnd_toEndOf="@id/info_btn"
+            app:layout_constraintBottom_toBottomOf="@id/info_btn"
+            />
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/viewpager_indicator"
             android:layout_width="0dp"
