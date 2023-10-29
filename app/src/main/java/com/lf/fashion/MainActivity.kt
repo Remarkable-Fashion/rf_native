@@ -80,42 +80,17 @@ class MainActivity : AppCompatActivity() {
                         Log.e(TAG, "dynamicLink post param: $postParam")
                         navController?.navigate(R.id.action_global_to_deeplinkPostFragment, bundleOf("postId" to postParam))
                     }
-                    // todo api 로 우선 post 요청
                     if(!photoZip.isNullOrEmpty()){
                         Log.e(TAG, "dynamicLink photoZip param: $photoZip")
-                        if (userPref.loginCheck()) {
-                            navController?.navigate(
-                                R.id.action_navigation_home_to_photoZipFragment,
-                                bundleOf("post" to post)
-                            )
-                        } else {
-                            //로그인 요구
-                        }
-
+                        navController?.navigate(R.id.action_global_to_deeplinkPostFragment, bundleOf("postId" to postParam, "photoZip" to true))
                     }
                     if(!userInfoParam.isNullOrEmpty()){
                         Log.e(TAG, "dynamicLink userInfoParam param: $userInfoParam")
-                        if (userPref.loginCheck()) {
-                            navController?.navigate(
-                                R.id.action_home_fragment_to_userInfoFragment,
-                                bundleOf("postId" to userInfoParam)
-                            )
-                        } else {
-                            //로그인 요구
-
-                        }
+                        navController?.navigate(R.id.action_global_to_deeplinkPostFragment, bundleOf("postId" to postParam, "userInfo" to true))
                     }
                     if(!recommendClothParam.isNullOrEmpty()){
                         Log.e(TAG, "dynamicLink recommendClothParam param: $recommendClothParam")
-                        if (userPref.loginCheck()) {
-                            navController?.navigate(
-                                R.id.action_userInfoFragment_to_recommendFragment,
-                                bundleOf("postId" to recommendClothParam)
-                            )
-                        }else{
-                            //로그인 요구
-
-                        }
+                        navController?.navigate(R.id.action_global_to_deeplinkPostFragment, bundleOf("postId" to postParam, "recommendCloth" to true))
                     }
 
                 }

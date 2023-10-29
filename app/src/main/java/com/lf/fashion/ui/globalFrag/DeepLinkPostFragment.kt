@@ -42,6 +42,10 @@ class DeepLinkPostFragment : Fragment(R.layout.deeplink_post_fragment),
     private lateinit var scrapClickedPosts: Posts
     private val nestedAdapter = PhotoHorizontalAdapter(this)
     private lateinit var post: Posts
+    private var requestPhotoZipPage = false
+    private var requestUserInfoPage = false
+    private var requestRecommendClothPage = false
+
     /*private val defaultAdapter = DeepLinkPostAdapter(
         this@DeepLinkPostFragment, this@DeepLinkPostFragment)*/
 
@@ -57,6 +61,9 @@ class DeepLinkPostFragment : Fragment(R.layout.deeplink_post_fragment),
 
         val myUniqueId = userPref.getMyUniqueId()
         val postId = arguments?.getString("postId") ?: return
+        requestPhotoZipPage = arguments?.getBoolean("photoZip") ?: false
+        requestUserInfoPage = arguments?.getBoolean("userInfo") ?: false
+        requestRecommendClothPage = arguments?.getBoolean("recommendCloth") ?: false
 
         Log.e(TAG, "onePostFragment onviewCreated: $postId")
 
@@ -66,6 +73,7 @@ class DeepLinkPostFragment : Fragment(R.layout.deeplink_post_fragment),
             when (resources) {
                 is Resource.Success -> {
                     Log.e(TAG, "to POSTS: ${resources.value}")
+                    requestDeepLinkNavigation()
 
                     val userIdForPhotoZip = arguments?.getString("photoZip")
                     userIdForPhotoZip?.let {
@@ -105,16 +113,9 @@ class DeepLinkPostFragment : Fragment(R.layout.deeplink_post_fragment),
                     with(binding.postDetailMenu) {
                         likeBtn.isSelected = post.isFavorite ?: false
                         likesValue.text = post.count.favorites.toString()
-                        scrapBtn.isSelected = post.isScrap ?: true //null 인 경우는 내 스크랩 모아보기이기 때문에, 모두 true
+                        scrapBtn.isSelected =
+                            post.isScrap ?: true //null 인 경우는 내 스크랩 모아보기이기 때문에, 모두 true
                     }
-                    /* binding.horizontalViewPager.apply {
-                         adapter = defaultAdapter
-                         (adapter as? DefaultPostAdapter)?.apply {
-                             submitList(listOf(resources.value))
-                         }
-                         getChildAt(0).overScrollMode =
-                             RecyclerView.OVER_SCROLL_NEVER // 최상단,최하단 스크롤 이벤트 shadow 제거
-                     }*/
                 }
 
                 is Resource.Failure -> {
@@ -128,6 +129,46 @@ class DeepLinkPostFragment : Fragment(R.layout.deeplink_post_fragment),
         buttonClick()
         updateLikeState()
         updateScrapState()
+    }
+
+
+    // 비로그인 사용자를 위해 어떤 딥링크로 접근하던 일단은 해당 포스트 페이지로 이동시키고,
+    // 로그인 한 경우 원래 요청한 페이지로  navigate 처리한다
+    private fun requestDeepLinkNavigation() {
+        val login = userPref.loginCheck()
+        if (requestPhotoZipPage) {
+            if (login) {
+                findNavController().navigate(
+                    R.id.action_navigation_home_to_photoZipFragment,
+                    bundleOf("post" to post)
+                )
+            } else {
+                Toast.makeText(requireContext(), "사진 모아보기는 로그인 후 이용가능합니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+        if(requestUserInfoPage){
+            if(login){
+                findNavController().navigate(
+                    R.id.action_home_fragment_to_userInfoFragment,
+                    bundleOf("postId" to post.id)
+                )
+            }else{
+                Toast.makeText(requireContext(), "유저 정보보기는 로그인 후 이용가능합니다.", Toast.LENGTH_SHORT).show()
+
+            }
+        }
+        if(requestRecommendClothPage){
+            if(login){
+                findNavController().navigate(
+                    R.id.action_userInfoFragment_to_recommendFragment,
+                    bundleOf("postId" to post.id)
+                )
+            }else{
+                Toast.makeText(requireContext(), "추천 의상 페이지는 로그인 후 이용가능합니다.", Toast.LENGTH_SHORT).show()
+
+            }
+        }
+
     }
 
     private fun buttonClick() {
@@ -166,17 +207,21 @@ class DeepLinkPostFragment : Fragment(R.layout.deeplink_post_fragment),
             findNavController().popBackStack()
         }
     }
+
     private fun updateLikeState() {
         viewModel.likeResponse.observe(viewLifecycleOwner) { resources ->
             if (resources is Resource.Success && resources.value.success) {
-                binding.postDetailMenu.likeBtn.isSelected = !binding.postDetailMenu.likeBtn.isSelected
+                binding.postDetailMenu.likeBtn.isSelected =
+                    !binding.postDetailMenu.likeBtn.isSelected
             }
         }
     }
+
     private fun updateScrapState() {
         viewModel.scrapResponse.observe(viewLifecycleOwner) { resources ->
             if (resources is Resource.Success && resources.value.success) {
-                binding.postDetailMenu.scrapBtn.isSelected = !binding.postDetailMenu.scrapBtn.isSelected
+                binding.postDetailMenu.scrapBtn.isSelected =
+                    !binding.postDetailMenu.scrapBtn.isSelected
             }
         }
     }
