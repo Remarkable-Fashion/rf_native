@@ -85,10 +85,6 @@
             <action
                 android:id="@+id/action_photoZipFragment_to_photoZipVerticalFragment"
                 app:destination="@id/photoZipVerticalFragment" />
-            <action
-                android:id="@+id/action_photoZipFragment_to_userInfoFragment"
-                app:destination="@id/userInfoFragment" />
-
         </fragment>
         <fragment
             android:id="@+id/photoZipVerticalFragment"
@@ -97,6 +93,9 @@
             <action
                 android:id="@+id/action_photoZipVerticalFragment_to_otherUserProfileFragment"
                 app:destination="@id/otherUserProfileFragment" />
+            <action
+                android:id="@+id/action_photoZipFragment_to_userInfoFragment"
+                app:destination="@id/userInfoFragment" />
         </fragment>
         <fragment
             android:id="@+id/filterFragment"
@@ -519,10 +518,6 @@
             <action
                 android:id="@+id/action_photoZipFragment_to_photoZipVerticalFragment"
                 app:destination="@id/photoZipVerticalFragment" />
-            <action
-                android:id="@+id/action_photoZipFragment_to_userInfoFragment"
-                app:destination="@id/userInfoFragment" />
-
         </fragment>
         <fragment
             android:id="@+id/photoZipVerticalFragment"
@@ -531,6 +526,9 @@
             <action
                 android:id="@+id/action_photoZipVerticalFragment_to_otherUserProfileFragment"
                 app:destination="@id/otherUserProfileFragment" />
+            <action
+                android:id="@+id/action_photoZipFragment_to_userInfoFragment"
+                app:destination="@id/userInfoFragment" />
         </fragment>
 
         <fragment

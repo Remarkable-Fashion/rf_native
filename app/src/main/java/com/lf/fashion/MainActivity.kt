@@ -81,16 +81,16 @@ class MainActivity : AppCompatActivity() {
                         navController?.navigate(R.id.action_global_to_deeplinkPostFragment, bundleOf("postId" to postParam))
                     }
                     if(!photoZip.isNullOrEmpty()){
-                        Log.e(TAG, "dynamicLink photoZip param: $photoZip")
-                        navController?.navigate(R.id.action_global_to_deeplinkPostFragment, bundleOf("postId" to postParam, "photoZip" to true))
+                        Log.e(TAG, "dynamicLink photoZip param: $photoZip") // url 의 photoZip param은 postId, navigation photoZip bundle은 페이지 여부를 체크하는 boolean
+                        navController?.navigate(R.id.action_global_to_deeplinkPostFragment, bundleOf("postId" to photoZip, "photoZip" to true))
                     }
                     if(!userInfoParam.isNullOrEmpty()){
                         Log.e(TAG, "dynamicLink userInfoParam param: $userInfoParam")
-                        navController?.navigate(R.id.action_global_to_deeplinkPostFragment, bundleOf("postId" to postParam, "userInfo" to true))
+                        navController?.navigate(R.id.action_global_to_deeplinkPostFragment, bundleOf("postId" to userInfoParam, "userInfo" to true))
                     }
                     if(!recommendClothParam.isNullOrEmpty()){
                         Log.e(TAG, "dynamicLink recommendClothParam param: $recommendClothParam")
-                        navController?.navigate(R.id.action_global_to_deeplinkPostFragment, bundleOf("postId" to postParam, "recommendCloth" to true))
+                        navController?.navigate(R.id.action_global_to_deeplinkPostFragment, bundleOf("postId" to recommendClothParam, "recommendCloth" to true))
                     }
 
                 }

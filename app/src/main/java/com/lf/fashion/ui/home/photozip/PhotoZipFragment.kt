@@ -192,9 +192,11 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
     private fun profileKebabBtnOnClick() {
         binding.kebabBtn.setOnClickListener {
             val dialog = PostBottomSheetFragment(userId = userInfoPost.user?.id) {
-                userInfoPost.user?.let {
-                    CreateDynamicLink(requireContext(), "photoZip", it.id)
+              //  userInfoPost.user?.let {
+                viewModel.bundlePost?.id?.let {
+                    CreateDynamicLink(requireContext(), "photoZip" , it)
                 }
+             //   }
             }
             dialog.show(parentFragmentManager, "bottom_sheet")
         }

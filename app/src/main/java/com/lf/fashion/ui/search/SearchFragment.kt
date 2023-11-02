@@ -25,6 +25,7 @@ import com.lf.fashion.data.common.SearchLookFilterDataStore
 import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.databinding.SearchFragmentBinding
 import com.lf.fashion.ui.common.hideKeyboard
+import com.lf.fashion.ui.common.showRequireLoginDialog
 import com.lf.fashion.ui.search.adapter.SearchRankRowClickListener
 import com.lf.fashion.ui.search.adapter.SearchResultViewPagerAdapter
 import com.lf.fashion.ui.search.adapter.TermRankAdapter
@@ -46,6 +47,7 @@ class SearchFragment : Fragment(R.layout.search_fragment),
     private lateinit var lookFilterDataStore: SearchLookFilterDataStore
     private lateinit var itemFilterDataStore: SearchItemFilterDataStore
     private var lastRequestTimeMillis: Long = 0 // 마지막 요청 시간을 저장할 변수
+    private lateinit var userPref: UserDataStorePref
 
     private val tabTitleArray = arrayOf("LOOK", "ITEM")
     private val historyList = MutableLiveData<MutableList<String>>()
@@ -57,7 +59,12 @@ class SearchFragment : Fragment(R.layout.search_fragment),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = SearchFragmentBinding.bind(view)
+        userPref = UserDataStorePref(requireContext())
 
+        if (!userPref.loginCheck()) {
+            showRequireLoginDialog()
+            return
+        }
         lookFilterDataStore = SearchLookFilterDataStore(requireContext().applicationContext)
         itemFilterDataStore = SearchItemFilterDataStore(requireContext().applicationContext)
         userPreferences = UserDataStorePref(requireContext().applicationContext)

@@ -42,9 +42,10 @@ class SaveImage(private val context: Context)  {
             val imageUri = resolver.insert(collection, contentValues)
 
             if (imageUri != null) {
-                val outputStream = resolver.openOutputStream(imageUri)
+                val outputStream = resolver.openOutputStream(imageUri) ?: throw NullPointerException("OutputStream is null")
+
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-                outputStream?.close()
+                outputStream.close()
 
                 // 저장 완료 메시지 표시
                 Toast.makeText(context, "이미지가 갤러리에 저장되었습니다.", Toast.LENGTH_SHORT).show()

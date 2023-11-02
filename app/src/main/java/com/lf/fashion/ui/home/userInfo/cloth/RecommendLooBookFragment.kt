@@ -73,7 +73,7 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
         //profile space 케밥 버튼
         lookBookRvAdapter = LookBookRvAdapter({ userId ->
             val dialog = PostBottomSheetFragment(userId = userId){
-                CreateDynamicLink(requireContext(), "recommend", userId)
+                CreateDynamicLink(requireContext(), "recommend", postId)
             }
             dialog.show(parentFragmentManager, "bottom_sheet")
         }, this)

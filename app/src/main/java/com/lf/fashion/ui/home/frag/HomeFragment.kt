@@ -58,6 +58,7 @@ class HomeFragment :
     private lateinit var likeClickedPosts: Posts
     private lateinit var scrapClickedPosts: Posts
     private lateinit var filterDataStore: PostFilterDataStore
+    private var init = true
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = HomeAFragmentBinding.bind(view)
@@ -84,8 +85,10 @@ class HomeFragment :
               (전환 속도 감소, 메모리에 무리가 가지않는다면 ok)*/
         photoLayoutVisibilityMode(true) // default ui visibility
         viewModel.postMode.observe(viewLifecycleOwner) {
-            requestPost()
-
+            if(init) {
+                requestPost()
+                init = false
+            }
             //상단 랜덤/팔로잉 모드 selected 적용
             val randomMode = (it == "random")
             binding.appBarRandom.isSelected = randomMode

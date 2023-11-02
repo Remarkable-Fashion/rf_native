@@ -48,7 +48,7 @@ class DeepLinkPostFragment : Fragment(R.layout.deeplink_post_fragment),
 
     /*private val defaultAdapter = DeepLinkPostAdapter(
         this@DeepLinkPostFragment, this@DeepLinkPostFragment)*/
-
+    private var init = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MainActivity.hideNavi(state = true)
@@ -66,36 +66,21 @@ class DeepLinkPostFragment : Fragment(R.layout.deeplink_post_fragment),
         requestRecommendClothPage = arguments?.getBoolean("recommendCloth") ?: false
 
         Log.e(TAG, "onePostFragment onviewCreated: $postId")
-
+        Log.e(TAG, "onViewCreated: $requestPhotoZipPage")
 
         viewModel.getPost(postId.toInt(), myUniqueId)
         viewModel.response.observe(viewLifecycleOwner) { resources ->
             when (resources) {
                 is Resource.Success -> {
                     Log.e(TAG, "to POSTS: ${resources.value}")
-                    requestDeepLinkNavigation()
+                    post = resources.value
+                    binding.post = post
 
-                    val userIdForPhotoZip = arguments?.getString("photoZip")
-                    userIdForPhotoZip?.let {
-                        findNavController().navigate(
-                            R.id.action_navigation_deeplink_to_photoZipFragment,
-                            bundleOf("post" to resources.value)
-                        )
+                    if(init) {
+                        requestDeepLinkNavigation()
+                        init =false
                     }
-                    val userIdForUserInfo = arguments?.getString("userInfo")
-                    userIdForUserInfo?.let {
-                        findNavController().navigate(
-                            R.id.action_deeplink_fragment_to_userInfoFragment,
-                            bundleOf("postId" to postId)
-                        )
-                    }
-                    val userIdForRecommendCloth = arguments?.getString("recommend")
-                    userIdForRecommendCloth?.let {
-                        findNavController().navigate(
-                            R.id.action_deeplink_to_recommendFragment,
-                            bundleOf("postId" to postId)
-                        )
-                    }
+
                     with(binding.horizontalViewPager) {
                         adapter = nestedAdapter.apply {
                             submitList(resources.value.images)
@@ -108,14 +93,15 @@ class DeepLinkPostFragment : Fragment(R.layout.deeplink_post_fragment),
                             this
                         ) { _, _ -> }.attach()
                     }
-                    post = resources.value
-                    binding.post = post
+
                     with(binding.postDetailMenu) {
                         likeBtn.isSelected = post.isFavorite ?: false
                         likesValue.text = post.count.favorites.toString()
                         scrapBtn.isSelected =
                             post.isScrap ?: true //null 인 경우는 내 스크랩 모아보기이기 때문에, 모두 true
                     }
+
+
                 }
 
                 is Resource.Failure -> {
@@ -136,12 +122,41 @@ class DeepLinkPostFragment : Fragment(R.layout.deeplink_post_fragment),
     // 로그인 한 경우 원래 요청한 페이지로  navigate 처리한다
     private fun requestDeepLinkNavigation() {
         val login = userPref.loginCheck()
+
+    /*    val userIdForPhotoZip = arguments?.getString("photoZip")
+        userIdForPhotoZip?.let {
+            findNavController().navigate(
+                R.id.action_navigation_deeplink_to_photoZipFragment,
+                bundleOf("post" to resources.value)
+            )
+        }
+        val userIdForUserInfo = arguments?.getString("userInfo")
+        userIdForUserInfo?.let {
+            findNavController().navigate(
+                R.id.action_deeplink_fragment_to_userInfoFragment,
+                bundleOf("postId" to postId)
+            )
+        }
+        val userIdForRecommendCloth = arguments?.getString("recommend")
+        userIdForRecommendCloth?.let {
+            findNavController().navigate(
+                R.id.action_deeplink_to_recommendFragment,
+                bundleOf("postId" to postId)
+            )
+        }*/
         if (requestPhotoZipPage) {
             if (login) {
+                Log.e(TAG, "requestDeepLinkNavigation: $requestPhotoZipPage , $post")
                 findNavController().navigate(
-                    R.id.action_navigation_home_to_photoZipFragment,
+                    R.id.action_navigation_deeplink_to_photoZipFragment,
                     bundleOf("post" to post)
                 )
+                val fragmentNames = findNavController().backQueue.mapNotNull { navBackStackEntry ->
+                    val destination = navBackStackEntry.destination
+                    destination.label?.toString() // 프래그먼트의 이름을 가져옴
+                }
+                Log.e(TAG, "nav currentdes: $fragmentNames")
+
             } else {
                 Toast.makeText(requireContext(), "사진 모아보기는 로그인 후 이용가능합니다.", Toast.LENGTH_SHORT).show()
             }
@@ -149,7 +164,7 @@ class DeepLinkPostFragment : Fragment(R.layout.deeplink_post_fragment),
         if(requestUserInfoPage){
             if(login){
                 findNavController().navigate(
-                    R.id.action_home_fragment_to_userInfoFragment,
+                    R.id.action_deeplink_fragment_to_userInfoFragment,
                     bundleOf("postId" to post.id)
                 )
             }else{
@@ -160,7 +175,7 @@ class DeepLinkPostFragment : Fragment(R.layout.deeplink_post_fragment),
         if(requestRecommendClothPage){
             if(login){
                 findNavController().navigate(
-                    R.id.action_userInfoFragment_to_recommendFragment,
+                    R.id.action_deeplink_to_recommendFragment,
                     bundleOf("postId" to post.id)
                 )
             }else{

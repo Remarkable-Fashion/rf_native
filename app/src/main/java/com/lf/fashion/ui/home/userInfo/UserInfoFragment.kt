@@ -29,7 +29,7 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
     private val viewModel: UserInfoViewModel by viewModels()
     private lateinit var userPref: UserDataStorePref
     private var userId by Delegates.notNull<Int>()
-
+    private var postId :Int? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,7 +40,7 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
 
         cancelBtnBackStack(binding.cancelBtn)
 
-        val postId = arguments?.get("postId") as Int
+        postId = arguments?.get("postId") as Int
         val myUniqueId = userPref.getMyUniqueId()
 
         binding.recommendBtn.setOnClickListener {
@@ -50,7 +50,7 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
             )
         }
 
-        viewModel.getUserInfoAndStyle(postId)
+        viewModel.getUserInfoAndStyle(postId!!)
         userInfoObserveAndBinding(myUniqueId)
 
         followBtnOnclick()
@@ -145,7 +145,7 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
     private fun profileKebabBtnOnClick() {
         binding.profileSpace.kebabBtn.setOnClickListener {
             val dialog = PostBottomSheetFragment(userId = userId){
-                CreateDynamicLink(requireContext(), "userInfo", it.id)
+                CreateDynamicLink(requireContext(), "userInfo", postId!!)
 
             }
             dialog.show(parentFragmentManager, "bottom_sheet")
