@@ -34,7 +34,8 @@ class PostBottomSheetFragment(
     private val post: Posts? = null,
     private val userId: Int? = null,
     private val myBottomDialogListener: MyBottomDialogListener? = null,
-    private val userShareOnclick: (() -> Unit)? = null
+    private val userShareOnclick: (() -> Unit)? = null,
+    private val copyLinkOnclick: (() -> Unit)? = null
 ) :
     BottomSheetDialogFragment(R.layout.home_bottom_dialog_item),
     View.OnClickListener {
@@ -54,19 +55,13 @@ class PostBottomSheetFragment(
         binding.bottomLayout.children.forEach { it.setOnClickListener(this) }
         binding.bottomLinear.children.forEach { it.setOnClickListener(this) }
         if (post != null) {
-            //로그인 유저에게 차단/팔로우 취소 버튼 노출
-            loginUserUi()
-            //나의 게시물일 경우 게시물 관련 버튼 노출
-            myPostBottomUi()
-
             viewModel.getPostByPostId(post.id)
             viewModel.postInfo.observe(viewLifecycleOwner) { resources ->
                 if (resources is Resource.Success) {
                     val response = resources.value
-                    Log.e(TAG, "onViewCreated: $response")
+                    Log.e(TAG, "onViewCreated: ${binding.blockBtn.isVisible}")
                     scrapState = response.isScrap ?: false
                     followState = response.isFollow ?: false
-
                     btnTextUpdate("scrap", scrapState)
                     btnTextUpdate("follow", followState)
                     btnTextUpdate("block", blocked)
@@ -74,15 +69,20 @@ class PostBottomSheetFragment(
             }
             observeAllMsgResponse()
         } else {
-            binding.declareBtn.isVisible = userPref.getMyUniqueId() != userId
+            Log.e(TAG, "else: ${binding.blockBtn.isVisible}")
+
             binding.bottomSheetFollowBtn.isVisible = false
             binding.blockBtn.isVisible = false
             binding.privateSettingBtn.isVisible = false
             binding.postEditBtn.isVisible = false
             binding.deleteBtn.isVisible = false
             binding.bottomSheetScrapBtn.isVisible = false
-
+            if (userPref.getMyUniqueId() != userId && userPref.loginCheck()) {
+                binding.declareBtn.isVisible = true
+            }
         }
+        //로그인 유저에게 차단/팔로우 취소 버튼 노출
+        loginUserUi()
     }
 
     override fun onDismiss(dialog: DialogInterface) {
@@ -96,30 +96,38 @@ class PostBottomSheetFragment(
 
     private fun loginUserUi() {
         val loggedIn = userPref.loginCheck()
+        Log.e(TAG, "login BOTTOM: $loggedIn")
+        Log.e(TAG, "login: ${binding.blockBtn.isVisible}")
+
         binding.bottomSheetFollowBtn.isVisible = loggedIn
         binding.blockBtn.isVisible = loggedIn
+        binding.bottomSheetScrapBtn.isVisible = loggedIn
+        binding.declareBtn.isVisible = loggedIn
 
+        //로그인 사용자 일 경우 -> 나의 게시물인지 체크 , 게시물 관련 버튼 노출
+        if (loggedIn) {
+            val postUserId = post?.user?.id ?: userId
+            val myPost = userPref.getMyUniqueId() == postUserId
+            Log.e(TAG, "myPostBottomUi: $postUserId , ${userPref.getMyUniqueId()} , ${myPost}")
+            Log.e(TAG, "myPost :  ${binding.blockBtn.isVisible}")
+
+            binding.declareBtn.isVisible = !myPost
+            binding.bottomSheetFollowBtn.isVisible = !myPost
+            binding.blockBtn.isVisible = !myPost
+            binding.privateSettingBtn.isVisible = myPost
+            binding.postEditBtn.isVisible = myPost
+            binding.deleteBtn.isVisible = myPost
+            btnTextUpdate("isPublic", isPublicState)
+        }
     }
 
-    private fun myPostBottomUi() {
-        //나의 게시물일 경우 myPost 는 true
-        val postUserId = post?.user?.id ?: userId
-        val myPost = userPref.getMyUniqueId() == postUserId
 
-        binding.declareBtn.isVisible = !myPost
-        binding.bottomSheetFollowBtn.isVisible = !myPost
-        binding.blockBtn.isVisible = !myPost
-        binding.privateSettingBtn.isVisible = myPost
-        binding.postEditBtn.isVisible = myPost
-        binding.deleteBtn.isVisible = myPost
-        btnTextUpdate("isPublic", isPublicState)
-    }
 
     //TODO 버튼 반응 구현
     override fun onClick(view: View?) {
         when (view) {
             binding.bottomSheetLinkCopyBtn -> {
-
+                copyLinkOnclick?.let { it() }
             }
 
             binding.bottomSheetShareBtn -> {
@@ -179,13 +187,6 @@ class PostBottomSheetFragment(
     }
 
     private fun observeAllMsgResponse() {
-        // 로그인한 사용자에게만 노출
-        val loginCheck = userPref.loginCheck()
-        binding.bottomSheetScrapBtn.isVisible = loginCheck
-        binding.bottomSheetFollowBtn.isVisible = loginCheck
-        binding.blockBtn.isVisible = loginCheck
-        binding.declareBtn.isVisible = loginCheck
-
         viewModel.followResponse.observe(viewLifecycleOwner) {
             if ((it is Resource.Success) && it.value.success) {
                 followState = !followState

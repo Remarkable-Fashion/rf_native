@@ -16,6 +16,7 @@ import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ClothPost
 import com.lf.fashion.databinding.HomeBRecommendFragmentBinding
+import com.lf.fashion.ui.common.CopyLink
 import com.lf.fashion.ui.common.CreateDynamicLink
 import com.lf.fashion.ui.common.cancelBtnBackStack
 import com.lf.fashion.ui.home.ClothLikeClickListener
@@ -72,8 +73,10 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
         //todo usershare test
         //profile space 케밥 버튼
         lookBookRvAdapter = LookBookRvAdapter({ userId ->
-            val dialog = PostBottomSheetFragment(userId = userId){
+            val dialog = PostBottomSheetFragment(userId = userId , userShareOnclick = {
                 CreateDynamicLink(requireContext(), "recommend", postId)
+            }){
+                CopyLink().copyTextToClipboard(requireContext(),postId,"recommend")
             }
             dialog.show(parentFragmentManager, "bottom_sheet")
         }, this)

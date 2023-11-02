@@ -18,6 +18,7 @@ import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.databinding.HomeBPhotozipVerticalFragmentBinding
+import com.lf.fashion.ui.common.CopyLink
 import com.lf.fashion.ui.common.CreateDynamicLink
 import com.lf.fashion.ui.common.MyBottomDialogListener
 import com.lf.fashion.ui.common.cancelBtnBackStack
@@ -172,11 +173,13 @@ class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_frag
     }
 
     override fun shareBtnClicked(post: Posts) {
-
+        CreateDynamicLink(requireContext(), "post" , post.id)
     }
 
     override fun kebabBtnClicked(post: Posts) {
-        val dialog = PostBottomSheetFragment(post, myBottomDialogListener = this)
+        val dialog = PostBottomSheetFragment(post, myBottomDialogListener = this, userShareOnclick = null){
+            CopyLink().copyTextToClipboard(requireContext(),post.id,"post")
+        }
         dialog.show(childFragmentManager, "bottom_sheet")
     }
 

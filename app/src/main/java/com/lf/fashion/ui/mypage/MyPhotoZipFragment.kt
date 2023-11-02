@@ -15,6 +15,8 @@ import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.data.model.UserInfo
 import com.lf.fashion.databinding.MypagePhotoZipFragmentBinding
+import com.lf.fashion.ui.common.CopyLink
+import com.lf.fashion.ui.common.CreateDynamicLink
 import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.globalFrag.adapter.GridPhotoClickListener
 import com.lf.fashion.ui.globalFrag.adapter.GridPostAdapter
@@ -179,7 +181,11 @@ class MyPhotoZipFragment : Fragment(R.layout.mypage_photo_zip_fragment), GridPho
 
     private fun profileKebabBtnOnClick() {
         binding.kebabBtn.setOnClickListener {
-            val dialog = PostBottomSheetFragment(userId = userInfoPost.user?.id)
+            val dialog = PostBottomSheetFragment(userId = userInfoPost.user?.id , userShareOnclick = {
+                CreateDynamicLink(requireContext(), "photoZip" , userInfoPost.id)
+            }){
+                CopyLink().copyTextToClipboard(requireContext(),userInfoPost.id,"photoZip")
+            }
             dialog.show(parentFragmentManager, "bottom_sheet")
         }
     }

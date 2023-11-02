@@ -17,6 +17,7 @@ import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.data.model.UserInfo
 import com.lf.fashion.databinding.UserVerticalFragmentBinding
+import com.lf.fashion.ui.common.CopyLink
 import com.lf.fashion.ui.common.CreateDynamicLink
 import com.lf.fashion.ui.common.MyBottomDialogListener
 import com.lf.fashion.ui.common.cancelBtnBackStack
@@ -157,11 +158,13 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
     }
 
     override fun shareBtnClicked(post: Posts) {
-
+        CreateDynamicLink(requireContext(), "post" , post.id)
     }
 
     override fun kebabBtnClicked(post: Posts) {
-        val dialog = PostBottomSheetFragment(post)
+        val dialog = PostBottomSheetFragment(post , userShareOnclick = null){
+            CopyLink().copyTextToClipboard(requireContext(),post.id,"post")
+        }
         dialog.show(parentFragmentManager, "bottom_sheet")
     }
 

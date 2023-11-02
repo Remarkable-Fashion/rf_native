@@ -22,6 +22,7 @@ import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.data.model.*
 import com.lf.fashion.databinding.HomeAFragmentBinding
+import com.lf.fashion.ui.common.CopyLink
 import com.lf.fashion.ui.common.CreateDynamicLink
 import com.lf.fashion.ui.home.PhotoClickListener
 import com.lf.fashion.ui.home.VerticalViewPagerClickListener
@@ -400,12 +401,14 @@ class HomeFragment :
 
     //vertical fragment 에서 공유버튼 클릭시 바텀 다이얼로그를 생성한다.
     override fun shareBtnClicked(post: Posts) {
-
+        CreateDynamicLink(requireContext(), "post", post.id)
     }
 
     override fun kebabBtnClicked(post: Posts) {
         Log.d(TAG, "HomeFragment - kebabBtnClicked postId : ${post.id}");
-        val dialog = PostBottomSheetFragment(post, myBottomDialogListener = this)
+        val dialog = PostBottomSheetFragment(post, myBottomDialogListener = this , userShareOnclick = null){
+            CopyLink().copyTextToClipboard(requireContext(),post.id,"post")
+        }
         dialog.show(childFragmentManager, "bottom_sheet")
     }
 

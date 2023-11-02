@@ -11,6 +11,7 @@ import com.lf.fashion.R
 import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.HomeBUserInfoFragmentBinding
+import com.lf.fashion.ui.common.CopyLink
 import com.lf.fashion.ui.common.CreateDynamicLink
 import com.lf.fashion.ui.common.cancelBtnBackStack
 import com.lf.fashion.ui.common.childChip
@@ -144,9 +145,10 @@ class UserInfoFragment : Fragment(R.layout.home_b_user_info_fragment) {
     //todo usershare test
     private fun profileKebabBtnOnClick() {
         binding.profileSpace.kebabBtn.setOnClickListener {
-            val dialog = PostBottomSheetFragment(userId = userId){
+            val dialog = PostBottomSheetFragment(userId = userId , userShareOnclick = {
                 CreateDynamicLink(requireContext(), "userInfo", postId!!)
-
+            }){
+                CopyLink().copyTextToClipboard(requireContext(),postId!!,"userInfo")
             }
             dialog.show(parentFragmentManager, "bottom_sheet")
         }

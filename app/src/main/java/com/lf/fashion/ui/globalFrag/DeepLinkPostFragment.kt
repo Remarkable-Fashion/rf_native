@@ -19,6 +19,7 @@ import com.lf.fashion.data.model.ImageUrl
 import com.lf.fashion.data.model.Posts
 import com.lf.fashion.data.network.Resource
 import com.lf.fashion.databinding.DeeplinkPostFragmentBinding
+import com.lf.fashion.ui.common.CopyLink
 import com.lf.fashion.ui.common.CreateDynamicLink
 import com.lf.fashion.ui.common.MyBottomDialogListener
 import com.lf.fashion.ui.common.handleApiError
@@ -282,12 +283,14 @@ class DeepLinkPostFragment : Fragment(R.layout.deeplink_post_fragment),
     }
 
     override fun shareBtnClicked(post: Posts) {
-
+        CreateDynamicLink(requireContext(), "post", post.id)
     }
 
     override fun kebabBtnClicked(post: Posts) {
         Log.d(TAG, "HomeFragment - kebabBtnClicked postId : ${post.id}");
-        val dialog = PostBottomSheetFragment(post, myBottomDialogListener = this)
+        val dialog = PostBottomSheetFragment(post, myBottomDialogListener = this, userShareOnclick = null){
+            CopyLink().copyTextToClipboard(requireContext(),post.id,"post")
+        }
         dialog.show(childFragmentManager, "bottom_sheet")
     }
 
