@@ -1,6 +1,7 @@
 package com.lf.fashion.ui.common
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
@@ -14,14 +15,12 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.ListAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
@@ -168,6 +167,7 @@ fun Fragment.showRequireLoginDialog(alreadyHome: Boolean? = null) {
             }
         }
     ) {
+        findNavController().popBackStack()
         findNavController().navigate(R.id.navigation_mypage)
     }.show(parentFragmentManager, "login_alert_dialog")
 }
@@ -308,6 +308,8 @@ fun Fragment.handleApiError(
 ) {
     when {
         failure.isNetworkError -> {
+            Toast.makeText(context, "네트워크 연결을 확인해주세요", Toast.LENGTH_SHORT).show()
+
             /*  try {
                   val findViewById = requireActivity().findViewById<View>(R.id.abb_bar_layout)
                   findViewById.snackbar(
@@ -356,7 +358,14 @@ fun Fragment.handleApiError(
         }
     }
 }
+fun Fragment.logNaviStatus(){
+    val fragmentNames = findNavController().backQueue.mapNotNull { navBackStackEntry ->
+        val destination = navBackStackEntry.destination
+        destination.label?.toString() // 프래그먼트의 이름을 가져옴
+    }
+    Log.e(TAG, "log Navi backStack: $fragmentNames")
 
+}
 
 // 파일 확장자로부터 MIME 타입을 추론하는 함수
 fun getMimeType(file: File): String {
@@ -393,10 +402,8 @@ fun getAssetsTextString(mContext: Context, fileName: String): String {
 fun Fragment.mainBottomMenuListener(setting : Boolean){
     if(setting){
         MainActivity.bottomNaviReselectedListener(findNavController())
-        MainActivity.bottomNaviSetItemSelectedListener(findNavController())
     }else{
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavBar)
-        bottomNavigationView.setOnItemSelectedListener(null)
         bottomNavigationView.setOnItemReselectedListener(null)
     }
 }

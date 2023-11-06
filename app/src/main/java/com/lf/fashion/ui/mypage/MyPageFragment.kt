@@ -55,12 +55,12 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                 return@observe
             }
         }
-        val fragmentNames = findNavController().backQueue.mapNotNull { navBackStackEntry ->
+   /*     val fragmentNames = findNavController().backQueue.mapNotNull { navBackStackEntry ->
             val destination = navBackStackEntry.destination
             destination.label?.toString() // 프래그먼트의 이름을 가져옴
         }
         Log.e(TAG, "mypage onViewCreated: $fragmentNames")
-
+*/
         userPref = UserDataStorePref(requireContext().applicationContext)
 
         gridAdapter = GridPostAdapter(3, this@MyPageFragment, reduceViewWidth = true)

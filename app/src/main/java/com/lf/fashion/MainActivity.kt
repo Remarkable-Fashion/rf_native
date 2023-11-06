@@ -1,15 +1,17 @@
 package com.lf.fashion
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.os.bundleOf
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
@@ -25,7 +27,6 @@ import com.lf.fashion.data.common.SearchLookFilterDataStore
 import com.lf.fashion.data.common.UserDataStorePref
 import com.lf.fashion.databinding.ActivityMainBinding
 import com.lf.fashion.ui.common.AppCustomDialog
-import com.lf.fashion.ui.common.showRequireLoginDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,7 +39,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var itemFilterDataStore: SearchItemFilterDataStore
     private lateinit var postFilterDataStore: PostFilterDataStore
     private lateinit var userPref: UserDataStorePref
-
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
@@ -55,16 +55,21 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.mainContainer)?.findNavController()
         navController?.let {
             bottomNavigationView.setupWithNavController(it)
-            bottomNaviSetItemSelectedListener(it)
         }
 
         // BottomNavigationView의 메뉴 아이템 다시 클릭할 경우(reselected)리스너 설정
         bottomNaviReselectedListener(navController)
 
-        //딥링크 부분 .. 구현하다가 말았..
+        //딥링크
+        deepLinkRedirect(navController)
+
+        updateAvailabilityCheck()
+
+    }
+
+    private fun deepLinkRedirect(navController: NavController?) {
         Firebase.dynamicLinks.getDynamicLink(intent)
             .addOnSuccessListener { pendingDynamicLinkData: PendingDynamicLinkData? ->
-                // Get deep link from result (may be null if no link is found)
                 var deepLink: Uri? = null
                 if (pendingDynamicLinkData != null) {
                     deepLink = pendingDynamicLinkData.link
@@ -73,31 +78,45 @@ class MainActivity : AppCompatActivity() {
                     val postParam = deepLink?.getQueryParameter("post") // 게시물
                     val photoZip = deepLink?.getQueryParameter("photoZip") // 유저 사진 모아보기
                     val userInfoParam = deepLink?.getQueryParameter("userInfo") // 유저 게시물 - 정보보기 페이지
-                    val recommendClothParam = deepLink?.getQueryParameter("recommend") //유저 게시물 - 이 의상은 어때 페이지
+                    val recommendClothParam =
+                        deepLink?.getQueryParameter("recommend") //유저 게시물 - 이 의상은 어때 페이지
 
 
-                    if(!postParam.isNullOrEmpty()){
+                    if (!postParam.isNullOrEmpty()) {
                         Log.e(TAG, "dynamicLink post param: $postParam")
-                        navController?.navigate(R.id.action_global_to_deeplinkPostFragment, bundleOf("postId" to postParam))
+                        navController?.navigate(
+                            R.id.action_global_to_deeplinkPostFragment,
+                            bundleOf("postId" to postParam)
+                        )
                     }
-                    if(!photoZip.isNullOrEmpty()){
-                        Log.e(TAG, "dynamicLink photoZip param: $photoZip") // url 의 photoZip param은 postId, navigation photoZip bundle은 페이지 여부를 체크하는 boolean
-                        navController?.navigate(R.id.action_global_to_deeplinkPostFragment, bundleOf("postId" to photoZip, "photoZip" to true))
+                    if (!photoZip.isNullOrEmpty()) {
+                        Log.e(
+                            TAG,
+                            "dynamicLink photoZip param: $photoZip"
+                        ) // url 의 photoZip param은 postId, navigation photoZip bundle은 페이지 여부를 체크하는 boolean
+                        navController?.navigate(
+                            R.id.action_global_to_deeplinkPostFragment,
+                            bundleOf("postId" to photoZip, "photoZip" to true)
+                        )
                     }
-                    if(!userInfoParam.isNullOrEmpty()){
+                    if (!userInfoParam.isNullOrEmpty()) {
                         Log.e(TAG, "dynamicLink userInfoParam param: $userInfoParam")
-                        navController?.navigate(R.id.action_global_to_deeplinkPostFragment, bundleOf("postId" to userInfoParam, "userInfo" to true))
+                        navController?.navigate(
+                            R.id.action_global_to_deeplinkPostFragment,
+                            bundleOf("postId" to userInfoParam, "userInfo" to true)
+                        )
                     }
-                    if(!recommendClothParam.isNullOrEmpty()){
+                    if (!recommendClothParam.isNullOrEmpty()) {
                         Log.e(TAG, "dynamicLink recommendClothParam param: $recommendClothParam")
-                        navController?.navigate(R.id.action_global_to_deeplinkPostFragment, bundleOf("postId" to recommendClothParam, "recommendCloth" to true))
+                        navController?.navigate(
+                            R.id.action_global_to_deeplinkPostFragment,
+                            bundleOf("postId" to recommendClothParam, "recommendCloth" to true)
+                        )
                     }
 
                 }
             }
             .addOnFailureListener(this) { e -> Log.e(TAG, "onCreate: 다이나믹 링크 $e") }
-
-        updateAvailabilityCheck()
     }
 
     override fun onDestroy() {
@@ -108,6 +127,7 @@ class MainActivity : AppCompatActivity() {
             postFilterDataStore.clearMainFilter()
         }
     }
+
     private fun updateAvailabilityCheck() {
         val appUpdateManager = AppUpdateManagerFactory.create(this)
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
@@ -124,6 +144,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     companion object {
         private lateinit var binding: ActivityMainBinding
         fun hideNavi(state: Boolean) {
@@ -133,40 +154,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        fun bottomNaviSetItemSelectedListener(
-            navController: NavController
-        ) {
-            binding.bottomNavBar.setOnItemSelectedListener { item ->
-                //로그인 요청 이후에 페이지 이동 오류 방지
-                val currentId = navController.currentDestination?.id
-                if( currentId== R.id.loginFragment || currentId == R.id.mypage_fragment){
-                     when (item.itemId) {
-                         R.id.navigation_home -> {
-                             navController.navigate(R.id.navigation_home)
-                         }
-
-                         R.id.navigation_mypage -> {
-                             navController.navigate(R.id.navigation_mypage)
-                         }
-
-                         R.id.navigation_photo -> {
-                             navController.navigate(R.id.navigation_photo)
-                         }
-
-                         R.id.navigation_scrap -> {
-                             navController.navigate(R.id.navigation_scrap)
-                         }
-
-                         R.id.navigation_search -> {
-                             navController.navigate(R.id.navigation_search)
-                         }
-                     }
-                 }
-                NavigationUI.onNavDestinationSelected(item, navController)
-
-                return@setOnItemSelectedListener true
-            }
-        }
 
         fun bottomNaviReselectedListener(
             navController: NavController?
@@ -174,7 +161,6 @@ class MainActivity : AppCompatActivity() {
             binding.bottomNavBar.setOnItemReselectedListener { item ->
                 // 현재 선택된 메뉴 아이디
                 val currentMenuItemId = binding.bottomNavBar.selectedItemId
-
                 // 클릭된 메뉴 아이템이 현재 선택된 메뉴와 동일한 경우
                 if (item.itemId == currentMenuItemId) {
                     Log.e(TAG, "onCreate: setOnItemReselectedListener")
@@ -197,7 +183,8 @@ class MainActivity : AppCompatActivity() {
                                     popBackStack(R.id.navigation_home, false)
                                 }*/
                         }
-                        R.id.navigation_scrap ->{
+
+                        R.id.navigation_scrap -> {
                             navController?.navigate(R.id.navigation_scrap)
                         }
                     }
