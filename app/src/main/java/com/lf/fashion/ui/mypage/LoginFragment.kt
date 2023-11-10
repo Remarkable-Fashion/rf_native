@@ -100,7 +100,8 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
                                 if (resource.value.success) {
                                     //      showLoading(requireActivity(),false)
                                     Log.d(TAG, "LoginFragment - requestJWTToken: ");
-                                    findNavController().navigate(R.id.navigation_mypage)
+                                    viewModel.getSavedLoginToken() // viewModel 소유 token 갱신
+                                    findNavController().popBackStack()
                                 } else {
                                     Log.e(TAG, "requestJWTToken: ${resource.value.msg}")
                                 }

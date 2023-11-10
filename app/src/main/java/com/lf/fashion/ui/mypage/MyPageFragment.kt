@@ -49,19 +49,14 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        userPref = UserDataStorePref(requireContext().applicationContext)
+
         viewModel.savedLoginToken.observe(viewLifecycleOwner) {
-            if (it.isNullOrEmpty()) {
+            if (it.isNullOrEmpty() && !userPref.loginCheck()) {
                 findNavController().navigate(R.id.action_navigation_mypage_to_loginFragment)
                 return@observe
             }
         }
-   /*     val fragmentNames = findNavController().backQueue.mapNotNull { navBackStackEntry ->
-            val destination = navBackStackEntry.destination
-            destination.label?.toString() // 프래그먼트의 이름을 가져옴
-        }
-        Log.e(TAG, "mypage onViewCreated: $fragmentNames")
-*/
-        userPref = UserDataStorePref(requireContext().applicationContext)
 
         gridAdapter = GridPostAdapter(3, this@MyPageFragment, reduceViewWidth = true)
         with(binding.gridRv){
