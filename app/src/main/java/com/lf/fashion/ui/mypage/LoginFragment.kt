@@ -88,7 +88,6 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
                 // Handle the error if token retrieval fails
             }
             fcmToken?.let {
-                Log.e(TAG, "FCM: $it")
                 val response = viewModel.getJWT(token.accessToken, it)
                 response.let { resource ->
                     withContext(Dispatchers.Main) {

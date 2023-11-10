@@ -18,7 +18,6 @@ interface SafeApiCall {
                         Resource.Failure(false, throwable.code(), throwable.response()?.errorBody())
                     }
                     else -> {
-                        Log.e("error",throwable.message.toString())
                         Resource.Failure(true, null, null)
                     }
                 }

@@ -49,15 +49,13 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
                 when (resources) {
                     is Resource.Success -> {
                         val response = resources.value
-                        Log.e(TAG, "ScrapFragment - onViewCreated RESPONSE: $response");
                         if (response.posts.isNotEmpty()) {
                             binding.scrapRv.visibility = View.VISIBLE
                             binding.arrayEmptyText.visibility = View.GONE
 
                             viewModel.allScrapList = response.posts.toMutableList()
                             viewModel.recentResponse = response
-                            Log.e(TAG, "onViewCreated: recentReesponse ${viewModel.recentResponse!!.size}")
-                            Log.e(TAG, "onViewCreated: allScrapList ${viewModel.allScrapList!!.size}")
+
                             with(binding.scrapRv) {
                                 layoutManager = StaggeredGridLayoutManager(3,
                                     StaggeredGridLayoutManager.VERTICAL)
@@ -110,7 +108,6 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
                             val more = resource.value
                             viewModel.allScrapList.addAll(more.posts)
                             viewModel.recentResponse = more
-                            Log.e(TAG, "onViewCreated: loadMore allScrapList  ${viewModel.allScrapList!!.size}")
 
                             gridPostAdapter.apply {
                                 submitList(viewModel.allScrapList)

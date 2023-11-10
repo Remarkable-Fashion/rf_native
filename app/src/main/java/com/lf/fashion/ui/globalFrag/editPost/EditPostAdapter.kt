@@ -24,8 +24,6 @@ class EditPostAdapter(
     }
 
     override fun onBindViewHolder(holder: EditPostViewHolder, position: Int) {
-        Log.e(TAG, "onBindViewHolder: ${getItem(position)}")
-
         holder.bind(getItem(position))
     }
 

@@ -153,7 +153,6 @@ class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.
     private fun chipSetting() {
         viewModel.tpoChipList.observe(viewLifecycleOwner) {
             it?.let {
-                Log.e(TAG, "chipSetting tpo: $it")
                 val tpoChipGroup = binding.filterSpace.filterInclude.tpoChipGroup
                 childChip(
                     it,
@@ -173,7 +172,6 @@ class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.
         }
         viewModel.seasonChipList.observe(viewLifecycleOwner) {
             it?.let {
-                Log.e(TAG, "chipSetting season: $it")
                 val seasonChipGroup = binding.filterSpace.filterInclude.seasonChipGroup
                 childChip(
                     it,
@@ -194,7 +192,6 @@ class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.
         }
         viewModel.styleChipList.observe(viewLifecycleOwner) {
             it?.let {
-                Log.e(TAG, "chipSetting style: $it")
 
                 val styleChipGroup = binding.filterSpace.filterInclude.styleChipGroup
                 childChip(
@@ -265,7 +262,6 @@ class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.
                 Toast.makeText(requireContext(), "의상 카테고리를 선택해주세요!", Toast.LENGTH_SHORT).show()
 
             } else {
-                Log.e(TAG, "registerCloth: ${viewModel.selectedClothCategory} , binding.name.")
                 Toast.makeText(requireContext(), "의상에 관한 정보를 모두 입력해주세요!", Toast.LENGTH_SHORT).show()
             }
         }
@@ -414,7 +410,6 @@ class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.
                             viewModel.newClothImageList.mapIndexed { index, cloth ->
                                 cloth.copy(imageUrl = clothesImageResponse.imgUrls[index])
                             }
-                        Log.e(TAG, "uploadPostAndClothes: ${viewModel.newClothImageList}")
 
                         clothes.addAll(newList) // 기존 clothes 에 새로운 cloth 더하기
                     }
@@ -504,7 +499,6 @@ class EditPostStep2Fragment : Fragment(R.layout.edit_post_step2_fragment), View.
             weight,
             isPublic
         )
-        Log.e(TAG, "uploadPost: $uploadPost")
         return viewModel.editPost(viewModel.postId!!, uploadPost)
     }
 

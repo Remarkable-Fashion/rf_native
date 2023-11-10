@@ -266,8 +266,6 @@ class FilterFragment : Fragment(R.layout.home_b_photo_filter_fragment), View.OnC
                 viewModel.selectedStyles.joinToString(",") { it.text },
                 viewModel.selectedStyles.joinToString(","){ it.id.toString() }
             )
-            Log.e(TAG, "savePostFilter: $tpoFilterItem")
-            Log.e(TAG, "savePostFilter: ${viewModel.selectedGender} ${viewModel.savedHeight}")
             CoroutineScope(Dispatchers.IO).launch {
                 filterDataStore.saveMainFilterInstance(
                     viewModel.selectedGender,

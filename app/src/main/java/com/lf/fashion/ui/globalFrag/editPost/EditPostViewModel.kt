@@ -61,16 +61,13 @@ class EditPostViewModel @Inject constructor(
         getStyleChipsInfo()
     }
     suspend fun editPost(postId :Int , editPost: EditPost): MsgResponse {
-        Log.e(TAG, "editPost postId: $postId")
 
         val response = editPostRepository.editPost(postId , editPost)
-        Log.e(TAG, "editPost: $response")
         return if (response is Resource.Success) response.value
         else MsgResponse(false, "Resource Fail")
     }
     suspend fun editClothes(postId: Int,editClothes : List<Cloth>) : MsgResponse{
         val response = editPostRepository.editCloth(postId , editClothes)
-        Log.e(TAG, "editClothes: $response")
         return if (response is Resource.Success) response.value
         else MsgResponse(false, "Resource Fail")
     }

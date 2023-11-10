@@ -84,7 +84,6 @@ class SearchFragment : Fragment(R.layout.search_fragment),
         //검색어 et에 있을시 인기 검색어 gone
         if (viewModel.savedSearchTerm.isNotEmpty()) {
             searchTermRankUiVisible(default = false)
-            // Log.e(TAG, "onViewCreated: ${binding.searchTerm.root.isVisible}")
         }
         //검색 동작
         searchEtSetActionListener() // 검색 동작시 ui visibility 로 결과 레이아웃 노출 조정
@@ -177,7 +176,6 @@ class SearchFragment : Fragment(R.layout.search_fragment),
                 if (newHistory != null) {
                     newHistory.add(0, searchTerm)
                     newHistory = newHistory.distinct().toMutableList()
-                    Log.e(TAG, "searchAction HISTORY: $newHistory")
                 } else {
                     newHistory = mutableListOf(searchTerm)
                 }
@@ -379,7 +377,6 @@ class SearchFragment : Fragment(R.layout.search_fragment),
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
         viewModel.selectedOrderBy.value = parent.getItemAtPosition(position).toString()
-        //Log.e(TAG, "onItemSelected: spinner ${viewModel.selectedOrderBy.value}")
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {

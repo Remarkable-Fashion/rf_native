@@ -170,7 +170,6 @@ class OtherUserVerticalPostFragment : Fragment(R.layout.user_vertical_fragment),
 
     override fun photoZipBtnClicked(post: Posts) {
         post.user = userInfo
-        Log.e(TAG, "photoZipBtnClicked: $post")
         findNavController().navigate(
             R.id.action_otherUserVerticalPostFragment_to_photoZipFragment,
             bundleOf("post" to post)

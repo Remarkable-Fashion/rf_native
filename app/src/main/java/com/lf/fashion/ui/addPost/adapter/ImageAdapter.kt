@@ -62,7 +62,6 @@ class ImageAdapter(
         binding.imageLayer.setOnClickListener {
             parentViewModel.imageItemList.value?.let { item->
                 val checkedItemList = parentViewModel.checkedItemList.value ?: mutableListOf()
-              //  Log.e(TAG, "subscribeUi: ${checkedItemList!!.size}")
 
                 if (checkedItemList.size in 0 until imageLimit || binding.checkbox.isSelected) {
                     checkBoxConverse(holder, binding, item)

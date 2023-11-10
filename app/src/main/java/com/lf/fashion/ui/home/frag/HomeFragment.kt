@@ -72,7 +72,6 @@ class HomeFragment :
         CoroutineScope(Dispatchers.Main).launch {
             if (userPref.firstActivate.first().isNullOrEmpty()) {
                 val dialog = GenderSelectionDialog {
-                    Log.e(TAG, "onViewCreated: $it")
                     CoroutineScope(Dispatchers.IO).launch {
                         filterDataStore.saveGender(it)
                     }
@@ -162,7 +161,6 @@ class HomeFragment :
                 val gender = postGender.first() ?: "All"
                 val height = height.first()
                 val weight = weight.first()
-                Log.e(TAG, "requestPost: $tpo ,$season ,$style")
                 withContext(Dispatchers.Main) {
                     viewModel.getPostList(loadMore, 21, gender, height, weight, tpo, season, style)
                 }
@@ -227,12 +225,7 @@ class HomeFragment :
                 is Resource.Success -> {
                     val morePost = resource.value
                     val currentList = gridAdapter.currentList.toMutableList()
-                    Log.e(
-                        TAG,
-                        "observeLoadMorePost: currrent : ${currentList.size} , more : ${morePost.posts.size}"
-                    )
                     currentList.addAll(morePost.posts)
-                    Log.e(TAG, "observeLoadMorePost: 합 : $morePost")
 
                     gridAdapter.apply {
                         submitList(currentList)

@@ -50,7 +50,6 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
                     val requestBuilder: Request.Builder = original.newBuilder()
                         .addHeader("Authorization", "Bearer $authKey")
                     request = requestBuilder.build()
-                    Log.e(TAG, "RemoteDataSource - provideOkHttpClient: ${request.url}")
                 }
             }
 

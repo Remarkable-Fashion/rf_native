@@ -126,9 +126,7 @@ class SearchResultFragment(private val resultCategory: String) :
                         nextCursor = it
                     }
                     val currentList = itemGridAdapter.currentList.toMutableList()
-                    Log.e(TAG, "observeLoadMorePost: currrent : ${currentList.size} , more : ${morePost.clothes}")
                     currentList.addAll(morePost.clothes!!)
-                    Log.e(TAG, "observeLoadMorePost: 합 : $morePost")
 
                     itemGridAdapter.apply {
                         submitList(currentList)
@@ -153,9 +151,7 @@ class SearchResultFragment(private val resultCategory: String) :
                         nextCursor = it
                     }
                     val currentList = lookPostGridAdapter.currentList.toMutableList()
-                    Log.e(TAG, "observeLoadMorePost: currrent : ${currentList.size} , more : ${morePost.posts}")
                     currentList.addAll(morePost.posts!!)
-                    Log.e(TAG, "observeLoadMorePost: 합 : $morePost")
 
                     lookPostGridAdapter.apply {
                         submitList(currentList)
@@ -181,9 +177,7 @@ class SearchResultFragment(private val resultCategory: String) :
                         nextCursor = it
                     }
                     val currentList = itemGridAdapter.currentList.toMutableList()
-                    Log.e(TAG, "observeLoadMorePost: currrent : ${currentList.size} , more : ${moreItem.clothes}")
                     currentList.addAll(moreItem.clothes!!)
-                    Log.e(TAG, "observeLoadMorePost: 합 : $moreItem")
 
                     itemGridAdapter.apply {
                         submitList(currentList)
@@ -321,7 +315,6 @@ class SearchResultFragment(private val resultCategory: String) :
                     response.nextCursor?.let {
                         nextCursor = it
                     }
-                    Log.e(TAG, "lookResultUiBinding: $response")
                     if (response.posts.isNullOrEmpty()) {
                         binding.arrayEmptyText.isVisible = true
                     } else {
@@ -398,7 +391,6 @@ class SearchResultFragment(private val resultCategory: String) :
         viewModel.setGridMode(1)
         layoutVisibilityUpdate(false)
         binding.verticalViewpager.apply {
-            Log.e(TAG, "gridPhotoClicked: ok")
             setCurrentItem(postIndex, false)
         }
     }

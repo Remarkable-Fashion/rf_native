@@ -66,14 +66,11 @@ class DeepLinkPostFragment : Fragment(R.layout.deeplink_post_fragment),
         requestUserInfoPage = arguments?.getBoolean("userInfo") ?: false
         requestRecommendClothPage = arguments?.getBoolean("recommendCloth") ?: false
 
-        Log.e(TAG, "onePostFragment onviewCreated: $postId")
-        Log.e(TAG, "onViewCreated: $requestPhotoZipPage")
 
         viewModel.getPost(postId.toInt(), myUniqueId)
         viewModel.response.observe(viewLifecycleOwner) { resources ->
             when (resources) {
                 is Resource.Success -> {
-                    Log.e(TAG, "to POSTS: ${resources.value}")
                     post = resources.value
                     binding.post = post
 
@@ -147,7 +144,6 @@ class DeepLinkPostFragment : Fragment(R.layout.deeplink_post_fragment),
         }*/
         if (requestPhotoZipPage) {
             if (login) {
-                Log.e(TAG, "requestDeepLinkNavigation: $requestPhotoZipPage , $post")
                 findNavController().navigate(
                     R.id.action_navigation_deeplink_to_photoZipFragment,
                     bundleOf("post" to post)
@@ -156,7 +152,6 @@ class DeepLinkPostFragment : Fragment(R.layout.deeplink_post_fragment),
                     val destination = navBackStackEntry.destination
                     destination.label?.toString() // 프래그먼트의 이름을 가져옴
                 }
-                Log.e(TAG, "nav currentdes: $fragmentNames")
 
             } else {
                 Toast.makeText(requireContext(), "사진 모아보기는 로그인 후 이용가능합니다.", Toast.LENGTH_SHORT).show()

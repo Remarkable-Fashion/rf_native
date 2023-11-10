@@ -92,7 +92,6 @@ class PhotoZipVerticalFragment : Fragment(R.layout.home_b_photozip_vertical_frag
                         val more = resource.value
                         viewModel.allPostList.addAll(more.posts)
                         viewModel.recentResponse = more// new nextCursor , hasNext check 를 위해 값 재초기화
-                        Log.e(TAG, "loadMorePost: $more")
                         defaultAdapter.apply {
                             submitList(viewModel.allPostList)
                             notifyDataSetChanged()

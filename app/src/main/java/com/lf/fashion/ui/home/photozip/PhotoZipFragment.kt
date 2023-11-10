@@ -43,7 +43,6 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e(TAG, "onViewCreated: photozip")
         binding = HomeBPhotoZipFragmentBinding.bind(view)
         userPref = UserDataStorePref(requireContext().applicationContext)
 
@@ -143,7 +142,6 @@ class PhotoZipFragment : Fragment(R.layout.home_b_photo_zip_fragment), GridPhoto
         followBtn.isVisible = myUniqueId != post.user?.id
         followBtn.isSelected =
             post.isFollow ?: false
-        Log.e(TAG, "followStateBinding: ${post.isFollow}")
         followBtn.text = if (followBtn.isSelected) "팔로잉" else "+ 팔로우"
         userId = post.user!!.id
     }

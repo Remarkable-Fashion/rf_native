@@ -74,7 +74,6 @@ class MainActivity : AppCompatActivity() {
                 if (pendingDynamicLinkData != null) {
                     deepLink = pendingDynamicLinkData.link
 
-                    Log.e(TAG, "MainActivity - onCreate: 호출된 딥링크 ${deepLink}")
                     val postParam = deepLink?.getQueryParameter("post") // 게시물
                     val photoZip = deepLink?.getQueryParameter("photoZip") // 유저 사진 모아보기
                     val userInfoParam = deepLink?.getQueryParameter("userInfo") // 유저 게시물 - 정보보기 페이지
@@ -83,31 +82,25 @@ class MainActivity : AppCompatActivity() {
 
 
                     if (!postParam.isNullOrEmpty()) {
-                        Log.e(TAG, "dynamicLink post param: $postParam")
                         navController?.navigate(
                             R.id.action_global_to_deeplinkPostFragment,
                             bundleOf("postId" to postParam)
                         )
                     }
                     if (!photoZip.isNullOrEmpty()) {
-                        Log.e(
-                            TAG,
-                            "dynamicLink photoZip param: $photoZip"
-                        ) // url 의 photoZip param은 postId, navigation photoZip bundle은 페이지 여부를 체크하는 boolean
+                       // url 의 photoZip param은 postId, navigation photoZip bundle은 페이지 여부를 체크하는 boolean
                         navController?.navigate(
                             R.id.action_global_to_deeplinkPostFragment,
                             bundleOf("postId" to photoZip, "photoZip" to true)
                         )
                     }
                     if (!userInfoParam.isNullOrEmpty()) {
-                        Log.e(TAG, "dynamicLink userInfoParam param: $userInfoParam")
                         navController?.navigate(
                             R.id.action_global_to_deeplinkPostFragment,
                             bundleOf("postId" to userInfoParam, "userInfo" to true)
                         )
                     }
                     if (!recommendClothParam.isNullOrEmpty()) {
-                        Log.e(TAG, "dynamicLink recommendClothParam param: $recommendClothParam")
                         navController?.navigate(
                             R.id.action_global_to_deeplinkPostFragment,
                             bundleOf("postId" to recommendClothParam, "recommendCloth" to true)
@@ -163,7 +156,6 @@ class MainActivity : AppCompatActivity() {
                 val currentMenuItemId = binding.bottomNavBar.selectedItemId
                 // 클릭된 메뉴 아이템이 현재 선택된 메뉴와 동일한 경우
                 if (item.itemId == currentMenuItemId) {
-                    Log.e(TAG, "onCreate: setOnItemReselectedListener")
                     when (item.itemId) {
                         R.id.navigation_search -> {
                             navController?.navigate(R.id.navigation_search)

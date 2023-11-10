@@ -223,15 +223,12 @@ class RegistClothFragment : Fragment(R.layout.home_b_regist_cloth_fragment), Vie
                 CoroutineScope(Dispatchers.IO).launch {
 
                     val imagePath = absolutelyPath(Uri.parse(it.imageUrl), requireContext())
-                    Log.e(TAG, "submitClothes: ${it.imageUrl}")
                     val imageResponse = viewModel.uploadClothesImage(imagePath!!)
 
                     if (imageResponse.success) {
                         val uploadedImageUrl = imageResponse.imgUrls!![0]
-                        Log.e(TAG, "submitClothes uploaded success url: $uploadedImageUrl")
 
                         it.imageUrl = uploadedImageUrl
-                        Log.e(TAG, "submitClothes uploaded success uploadedObject: $it")
 
                         val infoResponse = viewModel.uploadClothesInfo(clothesPostId, it)
                         if (infoResponse.success) {

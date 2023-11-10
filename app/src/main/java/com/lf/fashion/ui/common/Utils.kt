@@ -363,7 +363,6 @@ fun Fragment.logNaviStatus(){
         val destination = navBackStackEntry.destination
         destination.label?.toString() // 프래그먼트의 이름을 가져옴
     }
-    Log.e(TAG, "log Navi backStack: $fragmentNames")
 
 }
 
@@ -373,7 +372,6 @@ fun getMimeType(file: File): String {
     val mime = split[1]
     //val extension = MimeTypeMap.getFileExtensionFromUrl(file.absolutePath)
     //return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
-    Log.e(TAG, "getMimeType: image/${mime}")
     return "image/${mime}"
 }
 

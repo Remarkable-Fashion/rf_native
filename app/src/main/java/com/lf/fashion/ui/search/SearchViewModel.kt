@@ -79,7 +79,6 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
             }else{
                 _lookList.value = responseData
             }
-            Log.e(TAG, "getSearchResult 위치 : ViewModel - request")
         }
     }
 

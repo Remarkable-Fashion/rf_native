@@ -21,7 +21,6 @@ class MyPageRepository @Inject constructor(
 ) : SafeApiCall {
 
     suspend fun getJWT(loginAccessToken: String,fcmToken : String) = safeApiCall {
-        Log.e(TAG, "getJWT: Repo Go")
         jwtApi.getJWT(loginAccessToken,fcmToken)
     }
 

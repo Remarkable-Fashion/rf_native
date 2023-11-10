@@ -59,7 +59,6 @@ class PostBottomSheetFragment(
             viewModel.postInfo.observe(viewLifecycleOwner) { resources ->
                 if (resources is Resource.Success) {
                     val response = resources.value
-                    Log.e(TAG, "onViewCreated: ${binding.blockBtn.isVisible}")
                     scrapState = response.isScrap ?: false
                     followState = response.isFollow ?: false
                     btnTextUpdate("scrap", scrapState)
@@ -69,7 +68,6 @@ class PostBottomSheetFragment(
             }
             observeAllMsgResponse()
         } else {
-            Log.e(TAG, "else: ${binding.blockBtn.isVisible}")
 
             binding.bottomSheetFollowBtn.isVisible = false
             binding.blockBtn.isVisible = false
@@ -96,8 +94,6 @@ class PostBottomSheetFragment(
 
     private fun loginUserUi() {
         val loggedIn = userPref.loginCheck()
-        Log.e(TAG, "login BOTTOM: $loggedIn")
-        Log.e(TAG, "login: ${binding.blockBtn.isVisible}")
 
         binding.bottomSheetFollowBtn.isVisible = loggedIn
         binding.blockBtn.isVisible = loggedIn
@@ -108,8 +104,6 @@ class PostBottomSheetFragment(
         if (loggedIn) {
             val postUserId = post?.user?.id ?: userId
             val myPost = userPref.getMyUniqueId() == postUserId
-            Log.e(TAG, "myPostBottomUi: $postUserId , ${userPref.getMyUniqueId()} , ${myPost}")
-            Log.e(TAG, "myPost :  ${binding.blockBtn.isVisible}")
 
             binding.declareBtn.isVisible = !myPost
             binding.bottomSheetFollowBtn.isVisible = !myPost
@@ -170,7 +164,6 @@ class PostBottomSheetFragment(
 
             binding.privateSettingBtn -> {
                 post?.let {
-                    Log.e(TAG, "onClick: 게시 상태 수정 클릭 $it")
                     myBottomDialogListener?.changePostPublicStatus(it)
                     dismiss()
                 }
@@ -178,7 +171,6 @@ class PostBottomSheetFragment(
 
             binding.postEditBtn -> {
                 post?.let {
-                    Log.e(TAG, "onClick: 게시물 수정 클릭 $it")
                     myBottomDialogListener?.editPost(it)
                     dismiss()
                 }
@@ -233,7 +225,6 @@ class PostBottomSheetFragment(
 
     private fun showDeclareDialog() {
         val declareArray = resources.getStringArray(R.array.declare_array)
-        Log.e(TAG, "showDeclareDialog: $declareArray")
         val dialog = AlertDialog.Builder(context)
             .setTitle("신고")
             .setItems(R.array.declare_array) { _, p1 ->
@@ -245,7 +236,6 @@ class PostBottomSheetFragment(
     }
 
     private fun getDetailInfo(p1: String) {
-        Log.e(TAG, "getDetailInfo: $p1")
         val dialogView = LayoutInflater.from(context).inflate(R.layout.item_dialog_declare, null)
         val dialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)

@@ -27,8 +27,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val notificationManager = NotificationManagerCompat.from(
             applicationContext
         )
-        Log.e(TAG, "onMessageReceived: ${message.data}")
-        Log.e(TAG, "onMessageReceived: ${message.notification?.title} , ${message.notification?.body} , ${message.notification?.channelId}")
         var builder = NotificationCompat.Builder(applicationContext,getString(R.string.default_notification_channel_id))
 //data 를 받아서
 

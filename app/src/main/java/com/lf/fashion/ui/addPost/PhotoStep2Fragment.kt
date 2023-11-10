@@ -146,7 +146,6 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                     } else {
                         viewModel.selectedTpos.remove(chipInfo)
                     }
-                    Log.e(TAG, "chipSetting: ${viewModel.selectedTpos}")
                 }
             }
         }
@@ -167,7 +166,6 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                         viewModel.selectedSeasons.remove(chipInfo)
 
                     }
-                    Log.e(TAG, "chipSetting: ${viewModel.selectedSeasons}")
                 }
             }
         }
@@ -188,7 +186,6 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                         viewModel.selectedStyles.remove(chipInfo)
 
                     }
-                    Log.e(TAG, "chipSetting: ${viewModel.selectedStyles}")
                 }
             }
         }
@@ -244,7 +241,6 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                 Toast.makeText(requireContext(), "의상 카테고리를 선택해주세요!", Toast.LENGTH_SHORT).show()
 
             } else {
-                Log.e(TAG, "registerCloth: ${viewModel.selectedClothCategory} , binding.name.")
                 Toast.makeText(requireContext(), "의상에 관한 정보를 모두 입력해주세요!", Toast.LENGTH_SHORT).show()
             }
         }
@@ -323,7 +319,6 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                 "등록 중이신 의상이 있습니다.\n삭제하고 등록하시겠습니까?"
             ){
                 val isPostValid = postValueValidation()
-                Log.e(TAG, "clothValueValidation: $isPostValid")
                 if(isPostValid){
                     //의상 & 게시물 등록
                     binding.progressBar.visibility = View.VISIBLE
@@ -390,8 +385,6 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                         addClothesAdapter.currentList.mapIndexed { index, cloth ->
                             cloth.copy(imageUrl = clothesImageResponse.imgUrls[index])
                         }
-                    // Log.e(TAG, "submitBtnOnclick: ImageList $clothesImages")
-                    // Log.e(TAG, "submitBtnOnclick: newList $newList")
 
                     viewModel.uploadedClothes = newList.toMutableList()
                 }
@@ -426,7 +419,6 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
                         weight,
                         isPublic
                     )
-                    Log.e(TAG, "uploadPost: $uploadPost")
                     val postUploadResponse = viewModel.uploadPostInfo(uploadPost)
 
                     return@async postUploadResponse.success

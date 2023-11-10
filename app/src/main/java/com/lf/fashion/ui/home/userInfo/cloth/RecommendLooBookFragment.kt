@@ -84,7 +84,6 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
         //카테고리가 변할 때마다 새로 요청
         viewModel.selectedCategory.observe(viewLifecycleOwner) { category ->
             if (isCategoryInit) {
-                Log.e(TAG, "onViewCreated: category observe")
                 requestLookBook()
             }
             isCategoryInit = true
@@ -93,7 +92,6 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
         //베스트 / 최신순 변할 때마다 새로 요청
         viewModel.orderByMode.observe(viewLifecycleOwner) { orderBy ->
             if (isOrderByInit) {
-                Log.e(TAG, "onViewCreated: order observe")
                 requestLookBook()
             }
             isOrderByInit = true
@@ -117,7 +115,6 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
             when (resource) {
                 is Resource.Success -> {
                     val response = resource.value
-                    Log.e(TAG, "observeLookBookResponse: $response")
 
                     binding.styleRecommendRv.apply {
                         adapter = lookBookRvAdapter.apply {
@@ -180,7 +177,6 @@ class RecommendLooBookFragment : Fragment(R.layout.home_b_recommend_fragment),
     //spinner listener
     override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
         if (isSpinnerInit) {
-            Log.e(TAG, "onItemSelected: spinner")
             viewModel.selectedCategory.value = parent.getItemAtPosition(position).toString()
         }
         isSpinnerInit = true

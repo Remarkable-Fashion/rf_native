@@ -204,7 +204,6 @@ class ScrapVerticalFragment : Fragment(),
 
     override fun profileSpaceClicked(userId: Int) {
         val myUniqueId = userPref.getMyUniqueId()
-        Log.e(TAG, "profileSpaceClicked: $myUniqueId , $userId")
         if (userId == myUniqueId) {
             findNavController().navigate(R.id.navigation_mypage)
             return

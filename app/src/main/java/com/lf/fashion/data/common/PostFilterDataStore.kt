@@ -88,8 +88,6 @@ class PostFilterDataStore @Inject constructor(@ApplicationContext context: Conte
         season: FilterItem? = null,
         style: FilterItem? = null
     ) {
-        Log.e(TAG, "saveMainFilterInstance: $tpo , $season ,$style ,")
-
         appContext.postFilterDataStore.edit { preferences ->
             gender?.let { preferences[FILTER_GENDER] = it } ?: preferences.remove(FILTER_GENDER)
             height?.let { preferences[FILTER_HEIGHT] = it } ?: preferences.remove(FILTER_HEIGHT)

@@ -39,7 +39,6 @@ class AddPostClothesRvAdapter :
             binding.deleteBtn.setOnClickListener {
                 val newList = currentList.toMutableList()
                 newList.remove(item)
-                Log.e(TAG, "bind: ${newList}")
                 submitList(newList)
             }
 

@@ -57,7 +57,6 @@ class ProfileEditFragment : Fragment(R.layout.mypage_profile_fragment) {
             val destination = navBackStackEntry.destination
             destination.label?.toString() // 프래그먼트의 이름을 가져옴
         }
-        Log.e(TAG, "profile edit onViewCreated: $fragmentNames")
 
         cancelBtnBackStack(binding.backBtn)
 
@@ -85,11 +84,9 @@ class ProfileEditFragment : Fragment(R.layout.mypage_profile_fragment) {
                         Toast.makeText(requireContext(), "프로필 수정이 완료되었습니다.", Toast.LENGTH_SHORT)
                             .show()
                         viewModel.myInfoChaged = true
-                        Log.e(TAG, "profile response: ${resources.value}", )
                         findNavController().navigateUp()
                     } else {
                         // success가 false인 경우 처리
-                        Log.e(TAG, "RESPONSE onViewCreated: ${resources.value}")
                         Toast.makeText(requireContext(), "오류가 발생하였습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }

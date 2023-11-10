@@ -84,8 +84,6 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                         bundleOf("myInfo" to myInfo)
                     )
                 }
-                Log.e(TAG, "nullorEmpty : ${myInfo.name} myInfoChaged : ${viewModel.myInfoChaged}")
-
 
                 globalMyInfo = myInfo
                 binding.userInfo = myInfo
@@ -100,7 +98,6 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
 
         binding.profileEditBtn.setOnClickListener {
             if (!::globalMyInfo.isInitialized) return@setOnClickListener
-            Log.e(TAG, "onViewCreated: $globalMyInfo")
             findNavController().navigate(
                 R.id.action_navigation_mypage_to_profileEditFragment,
                 bundleOf("myInfo" to globalMyInfo)
@@ -136,7 +133,6 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
                 viewModel.getMyInfo()
             }
             viewModel.myInfoChaged = false
-            Log.e(TAG, "onResume: getMyInfo")
         }
     }
     private fun navigateFollowDetailFrag() {
