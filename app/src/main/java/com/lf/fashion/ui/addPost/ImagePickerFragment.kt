@@ -111,7 +111,6 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
         //submit(등록) 버튼 클릭시 편집 fragment 로 이동
         binding.buttonListener = View.OnClickListener {
             // Pass Uri list to fragment outside
-            Log.d(TAG, "ImagePickerFragment - onCreateView: ${viewModel.getCheckedImageUriList()}");
             val imageUriArray = viewModel.getCheckedImageUriList().toTypedArray()
             when (backStackFragment) {
                 "PhotoFragment" ->{ //PhotoFragment -> ImagePicker 일땐 backstack 이 아니라 PhotoStep2로 가야하기 때문에 분리..
@@ -146,7 +145,6 @@ class ImagePickerFragment : Fragment(), GalleryRvListener,
                 addItemDecoration(GridSpaceItemDecoration(3, 6)) }
         }
         viewModel.imageItemList.observe(viewLifecycleOwner) { imageItemList ->
-            Log.d(TAG, "ImagePickerFragment - galleryImageRvSetting:  view model response");
             galleryImageAdapter.submitList(imageItemList)
             galleryImageAdapter.notifyDataSetChanged()
 

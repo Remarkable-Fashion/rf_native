@@ -52,7 +52,6 @@ class UserDataStorePref @Inject constructor(@ApplicationContext context: Context
         }
 
     suspend fun saveAccessTokens(accessToken: String, refreshToken: String) {
-        Log.d(TAG, "PreferenceManager - saveAccessTokens: $accessToken");
         appContext.userDataStore.edit { preferences ->
             preferences[ACCESS_TOKEN] = accessToken
             preferences[REFRESH_TOKEN] = refreshToken

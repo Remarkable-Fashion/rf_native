@@ -51,14 +51,12 @@ class ScrapViewModel @Inject constructor(
     fun getPostList() {
         viewModelScope.launch {
             _postResponse.value = scrapRepository.getScrapPosts()
-            Log.d(TAG, "ScrapViewModel - getPostList: ${_postResponse.value}");
         }
     }
 
     fun getMorePostList(nextCursor: Int) {
         viewModelScope.launch {
             _morePost.value = Event(scrapRepository.getScrapPosts(nextCursor))
-            Log.d(TAG, "ScrapViewModel - getPostList: ${_postResponse.value}");
         }
     }
 

@@ -133,7 +133,6 @@ class ScrapFragment : Fragment(R.layout.scrap_fragment), GridPhotoClickListener 
     }
 
     override fun gridPhotoClicked(postIndex: Int) {
-        Log.d(TAG, "ScrapFragment - gridPhotoClicked: grid 포토 클릭 $postIndex")
         // post list 에서 클릭한 포토의 포지션을 viewModel 에 저장
         mainBottomMenuListener(false)
         viewModel.editClickedPostIndex(postIndex)

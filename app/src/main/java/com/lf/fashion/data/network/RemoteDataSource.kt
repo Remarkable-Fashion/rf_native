@@ -64,7 +64,6 @@ class RemoteDataSource @Inject constructor(@ApplicationContext private val conte
                             val allHeaders: Headers = response.headers
                             val accessJWT: String? = allHeaders["x-auth-cookie"]
                             val refreshJWT: String? = allHeaders["x-auth-cookie-refresh"]
-                            Log.d(TAG, "RemoteDataSource - provideOkHttpClient: $accessJWT")
                             if (accessJWT != null && refreshJWT != null) {
                                 runBlocking {
                                     launch(Dispatchers.IO) {

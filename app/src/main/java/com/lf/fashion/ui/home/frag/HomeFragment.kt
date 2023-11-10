@@ -405,7 +405,6 @@ class HomeFragment :
     }
 
     override fun kebabBtnClicked(post: Posts) {
-        Log.d(TAG, "HomeFragment - kebabBtnClicked postId : ${post.id}");
         val dialog = PostBottomSheetFragment(post, myBottomDialogListener = this , userShareOnclick = null){
             CopyLink().copyTextToClipboard(requireContext(),post.id,"post")
         }

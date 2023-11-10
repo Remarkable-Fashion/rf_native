@@ -136,7 +136,6 @@ class FollowDetailItemFragment(private val tabName: String) :
             }
 
         }.onStart {
-            Log.d(TAG, "textChangesToFlow() / onStart 발동")
             emit(editText.text)
         }
     }

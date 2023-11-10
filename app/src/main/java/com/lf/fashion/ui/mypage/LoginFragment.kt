@@ -45,7 +45,6 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         binding.progressBar.visibility = View.VISIBLE
         UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
             if (error != null) {
-                Log.d(TAG, "MyPageFragment - onViewCreated: 카카오톡 간편 로그인 실패 : $error");
                 if (error.message == "KakaoTalk not installed") {
                     kakaoLoginWithAccount()
                 } else {
@@ -61,8 +60,6 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
 
                 }
             } else if (token != null) {
-                Log.d(TAG, "MyPageFragment - onViewCreated: 카카오톡 간편 로그인 성공 토큰 : $token")
-
                 requestJWTToken(token)
             }
         }
@@ -99,7 +96,6 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
                             is Resource.Success -> {
                                 if (resource.value.success) {
                                     //      showLoading(requireActivity(),false)
-                                    Log.d(TAG, "LoginFragment - requestJWTToken: ");
                                     viewModel.getSavedLoginToken() // viewModel 소유 token 갱신
                                     findNavController().popBackStack()
                                 } else {
@@ -115,7 +111,6 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
                             is Resource.Failure -> {
                                 handleApiError(resource) { msg ->
                                     if (msg.contains("기존")) {
-                                        Log.d(TAG, "Message: $msg")
                                         AppCustomDialog(
                                             "기존 회원 이력이 존재합니다.",
                                             "신규 재가입은 탈퇴일 기준 30일 이후 가능합니다.\n" +
@@ -133,18 +128,6 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
                         }
                     }
                 }
-            }
-        }
-    }
-
-
-    private fun getUserInfo() {
-        UserApiClient.instance.me { user, error ->
-            if (error != null) {
-                Log.d(TAG, "MyPageFragment - getUserInfo: 정보요청 실패");
-            } else if (user != null) {
-                Log.d(TAG, "MyPageFragment - getUserInfo: ${user.kakaoAccount?.email}");
-                Log.d(TAG, "MyPageFragment - getUserInfo: ${user.kakaoAccount?.profile?.nickname}");
             }
         }
     }

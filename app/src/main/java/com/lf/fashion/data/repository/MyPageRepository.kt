@@ -63,10 +63,6 @@ class MyPageRepository @Inject constructor(
             val requestFile = file.asRequestBody(mimeType.toMediaTypeOrNull())
             partBody = MultipartBody.Part.createFormData("avartar", file.name, requestFile)
 
-
-            Log.d(TAG, "MyPageRepository - mimeType $mimeType ");
-            Log.d(TAG, "MyPageRepository - updateMyProfile: ${file.name}");
-            Log.d(TAG, "MyPageRepository - file ?? : ${requestFile.contentType()}");
         }
 
         myPageApi.updateProfileInfo(

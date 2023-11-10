@@ -94,7 +94,6 @@ class MyPageViewModel @Inject constructor(
     fun getSavedLoginToken() {
         viewModelScope.launch {
             _savedLoginToken.value = userPreferences.accessToken.first()
-            // Log.d(TAG, "MyPageViewModel - getSavedLoginToken: ${savedLoginToken.value}");
         }
     }
 
@@ -103,7 +102,6 @@ class MyPageViewModel @Inject constructor(
             userPreferences.clearAccessTokenAndId()
             _savedLoginToken.value = null
         }
-        //Log.d(TAG, "MyPageViewModel - clearSavedLoginToken: ${savedLoginToken.value}");
     }
 
     fun getMyInfo() {

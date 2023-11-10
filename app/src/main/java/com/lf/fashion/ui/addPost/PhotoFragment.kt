@@ -30,12 +30,10 @@ class PhotoFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             val allPermissionsGranted = permissions.all { it.value }
             val galleryPermission = permissions[Manifest.permission.READ_EXTERNAL_STORAGE] ?: false
-            Log.d(TAG, "PhotoFragment - : $allPermissionsGranted");
             //모두 허용 또는 외부저장소 읽기 권한 있을 시 커스텀 갤러리 뷰로 이동
             if (allPermissionsGranted || galleryPermission ) {
                 //모든 이미지타입
                 // requestImageUriLauncher.launch("image/*") // 여기서 요청할경우 권한 동의 후 바로 파일접근으로 넘어갈 수 있다.
-                //Log.d(TAG, "PhotoFragment - : granted");
                 //val direction = PhotoFragmentDirections.actionNavigationPhotoToImagePickerFragment()
                 findNavController().navigate(R.id.action_navigation_photo_to_imagePickerFragment,
                     bundleOf("from" to "PhotoFragment" , "limit" to 4))

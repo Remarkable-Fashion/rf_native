@@ -51,10 +51,6 @@ class OtherUserProfileFragment : Fragment(R.layout.user_profile_fragment), GridP
     }
 
     override fun gridPhotoClicked(postIndex: Int) {
-        Log.d(
-            TAG, "MyPageFragment - gridPhotoClicked: 마이페이지 grid"
-                    + "클릭된 인덱스 : ${postIndex}"
-        );
         viewModel.editClickedPostIndex(postIndex)
         //,
         //            bundleOf("postList" to postList)

@@ -54,8 +54,6 @@ class SearchResultFragment(private val resultCategory: String) :
         itemFilterDataStore = SearchItemFilterDataStore(requireContext().applicationContext)
 
         binding.verticalViewpager.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER // 양옆 오버 스크롤 이벤트 shadow 제거
-        Log.d(TAG, "SearchResultFragment - onViewCreated: ${viewModel.savedSearchTerm}")
-
         when (resultCategory) {
             "look" -> {
                 lookResultUiBinding()

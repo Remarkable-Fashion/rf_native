@@ -72,10 +72,7 @@ class MyPageVerticalFragment : Fragment(),
             (adapter as? DefaultPostAdapter)?.apply {
                 submitList(viewModel.allPostList)
                 //scrapFragment 에서 선택한 item 의 index 를 시작 index 로 지정 , animation false 처리
-                Log.d(
-                    TAG,
-                    "MyPageVerticalFragment - onViewCreated: ${viewModel.startIndex.value}"
-                );
+
                 setCurrentItem(viewModel.startIndex.value ?: 0, false)
             }
             getChildAt(0).overScrollMode =

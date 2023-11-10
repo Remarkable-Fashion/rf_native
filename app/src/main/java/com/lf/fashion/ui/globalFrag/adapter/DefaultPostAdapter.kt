@@ -85,7 +85,6 @@ class DefaultPostAdapter(
                     verticalViewPagerClickListener.photoZipBtnClicked(post)
                 }
                 kebabBtn.setOnClickListener {
-                    Log.d(TAG, "kebabBtnClicked In DefaultAdapter  - postId : $post.id");
                     verticalViewPagerClickListener.kebabBtnClicked(post)
                 }
 

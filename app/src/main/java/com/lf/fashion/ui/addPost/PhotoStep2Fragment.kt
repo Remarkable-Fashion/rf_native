@@ -96,7 +96,6 @@ class PhotoStep2Fragment : Fragment(), View.OnClickListener {
             return
         }
 
-        Log.d(TAG, "PhotoStep2Fragment - onViewCreated: ${viewModel.selectedPostImages}}")
 
         with(binding.clothesDetailRv) {
             adapter = addClothesAdapter

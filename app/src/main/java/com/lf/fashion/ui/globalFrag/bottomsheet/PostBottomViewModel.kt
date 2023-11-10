@@ -50,7 +50,6 @@ class PostBottomViewModel @Inject constructor(
 
     fun changeScrapState(create : Boolean, postId : Int){
         viewModelScope.launch {
-            Log.d(TAG, "PostBottomViewModel - changeScrapState: CREATE $create");
             if(create){
                 _scrapResponse.value =  communicateRepository.createScrap(postId)
             }else{
@@ -61,7 +60,6 @@ class PostBottomViewModel @Inject constructor(
 
     fun changeFollowingState(create : Boolean, userId : Int){
         viewModelScope.launch {
-            Log.d(TAG, "PostBottomViewModel - changeFollowingState: CREATE $create");
             if(create){
                 followResponse.value = communicateRepository.createFollowing(userId)
             }else{

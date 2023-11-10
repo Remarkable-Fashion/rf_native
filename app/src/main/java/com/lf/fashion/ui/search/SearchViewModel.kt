@@ -107,6 +107,5 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
 
     fun setGridMode(mode: Int) {
         _gridMode.value = mode
-        Log.d(TAG, "SearchViewModel - setGridMode: ${gridMode.value}");
     }
 }

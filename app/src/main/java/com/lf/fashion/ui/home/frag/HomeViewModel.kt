@@ -58,7 +58,6 @@ class HomeViewModel @Inject constructor(
         season: List<Int>? = null,
         style: List<Int>? = null
     ) {
-        Log.d(TAG, "suspend getPostList 호출 ")
         viewModelScope.launch {
 
             val savedToken = userPreferences.accessToken.first()

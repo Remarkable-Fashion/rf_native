@@ -32,9 +32,7 @@ class EditPostRepository @Inject constructor(private val editPostApi: EditPostAp
             val requestFile = file.asRequestBody(mimeType?.toMediaTypeOrNull())
             val part = MultipartBody.Part.createFormData("posts", file.name, requestFile)
             partBody.add(part)
-            Log.d(TAG, "uploadClothesImageRepo - mimeType $mimeType ");
-            Log.d(TAG, "uploadClothesImageRepo - updateMyProfile: ${file.name}");
-            Log.d(TAG, "uploadClothesImageRepo - file ?? : ${requestFile.contentType()}")
+
         }
         editPostApi.uploadNewPostImage(partBody)
     }
@@ -48,9 +46,7 @@ class EditPostRepository @Inject constructor(private val editPostApi: EditPostAp
             val requestFile = file.asRequestBody(mimeType?.toMediaTypeOrNull())
             val part = MultipartBody.Part.createFormData("clothes", file.name, requestFile)
             partBody.add(part)
-            Log.d(TAG, "uploadClothesImageRepo - mimeType $mimeType ");
-            Log.d(TAG, "uploadClothesImageRepo - updateMyProfile: ${file.name}");
-            Log.d(TAG, "uploadClothesImageRepo - file ?? : ${requestFile.contentType()}")
+
         }
         editPostApi.uploadNewClothImages(partBody)
     }

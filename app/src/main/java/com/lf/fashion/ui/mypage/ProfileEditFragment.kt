@@ -64,7 +64,6 @@ class ProfileEditFragment : Fragment(R.layout.mypage_profile_fragment) {
         myInfo = arguments?.get("myInfo") as MyInfo
         binding.myInfo = myInfo
 
-        Log.d(TAG, "ProfileEditFragment - onViewCreated: ${myInfo.profile.profileImage}");
         introduceValue = binding.introduceValue
         heightValue = binding.heightValue
         weightValue = binding.weightValue
@@ -159,9 +158,7 @@ class ProfileEditFragment : Fragment(R.layout.mypage_profile_fragment) {
     private fun getMyEmailInfo() {
         UserApiClient.instance.me { user, error ->
             if (error != null) {
-                Log.d(TAG, "ProfileEditFragment - Kakao user instance error :  $error");
             } else if (user != null) {
-                Log.d(TAG, "ProfileEditFragment - onViewCreated: ${user.kakaoAccount?.email}")
                 binding.emailAccount.text = user.kakaoAccount?.email.toString()
             }
         }

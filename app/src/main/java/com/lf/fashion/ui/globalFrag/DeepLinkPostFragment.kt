@@ -206,7 +206,6 @@ class DeepLinkPostFragment : Fragment(R.layout.deeplink_post_fragment),
                 photoZipBtnClicked(post)
             }
             kebabBtn.setOnClickListener {
-                Log.d(TAG, "kebabBtnClicked In DefaultAdapter  - postId : $post.id");
                 kebabBtnClicked(post)
             }
 
@@ -287,7 +286,6 @@ class DeepLinkPostFragment : Fragment(R.layout.deeplink_post_fragment),
     }
 
     override fun kebabBtnClicked(post: Posts) {
-        Log.d(TAG, "HomeFragment - kebabBtnClicked postId : ${post.id}");
         val dialog = PostBottomSheetFragment(post, myBottomDialogListener = this, userShareOnclick = null){
             CopyLink().copyTextToClipboard(requireContext(),post.id,"post")
         }
