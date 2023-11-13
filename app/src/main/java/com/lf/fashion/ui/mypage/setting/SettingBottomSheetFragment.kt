@@ -18,7 +18,7 @@ import com.lf.fashion.ui.mypage.MyPageViewModel
  * 마이페이지 설정 버튼 클릭시 노출되는 바텀 다이얼로그 시트입니다
  * myPageFragment 와 viewModel을 공유하여 login 여부를 체크해야함 (파라미터로 viewModel 받는 이유)
  */
-class SettingBottomSheetFragment(private val viewModel: MyPageViewModel) :
+class SettingBottomSheetFragment(private val viewModel: MyPageViewModel,private val logout : ()->Unit) :
     BottomSheetDialogFragment(), View.OnClickListener {
     lateinit var binding: MypageSettingBottomDialogBinding
     private lateinit var globalMyInfo: MyInfo
@@ -74,7 +74,7 @@ class SettingBottomSheetFragment(private val viewModel: MyPageViewModel) :
             }
 
             binding.logoutBtn -> {
-                viewModel.clearSavedLoginToken()
+                logout()
                 this@SettingBottomSheetFragment.dismiss()
             }
 
@@ -90,8 +90,7 @@ class SettingBottomSheetFragment(private val viewModel: MyPageViewModel) :
         AppCustomDialog("회원을 탈퇴하시겠습니까?","회원 정보 복구는 30일 이내 가능하며,\n신규 재가입은 30일간 제한됩니다.","네","아니요"){
             viewModel.deleteUser()
         }.show(parentFragmentManager,"delete_user_confirm")
+        logout()
         dismiss()
-        viewModel.clearSavedLoginToken()
-
     }
 }

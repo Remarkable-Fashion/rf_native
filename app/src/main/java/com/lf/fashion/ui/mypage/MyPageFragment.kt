@@ -25,6 +25,8 @@ import com.lf.fashion.ui.home.GridSpaceItemDecoration
 import com.lf.fashion.ui.common.mainBottomMenuListener
 import com.lf.fashion.ui.mypage.setting.SettingBottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -50,12 +52,12 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userPref = UserDataStorePref(requireContext().applicationContext)
-
-        viewModel.savedLoginToken.observe(viewLifecycleOwner) {
-            if (it.isNullOrEmpty() && !userPref.loginCheck()) {
-                findNavController().navigate(R.id.action_navigation_mypage_to_loginFragment)
-                return@observe
-            }
+        if(userPref.loginCheck()){
+            viewModel.getPostList()
+            viewModel.getMyInfo()
+        }else{
+            findNavController().navigate(R.id.action_navigation_mypage_to_loginFragment)
+            return
         }
 
         gridAdapter = GridPostAdapter(3, this@MyPageFragment, reduceViewWidth = true)
@@ -105,7 +107,13 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
         }
         //바텀 다이얼로그 show
         binding.settingBtn.setOnClickListener {
-            val dialog = SettingBottomSheetFragment(viewModel)
+            val dialog = SettingBottomSheetFragment(viewModel){
+                CoroutineScope(Dispatchers.IO).launch{
+                    userPref.clearAccessTokenAndId()
+                }
+                findNavController().navigate(R.id.action_navigation_mypage_to_loginFragment)
+                return@SettingBottomSheetFragment
+            }
             dialog.show(parentFragmentManager, "setting_bottom_sheet")
         }
 
@@ -217,7 +225,6 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         // Fragment가 소멸될 때 OnScrollChangeListener를 제거합니다.
         binding.myNestedScrollView.setOnScrollChangeListener(null as NestedScrollView.OnScrollChangeListener?)
     }

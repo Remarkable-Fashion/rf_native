@@ -79,30 +79,12 @@ class MyPageViewModel @Inject constructor(
 
     var myInfoChaged  = false
 
-    init {
-        getSavedLoginToken()
-        if (!savedLoginToken.value.isNullOrEmpty()) {
-            getPostList()
-            getMyInfo()
-        }
-    }
 
     suspend fun getJWT(loginAccessToken: String,fcmToken : String): Resource<MsgResponse> {
         return myPageRepository.getJWT(loginAccessToken,fcmToken)
     }
 
-    fun getSavedLoginToken() {
-        viewModelScope.launch {
-            _savedLoginToken.value = userPreferences.accessToken.first()
-        }
-    }
 
-    fun clearSavedLoginToken() {
-        viewModelScope.launch {
-            userPreferences.clearAccessTokenAndId()
-            _savedLoginToken.value = null
-        }
-    }
 
     fun getMyInfo() {
         viewModelScope.launch {
