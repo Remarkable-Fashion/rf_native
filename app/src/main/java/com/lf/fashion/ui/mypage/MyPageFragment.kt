@@ -127,7 +127,7 @@ class MyPageFragment : Fragment(), GridPhotoClickListener {
             }
         }
         binding.layoutSwipeRefreah.setOnRefreshListener {
-            if(!viewModel.savedLoginToken.value.isNullOrEmpty()){
+            if(userPref.loginCheck()){
                 viewModel.getPostList()
                 viewModel.getMyInfo()
             }

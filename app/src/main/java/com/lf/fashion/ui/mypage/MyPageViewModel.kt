@@ -33,9 +33,9 @@ class MyPageViewModel @Inject constructor(
     @ApplicationContext context: Context
 ) : ViewModel() {
 
-    private var _savedLoginToken: MutableLiveData<String?> = MutableLiveData()
+   /* private var _savedLoginToken: MutableLiveData<String?> = MutableLiveData()
     val savedLoginToken: LiveData<String?> = _savedLoginToken
-    private val userPreferences = UserDataStorePref(context)
+    private val userPreferences = UserDataStorePref(context)*/
 
     private val _postResponse = MutableLiveData<Resource<RandomPostResponse>>()
     var postResponse: LiveData<Resource<RandomPostResponse>> = _postResponse
