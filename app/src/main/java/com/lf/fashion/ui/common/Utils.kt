@@ -333,6 +333,7 @@ fun Fragment.handleApiError(
                         val userPreferences = UserDataStorePref(requireContext())
                         userPreferences.clearAccessTokenAndId()
                     }
+                    findNavController().popBackStack()
                     findNavController().navigate(R.id.navigation_mypage)
                 }
             }catch (e: Exception) {
