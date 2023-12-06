@@ -1,12 +1,14 @@
 package com.lf.fashion.ui.addPost
 
 import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -30,21 +32,25 @@ class PhotoFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             val allPermissionsGranted = permissions.all { it.value }
             val galleryPermission = permissions[Manifest.permission.READ_EXTERNAL_STORAGE] ?: false
+            val galleryPermission33 = permissions[Manifest.permission.READ_MEDIA_IMAGES] ?: false
+
             //모두 허용 또는 외부저장소 읽기 권한 있을 시 커스텀 갤러리 뷰로 이동
-            if (allPermissionsGranted || galleryPermission ) {
+            if (allPermissionsGranted || galleryPermission ||galleryPermission33 ) {
                 //모든 이미지타입
                 // requestImageUriLauncher.launch("image/*") // 여기서 요청할경우 권한 동의 후 바로 파일접근으로 넘어갈 수 있다.
                 //val direction = PhotoFragmentDirections.actionNavigationPhotoToImagePickerFragment()
                 findNavController().navigate(R.id.action_navigation_photo_to_imagePickerFragment,
                     bundleOf("from" to "PhotoFragment" , "limit" to 4))
             } else {
-                Log.d(TAG, "PhotoFragment - : granted fail");
+                val notGrantedPermissions = permissions.filter { !it.value }.keys.joinToString(", ")
+                Log.d(TAG, "PhotoFragment - Permissions not granted: $notGrantedPermissions")
             }
         }
     private val permissions = arrayOf(
         Manifest.permission.CAMERA,
         Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_MEDIA_IMAGES
     )
     override fun onCreateView(
         inflater: LayoutInflater,
